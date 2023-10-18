@@ -3,6 +3,7 @@
     margin: 0 auto;
     padding: 0rem;
     text-align: center;
+    height:100%;
 }
 
 * {
@@ -65,12 +66,8 @@
     src: url("../src/assets/fonts/MalgunGothicBold.ttf") ;
     font-weight: bold;
 }
-.MuiTextField-root {
-    width: 100%;
-}
-.MuiList-root {
-    width: 100%;
-}
+
+
 
 form {
     display: contents;
@@ -84,12 +81,9 @@ html {
 
 body {
     overflow-x: hidden;
-    height: 100%;
+    height:100%;
 }
 
-/* #root {
-    height: 100%;
-} */
 
 section {
     display: contents;

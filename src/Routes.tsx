@@ -14,18 +14,16 @@ export const Routes:React.FC<RoutesProps> = ({  }) => {
     const { user } = useUser()
     
         return user ? (
-        <ReactRoutes>
-            <Route index element={<Panel user={user}/>} />
-            <Route path="/*" element={<Panel user={user} />} />
-
- 
-        </ReactRoutes>
+            <ReactRoutes>
+                <Route index element={<Panel user={user} />} />
+                <Route path="/*" element={<Panel user={user} />} />
+            </ReactRoutes>
         ) : (
             <ReactRoutes>
-             <Route index element={<Home />} />
-             <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
- 
-        </ReactRoutes>
-    )
+                <Route index element={<Home />} />
+                <Route path="/home" element={<Home />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<Signup />} />
+            </ReactRoutes>
+        )
 }

@@ -4,11 +4,12 @@ import { colors } from "../style/colors"
 export const useMuiTheme = () => {
     const THEME = createTheme({
         typography: {
-            fontFamily: ["Montserrat"].join(","),
-            // fontSize: 14,
-            //  "fontWeightLight": 300,
-            //  "fontWeightRegular": 400,
-            //  "fontWeightMedium": 500
+            fontFamily: ["MalgunGothic2"].join(","),
+            fontSize: 14,
+            fontWeightLight: 300,
+            fontWeightRegular: 400,
+            fontWeightMedium: 500,
+            fontWeightBold: 600,
         },
         palette: {
             // mode: 'dark',
@@ -20,8 +21,8 @@ export const useMuiTheme = () => {
                 main: colors.secondary,
             },
             text: {
-                primary: colors.primary,
-                // secondary: colors.primary,
+                primary: colors.text.black,
+                secondary: colors.text.white,
                 // disabled: colors.primary,
             },
         },
