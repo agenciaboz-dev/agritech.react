@@ -8,15 +8,22 @@ import { StepOne } from "./../Signup/StepOne"
 import { Form, Formik } from "formik"
 import { StepTwo } from "./../Signup/StepTwo"
 import { StepThree } from "./../Signup/StepThree"
+import { useDataHandler } from "../../hooks/useDataHandler"
+import { useEstadosBrasil } from "../../hooks/useEstadosBrasil"
+import { useGender } from "../../hooks/useGender"
 
 interface SignupProps {}
 
 export const Signup: React.FC<SignupProps> = ({}) => {
     const io = useIo()
-    const { login, setUser } = useUser()
     const navigate = useNavigate()
+    const { login, setUser } = useUser()
+    const { unmask } = useDataHandler()
 
-    const [typeUser, setTypeUser] = useState("producer")
+    const estados = useEstadosBrasil()
+    const gender = useGender()
+
+    const [typeUser, setTypeUser] = useState("")
     const [currentStep, setCurrentStep] = useState(0)
     const [loading, setLoading] = useState(false)
 
@@ -28,6 +35,7 @@ export const Signup: React.FC<SignupProps> = ({}) => {
         cpf: " ",
         birth: "",
         phone: " ",
+        image: " ",
 
         street: "",
         district: "",
@@ -61,13 +69,16 @@ export const Signup: React.FC<SignupProps> = ({}) => {
     const handleSignup = async (values: FormValues) => {
         const data = {
             ...values,
+            cpf: unmask(values.cpf),
+            phone: unmask(values.phone),
+            cep: unmask(values.cep),
             address: {
                 street: values.street,
                 district: values.district,
                 number: values.number,
                 city: values.city,
                 cep: values.cep,
-                uf: values.uf,
+                uf: estados.find((estado) => estado.id == Number(values.uf))!.value,
                 complement: values.complement,
             },
         }
@@ -76,7 +87,7 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                 ...data,
                 employee: {
                     rg: data.rg,
-                    gender: data.gender,
+                    gender: gender.find((gender) => gender.id == String(data.gender))!.value,
                     nationality: data.nationality,
                     relationship: data.relationship,
                     voter_card: data.voter_card,
@@ -88,7 +99,7 @@ export const Signup: React.FC<SignupProps> = ({}) => {
             console.log(data)
         } else if (typeUser === "producer") {
             console.log(data)
-            io.emit("user:signup", { ...data, producer: { cnpj: data.cnpj } })
+            io.emit("user:signup", { ...data, producer: { cnpj: unmask(data.cpf) } })
         }
         setLoading(true)
     }
@@ -100,7 +111,7 @@ export const Signup: React.FC<SignupProps> = ({}) => {
             if (user) {
                 //setSnackbarVisible(true)
                 //login({ login: user.username, password: user.password })
-                navigate("Login")
+                navigate("../Login")
             }
         })
 
@@ -142,9 +153,10 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                 <p
                     style={{
                         fontFamily: "MalgunGothic2",
+                        fontWeight: "bold",
                         color: colors.text.white,
-                        fontSize: 23,
-                        paddingTop: 15,
+                        fontSize: "5.5vw",
+                        paddingTop: "2vw",
                         height: "100%",
                     }}
                 >
@@ -220,6 +232,8 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                                                 fontWeight: "600",
                                                 fontSize: "4vw",
                                                 textTransform: "none",
+                                                borderRadius: "10vw",
+                                                height: "10vw",
                                             }}
                                             onClick={() => navigate("/../home")}
                                         >
@@ -237,17 +251,29 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                                     />
                                 )}
                                 {currentStep === 2 && (
-                                    <StepTwo data={values} handleChange={handleChange} typeUser={typeUser} />
+                                    <StepTwo
+                                        data={values}
+                                        handleChange={handleChange}
+                                        typeUser={typeUser}
+                                        setCurrentStep={setCurrentStep}
+                                    />
                                 )}
                                 {currentStep === 3 && typeUser === "employee" && (
-                                    <StepThree data={values} handleChange={handleChange} typeUser={typeUser} />
+                                    <StepThree data={values} handleChange={handleChange} setCurrentStep={setCurrentStep} />
                                 )}
 
                                 {typeUser == "producer" && currentStep == 2 && (
                                     <Button
                                         type="submit"
                                         variant="contained"
-                                        style={{ fontSize: 17, backgroundColor: colors.button }}
+                                        style={{
+                                            fontSize: 17,
+                                            color: colors.text.white,
+                                            width: "100%",
+                                            backgroundColor: colors.button,
+                                            borderRadius: "5vw",
+                                            textTransform: "none",
+                                        }}
                                     >
                                         {loading ? (
                                             <CircularProgress style={{ backgroundColor: colors.text.white }} />
@@ -257,9 +283,40 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                                     </Button>
                                 )}
                                 {typeUser == "employee" && currentStep == 3 && (
-                                    <Button type="submit" variant="contained" style={{ backgroundColor: "#232323" }}>
-                                        Cadastrar
-                                    </Button>
+                                    <>
+                                        <Button
+                                            variant="outlined"
+                                            sx={{
+                                                width: "100%",
+                                                padding: "3vw",
+                                                color: colors.text.black,
+                                                fontWeight: "600",
+                                                fontSize: "4vw",
+                                                textTransform: "none",
+                                                borderRadius: "10vw",
+                                                height: "10vw",
+                                            }}
+                                            onClick={() => {
+                                                setCurrentStep(2)
+                                            }}
+                                        >
+                                            Voltar
+                                        </Button>
+                                        <Button
+                                            type="submit"
+                                            variant="contained"
+                                            sx={{
+                                                fontSize: 17,
+                                                color: colors.text.white,
+                                                width: "100%",
+                                                backgroundColor: colors.button,
+                                                borderRadius: "5vw",
+                                                textTransform: "none",
+                                            }}
+                                        >
+                                            Cadastrar
+                                        </Button>
+                                    </>
                                 )}
                             </Box>
                         </Form>

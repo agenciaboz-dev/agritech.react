@@ -6,6 +6,7 @@ declare interface FormValues {
     cpf: string
     birth: string
     phone: string
+    image: string
 
     street: string
     district: string

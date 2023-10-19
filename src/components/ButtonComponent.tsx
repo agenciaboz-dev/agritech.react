@@ -18,7 +18,7 @@ export const ButtonComponent: React.FC<ButtonComponentProps> = ({ title, locatio
                 borderColor: colors.button,
                 width: "100%",
                 backgroundColor: "#232323",
-                borderRadius: "5vw",
+                borderRadius: "10vw",
                 fontWeight: "800",
                 textTransform: "none",
                 fontSize: "4vw",

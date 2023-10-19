@@ -119,7 +119,7 @@ export const Login: React.FC<LoginProps> = ({}) => {
                                     fontSize: "4vw",
                                     fontWeight: "600",
                                     backgroundColor: "#232323",
-                                    borderRadius: "5vw",
+                                    borderRadius: "10vw",
                                     textTransform: "none",
                                 }}
                             >

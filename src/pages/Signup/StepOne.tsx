@@ -1,8 +1,9 @@
-import { Avatar } from "@files-ui/react"
-import { Box, Button, TextField } from "@mui/material"
-import React, { ChangeEventHandler } from "react"
-import { textStyle } from "../../style/input"
+import { Avatar, ExtFile } from "@files-ui/react"
+import { Box, Button, TextField, MenuItem } from "@mui/material"
+import React, { ChangeEventHandler, useEffect, useState } from "react"
 import { colors } from "../../style/colors"
+import MaskedInput from "../../components/MaskedInput"
+import { useGender } from "../../hooks/useGender"
 
 interface StepOneProps {
     data: FormValues
@@ -12,13 +13,25 @@ interface StepOneProps {
 }
 
 export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, typeUser, setCurrentStep }) => {
+    const gender = useGender()
+    const [image, setImage] = useState<File>()
+
     return (
         <Box sx={{ width: "100%", height: "100%", gap: "4vw" }}>
-            <p style={{ fontSize: "4.5vw", fontFamily: "MalgunGothic2" }}>Informações Pessoais</p>
-            <Box style={{ flexDirection: "row", gap: "5vw", width: "100%", height: "40%", alignItems: "center" }}>
-                <Avatar variant="circle" style={{ width: "30vw", height: "30vw" }} />
-                <Box style={{ flexDirection: "column", gap: 10, width: "65%" }}>
-                    <p style={{ fontWeight: "500", fontFamily: "MalgunGothic2", textAlign: "start" }}>Foto</p>
+            <p style={{ fontSize: "4.5vw", fontFamily: "MalgunGothic2", textAlign: "left" }}>Informações Pessoais</p>
+            <Box style={{ flexDirection: "row", gap: "5vw", width: "100%", height: "23%", alignItems: "center" }}>
+                <Avatar
+                    src={image}
+                    onChange={(file) => setImage(file)}
+                    changeLabel="Trocar foto"
+                    emptyLabel="Adicionar foto"
+                    variant="circle"
+                    style={{ width: "30vw", height: "30vw", fontSize: "4vw", fontFamily: "MalgunGothic2" }}
+                />
+                <Box style={{ flexDirection: "column", gap: "2vw", width: "65%" }}>
+                    <p style={{ fontWeight: "500", fontFamily: "MalgunGothic2", textAlign: "start", fontSize: "4vw" }}>
+                        Foto
+                    </p>
                     <p style={{ fontSize: "3vw", fontFamily: "MalgunGothic2", textAlign: "start" }}>
                         Clique na imagem ao lado para adicionar uma foto sua. A foto deve estar plenamente visível e sem
                         adereços.
@@ -31,7 +44,7 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, typeUser, 
                     label={"Nome"}
                     name="name"
                     value={data.name}
-                    style={textStyle}
+                    placeholder="Nome"
                     onChange={handleChange}
                 />
                 <Box style={{ flexDirection: "row", gap: "2vw", width: "100%" }}>
@@ -40,7 +53,11 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, typeUser, 
                         label={"CPF"}
                         name="cpf"
                         value={data.cpf}
-                        style={{ ...textStyle, width: "50%" }}
+                        style={{ width: "50%" }}
+                        InputProps={{
+                            inputComponent: MaskedInput,
+                            inputProps: { mask: "000.000.000-00" },
+                        }}
                         onChange={handleChange}
                     />
                     {typeUser == "producer" && (
@@ -49,7 +66,11 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, typeUser, 
                             label={"CNPJ"}
                             name="cnpj"
                             value={data.cnpj}
-                            style={{ ...textStyle, width: "50%" }}
+                            style={{ width: "50%" }}
+                            InputProps={{
+                                inputComponent: MaskedInput,
+                                inputProps: { mask: "00.000.000/0000-00" },
+                            }}
                             onChange={handleChange}
                         />
                     )}
@@ -59,7 +80,11 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, typeUser, 
                             label={"Rg"}
                             name="rg"
                             value={data.rg}
-                            style={{ ...textStyle, width: "50%" }}
+                            style={{ width: "50%" }}
+                            InputProps={{
+                                inputComponent: MaskedInput,
+                                inputProps: { mask: "0000000000000", inputMode: "numeric" },
+                            }}
                             onChange={handleChange}
                         />
                     )}
@@ -70,7 +95,10 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, typeUser, 
                     label={"Data de Nascimento"}
                     name="birth"
                     value={data.birth}
-                    style={textStyle}
+                    InputProps={{
+                        inputComponent: MaskedInput,
+                        inputProps: { mask: "00/00/0000" },
+                    }}
                     onChange={handleChange}
                 />
                 <TextField
@@ -78,98 +106,85 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, typeUser, 
                     label={"E-mail"}
                     name="email"
                     value={data.email}
-                    style={textStyle}
+                    type="email"
                     onChange={handleChange}
                 />
-                {/* {typeUser == "employee" && (
-                    <>
-                        <p style={{ fontSize: 15 }}>Gênero</p>
-                        <RadioButton.Group
-                            onValueChange={(value) => {
-                                setGender(value)
-                            }}
-                            value={gender}
-                        >
-                            <Box>
-                                <Box style={{ flexDirection: "row", alignItems: "center" }}>
-                                    <RadioButton.IOS value="F" />
-                                    <Text
-                                        style={{
-                                            fontWeight: gender == "F" ? "800" : "400",
-                                            fontSize: 15,
-                                        }}
-                                        onPress={() => {
-                                            setGender("F")
-                                        }}
-                                    >
-                                        Feminino
-                                    </Text>
-                                </Box>
-                                <Box style={{ flexDirection: "row", alignItems: "center" }}>
-                                    <RadioButton.IOS value="M" />
-                                    <Text
-                                        style={{
-                                            fontWeight: gender == "M" ? "800" : "400",
-                                            fontSize: 15,
-                                            fontFamily: "MalgunGothic2",
-                                        }}
-                                        onPress={() => {
-                                            setGender("M")
+                <Box sx={{ alignItems: "center", justifyContent: "center", gap: "5vw" }}>
+                    {typeUser == "employee" && (
+                        <>
+                            <TextField
+                                select
+                                onChange={handleChange}
+                                label="Gender"
+                                name="gender"
+                                sx={{
+                                    width: "100%",
+                                }}
+                                variant="outlined"
+                                value={data.gender}
+                                InputProps={{
+                                    style: {},
+                                }}
+                                SelectProps={{
+                                    MenuProps: { MenuListProps: { sx: { maxHeight: "80vw", overflowY: "auto" } } },
+                                }}
+                            >
+                                <MenuItem
+                                    value={0}
+                                    sx={{
+                                        display: "none",
+                                    }}
+                                ></MenuItem>
+                                {gender.map((gender) => (
+                                    <MenuItem
+                                        key={gender.value}
+                                        value={gender.id}
+                                        sx={{
+                                            width: "100%",
                                         }}
                                     >
-                                        Masculino
-                                    </Text>
-                                </Box>
-                                <Box style={{ flexDirection: "row", alignItems: "center" }}>
-                                    <RadioButton.IOS value="other" />
-                                    <Text
-                                        style={{
-                                            fontWeight: gender == "others" ? "800" : "400",
-                                            fontSize: 15,
-                                            fontFamily: "MalgunGothic2",
-                                        }}
-                                        onPress={() => {
-                                            setGender("other")
-                                        }}
-                                    >
-                                        Outro
-                                    </Text>
-                                </Box>
-                            </Box>
-                        </RadioButton.Group>
-                    </>
-                )} */}
+                                        {gender.value}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
+                        </>
+                    )}
+                </Box>
+
+                <Button
+                    variant="outlined"
+                    sx={{
+                        padding: "3vw",
+                        color: colors.text.black,
+                        fontWeight: "600",
+                        fontSize: "4vw",
+                        textTransform: "none",
+                        borderRadius: "10vw",
+                        height: "10vw",
+                    }}
+                    onClick={() => {
+                        setCurrentStep(0)
+                    }}
+                >
+                    Voltar
+                </Button>
+                <Button
+                    variant="contained"
+                    style={{
+                        fontSize: 17,
+                        color: colors.text.white,
+                        width: "100%",
+                        backgroundColor: colors.button,
+                        borderRadius: "5vw",
+                        textTransform: "none",
+                    }}
+                    onClick={() => {
+                        setCurrentStep(2)
+                    }}
+                >
+                    Próximo
+                </Button>
             </Box>
-            <Button
-                variant="contained"
-                style={{
-                    fontSize: 17,
-                    color: colors.text.white,
-                    width: "100%",
-                    backgroundColor: colors.button,
-                    borderRadius: "5vw",
-                }}
-                onClick={() => {
-                    setCurrentStep(0)
-                }}
-            >
-                Voltar
-            </Button>
-            <Button
-                variant="contained"
-                style={{
-                    fontSize: 17,
-                    color: colors.text.white,
-                    width: "100%",
-                    backgroundColor: colors.button,
-                    borderRadius: "5vw",
-                }}
-                onClick={() => {
-                    setCurrentStep(2)
-                }}
-            >
-                Próximo
-            </Button>
         </Box>
     )
 }

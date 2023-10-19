@@ -16,16 +16,18 @@ export const Home: React.FC<HomeProps> = ({}) => {
                 alignItems: "center",
                 justifyContent: "center",
                 gap: "3vw",
+                height: "100%",
             }}
         >
             <Box
                 sx={{
                     width: "100%",
+                    height: "90%",
                     backgroundImage: `linear-gradient(${colors.secondary}, ${colors.primary})`,
                     borderBottomRightRadius: 40,
                     borderBottomLeftRadius: 40,
                     alignItems: "center",
-                    justifyContent: "center",
+                    justifyContent: "space-between",
                     paddingBottom: "10vw",
                     boxShadow: "3px 3px 6px gray",
                     padding: "4vw",
@@ -37,11 +39,11 @@ export const Home: React.FC<HomeProps> = ({}) => {
                         flex: 0.8,
                         alignItems: "center",
                         justifyContent: "center",
-                        width: 200,
-                        height: 200,
+                        width: "80%",
+                        height: "80%",
                     }}
                 />
-                <Box style={{ width: "100%", gap: 15 }}>
+                <Box style={{ width: "100%", height: "20%", gap: 15 }}>
                     <Button
                         variant="outlined"
                         sx={{
@@ -51,7 +53,7 @@ export const Home: React.FC<HomeProps> = ({}) => {
                             color: colors.text.white,
                             fontWeight: "600",
                             fontSize: "4vw",
-                            borderRadius: "5vw",
+                            borderRadius: "10vw",
                             textTransform: "none",
                         }}
                         onClick={() => navigate("../signup")}
@@ -62,7 +64,7 @@ export const Home: React.FC<HomeProps> = ({}) => {
                 </Box>
             </Box>
 
-            <Box>
+            <Box sx={{ height: "10%", width: "100%" }}>
                 <Button
                     sx={{
                         fontWeight: "600",

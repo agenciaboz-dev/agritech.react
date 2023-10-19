@@ -20,6 +20,7 @@ export const useMuiTheme = () => {
             secondary: {
                 main: colors.secondary,
             },
+
             text: {
                 primary: colors.text.black,
                 secondary: colors.text.white,
