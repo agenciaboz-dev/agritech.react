@@ -11,6 +11,7 @@ import { StepThree } from "./../Signup/StepThree"
 import { useDataHandler } from "../../hooks/useDataHandler"
 import { useEstadosBrasil } from "../../hooks/useEstadosBrasil"
 import { useGender } from "../../hooks/useGender"
+import { useSnackbar } from "burgos-snackbar"
 
 interface SignupProps {}
 
@@ -19,6 +20,7 @@ export const Signup: React.FC<SignupProps> = ({}) => {
     const navigate = useNavigate()
     const { login, setUser } = useUser()
     const { unmask } = useDataHandler()
+    const { snackbar } = useSnackbar()
 
     const estados = useEstadosBrasil()
     const gender = useGender()
@@ -62,9 +64,9 @@ export const Signup: React.FC<SignupProps> = ({}) => {
         setTypeUser((event.target as HTMLInputElement).value)
         setCurrentStep(1)
     }
-    useEffect(() => {
-        console.log(typeUser) // Este log mostrará o valor atualizado de typeUser sempre que ele mudar
-    }, [typeUser])
+    // useEffect(() => {
+    //     console.log(typeUser) // Este log mostrará o valor atualizado de typeUser sempre que ele mudar
+    // }, [typeUser])
 
     const handleSignup = async (values: FormValues) => {
         const data = {
@@ -111,17 +113,20 @@ export const Signup: React.FC<SignupProps> = ({}) => {
             if (user) {
                 //setSnackbarVisible(true)
                 //login({ login: user.username, password: user.password })
+                snackbar({ severity: "success", text: "Cadastro realizado com sucesso!" })
                 navigate("../Login")
             }
         })
 
         io.on("user:login:success", (user: User) => {
             setUser(user)
+            snackbar({ severity: "success", text: "Conectado!" })
         })
 
         io.on("user:signup:failed", () => {
-            alert("Falha no cadastro!")
             // setSnackbarVisible(true)
+            snackbar({ severity: "error", text: "Falha no cadastro!" })
+
             setLoading(false)
         })
 
@@ -135,9 +140,11 @@ export const Signup: React.FC<SignupProps> = ({}) => {
     return (
         <Box
             style={{
+                width: "100%",
                 height: "100%",
                 backgroundColor: "#fff",
                 backgroundImage: `linear-gradient(${colors.secondary} , ${colors.primary} 20%)`,
+                flexDirection: "column",
             }}
         >
             <Box
@@ -158,6 +165,8 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                         fontSize: "5.5vw",
                         paddingTop: "2vw",
                         height: "100%",
+                        textAlign: "start",
+                        width: "100%",
                     }}
                 >
                     Registre-se
@@ -173,6 +182,7 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                     borderTopRightRadius: 20,
                     flex: 1,
                     gap: 10,
+                    flexDirection: "column",
                 }}
             >
                 <Formik initialValues={initialValues} onSubmit={(values) => handleSignup(values)}>
@@ -185,11 +195,20 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                                     alignItems: "center",
                                     justifyContent: "center",
                                     gap: "12vw",
+                                    flexDirection: "column",
                                 }}
                             >
                                 {currentStep === 0 && (
                                     <>
-                                        <Box sx={{ alignItems: "center", justifyContent: "center", gap: "5vw" }}>
+                                        <Box
+                                            sx={{
+                                                width: "100%",
+                                                alignItems: "center",
+                                                justifyContent: "center",
+                                                gap: "5vw",
+                                                flexDirection: "column",
+                                            }}
+                                        >
                                             <p style={{ fontSize: "5vw", fontFamily: "MalgunGothic2" }}>
                                                 Selecione o tipo de conta
                                             </p>
@@ -275,11 +294,7 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                                             textTransform: "none",
                                         }}
                                     >
-                                        {loading ? (
-                                            <CircularProgress style={{ backgroundColor: colors.text.white }} />
-                                        ) : (
-                                            "Cadastrar"
-                                        )}
+                                        {loading ? <CircularProgress size={20} style={{ color: "#fff" }} /> : "Cadastrar"}
                                     </Button>
                                 )}
                                 {typeUser == "employee" && currentStep == 3 && (
@@ -314,7 +329,11 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                                                 textTransform: "none",
                                             }}
                                         >
-                                            Cadastrar
+                                            {loading ? (
+                                                <CircularProgress size={20} style={{ color: "#fff" }} />
+                                            ) : (
+                                                "Cadastrar"
+                                            )}
                                         </Button>
                                     </>
                                 )}

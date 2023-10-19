@@ -3,6 +3,7 @@ import { createContext, useEffect } from "react"
 import { Socket, io as ioSocket } from "socket.io-client"
 import { url } from "../api/backend"
 import { api } from "../api"
+import { useSnackbar } from "burgos-snackbar"
 
 interface IoContextValue {
     io: Socket
@@ -20,17 +21,19 @@ export default IoContext
 const io = ioSocket(`ws${url}`)
 
 export const IoProvider: React.FC<IoProviderProps> = ({ children }) => {
+    const { snackbar } = useSnackbar()
     useEffect(() => {
         io.once("connect_error", (error) => {
             console.log(error)
-            alert("Não foi possível se conectar com o servidor, verifique sua conexão com a internet")
+            snackbar({ severity: "error", text: "Não foi possível se conectar com o servidor." })
+
             api.get("/").then((response) => {
                 console.log(response.data)
             })
         })
 
         io.on("connect", () => {
-            alert("Conectado com o servidor")
+            snackbar({ severity: "success", text: "Conectado!" })
         })
 
         io.on("disconnect", (reason) => {

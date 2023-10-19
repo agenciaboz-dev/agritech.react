@@ -1,16 +1,44 @@
 import { Box, Button, Icon, IconButton } from "@mui/material"
-import React from "react"
+import React, { useEffect } from "react"
 import { colors } from "../../../style/colors"
 import drone from "../../../assets/logo/droneIcon.png"
 import SearchIcon from "@mui/icons-material/Search"
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone"
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline"
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos"
+import { useNavigationList } from "../../../hooks/useNavigationList"
+import { BottomNavigation } from "../../../components/BottomNavigation"
+import LogoutIcon from "@mui/icons-material/Logout"
+import { useIo } from "../../../hooks/useIo"
+import { useUser } from "../../../hooks/useUser"
+import { useSnackbar } from "burgos-snackbar"
 interface PanelProps {
     user: User
 }
 
 export const Panel: React.FC<PanelProps> = ({ user }) => {
+    const bottomMenu = useNavigationList()
+    const io = useIo()
+    const { setUser } = useUser()
+    const { snackbar } = useSnackbar()
+
+    const handleLogout = async () => {
+        if (user) {
+            io.emit("user:logout")
+        }
+    }
+
+    useEffect(() => {
+        io.on("user:disconnect", () => {
+            setUser(null)
+            console.log(user)
+            snackbar({ severity: "info", text: "Desconectado!" })
+        })
+
+        return () => {
+            io.off("user:disconnect")
+        }
+    })
     return (
         <Box style={{ flex: 1, paddingTop: 22, backgroundColor: colors.button, padding: "4vw" }}>
             <Box style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
@@ -31,16 +59,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                     <SearchIcon sx={{ color: "#fff" }} />
                     <NotificationsNoneIcon sx={{ color: "#fff" }} />
                     <PersonOutlineIcon sx={{ color: "#fff" }} />
-                    {/* <IconButton icon={"magnify"} iconColor={colors.text.white} />
-                    <IconButton icon={"bell-outline"} iconColor={colors.text.white} />
-
-                    <IconButton
-                        icon={"account-circle-outline"}
-                        iconColor={colors.text.white}
-                        onClick={() => {
-                            setvisibleMenu((prevVisible) => !prevVisible)
-                        }}
-                    /> */}
+                    <LogoutIcon sx={{ color: "#fff" }} onClick={handleLogout} />
                 </Box>
             </Box>
             <Box
@@ -68,11 +87,6 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                     <IconButton>
                         <ArrowForwardIosIcon sx={{ color: "#fff", width: "5vw" }} />
                     </IconButton>
-                    {/* <IconButton
-                        icon={"chevron-right"}
-                        iconColor={colors.text.white}
-                        onPress={() => navigation.navigate("SettingsKit")}
-                    /> */}
                 </Box>
                 <Box
                     style={{
@@ -131,6 +145,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                                     width: "30%",
                                     alignItems: "center",
                                     justifyContent: "center",
+                                    gap: "1vw",
                                 }}
                             >
                                 <p
@@ -144,9 +159,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                                 >
                                     Ver todos
                                 </p>
-                                <IconButton>
-                                    <ArrowForwardIosIcon color="primary" sx={{ width: "3vw" }} />
-                                </IconButton>
+                                <ArrowForwardIosIcon color="primary" sx={{ width: "2vw" }} />
                             </Box>
                         </Box>
                     </Box>
@@ -204,6 +217,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                                         width: "30%",
                                         alignItems: "center",
                                         justifyContent: "center",
+                                        gap: "1vw",
                                     }}
                                 >
                                     <p
@@ -217,9 +231,8 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                                     >
                                         Ver todos
                                     </p>
-                                    <IconButton>
-                                        <ArrowForwardIosIcon color="primary" sx={{ width: "3vw" }} />
-                                    </IconButton>
+
+                                    <ArrowForwardIosIcon color="primary" sx={{ width: "2vw" }} />
                                 </Box>
                             </Box>
                         </Box>
@@ -230,17 +243,11 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                     {key}: {value}
                     </Text>
                 ))} */}
-
-                    {/* <Button mode="contained" buttonColor={colors.button} onClick={handleLogout}>
-                    Sair
-                    </Button>
-                    <Button mode="contained" buttonColor={colors.button} onClick={handleSnackbar}>
-                    snackbar
-                </Button> */}
-                    <Box style={{ flex: 1, justifyContent: "center", alignItems: "flex-end" }}></Box>
+                    <Box sx={{ flexDirection: "row" }}>
+                        <BottomNavigation section={bottomMenu.admin} external />
+                    </Box>
                 </Box>
             </Box>
-            {/* <BottomMenu user={user} navigation={navigation} /> */}
         </Box>
     )
 }

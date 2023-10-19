@@ -21,11 +21,11 @@ export const useMuiTheme = () => {
                 main: colors.secondary,
             },
 
-            text: {
-                primary: colors.text.black,
-                secondary: colors.text.white,
-                // disabled: colors.primary,
-            },
+            // text: {
+            //     // primary: colors.text.black,
+            //     // secondary: colors.text.white,
+            //     // disabled: colors.primary,
+            // },
         },
     })
 

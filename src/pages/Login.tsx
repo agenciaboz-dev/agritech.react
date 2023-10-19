@@ -7,6 +7,7 @@ import { colors } from "../style/colors"
 import logo from "../assets/logo/logo.png"
 import { useNavigate } from "react-router-dom"
 import { Formik, Form } from "formik"
+import { useSnackbar } from "burgos-snackbar"
 
 interface LoginProps {}
 
@@ -16,6 +17,7 @@ interface LoginValues {
 }
 export const Login: React.FC<LoginProps> = ({}) => {
     const navigate = useNavigate()
+    const { snackbar } = useSnackbar()
     const io = useIo()
 
     const { user } = useUser()
@@ -39,12 +41,13 @@ export const Login: React.FC<LoginProps> = ({}) => {
             console.log("Usuário definido:", user)
             setUser(user)
             if (user) {
-                alert("Logado com sucesso!")
+                snackbar({ severity: "success", text: "Conectado!" })
             }
         })
 
         io.on("user:login:failed", () => {
             setLoading(false)
+            snackbar({ severity: "error", text: "Algo deu errado!" })
         })
 
         return () => {
@@ -61,6 +64,7 @@ export const Login: React.FC<LoginProps> = ({}) => {
                 backgroundImage: `linear-gradient(${colors.secondary} , ${colors.primary} 50%)`,
                 alignItems: "center",
                 justifyContent: "center",
+                flexDirection: "column",
             }}
         >
             <Box
@@ -68,9 +72,11 @@ export const Login: React.FC<LoginProps> = ({}) => {
                     width: "100%",
                     alignItems: "center",
                     justifyContent: "center",
+                    flexDirection: "column",
                 }}
             >
                 <img
+                    onClick={() => navigate("../home")}
                     src={logo}
                     style={{
                         alignItems: "center",
@@ -88,6 +94,7 @@ export const Login: React.FC<LoginProps> = ({}) => {
                     borderTopLeftRadius: "5vw",
                     borderTopRightRadius: "5vw",
                     gap: "3vw",
+                    flexDirection: "column",
                 }}
             >
                 <p
@@ -110,7 +117,13 @@ export const Login: React.FC<LoginProps> = ({}) => {
                                 value={values.login}
                                 onChange={handleChange}
                             />
-                            <TextField placeholder="Senha" name="password" value={values.password} onChange={handleChange} />
+                            <TextField
+                                placeholder="Senha"
+                                type="password"
+                                name="password"
+                                value={values.password}
+                                onChange={handleChange}
+                            />
                             <Button
                                 variant="contained"
                                 type="submit"
@@ -123,7 +136,11 @@ export const Login: React.FC<LoginProps> = ({}) => {
                                     textTransform: "none",
                                 }}
                             >
-                                {loading ? <CircularProgress style={{ color: "#fff", fontSize: "2vw" }} /> : "Entrar"}
+                                {loading ? (
+                                    <CircularProgress size={20} style={{ color: "#fff", fontSize: "2vw" }} />
+                                ) : (
+                                    "Entrar"
+                                )}
                             </Button>
                         </Form>
                     )}

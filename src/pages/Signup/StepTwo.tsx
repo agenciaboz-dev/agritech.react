@@ -18,28 +18,14 @@ export const StepTwo: React.FC<StepTwoProps> = ({ data, handleChange, typeUser, 
         <Box sx={{ width: "100%", height: "100%", gap: "4vw" }}>
             <p style={{ fontSize: "4.5vw", fontFamily: "MalgunGothic2", textAlign: "left" }}>Login</p>
 
-            <Box sx={{ gap: "2vw" }}>
-                <TextField
-                    name="username"
-                    variant="outlined"
-                    label={"Username"}
-                    value={data.username}
-                    onChange={handleChange}
-                />
-                <TextField
-                    name="password"
-                    variant="outlined"
-                    type="password"
-                    label={"Senha"}
-                    value={data.password}
-                    onChange={handleChange}
-                />
+            <Box sx={{ gap: "3vw" }}>
+                <TextField name="username" label={"Username"} value={data.username} onChange={handleChange} />
+                <TextField name="password" type="password" label={"Senha"} value={data.password} onChange={handleChange} />
             </Box>
             <p style={{ fontSize: "4.5vw", fontFamily: "MalgunGothic2", textAlign: "left" }}>Dados para contato</p>
             <Box sx={{ gap: "2vw" }}>
                 <TextField
                     name="phone"
-                    variant="outlined"
                     label={"Telefone"}
                     value={data.phone}
                     InputProps={{
@@ -48,31 +34,12 @@ export const StepTwo: React.FC<StepTwoProps> = ({ data, handleChange, typeUser, 
                     }}
                     onChange={handleChange}
                 />
-                <TextField
-                    name="street"
-                    variant="outlined"
-                    label={"Logradouro"}
-                    value={data.street}
-                    onChange={handleChange}
-                />
-                <TextField
-                    name="district"
-                    variant="outlined"
-                    label={"Bairro"}
-                    value={data.district}
-                    onChange={handleChange}
-                />
+                <TextField name="street" label={"Logradouro"} value={data.street} onChange={handleChange} />
+                <TextField name="district" label={"Bairro"} value={data.district} onChange={handleChange} />
                 <Box sx={{ width: "100%", flexDirection: "row", gap: "2vw" }}>
-                    <TextField
-                        name="number"
-                        variant="outlined"
-                        label={"Número"}
-                        value={data.number}
-                        onChange={handleChange}
-                    />
+                    <TextField name="number" label={"Número"} value={data.number} onChange={handleChange} />
                     <TextField
                         name="cep"
-                        variant="outlined"
                         label={"CEP"}
                         value={data.cep}
                         style={{ width: "76%" }}
@@ -87,7 +54,6 @@ export const StepTwo: React.FC<StepTwoProps> = ({ data, handleChange, typeUser, 
                 <Box sx={{ width: "100%", flexDirection: "row", gap: "2vw" }}>
                     <TextField
                         name="city"
-                        variant="outlined"
                         label={"Cidade"}
                         value={data.city}
                         style={{ width: "68%" }}
@@ -101,7 +67,6 @@ export const StepTwo: React.FC<StepTwoProps> = ({ data, handleChange, typeUser, 
                         sx={{
                             width: "38%",
                         }}
-                        variant="outlined"
                         value={data.uf}
                         InputProps={{
                             style: {},
@@ -131,7 +96,6 @@ export const StepTwo: React.FC<StepTwoProps> = ({ data, handleChange, typeUser, 
                 </Box>
                 <TextField
                     name="complement"
-                    variant="outlined"
                     label={"Complemento"}
                     value={data.complement}
                     style={{ width: "100%" }}

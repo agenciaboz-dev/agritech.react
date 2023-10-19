@@ -17,6 +17,8 @@ export const Home: React.FC<HomeProps> = ({}) => {
                 justifyContent: "center",
                 gap: "3vw",
                 height: "100%",
+                flexDirection: "column",
+                width: "100%",
             }}
         >
             <Box
@@ -31,19 +33,21 @@ export const Home: React.FC<HomeProps> = ({}) => {
                     paddingBottom: "10vw",
                     boxShadow: "3px 3px 6px gray",
                     padding: "4vw",
+                    flexDirection: "column",
                 }}
             >
                 <img
+                    
                     src={logo}
                     style={{
-                        flex: 0.8,
                         alignItems: "center",
                         justifyContent: "center",
-                        width: "80%",
+                        width: "100%",
                         height: "80%",
                     }}
                 />
-                <Box style={{ width: "100%", height: "20%", gap: 15 }}>
+
+                <Box style={{ width: "100%", height: "20%", gap: "2vw", flexDirection: "column" }}>
                     <Button
                         variant="outlined"
                         sx={{
@@ -64,9 +68,10 @@ export const Home: React.FC<HomeProps> = ({}) => {
                 </Box>
             </Box>
 
-            <Box sx={{ height: "10%", width: "100%" }}>
+            <Box sx={{ height: "10%", width: "100%", alignItems: "center" }}>
                 <Button
                     sx={{
+                        width: "100%",
                         fontWeight: "600",
                         padding: "2vw",
                         color: colors.text.black,

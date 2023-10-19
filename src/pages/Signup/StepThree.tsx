@@ -12,8 +12,8 @@ export const StepThree: React.FC<StepThreeProps> = ({ data, handleChange, setCur
     return (
         <Box sx={{ width: "100%", height: "100%", gap: "4vw" }}>
             <p style={{ fontSize: "4.5vw", fontFamily: "MalgunGothic2", textAlign: "left" }}>Documentação</p>
-            <Box style={{ gap: 20 }}>
-                <Box>
+            <Box sx={{ gap: "2vw" }}>
+                <Box sx={{ gap: "3vw" }}>
                     <TextField
                         variant="outlined"
                         label={"Nº do título de eleitor"}

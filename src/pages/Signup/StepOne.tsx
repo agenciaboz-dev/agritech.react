@@ -17,7 +17,7 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, typeUser, 
     const [image, setImage] = useState<File>()
 
     return (
-        <Box sx={{ width: "100%", height: "100%", gap: "4vw" }}>
+        <Box sx={{ width: "100%", height: "100%", gap: "4vw", flexDirection: "column" }}>
             <p style={{ fontSize: "4.5vw", fontFamily: "MalgunGothic2", textAlign: "left" }}>Informações Pessoais</p>
             <Box style={{ flexDirection: "row", gap: "5vw", width: "100%", height: "23%", alignItems: "center" }}>
                 <Avatar
@@ -38,18 +38,10 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, typeUser, 
                     </p>
                 </Box>
             </Box>
-            <Box sx={{ gap: "2vw", width: "100%", height: "100%" }}>
-                <TextField
-                    variant="outlined"
-                    label={"Nome"}
-                    name="name"
-                    value={data.name}
-                    placeholder="Nome"
-                    onChange={handleChange}
-                />
+            <Box sx={{ gap: "3vw", width: "100%", height: "100%" }}>
+                <TextField label={"Nome"} name="name" value={data.name} onChange={handleChange} />
                 <Box style={{ flexDirection: "row", gap: "2vw", width: "100%" }}>
                     <TextField
-                        variant="outlined"
                         label={"CPF"}
                         name="cpf"
                         value={data.cpf}
@@ -62,7 +54,6 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, typeUser, 
                     />
                     {typeUser == "producer" && (
                         <TextField
-                            variant="outlined"
                             label={"CNPJ"}
                             name="cnpj"
                             value={data.cnpj}
@@ -76,7 +67,6 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, typeUser, 
                     )}
                     {typeUser == "employee" && (
                         <TextField
-                            variant="outlined"
                             label={"Rg"}
                             name="rg"
                             value={data.rg}
@@ -91,7 +81,6 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, typeUser, 
                 </Box>
 
                 <TextField
-                    variant="outlined"
                     label={"Data de Nascimento"}
                     name="birth"
                     value={data.birth}
@@ -101,14 +90,7 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, typeUser, 
                     }}
                     onChange={handleChange}
                 />
-                <TextField
-                    variant="outlined"
-                    label={"E-mail"}
-                    name="email"
-                    value={data.email}
-                    type="email"
-                    onChange={handleChange}
-                />
+                <TextField label={"E-mail"} name="email" value={data.email} type="email" onChange={handleChange} />
                 <Box sx={{ alignItems: "center", justifyContent: "center", gap: "5vw" }}>
                     {typeUser == "employee" && (
                         <>
