@@ -12,6 +12,7 @@ import LogoutIcon from "@mui/icons-material/Logout"
 import { useIo } from "../../../hooks/useIo"
 import { useUser } from "../../../hooks/useUser"
 import { useSnackbar } from "burgos-snackbar"
+import { useMenuDrawer } from "../../../hooks/useMenuDrawer"
 interface PanelProps {
     user: User
 }
@@ -21,6 +22,8 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
     const io = useIo()
     const { setUser } = useUser()
     const { snackbar } = useSnackbar()
+
+    const menu = useMenuDrawer()
 
     const handleLogout = async () => {
         if (user) {
@@ -38,11 +41,20 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
         return () => {
             io.off("user:disconnect")
         }
-    })
+    }, [])
     return (
-        <Box style={{ flex: 1, paddingTop: 22, backgroundColor: colors.button, padding: "4vw" }}>
-            <Box style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
-                <Box style={{ flexDirection: "row", paddingBottom: 10, alignItems: "center", paddingLeft: 20, gap: 7 }}>
+        <Box style={{ flex: 1, backgroundColor: colors.button, paddingTop: "4vw" }}>
+            <Box style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", padding: "0 4vw" }}>
+                <Box
+                    sx={{
+                        flexDirection: "row",
+                        paddingBottom: "2vw",
+                        alignItems: "center",
+                        paddingLeft: "4vw",
+                        paddingRight: "4vw",
+                        gap: "1vw",
+                    }}
+                >
                     <img src={drone} style={{ width: 40 }} />
                     <p
                         style={{
@@ -58,7 +70,12 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                 <Box style={{ flexDirection: "row", gap: "4vw" }}>
                     <SearchIcon sx={{ color: "#fff" }} />
                     <NotificationsNoneIcon sx={{ color: "#fff" }} />
-                    <PersonOutlineIcon sx={{ color: "#fff" }} />
+                    <PersonOutlineIcon
+                        sx={{ color: "#fff" }}
+                        onClick={() => {
+                            menu.toggle()
+                        }}
+                    />
                     <LogoutIcon sx={{ color: "#fff" }} onClick={handleLogout} />
                 </Box>
             </Box>
@@ -209,7 +226,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                                         height: "10vw",
                                     }}
                                 >
-                                    Cadastrar novo funcionário
+                                    Cadastrar novo produtor
                                 </Button>
                                 <Box
                                     sx={{

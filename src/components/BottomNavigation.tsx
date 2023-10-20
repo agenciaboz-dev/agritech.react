@@ -41,7 +41,6 @@ export const BottomNavigation: React.FC<BottomNavigationProps> = ({ external, se
                 bottom: 0,
                 justifyContent: "space-between",
                 width: "100%",
-                // flexDirection: "row",
             }}
         >
             <BottomNavigationAction value={0} sx={{ display: "none" }} />

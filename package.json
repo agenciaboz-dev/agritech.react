@@ -22,6 +22,7 @@
     "burgos-masks": "^1.0.45",
     "burgos-snackbar": "^2.1.0",
     "formik": "^2.4.5",
+    "iconoir": "^6.11.0",
     "react": "^18.2.0",
     "react-currency-format": "^1.1.0",
     "react-dom": "^18.2.0",
@@ -30,6 +31,7 @@
     "socket.io-client": "^4.7.2"
   },
   "devDependencies": {
+    "@klarr-agency/circum-icons-react": "^2.0.2",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
     "@typescript-eslint/eslint-plugin": "^6.0.0",

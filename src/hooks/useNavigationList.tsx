@@ -9,6 +9,15 @@ import SwapHorizIcon from "@mui/icons-material/SwapHoriz"
 import LeaderboardIcon from "@mui/icons-material/Leaderboard"
 import MilitaryTechIcon from "@mui/icons-material/MilitaryTech"
 import PersonIcon from "@mui/icons-material/Person"
+import TextsmsOutlinedIcon from "@mui/icons-material/TextsmsOutlined"
+import GridPanel from "../assets/icons/view-grid.svg"
+import Chats from "../assets/icons/chat-lines.svg"
+import Calendar from "../assets/icons/calendar.svg"
+import Analysis from "../assets/icons/page-search.svg"
+import Statistics from "../assets/icons/stat-up.svg"
+
+import CircumIcon from "@klarr-agency/circum-icons-react" // React
+
 import { SxProps } from "@mui/material"
 import { useUser } from "./useUser"
 
@@ -27,32 +36,32 @@ export const useNavigationList = () => {
                 id: 1,
                 title: "Painel",
                 location: "",
-                icon: <GridViewIcon sx={iconStyle} />,
+                icon: <img src={GridPanel} alt="Logotipo do App" />,
             },
             {
                 id: 2,
                 title: "Conversas",
                 location: "/chats",
-                icon: <ChatIcon sx={iconStyle} />,
+                icon: <img src={Chats} alt="Logotipo do App" />,
             },
             {
                 id: 3,
                 title: "Calendário",
                 location: "/calendary",
-                icon: <ChatIcon sx={iconStyle} />,
+                icon: <img src={Calendar} alt="Logotipo do App" />,
             },
 
             {
                 id: 4,
                 title: "Estatísticas",
                 location: "/statistics",
-                icon: <LeaderboardIcon sx={iconStyle} />,
+                icon: <img src={Statistics} alt="Logotipo do App" />,
             },
             {
                 id: 5,
                 title: "Análises",
                 location: "/reviews",
-                icon: <MilitaryTechIcon sx={iconStyle} />,
+                icon: <img src={Analysis} alt="Logotipo do App" />,
             },
         ],
     }

@@ -573,6 +573,11 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
+"@klarr-agency/circum-icons-react@^2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@klarr-agency/circum-icons-react/-/circum-icons-react-2.0.2.tgz#d55e9c98c3e1bb44d7cc4e3799e5765f8cbf146d"
+  integrity sha512-J0gQxEWfpjGrsC3cH84wSgS3iebrXxEjuBMuNdzi8VnPR7ZvBgkmFHLxQwZws1DJ2SjEWnxTyv5RKXtKb74p7Q==
+
 "@mui/base@5.0.0-beta.20":
   version "5.0.0-beta.20"
   resolved "https://registry.npmjs.org/@mui/base/-/base-5.0.0-beta.20.tgz"
@@ -1529,6 +1534,11 @@ hoist-non-react-statics@^3.3.0, hoist-non-react-statics@^3.3.1:
   integrity sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==
   dependencies:
     react-is "^16.7.0"
+
+iconoir@^6.11.0:
+  version "6.11.0"
+  resolved "https://registry.yarnpkg.com/iconoir/-/iconoir-6.11.0.tgz#99ed6af7a6d96e137c29cc8d057a8d07c0030490"
+  integrity sha512-68YIHDwpJojMN4Qz0YnaIVzWudcsSLwWc2MmxxvT6r4oL96kCTAuZwQJHv8Z2ZrTCW8acI4dfETmo4X+Q36rfA==
 
 ignore@^5.2.0, ignore@^5.2.4:
   version "5.2.4"
