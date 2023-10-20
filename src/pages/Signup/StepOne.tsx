@@ -4,6 +4,7 @@ import React, { ChangeEventHandler, useEffect, useState } from "react"
 import { colors } from "../../style/colors"
 import MaskedInput from "../../components/MaskedInput"
 import { useGender } from "../../hooks/useGender"
+import { textField } from "../../style/input"
 
 interface StepOneProps {
     data: FormValues
@@ -19,7 +20,7 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, typeUser, 
     return (
         <Box sx={{ width: "100%", height: "100%", gap: "4vw", flexDirection: "column" }}>
             <p style={{ fontSize: "4.5vw", fontFamily: "MalgunGothic2", textAlign: "left" }}>Informações Pessoais</p>
-            <Box style={{ flexDirection: "row", gap: "5vw", width: "100%", height: "23%", alignItems: "center" }}>
+            <Box sx={{ flexDirection: "row", gap: "5vw", width: "100%", height: "23%", alignItems: "center" }}>
                 <Avatar
                     src={image}
                     onChange={(file) => setImage(file)}
@@ -28,7 +29,7 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, typeUser, 
                     variant="circle"
                     style={{ width: "30vw", height: "30vw", fontSize: "4vw", fontFamily: "MalgunGothic2" }}
                 />
-                <Box style={{ flexDirection: "column", gap: "2vw", width: "65%" }}>
+                <Box sx={{ flexDirection: "column", gap: "2vw", width: "65%" }}>
                     <p style={{ fontWeight: "500", fontFamily: "MalgunGothic2", textAlign: "start", fontSize: "4vw" }}>
                         Foto
                     </p>
@@ -39,13 +40,13 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, typeUser, 
                 </Box>
             </Box>
             <Box sx={{ gap: "3vw", width: "100%", height: "100%" }}>
-                <TextField label={"Nome"} name="name" value={data.name} onChange={handleChange} />
-                <Box style={{ flexDirection: "row", gap: "2vw", width: "100%" }}>
+                <TextField label={"Nome"} name="name" value={data.name} sx={textField} onChange={handleChange} />
+                <Box sx={{ flexDirection: "row", gap: "2vw", width: "100%" }}>
                     <TextField
                         label={"CPF"}
                         name="cpf"
                         value={data.cpf}
-                        style={{ width: "50%" }}
+                        sx={{ ...textField, width: "50%" }}
                         InputProps={{
                             inputComponent: MaskedInput,
                             inputProps: { mask: "000.000.000-00" },
@@ -57,7 +58,7 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, typeUser, 
                             label={"CNPJ"}
                             name="cnpj"
                             value={data.cnpj}
-                            style={{ width: "50%" }}
+                            sx={{ ...textField, width: "50%" }}
                             InputProps={{
                                 inputComponent: MaskedInput,
                                 inputProps: { mask: "00.000.000/0000-00" },
@@ -70,7 +71,7 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, typeUser, 
                             label={"Rg"}
                             name="rg"
                             value={data.rg}
-                            style={{ width: "50%" }}
+                            sx={{ ...textField, width: "50%" }}
                             InputProps={{
                                 inputComponent: MaskedInput,
                                 inputProps: { mask: "0000000000000", inputMode: "numeric" },
@@ -84,22 +85,31 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, typeUser, 
                     label={"Data de Nascimento"}
                     name="birth"
                     value={data.birth}
+                    sx={textField}
                     InputProps={{
                         inputComponent: MaskedInput,
                         inputProps: { mask: "00/00/0000" },
                     }}
                     onChange={handleChange}
                 />
-                <TextField label={"E-mail"} name="email" value={data.email} type="email" onChange={handleChange} />
+                <TextField
+                    label={"E-mail"}
+                    name="email"
+                    value={data.email}
+                    type="email"
+                    sx={textField}
+                    onChange={handleChange}
+                />
                 <Box sx={{ alignItems: "center", justifyContent: "center", gap: "5vw" }}>
                     {typeUser == "employee" && (
                         <>
                             <TextField
                                 select
                                 onChange={handleChange}
-                                label="Gender"
+                                label="Gênero"
                                 name="gender"
                                 sx={{
+                                    ...textField,
                                     width: "100%",
                                 }}
                                 variant="outlined"
@@ -152,7 +162,7 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, typeUser, 
                 </Button>
                 <Button
                     variant="contained"
-                    style={{
+                    sx={{
                         fontSize: 17,
                         color: colors.text.white,
                         width: "100%",

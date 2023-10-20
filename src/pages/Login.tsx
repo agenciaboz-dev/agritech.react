@@ -8,6 +8,8 @@ import logo from "../assets/logo/logo.png"
 import { useNavigate } from "react-router-dom"
 import { Formik, Form } from "formik"
 import { useSnackbar } from "burgos-snackbar"
+import { textField, textStyle } from "../style/input"
+import { buttonStyle } from "../style/button"
 
 interface LoginProps {}
 
@@ -114,13 +116,17 @@ export const Login: React.FC<LoginProps> = ({}) => {
                             <TextField
                                 placeholder="E-mail, nome de usuário ou CPF"
                                 name="login"
+                                label="E-mail, nome de usuário ou CPF"
                                 value={values.login}
+                                sx={textField}
                                 onChange={handleChange}
                             />
                             <TextField
                                 placeholder="Senha"
                                 type="password"
                                 name="password"
+                                label="Senha"
+                                sx={textField}
                                 value={values.password}
                                 onChange={handleChange}
                             />
@@ -128,19 +134,16 @@ export const Login: React.FC<LoginProps> = ({}) => {
                                 variant="contained"
                                 type="submit"
                                 sx={{
+                                    ...buttonStyle,
+                                    backgroundColor: colors.button,
                                     padding: "3vw",
                                     fontSize: "4vw",
                                     fontWeight: "600",
-                                    backgroundColor: "#232323",
                                     borderRadius: "10vw",
                                     textTransform: "none",
                                 }}
                             >
-                                {loading ? (
-                                    <CircularProgress size={20} style={{ color: "#fff", fontSize: "2vw" }} />
-                                ) : (
-                                    "Entrar"
-                                )}
+                                {loading ? <CircularProgress size={30} sx={{ color: "#fff", fontSize: "2vw" }} /> : "Entrar"}
                             </Button>
                         </Form>
                     )}

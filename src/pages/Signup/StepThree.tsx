@@ -1,6 +1,7 @@
 import { Box, TextField, Button } from "@mui/material"
 import React, { ChangeEventHandler } from "react"
 import { colors } from "../../style/colors"
+import { textField } from "../../style/input"
 
 interface StepThreeProps {
     data: FormValues
@@ -19,7 +20,7 @@ export const StepThree: React.FC<StepThreeProps> = ({ data, handleChange, setCur
                         label={"Nº do título de eleitor"}
                         value={data.voter_card}
                         name="voter_card"
-                        style={{ width: "100%" }}
+                        sx={{ ...textField, width: "100%" }}
                         onChange={handleChange}
                     />
                     <TextField
@@ -27,7 +28,7 @@ export const StepThree: React.FC<StepThreeProps> = ({ data, handleChange, setCur
                         label={"Nº da carteira de trabalho"}
                         value={data.work_card}
                         name="work_card"
-                        style={{ width: "100%" }}
+                        sx={{ ...textField, width: "100%" }}
                         onChange={handleChange}
                     />
                 </Box>
@@ -38,7 +39,7 @@ export const StepThree: React.FC<StepThreeProps> = ({ data, handleChange, setCur
                     </p>
                     <Button
                         variant="contained"
-                        style={{
+                        sx={{
                             width: "50%",
                             height: "17%",
                             fontSize: "3vw",
@@ -56,7 +57,7 @@ export const StepThree: React.FC<StepThreeProps> = ({ data, handleChange, setCur
                     </p>
                     <Button
                         variant="contained"
-                        style={{
+                        sx={{
                             width: "50%",
                             height: "17%",
                             fontSize: "3vw",

@@ -3,7 +3,7 @@ import { useIo } from "../../hooks/useIo"
 import { useUser } from "../../hooks/useUser"
 import { colors } from "../../style/colors"
 import { useNavigate } from "react-router-dom"
-import { Box, Button, CircularProgress, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from "@mui/material"
+import { Box, Button, CircularProgress, FormControl, FormControlLabel, Radio, RadioGroup } from "@mui/material"
 import { StepOne } from "./../Signup/StepOne"
 import { Form, Formik } from "formik"
 import { StepTwo } from "./../Signup/StepTwo"
@@ -12,6 +12,7 @@ import { useDataHandler } from "../../hooks/useDataHandler"
 import { useEstadosBrasil } from "../../hooks/useEstadosBrasil"
 import { useGender } from "../../hooks/useGender"
 import { useSnackbar } from "burgos-snackbar"
+import { buttonStyle } from "../../style/button"
 
 interface SignupProps {}
 
@@ -30,14 +31,14 @@ export const Signup: React.FC<SignupProps> = ({}) => {
     const [loading, setLoading] = useState(false)
 
     const initialValues: FormValues = {
-        name: " ",
-        email: " ",
-        username: " ",
-        password: " ",
-        cpf: " ",
+        name: "",
+        email: "",
+        username: "",
+        password: "",
+        cpf: "",
         birth: "",
-        phone: " ",
-        image: " ",
+        phone: "",
+        image: "",
 
         street: "",
         district: "",
@@ -49,16 +50,16 @@ export const Signup: React.FC<SignupProps> = ({}) => {
 
         //Employee
         rg: "",
-        gender: " ",
-        nationality: " ",
-        relationship: " ",
-        voter_card: " ",
-        work_card: " ",
-        military: " ",
-        residence: " ",
+        gender: "",
+        nationality: "",
+        relationship: "",
+        voter_card: "",
+        work_card: "",
+        military: "",
+        residence: "",
 
         //Producer
-        cnpj: " ",
+        cnpj: "",
     }
     const handleTypeUser = (event: React.ChangeEvent<HTMLInputElement>) => {
         setTypeUser((event.target as HTMLInputElement).value)
@@ -109,10 +110,8 @@ export const Signup: React.FC<SignupProps> = ({}) => {
     useEffect(() => {
         io.on("user:signup:success", (user: User) => {
             setLoading(false)
-            // setSnackbarMessage("Cadastro realizado com sucesso!")
             if (user) {
-                //setSnackbarVisible(true)
-                //login({ login: user.username, password: user.password })
+                // login({ login: user.username, password: user.password })
                 snackbar({ severity: "success", text: "Cadastro realizado com sucesso!" })
                 navigate("../Login")
             }
@@ -124,7 +123,6 @@ export const Signup: React.FC<SignupProps> = ({}) => {
         })
 
         io.on("user:signup:failed", () => {
-            // setSnackbarVisible(true)
             snackbar({ severity: "error", text: "Falha no cadastro!" })
 
             setLoading(false)
@@ -139,7 +137,7 @@ export const Signup: React.FC<SignupProps> = ({}) => {
 
     return (
         <Box
-            style={{
+            sx={{
                 width: "100%",
                 height: "100%",
                 backgroundColor: "#fff",
@@ -183,6 +181,7 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                     flex: 1,
                     gap: 10,
                     flexDirection: "column",
+                    paddingBottom: "8vw",
                 }}
             >
                 <Formik initialValues={initialValues} onSubmit={(values) => handleSignup(values)}>
@@ -222,7 +221,7 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                                                 >
                                                     <FormControlLabel
                                                         value="producer"
-                                                        style={{
+                                                        sx={{
                                                             fontWeight: typeUser == "producer" ? "800" : "400",
                                                             fontSize: "4vw",
                                                             fontFamily: "MalgunGothic2",
@@ -232,7 +231,7 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                                                     />
                                                     <FormControlLabel
                                                         value="employee"
-                                                        style={{
+                                                        sx={{
                                                             fontWeight: typeUser == "producer" ? "800" : "400",
                                                             fontSize: "4vw",
                                                             fontFamily: "MalgunGothic2",
@@ -282,23 +281,26 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                                 )}
 
                                 {typeUser == "producer" && currentStep == 2 && (
-                                    <Button
-                                        type="submit"
-                                        variant="contained"
-                                        style={{
-                                            fontSize: 17,
-                                            color: colors.text.white,
-                                            width: "100%",
-                                            backgroundColor: colors.button,
-                                            borderRadius: "5vw",
-                                            textTransform: "none",
-                                        }}
-                                    >
-                                        {loading ? <CircularProgress size={20} style={{ color: "#fff" }} /> : "Cadastrar"}
-                                    </Button>
+                                    <Box sx={{ width: "100%", position: "relative", bottom: "10vw" }}>
+                                        <Button
+                                            type="submit"
+                                            variant="contained"
+                                            sx={{
+                                                ...buttonStyle,
+                                                fontSize: 17,
+                                                color: colors.text.white,
+                                                width: "100%",
+                                                backgroundColor: colors.button,
+                                                borderRadius: "5vw",
+                                                textTransform: "none",
+                                            }}
+                                        >
+                                            {loading ? <CircularProgress size={30} sx={{ color: "#fff" }} /> : "Cadastrar"}
+                                        </Button>
+                                    </Box>
                                 )}
                                 {typeUser == "employee" && currentStep == 3 && (
-                                    <>
+                                    <Box sx={{ width: "100%", gap: "3vw" }}>
                                         <Button
                                             variant="outlined"
                                             sx={{
@@ -321,6 +323,7 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                                             type="submit"
                                             variant="contained"
                                             sx={{
+                                                ...buttonStyle,
                                                 fontSize: 17,
                                                 color: colors.text.white,
                                                 width: "100%",
@@ -329,13 +332,9 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                                                 textTransform: "none",
                                             }}
                                         >
-                                            {loading ? (
-                                                <CircularProgress size={20} style={{ color: "#fff" }} />
-                                            ) : (
-                                                "Cadastrar"
-                                            )}
+                                            {loading ? <CircularProgress size={30} sx={{ color: "#fff" }} /> : "Cadastrar"}
                                         </Button>
-                                    </>
+                                    </Box>
                                 )}
                             </Box>
                         </Form>

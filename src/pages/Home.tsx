@@ -26,8 +26,8 @@ export const Home: React.FC<HomeProps> = ({}) => {
                     width: "100%",
                     height: "90%",
                     backgroundImage: `linear-gradient(${colors.secondary}, ${colors.primary})`,
-                    borderBottomRightRadius: 40,
-                    borderBottomLeftRadius: 40,
+                    borderBottomRightRadius: "7vw",
+                    borderBottomLeftRadius: "7vw",
                     alignItems: "center",
                     justifyContent: "space-between",
                     paddingBottom: "10vw",
@@ -37,7 +37,6 @@ export const Home: React.FC<HomeProps> = ({}) => {
                 }}
             >
                 <img
-                    
                     src={logo}
                     style={{
                         alignItems: "center",
