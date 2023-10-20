@@ -56,7 +56,7 @@ export const Login: React.FC<LoginProps> = ({}) => {
             io.off("user:login:success")
             io.off("user:login:failed")
         }
-    })
+    }, [])
 
     return (
         <Box
