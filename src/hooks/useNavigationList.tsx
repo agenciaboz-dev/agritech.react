@@ -6,17 +6,18 @@ import BarChartIcon from "@mui/icons-material/BarChart"
 import LocalShippingIcon from "@mui/icons-material/LocalShipping"
 import AppsIcon from "@mui/icons-material/Apps"
 import SwapHorizIcon from "@mui/icons-material/SwapHoriz"
-import LeaderboardIcon from "@mui/icons-material/Leaderboard"
-import MilitaryTechIcon from "@mui/icons-material/MilitaryTech"
-import PersonIcon from "@mui/icons-material/Person"
-import TextsmsOutlinedIcon from "@mui/icons-material/TextsmsOutlined"
 import GridPanel from "../assets/icons/view-grid.svg"
 import Chats from "../assets/icons/chat-lines.svg"
 import Calendar from "../assets/icons/calendar.svg"
 import Analysis from "../assets/icons/page-search.svg"
 import Statistics from "../assets/icons/stat-up.svg"
+import User from "../assets/icons/user.svg"
+import AddUser from "../assets/icons/add-user.svg"
+import AddEmployee from "../assets/icons/add-database-script.svg"
+import Pin from "../assets/icons/pin.svg"
+import Timer from "../assets/icons/timer.svg"
 
-import CircumIcon from "@klarr-agency/circum-icons-react" // React
+// import CircumIcon from "@klarr-agency/circum-icons-react" // React
 
 import { SxProps } from "@mui/material"
 import { useUser } from "./useUser"
@@ -30,8 +31,41 @@ export const useNavigationList = () => {
         id: 1,
         title: "Administrador",
         //hidden: user?.adm == false,
-        location: "/adm",
-        navigation: [
+        location: "/",
+        icon: <img src={GridPanel} />,
+        drawer: [
+            {
+                id: 1,
+                title: "Meu Perfil",
+                location: "/Profile",
+                icon: <img src={User} style={{ padding: "0 1.5vw", width: "7vw" }} />,
+            },
+            {
+                id: 2,
+                title: "Cadastrar Funcionário",
+                location: "/Profile",
+                icon: <img src={AddEmployee} style={{ width: "6vw" }} />,
+            },
+            {
+                id: 3,
+                title: "Cadastrar Produtor",
+                location: "/Profile",
+                icon: <img src={AddUser} style={{ width: "6vw" }} />,
+            },
+            {
+                id: 4,
+                title: "Fixados",
+                location: "/Profile",
+                icon: <img src={Pin} style={{ width: "6vw" }} />,
+            },
+            {
+                id: 5,
+                title: "Histórico",
+                location: "/Profile",
+                icon: <img src={Timer} style={{ width: "6vw" }} />,
+            },
+        ],
+        bottom: [
             {
                 id: 1,
                 title: "Painel",
@@ -70,7 +104,9 @@ export const useNavigationList = () => {
         id: 2,
         title: "Produtor",
         location: "/producer",
-        navigation: [
+        icon: <img src={GridPanel} alt="Logotipo do App" />,
+        drawer: [],
+        bottom: [
             {
                 id: 1,
                 title: "Painel",
@@ -95,8 +131,10 @@ export const useNavigationList = () => {
     const employee: NavigationMenu = {
         id: 3,
         title: "Funcionário",
+        drawer: [],
         location: "/employee",
-        navigation: [
+        icon: <img src={GridPanel} alt="Logotipo do App" />,
+        bottom: [
             {
                 id: 1,
                 title: "Painel",
@@ -120,16 +158,20 @@ export const useNavigationList = () => {
 
     const settings: NavigationMenu = {
         id: 7,
+        drawer: [],
         title: "Configurações",
+        icon: <img src={GridPanel} alt="Logotipo do App" />,
         location: "/settings",
     }
 
     const profile: NavigationMenu = {
         id: 8,
         title: "Perfil",
+        drawer: [],
         hidden: true,
+        icon: <img src={GridPanel} alt="Logotipo do App" />,
         location: "/profile",
-        navigation: [
+        bottom: [
             {
                 id: 1,
                 title: "Perfil",

@@ -8,11 +8,11 @@ import PersonOutlineIcon from "@mui/icons-material/PersonOutline"
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos"
 import { useNavigationList } from "../../../hooks/useNavigationList"
 import { BottomNavigation } from "../../../components/BottomNavigation"
-import LogoutIcon from "@mui/icons-material/Logout"
 import { useIo } from "../../../hooks/useIo"
 import { useUser } from "../../../hooks/useUser"
 import { useSnackbar } from "burgos-snackbar"
 import { useMenuDrawer } from "../../../hooks/useMenuDrawer"
+
 interface PanelProps {
     user: User
 }
@@ -74,9 +74,9 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                         sx={{ color: "#fff" }}
                         onClick={() => {
                             menu.toggle()
+                            console.log("menu abriu")
                         }}
                     />
-                    <LogoutIcon sx={{ color: "#fff" }} onClick={handleLogout} />
                 </Box>
             </Box>
             <Box

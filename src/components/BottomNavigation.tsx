@@ -18,10 +18,10 @@ export const BottomNavigation: React.FC<BottomNavigationProps> = ({ external, se
               icon: React.ReactNode
           }
         | undefined
-    >(external ? undefined : section.navigation![0])
+    >(external ? undefined : section.bottom![0])
 
     const handleChange = (value: number) => {
-        const location = section.navigation!.filter((item) => item.id == value)[0]
+        const location = section.bottom!.filter((item) => item.id == value)[0]
         setCurrentLocation(location)
         navigate(`${section.location}${location.location}`)
     }
@@ -44,14 +44,12 @@ export const BottomNavigation: React.FC<BottomNavigationProps> = ({ external, se
             }}
         >
             <BottomNavigationAction value={0} sx={{ display: "none" }} />
-            {section.navigation?.map((item) => {
-                const Icon = () => item.icon
-
+            {section.bottom?.map((item) => {
                 return (
                     <BottomNavigationAction
                         key={item.id}
                         label={<p style={{ fontSize: "2.5vw" }}>{item.title}</p>}
-                        icon={<Icon />}
+                        icon={item.icon}
                         value={item.id}
                         sx={{
                             background: currentLocation?.id == item.id ? "white" : "",

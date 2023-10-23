@@ -1,23 +1,33 @@
-import React from "react"
-import { Box, Drawer, IconButton, MenuItem, SxProps } from "@mui/material"
+import React, { useEffect } from "react"
+import { Avatar, Box, Drawer, IconButton, MenuItem, SxProps, useRadioGroup } from "@mui/material"
 import { useMenuDrawer } from "../hooks/useMenuDrawer"
 import { useUser } from "../hooks/useUser"
 import { useNavigationList } from "../hooks/useNavigationList"
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace"
-import QuestionMarkIcon from "@mui/icons-material/QuestionMark"
 import { useNavigate } from "react-router-dom"
+import { useIo } from "../hooks/useIo"
+import { useSnackbar } from "burgos-snackbar"
+import Ios from "../assets/icons/ios-settings.svg"
+
+import LogoutIcon from "@mui/icons-material/Logout"
 
 interface MenuDrawerProps {}
 
 export const MenuDrawer: React.FC<MenuDrawerProps> = ({}) => {
     const menus = Object.entries(useNavigationList())
         .map(([_, value]) => value)
+        .filter((item) => item.drawer)
         .sort((a, b) => a.id - b.id)
 
+    const navigationItems = useNavigationList()
+    const admDrawerItems = navigationItems.admin.drawer
+
     const navigate = useNavigate()
+    const io = useIo()
+    const { snackbar } = useSnackbar()
 
     const { open, setOpen } = useMenuDrawer()
-    const { user } = useUser()
+    const { user, setUser } = useUser()
 
     const iconStyle: SxProps = {
         width: "5vw",
@@ -25,78 +35,128 @@ export const MenuDrawer: React.FC<MenuDrawerProps> = ({}) => {
     }
 
     const iconButtonStyle: SxProps = {
-        border: "1px solid black",
-        borderRadius: "50%",
         height: "9vw",
         width: "9vw",
         padding: "1.5vw",
+        color: "#fff",
     }
 
     const menuItemStyle: SxProps = {
-        fontSize: "5vw",
+        fontSize: "3.8vw",
+        fontFamily: "MalgunGothicBold",
         height: "fit-content",
         alignItems: "center",
         padding: "0 4vw",
+        color: "#fff",
+        gap: "2vw",
     }
 
     const handleClose = () => {
         setOpen(false)
     }
 
+    const handleLogout = async () => {
+        if (user) {
+            io.emit("user:logout")
+        }
+    }
+
+    useEffect(() => {
+        io.on("user:disconnect", () => {
+            setUser(null)
+            console.log(user)
+            snackbar({ severity: "info", text: "Desconectado!" })
+        })
+
+        return () => {
+            io.off("user:disconnect")
+        }
+    }, [])
     return (
         <Drawer
-            anchor={"left"}
+            anchor={"right"}
             open={open}
             onClose={handleClose}
-            PaperProps={{ sx: { width: "80vw", overflowX: "hidden" } }}
+            PaperProps={{
+                sx: {
+                    padding: "6vw 3vw",
+                    width: "75vw",
+                    height: "100%",
+                    borderTopLeftRadius: "10vw",
+                    borderBottomLeftRadius: "10vw",
+                    overflowX: "hidden",
+                    backgroundColor: "#232323",
+                },
+            }}
             // ModalProps={{ BackdropProps: { sx: backdropStyle } }}
             keepMounted
         >
             <Box sx={{ justifyContent: "space-between", width: "100%", padding: "4vw" }}>
-                <IconButton color="primary" sx={iconButtonStyle} onClick={handleClose}>
+                <IconButton color="default" sx={iconButtonStyle} onClick={handleClose}>
                     <KeyboardBackspaceIcon sx={iconStyle} />
                 </IconButton>
 
-                <Box sx={{ gap: "2vw", alignItems: "center", fontSize: "3.5vw" }}>
-                    Ajuda
-                    <IconButton color="primary" sx={iconButtonStyle}>
-                        <QuestionMarkIcon sx={iconStyle} />
-                    </IconButton>
+                <Box sx={{ alignItems: "center", gap: "6vw" }}>
+                    <Avatar src={user?.image} sx={{ width: "50vw", height: "50vw", alignSelf: "center" }} />
+
+                    <p style={{ color: "#fff", fontSize: "5vw" }}>{user?.name}</p>
                 </Box>
             </Box>
 
             {/*  */}
 
             <Box sx={{ flexDirection: "column", paddingTop: "4vw" }}>
-                {menus
-                    .filter((item) => !item.hidden)
-                    .map((menu) => (
-                        <MenuItem
-                            key={menu.location}
-                            onClick={() => {
-                                handleClose()
-                                navigate(menu.location)
-                            }}
-                            sx={menuItemStyle}
-                        >
-                            {menu.title}
-                        </MenuItem>
-                    ))}
+                {admDrawerItems.map((menu) => (
+                    <MenuItem
+                        key={menu.location}
+                        onClick={() => {
+                            handleClose()
+                            navigate(menu.location)
+                        }}
+                        sx={menuItemStyle}
+                    >
+                        {menu.icon}
+                        {menu.title}
+                    </MenuItem>
+                ))}
             </Box>
+
             <MenuItem
                 sx={{
-                    fontSize: "5vw",
+                    fontSize: "3.8vw",
                     height: "fit-content",
                     alignItems: "center",
                     padding: "0 4vw",
                     marginTop: "auto",
+                    fontFamily: "MalgunGothicBold",
+                    color: "#fff",
+                    gap: "1.5vw",
                 }}
                 onClick={() => {
-                    handleClose()
+                    handleLogout()
+                    setOpen(false)
                 }}
             >
-                Sair
+                <img src={Ios} style={{ width: "6vw" }} />
+                Configurações
             </MenuItem>
+            {/* <MenuItem
+                    sx={{
+                        fontSize: "4.5vw",
+                        height: "fit-content",
+                        alignItems: "center",
+                        padding: "0 4vw",
+                        marginTop: "auto",
+                        color: "#fff",
+                    }}
+                    onClick={() => {
+                        handleLogout()
+                        setOpen(false)
+                    }}
+                >
+                    <LogoutIcon sx={{ color: "#fff" }} />
+                    Sair
+                </MenuItem> */}
         </Drawer>
     )
 }
