@@ -37,31 +37,31 @@ export const useNavigationList = () => {
             {
                 id: 1,
                 title: "Meu Perfil",
-                location: "/Profile",
+                location: "/profile",
                 icon: <img src={User} style={{ padding: "0 1.5vw", width: "7vw" }} />,
             },
             {
                 id: 2,
                 title: "Cadastrar Funcionário",
-                location: "/Profile",
+                location: "/newEmployee",
                 icon: <img src={AddEmployee} style={{ width: "6vw" }} />,
             },
             {
                 id: 3,
                 title: "Cadastrar Produtor",
-                location: "/Profile",
+                location: "/newProducer",
                 icon: <img src={AddUser} style={{ width: "6vw" }} />,
             },
             {
                 id: 4,
                 title: "Fixados",
-                location: "/Profile",
+                location: "/fixed",
                 icon: <img src={Pin} style={{ width: "6vw" }} />,
             },
             {
                 id: 5,
                 title: "Histórico",
-                location: "/Profile",
+                location: "/history",
                 icon: <img src={Timer} style={{ width: "6vw" }} />,
             },
         ],
@@ -133,35 +133,27 @@ export const useNavigationList = () => {
         title: "Funcionário",
         drawer: [],
         location: "/employee",
-        icon: <img src={GridPanel} alt="Logotipo do App" />,
+        icon: <img src={GridPanel} />,
         bottom: [
-            {
-                id: 1,
-                title: "Painel",
-                location: "/panel",
-                icon: <GridViewIcon sx={iconStyle} />,
-            },
-            {
-                id: 2,
-                title: "Conversas",
-                location: "/chats",
-                icon: <ChatIcon sx={iconStyle} />,
-            },
-            {
-                id: 3,
-                title: "Solicitações",
-                location: "/requests",
-                icon: <StorefrontIcon sx={iconStyle} />,
-            },
+            // {
+            //     id: 1,
+            //     title: "Painel",
+            //     location: "/panel",
+            //     icon: <GridViewIcon sx={iconStyle} />,
+            // },
+            // {
+            //     id: 2,
+            //     title: "Conversas",
+            //     location: "/chats",
+            //     icon: <ChatIcon sx={iconStyle} />,
+            // },
+            // {
+            //     id: 3,
+            //     title: "Solicitações",
+            //     location: "/requests",
+            //     icon: <StorefrontIcon sx={iconStyle} />,
+            // },
         ],
-    }
-
-    const settings: NavigationMenu = {
-        id: 7,
-        drawer: [],
-        title: "Configurações",
-        icon: <img src={GridPanel} alt="Logotipo do App" />,
-        location: "/settings",
     }
 
     const profile: NavigationMenu = {
@@ -199,5 +191,5 @@ export const useNavigationList = () => {
         ],
     }
 
-    return { admin, employee, profile, settings, producer }
+    return { admin, employee, profile, producer }
 }

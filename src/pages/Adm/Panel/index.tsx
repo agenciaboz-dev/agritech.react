@@ -25,12 +25,6 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
 
     const menu = useMenuDrawer()
 
-    const handleLogout = async () => {
-        if (user) {
-            io.emit("user:logout")
-        }
-    }
-
     useEffect(() => {
         io.on("user:disconnect", () => {
             setUser(null)

@@ -1,1 +1,9 @@
-declare interface Address {}
+declare interface Address {
+    street: string
+    district: string
+    number: string
+    city: string
+    cep: string
+    uf: string
+    complement?: string
+}

@@ -5,8 +5,6 @@ import { useUser } from "../hooks/useUser"
 import { useNavigationList } from "../hooks/useNavigationList"
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace"
 import { useNavigate } from "react-router-dom"
-import { useIo } from "../hooks/useIo"
-import { useSnackbar } from "burgos-snackbar"
 import Ios from "../assets/icons/ios-settings.svg"
 
 import LogoutIcon from "@mui/icons-material/Logout"
@@ -14,20 +12,13 @@ import LogoutIcon from "@mui/icons-material/Logout"
 interface MenuDrawerProps {}
 
 export const MenuDrawer: React.FC<MenuDrawerProps> = ({}) => {
-    const menus = Object.entries(useNavigationList())
-        .map(([_, value]) => value)
-        .filter((item) => item.drawer)
-        .sort((a, b) => a.id - b.id)
-
     const navigationItems = useNavigationList()
     const admDrawerItems = navigationItems.admin.drawer
 
     const navigate = useNavigate()
-    const io = useIo()
-    const { snackbar } = useSnackbar()
 
     const { open, setOpen } = useMenuDrawer()
-    const { user, setUser } = useUser()
+    const { user, logout, setUser } = useUser()
 
     const iconStyle: SxProps = {
         width: "5vw",
@@ -55,23 +46,6 @@ export const MenuDrawer: React.FC<MenuDrawerProps> = ({}) => {
         setOpen(false)
     }
 
-    const handleLogout = async () => {
-        if (user) {
-            io.emit("user:logout")
-        }
-    }
-
-    useEffect(() => {
-        io.on("user:disconnect", () => {
-            setUser(null)
-            console.log(user)
-            snackbar({ severity: "info", text: "Desconectado!" })
-        })
-
-        return () => {
-            io.off("user:disconnect")
-        }
-    }, [])
     return (
         <Drawer
             anchor={"right"}
@@ -86,77 +60,78 @@ export const MenuDrawer: React.FC<MenuDrawerProps> = ({}) => {
                     borderBottomLeftRadius: "10vw",
                     overflowX: "hidden",
                     backgroundColor: "#232323",
+                    justifyContent: "space-between",
                 },
             }}
             // ModalProps={{ BackdropProps: { sx: backdropStyle } }}
             keepMounted
         >
-            <Box sx={{ justifyContent: "space-between", width: "100%", padding: "4vw" }}>
-                <IconButton color="default" sx={iconButtonStyle} onClick={handleClose}>
-                    <KeyboardBackspaceIcon sx={iconStyle} />
-                </IconButton>
-
-                <Box sx={{ alignItems: "center", gap: "6vw" }}>
-                    <Avatar src={user?.image} sx={{ width: "50vw", height: "50vw", alignSelf: "center" }} />
-
-                    <p style={{ color: "#fff", fontSize: "5vw" }}>{user?.name}</p>
+            <Box>
+                <Box sx={{ justifyContent: "space-between", width: "100%", padding: "4vw" }}>
+                    <IconButton color="default" sx={iconButtonStyle} onClick={handleClose}>
+                        <KeyboardBackspaceIcon sx={iconStyle} />
+                    </IconButton>
+                    <Box sx={{ alignItems: "center", gap: "6vw" }}>
+                        <Avatar src={user?.image} sx={{ width: "50vw", height: "50vw", alignSelf: "center" }} />
+                        <p style={{ color: "#fff", fontSize: "5vw" }}>{user?.name}</p>
+                    </Box>
+                </Box>
+                {/*  */}
+                <Box sx={{ flexDirection: "column", paddingTop: "4vw" }}>
+                    {admDrawerItems.map((menu) => (
+                        <MenuItem
+                            key={menu.location}
+                            onClick={() => {
+                                handleClose()
+                                navigate(menu.location)
+                            }}
+                            sx={menuItemStyle}
+                        >
+                            {menu.icon}
+                            {menu.title}
+                        </MenuItem>
+                    ))}
                 </Box>
             </Box>
 
-            {/*  */}
-
-            <Box sx={{ flexDirection: "column", paddingTop: "4vw" }}>
-                {admDrawerItems.map((menu) => (
-                    <MenuItem
-                        key={menu.location}
-                        onClick={() => {
-                            handleClose()
-                            navigate(menu.location)
-                        }}
-                        sx={menuItemStyle}
-                    >
-                        {menu.icon}
-                        {menu.title}
-                    </MenuItem>
-                ))}
-            </Box>
-
-            <MenuItem
-                sx={{
-                    fontSize: "3.8vw",
-                    height: "fit-content",
-                    alignItems: "center",
-                    padding: "0 4vw",
-                    marginTop: "auto",
-                    fontFamily: "MalgunGothicBold",
-                    color: "#fff",
-                    gap: "1.5vw",
-                }}
-                onClick={() => {
-                    handleLogout()
-                    setOpen(false)
-                }}
-            >
-                <img src={Ios} style={{ width: "6vw" }} />
-                Configurações
-            </MenuItem>
-            {/* <MenuItem
+            <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
+                <MenuItem
                     sx={{
-                        fontSize: "4.5vw",
+                        fontSize: "3.8vw",
                         height: "fit-content",
                         alignItems: "center",
                         padding: "0 4vw",
                         marginTop: "auto",
+                        fontFamily: "MalgunGothicBold",
                         color: "#fff",
+                        gap: "1.5vw",
                     }}
                     onClick={() => {
-                        handleLogout()
-                        setOpen(false)
+                        handleClose()
                     }}
                 >
-                    <LogoutIcon sx={{ color: "#fff" }} />
-                    Sair
-                </MenuItem> */}
+                    <img src={Ios} style={{ width: "6vw" }} />
+                    Configurações
+                </MenuItem>
+                <MenuItem
+                    sx={{
+                        fontSize: "3.8vw",
+                        height: "fit-content",
+                        alignItems: "center",
+                        padding: "0 4vw",
+                        marginTop: "auto",
+                        fontFamily: "MalgunGothicBold",
+                        color: "#fff",
+                        gap: "1.5vw",
+                    }}
+                    onClick={() => {
+                        logout()
+                        handleClose()
+                    }}
+                >
+                    <LogoutIcon sx={{ color: "#fff", width: "6vw" }} />
+                </MenuItem>
+            </Box>
         </Drawer>
     )
 }

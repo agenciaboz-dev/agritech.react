@@ -9,7 +9,13 @@ export const textField: SxProps = {
     },
     "& .MuiOutlinedInput-root": {
         "&.Mui-focused fieldset": {
-            borderColor: "black", // Cor da borda quando o TextField está em foco (digitando)
+            borderColor: "232323", // Cor da borda quando o TextField está em foco (digitando)
         },
+        fieldset: {
+            borderColor: "#232323" /* Substitua 'red' pela cor desejada */,
+        },
+    },
+    "& .MuiOutlinedInput-input": {
+        height: "3.5vw" /* Substitua '50px' pela altura desejada */,
     },
 }

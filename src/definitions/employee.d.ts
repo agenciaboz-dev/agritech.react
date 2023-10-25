@@ -1,1 +1,10 @@
-declare interface Employee {}
+declare interface Employee {
+    rg: string
+    gender: string
+    nationality: string
+    relationship: string
+    voter_card: string
+    work_card: string
+    military: string
+    residence: string
+}

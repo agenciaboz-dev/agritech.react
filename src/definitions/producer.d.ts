@@ -1,1 +1,3 @@
-declare interface Producer {}
+declare interface Producer {
+    cnpj: string
+}
