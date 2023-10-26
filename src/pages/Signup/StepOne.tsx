@@ -19,7 +19,9 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, typeUser, 
 
     return (
         <Box sx={{ width: "100%", height: "100%", gap: "4vw", flexDirection: "column" }}>
-            <p style={{ fontSize: "4.5vw", fontFamily: "MalgunGothic2", textAlign: "left" }}>Informações Pessoais</p>
+            <p style={{ fontSize: "4.5vw", fontFamily: "MalgunGothic2", textAlign: "left", fontWeight: "800" }}>
+                Informações Pessoais
+            </p>
             <Box sx={{ flexDirection: "row", gap: "5vw", width: "100%", height: "23%", alignItems: "center" }}>
                 <Avatar
                     src={image}

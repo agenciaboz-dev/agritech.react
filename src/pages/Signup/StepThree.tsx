@@ -12,7 +12,9 @@ interface StepThreeProps {
 export const StepThree: React.FC<StepThreeProps> = ({ data, handleChange, setCurrentStep }) => {
     return (
         <Box sx={{ width: "100%", height: "100%", gap: "4vw" }}>
-            <p style={{ fontSize: "4.5vw", fontFamily: "MalgunGothic2", textAlign: "left" }}>Documentação</p>
+            <p style={{ fontSize: "4.5vw", fontWeight: "800", fontFamily: "MalgunGothic2", textAlign: "left" }}>
+                Documentação
+            </p>
             <Box sx={{ gap: "2vw" }}>
                 <Box sx={{ gap: "3vw" }}>
                     <TextField
@@ -33,7 +35,7 @@ export const StepThree: React.FC<StepThreeProps> = ({ data, handleChange, setCur
                     />
                 </Box>
                 <Box sx={{ gap: "2vw" }}>
-                    <p style={{ fontSize: "4vw", fontFamily: "MalgunGothic2", textAlign: "left" }}>
+                    <p style={{ fontSize: "3.5vw", fontFamily: "MalgunGothic2", textAlign: "left" }}>
                         {" "}
                         Certificado de reservista
                     </p>
@@ -51,7 +53,7 @@ export const StepThree: React.FC<StepThreeProps> = ({ data, handleChange, setCur
                     >
                         Enviar documento
                     </Button>
-                    <p style={{ fontSize: "4vw", fontFamily: "MalgunGothic2", textAlign: "left" }}>
+                    <p style={{ fontSize: "3.5vw", fontFamily: "MalgunGothic2", textAlign: "left" }}>
                         {" "}
                         Comprovante de Residência
                     </p>
@@ -69,6 +71,15 @@ export const StepThree: React.FC<StepThreeProps> = ({ data, handleChange, setCur
                     >
                         Enviar documento
                     </Button>
+                </Box>
+                <Box>
+                    {" "}
+                    <p style={{ fontSize: "4.5vw", fontWeight: "800", fontFamily: "MalgunGothic2", textAlign: "left" }}>
+                        Dados Bancários
+                    </p>
+                    <Box sx={{ gap: "2vw" }}>
+                        <TextField label={"N}"} />
+                    </Box>
                 </Box>
             </Box>
         </Box>
