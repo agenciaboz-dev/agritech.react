@@ -57,12 +57,12 @@ export const Signup: React.FC<SignupProps> = ({}) => {
         work_card: "",
         military: "",
         residence: "",
-        bank_data: {
-            account: "",
-            agency: "",
-            name: "",
-            type: "",
-        },
+
+        //Bank
+        account: "",
+        agency: "",
+        nameBank: "",
+        typeAccount: "",
 
         //Producer
         cnpj: "",
@@ -103,11 +103,12 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                     work_card: data.work_card,
                     military: data.military,
                     residence: data.residence,
+
                     bank_data: {
-                        account: data.bank_data.account,
-                        type: data.bank_data.type,
-                        agency: data.bank_data.agency,
-                        name: data.bank_data.name,
+                        account: data.account,
+                        type: data.typeAccount,
+                        agency: data.agency,
+                        name: data.nameBank,
                     },
                 },
             })

@@ -25,7 +25,12 @@ declare interface FormValues {
     work_card?: string
     military?: string
     residence?: string
-    bank_data: Bank
+
+    //Bank
+    account: string
+    typeAccount: string
+    agency: string
+    nameBank: string
 
     //Producer
     cnpj?: string

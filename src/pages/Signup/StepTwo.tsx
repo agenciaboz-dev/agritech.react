@@ -36,7 +36,7 @@ export const StepTwo: React.FC<StepTwoProps> = ({ data, handleChange, typeUser, 
             </p>
 
             <Box sx={{ gap: "5vw" }}>
-                <Box sx={{ gap: "2vw" }}>
+                <Box sx={{ gap: "3vw" }}>
                     <TextField
                         name="phone"
                         label={"Telefone"}

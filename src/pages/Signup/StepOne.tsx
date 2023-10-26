@@ -5,6 +5,7 @@ import { colors } from "../../style/colors"
 import MaskedInput from "../../components/MaskedInput"
 import { useGender } from "../../hooks/useGender"
 import { textField } from "../../style/input"
+import { useRelationship } from "../../hooks/useRelationship"
 
 interface StepOneProps {
     data: FormValues
@@ -15,6 +16,7 @@ interface StepOneProps {
 
 export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, typeUser, setCurrentStep }) => {
     const gender = useGender()
+    const typeRelationship = useRelationship()
     const [image, setImage] = useState<File>()
 
     return (
@@ -83,17 +85,55 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, typeUser, 
                     )}
                 </Box>
 
-                <TextField
-                    label={"Data de Nascimento"}
-                    name="birth"
-                    value={data.birth}
-                    sx={textField}
-                    InputProps={{
-                        inputComponent: MaskedInput,
-                        inputProps: { mask: "00/00/0000" },
-                    }}
-                    onChange={handleChange}
-                />
+                <Box sx={{ flexDirection: "row", gap: "2vw" }}>
+                    <TextField
+                        label={"Data de Nascimento"}
+                        name="birth"
+                        value={data.birth}
+                        sx={{ ...textField, width: "50%" }}
+                        InputProps={{
+                            inputComponent: MaskedInput,
+                            inputProps: { mask: "00/00/0000" },
+                        }}
+                        onChange={handleChange}
+                    />
+                    <TextField
+                        select
+                        onChange={handleChange}
+                        label="Estado Civil"
+                        name="relationship"
+                        sx={{
+                            ...textField,
+                            width: "50%",
+                        }}
+                        variant="outlined"
+                        value={data.relationship}
+                        InputProps={{
+                            sx: { ...textField },
+                        }}
+                        SelectProps={{
+                            MenuProps: { MenuListProps: { sx: { maxHeight: "80vw", overflowY: "auto" } } },
+                        }}
+                    >
+                        <MenuItem
+                            value={0}
+                            sx={{
+                                display: "none",
+                            }}
+                        ></MenuItem>
+                        {typeRelationship.map((relationship) => (
+                            <MenuItem
+                                key={relationship.value}
+                                value={relationship.id}
+                                sx={{
+                                    width: "100%",
+                                }}
+                            >
+                                {relationship.value}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+                </Box>
                 <TextField
                     label={"E-mail"}
                     name="email"
@@ -117,7 +157,7 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, typeUser, 
                                 variant="outlined"
                                 value={data.gender}
                                 InputProps={{
-                                    style: {},
+                                    sx: { ...textField },
                                 }}
                                 SelectProps={{
                                     MenuProps: { MenuListProps: { sx: { maxHeight: "80vw", overflowY: "auto" } } },
