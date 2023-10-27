@@ -14,6 +14,7 @@ interface RoutesProps {}
 export const Routes: React.FC<RoutesProps> = ({}) => {
     const { user } = useUser()
     const bottomMenu = useNavigationList()
+
     return user ? (
         <>
             <BottomNavigation section={bottomMenu.admin} />
