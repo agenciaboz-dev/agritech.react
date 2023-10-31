@@ -49,15 +49,10 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
         work_card: user.employee?.work_card || "",
         residence: user.employee?.residence || "",
 
-        // account: user?.employee?.bank_data.account || "",
-        // agency: user?.employee?.bank_data.agency || "",
-        // nameBank: user?.employee?.bank_data.nameBank || "",
-        // typeAccount: user?.employee?.bank_data.type || "",
-
-        account: "",
-        agency: "",
-        nameBank: "",
-        typeAccount: "",
+        account: user.employee?.bank_data.account || "",
+        nameBank: user?.employee?.bank_data.name || "",
+        agency: user?.employee?.bank_data.agency || "",
+        typeAccount: user?.employee?.bank_data.type || "",
     }
 
     useEffect(() => {
@@ -67,8 +62,9 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
     useEffect(() => {
         io.emit("user:find", user.id)
 
-        io.on("user:find:success", (dataUser) => {
+        io.on("user:find:success", (dataUser: User) => {
             setUser(dataUser)
+            console.log(dataUser)
         })
 
         io.on("user:find:failed", (error) => {
@@ -80,7 +76,7 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
             io.off("user:find:success")
             io.off("user:find:failed")
         }
-    }, [])
+    }, [user])
 
     return (
         <Box
