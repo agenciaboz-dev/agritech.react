@@ -37,7 +37,7 @@ export const Personal: React.FC<PersonalProps> = ({ values, handleChange, setTab
                         width: "50%",
                     }}
                     variant="outlined"
-                    value={values.gender}
+                    value={values.employee?.gender}
                     InputProps={{
                         style: {},
                     }}
@@ -74,7 +74,7 @@ export const Personal: React.FC<PersonalProps> = ({ values, handleChange, setTab
                         width: "50%",
                     }}
                     variant="outlined"
-                    value={values.relationship}
+                    value={values.employee?.relationship}
                     InputProps={{
                         sx: { ...textField },
                     }}
@@ -105,7 +105,7 @@ export const Personal: React.FC<PersonalProps> = ({ values, handleChange, setTab
                 label={"Nacionalidade"}
                 name={"nationality"}
                 sx={textField}
-                value={values.nationality}
+                value={values.employee?.nationality}
                 onChange={handleChange}
             />
         </Box>

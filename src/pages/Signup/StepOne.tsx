@@ -61,7 +61,7 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, typeUser, 
                         <TextField
                             label={"CNPJ"}
                             name="cnpj"
-                            value={data.cnpj}
+                            value={data.producer?.cnpj}
                             sx={{ ...textField, width: "50%" }}
                             InputProps={{
                                 inputComponent: MaskedInput,
@@ -74,7 +74,7 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, typeUser, 
                         <TextField
                             label={"Rg"}
                             name="rg"
-                            value={data.rg}
+                            value={data.employee?.rg}
                             sx={{ ...textField, width: "50%" }}
                             InputProps={{
                                 inputComponent: MaskedInput,
@@ -107,7 +107,7 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, typeUser, 
                             width: "50%",
                         }}
                         variant="outlined"
-                        value={data.relationship}
+                        value={data.employee?.relationship}
                         InputProps={{
                             sx: { ...textField },
                         }}
@@ -155,7 +155,7 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, typeUser, 
                                     width: "100%",
                                 }}
                                 variant="outlined"
-                                value={data.gender}
+                                value={data.employee?.gender}
                                 InputProps={{
                                     sx: { ...textField },
                                 }}

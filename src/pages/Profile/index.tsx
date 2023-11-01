@@ -1,5 +1,5 @@
 import { Box, Button } from "@mui/material"
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { colors } from "../../style/colors"
 import { useHeader } from "../../hooks/useHeader"
 import { Header } from "../../components/Header"
@@ -9,7 +9,9 @@ import { useSnackbar } from "burgos-snackbar"
 import { Formik, Form } from "formik"
 import { HeaderProfile } from "./HeaderProfile"
 import { InfoProfile } from "./InfoProfile"
-import { buttonStyle } from "../../style/button"
+import { useDataHandler } from "../../hooks/useDataHandler"
+import { useEstadosBrasil } from "../../hooks/useEstadosBrasil"
+import { useGender } from "../../hooks/useGender"
 
 interface ProfileProps {
     user: User
@@ -19,6 +21,14 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
     const header = useHeader()
     const io = useIo()
     const { setUser } = useUser()
+
+    const { unmask } = useDataHandler()
+    const { snackbar } = useSnackbar()
+
+    const estados = useEstadosBrasil()
+    const gender = useGender()
+
+    const [loading, setLoading] = useState(false)
 
     const initialValues: FormValues = {
         name: user.name || "",
@@ -38,21 +48,70 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
         uf: user.address?.uf || "",
         complement: user.address?.complement || "",
 
-        cnpj: user.producer?.cnpj || "",
+        employee: {
+            rg: user.employee?.rg || "",
+            gender: user.employee?.gender || "",
+            military: user.employee?.military || "",
+            nationality: user.employee?.nationality || "",
+            relationship: user.employee?.relationship || "",
+            voter_card: user.employee?.voter_card || "",
+            work_card: user.employee?.work_card || "",
+            residence: user.employee?.residence || "",
+            bank_data: {
+                account: user.employee?.bank_data.account || "",
+                name: user.employee?.bank_data.name || "",
+                agency: user?.employee?.bank_data.agency || "",
+                type: user?.employee?.bank_data.type || "",
+            },
+        },
+        producer: {
+            cnpj: user.producer?.cnpj || "",
+        },
+    }
 
-        rg: user.employee?.rg || "",
-        gender: user.employee?.gender || "",
-        military: user.employee?.military || "",
-        nationality: user.employee?.nationality || "",
-        relationship: user.employee?.relationship || "",
-        voter_card: user.employee?.voter_card || "",
-        work_card: user.employee?.work_card || "",
-        residence: user.employee?.residence || "",
+    const handleSubmit = async (values: FormValues) => {
+        const data = {
+            ...values,
+            cpf: unmask(values.cpf),
+            phone: unmask(values.phone),
+            cep: unmask(values.cep),
+            address: {
+                street: values.street,
+                district: values.district,
+                number: values.number,
+                city: values.city,
+                cep: values.cep,
+                uf: estados.find((estado) => estado.id == Number(values.uf))!.value,
+                complement: values.complement,
+            },
+        }
+        if (data.employee) {
+            io.emit("user:update", {
+                ...data,
+                employee: {
+                    rg: data.employee?.rg,
+                    gender: gender.find((gender) => gender.id == String(data.employee?.gender))!.value,
+                    nationality: data.employee?.nationality,
+                    relationship: data.employee?.relationship,
+                    voter_card: data.employee?.voter_card,
+                    work_card: data.employee?.work_card,
+                    military: data.employee?.military,
+                    residence: data.employee?.residence,
 
-        account: user.employee?.bank_data.account || "",
-        nameBank: user?.employee?.bank_data.name || "",
-        agency: user?.employee?.bank_data.agency || "",
-        typeAccount: user?.employee?.bank_data.type || "",
+                    bank_data: {
+                        account: data.employee?.bank_data.account,
+                        type: data.employee?.bank_data.type,
+                        agency: data.employee?.bank_data.agency,
+                        name: data.employee?.bank_data.name,
+                    },
+                },
+            })
+            console.log(data)
+        } else if (data.producer) {
+            console.log(data)
+            io.emit("user:update", { ...data, producer: { cnpj: unmask(data.producer?.cnpj) } })
+        }
+        setLoading(true)
     }
 
     useEffect(() => {
@@ -60,11 +119,19 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
     }, [])
 
     useEffect(() => {
+        io.on("user:update:success", (dataUser: User) => {
+            setUser(dataUser)
+            console.log("atualizado", dataUser)
+        })
+
+        io.on("user:update:failed", (error) => {
+            console.log(error.error)
+        })
+
         io.emit("user:find", user.id)
 
         io.on("user:find:success", (dataUser: User) => {
             setUser(dataUser)
-            console.log(dataUser)
         })
 
         io.on("user:find:failed", (error) => {
@@ -72,6 +139,8 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
         })
 
         return () => {
+            io.off("user:update:success")
+            io.off("user:update:failed")
             io.off("user:find")
             io.off("user:find:success")
             io.off("user:find:failed")
@@ -117,14 +186,15 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
                     Informações Pessoais
                 </p>
                 <Box sx={{ height: "100%" }}>
-                    <Formik initialValues={initialValues} onSubmit={() => {}} enableReinitialize={true}>
+                    <Formik initialValues={initialValues} onSubmit={handleSubmit} enableReinitialize={true}>
                         {({ values, handleChange }) => (
                             <Form>
                                 <Box sx={{ gap: "4vw" }}>
                                     <HeaderProfile values={values} handleChange={handleChange} />
                                     <InfoProfile values={values} handleChange={handleChange} />
-                                    {/* <Button
+                                    <Button
                                         variant="contained"
+                                        type="submit"
                                         sx={{
                                             fontSize: 17,
                                             color: colors.text.white,
@@ -135,7 +205,7 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
                                         }}
                                     >
                                         Salvar
-                                    </Button> */}
+                                    </Button>
                                 </Box>
                             </Form>
                         )}

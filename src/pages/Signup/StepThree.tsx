@@ -22,7 +22,7 @@ export const StepThree: React.FC<StepThreeProps> = ({ data, handleChange, setCur
                     <TextField
                         variant="outlined"
                         label={"Nacionalidade"}
-                        value={data.nationality}
+                        value={data.employee?.nationality}
                         name="nationality"
                         sx={{ ...textField, width: "100%" }}
                         onChange={handleChange}
@@ -30,7 +30,7 @@ export const StepThree: React.FC<StepThreeProps> = ({ data, handleChange, setCur
                     <TextField
                         variant="outlined"
                         label={"Nº do título de eleitor"}
-                        value={data.voter_card}
+                        value={data.employee?.voter_card}
                         name="voter_card"
                         sx={{ ...textField, width: "100%" }}
                         onChange={handleChange}
@@ -38,7 +38,7 @@ export const StepThree: React.FC<StepThreeProps> = ({ data, handleChange, setCur
                     <TextField
                         variant="outlined"
                         label={"Nº da carteira de trabalho"}
-                        value={data.work_card}
+                        value={data.employee?.work_card}
                         name="work_card"
                         sx={{ ...textField, width: "100%" }}
                         onChange={handleChange}
@@ -90,8 +90,8 @@ export const StepThree: React.FC<StepThreeProps> = ({ data, handleChange, setCur
                     <Box sx={{ gap: "3vw" }}>
                         <TextField
                             label={"Banco"}
-                            name="nameBank"
-                            value={data.nameBank}
+                            name="name"
+                            value={data.employee?.bank_data.name}
                             sx={textField}
                             onChange={handleChange}
                         />
@@ -100,13 +100,13 @@ export const StepThree: React.FC<StepThreeProps> = ({ data, handleChange, setCur
                             select
                             onChange={handleChange}
                             label="Tipo de conta"
-                            name="typeAccount"
+                            name="type"
                             sx={{
                                 ...textField,
                                 width: "100%",
                             }}
                             variant="outlined"
-                            value={data.typeAccount}
+                            value={data.employee?.bank_data.type}
                             InputProps={{
                                 style: {},
                             }}
@@ -137,14 +137,14 @@ export const StepThree: React.FC<StepThreeProps> = ({ data, handleChange, setCur
                             <TextField
                                 label={"Conta"}
                                 name="account"
-                                value={data.account}
+                                value={data.employee?.bank_data.account}
                                 sx={textField}
                                 onChange={handleChange}
                             />
                             <TextField
                                 label={"Agência"}
                                 name="agency"
-                                value={data.agency}
+                                value={data.employee?.bank_data.agency}
                                 sx={textField}
                                 onChange={handleChange}
                             />

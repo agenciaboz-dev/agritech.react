@@ -12,18 +12,24 @@ export const Bank: React.FC<BankProps> = ({ values, handleChange }) => {
     const bankAccount = useBankAccount()
     return (
         <Box sx={{ flexDirection: "column", gap: "3vw" }}>
-            <TextField label={"Banco"} name={"nameBank"} sx={textField} value={values.nameBank} onChange={handleChange} />
+            <TextField
+                label={"Banco"}
+                name={"nameBank"}
+                sx={textField}
+                value={values.employee?.bank_data.name}
+                onChange={handleChange}
+            />
             <TextField
                 select
                 onChange={handleChange}
                 label="Tipo de conta"
-                name="typeAccount"
+                name="type"
                 sx={{
                     ...textField,
                     width: "100%",
                 }}
                 variant="outlined"
-                value={values.typeAccount}
+                value={values.employee?.bank_data.type}
                 InputProps={{
                     style: {},
                 }}
@@ -50,14 +56,20 @@ export const Bank: React.FC<BankProps> = ({ values, handleChange }) => {
                 ))}
             </TextField>
             <Box sx={{ flexDirection: "row", gap: "3vw" }}>
-                <TextField label={"Agência"} name={"agency"} sx={textField} value={values.agency} onChange={handleChange} />
-                <TextField label={"Dígito"} name={"number"} sx={textField} value={values.number} onChange={handleChange} />
+                <TextField
+                    label={"Agência"}
+                    name={"agency"}
+                    sx={textField}
+                    value={values.employee?.bank_data.agency}
+                    onChange={handleChange}
+                />
+                <TextField label={"Dígito"} name={"number"} sx={textField} onChange={handleChange} />
             </Box>
             <TextField
                 label={"Nº da conta"}
                 name={"account"}
                 sx={textField}
-                value={values.account}
+                value={values.employee?.bank_data.account}
                 onChange={handleChange}
             />
         </Box>

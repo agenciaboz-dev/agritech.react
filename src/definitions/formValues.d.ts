@@ -17,21 +17,6 @@ declare interface FormValues {
     complement?: string
 
     //Employee
-    rg?: string
-    gender?: string
-    nationality?: string
-    relationship?: string
-    voter_card?: string
-    work_card?: string
-    military?: string
-    residence?: string
-
-    //Bank
-    account: string
-    typeAccount: string
-    agency: string
-    nameBank: string
-
-    //Producer
-    cnpj?: string
+    employee?: Employee
+    producer?: Producer
 }

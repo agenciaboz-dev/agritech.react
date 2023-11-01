@@ -25,13 +25,20 @@ export const Documentation: React.FC<DocumentationProps> = ({ values, handleChan
                     }}
                     disabled
                 />
-                <TextField label={"RG"} name={"rg"} sx={textField} value={values.rg} onChange={handleChange} disabled />
+                <TextField
+                    label={"RG"}
+                    name={"rg"}
+                    sx={textField}
+                    value={values.employee?.rg}
+                    onChange={handleChange}
+                    disabled
+                />
             </Box>
             <TextField
                 label={"Título de eleitor"}
                 name={"voter_card"}
                 sx={textField}
-                value={values.voter_card}
+                value={values.employee?.voter_card}
                 onChange={handleChange}
                 placeholder={"00000000/00"}
                 InputProps={{
@@ -44,7 +51,7 @@ export const Documentation: React.FC<DocumentationProps> = ({ values, handleChan
                 label={"Carteira de trabalho"}
                 name={"relationship"}
                 sx={textField}
-                value={values.work_card}
+                value={values.employee?.work_card}
                 onChange={handleChange}
                 placeholder={"00.000.000/0000-00"}
                 InputProps={{

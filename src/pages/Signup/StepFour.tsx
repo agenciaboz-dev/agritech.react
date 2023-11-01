@@ -22,7 +22,7 @@ export const StepFour: React.FC<StepFourProps> = ({ data, handleChange, setCurre
                     <TextField
                         variant="outlined"
                         label={"Departamento"}
-                        value={data.voter_card}
+                        value={data.employee?.voter_card}
                         name="voter_card"
                         sx={{ ...textField, width: "100%" }}
                         onChange={handleChange}
@@ -30,7 +30,7 @@ export const StepFour: React.FC<StepFourProps> = ({ data, handleChange, setCurre
                     <TextField
                         variant="outlined"
                         label={"Salário"}
-                        value={data.voter_card}
+                        value={data.employee?.voter_card}
                         name="voter_card"
                         sx={{ ...textField, width: "100%" }}
                         onChange={handleChange}
@@ -38,7 +38,7 @@ export const StepFour: React.FC<StepFourProps> = ({ data, handleChange, setCurre
                     <TextField
                         variant="outlined"
                         label={"Data de admissão"}
-                        value={data.voter_card}
+                        value={data.employee?.voter_card}
                         name="voter_card"
                         sx={{ ...textField, width: "100%" }}
                         onChange={handleChange}
@@ -46,7 +46,7 @@ export const StepFour: React.FC<StepFourProps> = ({ data, handleChange, setCurre
                     <TextField
                         variant="outlined"
                         label={"Nº da carteira de trabalho"}
-                        value={data.work_card}
+                        value={data.employee?.work_card}
                         name="work_card"
                         sx={{ ...textField, width: "100%" }}
                         onChange={handleChange}

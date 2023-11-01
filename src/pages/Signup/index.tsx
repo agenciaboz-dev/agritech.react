@@ -40,6 +40,7 @@ export const Signup: React.FC<SignupProps> = ({}) => {
         phone: "",
         image: "",
 
+        //address
         street: "",
         district: "",
         number: "",
@@ -48,32 +49,31 @@ export const Signup: React.FC<SignupProps> = ({}) => {
         uf: "",
         complement: "",
 
-        //Employee
-        rg: "",
-        gender: "",
-        nationality: "",
-        relationship: "",
-        voter_card: "",
-        work_card: "",
-        military: "",
-        residence: "",
+        employee: {
+            rg: "",
+            gender: "",
+            nationality: "",
+            relationship: "",
+            voter_card: "",
+            work_card: "",
+            military: "",
+            residence: "",
+            bank_data: {
+                account: "",
+                agency: "",
+                name: "",
+                type: "",
+            },
+        },
 
-        //Bank
-        account: "",
-        agency: "",
-        nameBank: "",
-        typeAccount: "",
-
-        //Producer
-        cnpj: "",
+        producer: {
+            cnpj: "",
+        },
     }
     const handleTypeUser = (event: React.ChangeEvent<HTMLInputElement>) => {
         setTypeUser((event.target as HTMLInputElement).value)
         setCurrentStep(1)
     }
-    // useEffect(() => {
-    //     console.log(typeUser) // Este log mostrará o valor atualizado de typeUser sempre que ele mudar
-    // }, [typeUser])
 
     const handleSignup = async (values: FormValues) => {
         const data = {
@@ -95,27 +95,27 @@ export const Signup: React.FC<SignupProps> = ({}) => {
             io.emit("user:signup", {
                 ...data,
                 employee: {
-                    rg: data.rg,
-                    gender: gender.find((gender) => gender.id == String(data.gender))!.value,
-                    nationality: data.nationality,
-                    relationship: data.relationship,
-                    voter_card: data.voter_card,
-                    work_card: data.work_card,
-                    military: data.military,
-                    residence: data.residence,
+                    rg: data.employee?.rg,
+                    gender: gender.find((gender) => gender.id == String(data.employee?.gender))!.value,
+                    nationality: data.employee?.nationality,
+                    relationship: data.employee?.relationship,
+                    voter_card: data.employee?.voter_card,
+                    work_card: data.employee?.work_card,
+                    military: data.employee?.military,
+                    residence: data.employee?.residence,
 
                     bank_data: {
-                        account: data.account,
-                        type: data.typeAccount,
-                        agency: data.agency,
-                        name: data.nameBank,
+                        account: data.employee?.bank_data.account,
+                        type: data.employee?.bank_data.type,
+                        agency: data.employee?.bank_data.agency,
+                        name: data.employee?.bank_data.name,
                     },
                 },
             })
             console.log(data)
         } else if (typeUser === "producer") {
             console.log(data)
-            io.emit("user:signup", { ...data, producer: { cnpj: unmask(data.cpf) } })
+            io.emit("user:signup", { ...data, producer: { cnpj: unmask(data.producer?.cnpj) } })
         }
         setLoading(true)
     }
