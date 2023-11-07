@@ -52,14 +52,14 @@ export const StepTwo: React.FC<StepTwoProps> = ({ data, handleChange, typeUser, 
                     <TextField
                         name="street"
                         label={"Logradouro"}
-                        value={data.street}
+                        value={data.address.street}
                         sx={textField}
                         onChange={handleChange}
                     />
                     <TextField
                         name="district"
                         label={"Bairro"}
-                        value={data.district}
+                        value={data.address.district}
                         sx={textField}
                         onChange={handleChange}
                     />
@@ -67,14 +67,14 @@ export const StepTwo: React.FC<StepTwoProps> = ({ data, handleChange, typeUser, 
                         <TextField
                             name="number"
                             label={"Número"}
-                            value={data.number}
+                            value={data.address.number}
                             sx={textField}
                             onChange={handleChange}
                         />
                         <TextField
                             name="cep"
                             label={"CEP"}
-                            value={data.cep}
+                            value={data.address.cep}
                             sx={{ ...textField, width: "76%" }}
                             InputProps={{
                                 inputComponent: MaskedInput,
@@ -87,7 +87,7 @@ export const StepTwo: React.FC<StepTwoProps> = ({ data, handleChange, typeUser, 
                         <TextField
                             name="city"
                             label={"Cidade"}
-                            value={data.city}
+                            value={data.address.city}
                             sx={{ ...textField, width: "68%" }}
                             onChange={handleChange}
                         />
@@ -100,7 +100,7 @@ export const StepTwo: React.FC<StepTwoProps> = ({ data, handleChange, typeUser, 
                                 ...textField,
                                 width: "48%",
                             }}
-                            value={data.uf}
+                            value={data.address.uf}
                             InputProps={{
                                 sx: {
                                     ...textField,
@@ -135,7 +135,7 @@ export const StepTwo: React.FC<StepTwoProps> = ({ data, handleChange, typeUser, 
                     <TextField
                         name="complement"
                         label={"Complemento"}
-                        value={data.complement}
+                        value={data.address.complement}
                         sx={{ ...textField, width: "100%" }}
                         onChange={handleChange}
                     />

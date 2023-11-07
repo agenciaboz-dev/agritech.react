@@ -10,6 +10,7 @@ declare interface User {
     image?: string
     image64?: string
     address?: Address
+    isAdmin: boolean
 
     employee?: Employee
     producer?: Producer
@@ -18,6 +19,7 @@ declare interface User {
 interface LoginForm {
     login: string
     password: string
+    isAdmin: boolean
 }
 
 interface UserForm {
@@ -31,6 +33,7 @@ interface UserForm {
     image: string
     image64: string
     address: Address
+    isAdmin: boolean
 
     employee?: Employee
     producer?: Producer

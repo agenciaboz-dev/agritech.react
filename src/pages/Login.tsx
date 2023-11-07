@@ -30,14 +30,27 @@ export const Login: React.FC<LoginProps> = ({}) => {
     const initialValues: LoginValues = {
         login: "",
         password: "",
+
     }
 
     const handleLogin = async (values: LoginValues) => {
         io.emit("client:sync", user)
-        io.emit("user:login", values)
+        if (user?.isAdmin) {
+            io.emit("admin:login", values)
+        } else {
+            io.emit("user:login", values)
+        }
         setLoading(true)
     }
     useEffect(() => {
+        io.on("admin:login:success", (user: User) => {
+            setLoading(false)
+            console.log("Admin logado:", user)
+            setUser(user)
+            if (user) {
+                snackbar({ severity: "success", text: "Adm conectado!" })
+            }
+        })
         io.on("user:login:success", (user: User) => {
             setLoading(false)
             console.log("Usuário definido:", user)
@@ -53,6 +66,7 @@ export const Login: React.FC<LoginProps> = ({}) => {
         })
 
         return () => {
+            io.off("admin:login:success")
             io.off("user:login:success")
             io.off("user:login:failed")
         }

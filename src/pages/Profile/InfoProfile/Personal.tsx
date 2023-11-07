@@ -7,10 +7,9 @@ import { useRelationship } from "../../../hooks/useRelationship"
 interface PersonalProps {
     values: FormValues
     handleChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
-    setTab: React.Dispatch<React.SetStateAction<string>>
 }
 
-export const Personal: React.FC<PersonalProps> = ({ values, handleChange, setTab }) => {
+export const Personal: React.FC<PersonalProps> = ({ values, handleChange }) => {
     const gender = useGender()
     const typeRelationship = useRelationship()
 

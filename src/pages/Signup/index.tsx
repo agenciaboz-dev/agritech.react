@@ -41,13 +41,16 @@ export const Signup: React.FC<SignupProps> = ({}) => {
         image: "",
 
         //address
-        street: "",
-        district: "",
-        number: "",
-        city: "",
-        cep: "",
-        uf: "",
-        complement: "",
+        address: {
+            street: "",
+            district: "",
+            number: "",
+            city: "",
+            cep: "",
+            uf: "",
+            complement: "",
+        },
+        isAdmin: false,
 
         employee: {
             rg: "",
@@ -58,12 +61,12 @@ export const Signup: React.FC<SignupProps> = ({}) => {
             work_card: "",
             military: "",
             residence: "",
-            bank_data: {
-                account: "",
-                agency: "",
-                name: "",
-                type: "",
-            },
+            // bank_data: {
+            //     account: "",
+            //     agency: "",
+            //     name: "",
+            //     type: "",
+            // },
         },
 
         producer: {
@@ -80,15 +83,15 @@ export const Signup: React.FC<SignupProps> = ({}) => {
             ...values,
             cpf: unmask(values.cpf),
             phone: unmask(values.phone),
-            cep: unmask(values.cep),
+            cep: unmask(values.address.cep),
             address: {
-                street: values.street,
-                district: values.district,
-                number: values.number,
-                city: values.city,
-                cep: values.cep,
-                uf: estados.find((estado) => estado.id == Number(values.uf))!.value,
-                complement: values.complement,
+                street: values.address.street,
+                district: values.address.district,
+                number: values.address.number,
+                city: values.address.city,
+                cep: values.address.cep,
+                uf: estados.find((estado) => estado.id == Number(values.address.uf))!.value,
+                complement: values.address.complement,
             },
         }
         if (typeUser === "employee") {
@@ -104,18 +107,18 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                     military: data.employee?.military,
                     residence: data.employee?.residence,
 
-                    bank_data: {
-                        account: data.employee?.bank_data.account,
-                        type: data.employee?.bank_data.type,
-                        agency: data.employee?.bank_data.agency,
-                        name: data.employee?.bank_data.name,
-                    },
+                    // bank_data: {
+                    //     account: data.employee?.bank_data.account,
+                    //     type: data.employee?.bank_data.type,
+                    //     agency: data.employee?.bank_data.agency,
+                    //     name: data.employee?.bank_data.name,
+                    // },
                 },
             })
             console.log(data)
         } else if (typeUser === "producer") {
             console.log(data)
-            io.emit("user:signup", { ...data, producer: { cnpj: unmask(data.producer?.cnpj) } })
+            io.emit("user:signup", { ...data, producer: { cnpj: data.producer?.cnpj } })
         }
         setLoading(true)
     }

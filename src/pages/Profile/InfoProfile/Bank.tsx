@@ -16,7 +16,7 @@ export const Bank: React.FC<BankProps> = ({ values, handleChange }) => {
                 label={"Banco"}
                 name={"nameBank"}
                 sx={textField}
-                value={values.employee?.bank_data.name}
+                value={values.employee?.bank_data?.name}
                 onChange={handleChange}
             />
             <TextField
@@ -29,7 +29,7 @@ export const Bank: React.FC<BankProps> = ({ values, handleChange }) => {
                     width: "100%",
                 }}
                 variant="outlined"
-                value={values.employee?.bank_data.type}
+                value={values.employee?.bank_data?.type}
                 InputProps={{
                     style: {},
                 }}
@@ -60,7 +60,7 @@ export const Bank: React.FC<BankProps> = ({ values, handleChange }) => {
                     label={"Agência"}
                     name={"agency"}
                     sx={textField}
-                    value={values.employee?.bank_data.agency}
+                    value={values.employee?.bank_data?.agency}
                     onChange={handleChange}
                 />
                 <TextField label={"Dígito"} name={"number"} sx={textField} onChange={handleChange} />
@@ -69,7 +69,7 @@ export const Bank: React.FC<BankProps> = ({ values, handleChange }) => {
                 label={"Nº da conta"}
                 name={"account"}
                 sx={textField}
-                value={values.employee?.bank_data.account}
+                value={values.employee?.bank_data?.account}
                 onChange={handleChange}
             />
         </Box>
