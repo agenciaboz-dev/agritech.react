@@ -8,6 +8,8 @@ import { Home } from './pages/Home';
 import { Profile } from "./pages/Profile"
 import { useNavigationList } from "./hooks/useNavigationList"
 import { BottomNavigation } from "./components/BottomNavigation"
+import { Analysis } from "./pages/Analysis"
+import { Reviews } from "./pages/Adm/Reviews"
 
 interface RoutesProps {}
 
@@ -16,14 +18,23 @@ export const Routes: React.FC<RoutesProps> = ({}) => {
     const bottomMenu = useNavigationList()
 
     return user ? (
-        <>
-            <BottomNavigation section={bottomMenu.admin} />
+        user.isAdmin ? (
+            <>
+                <BottomNavigation section={bottomMenu.admin} />
+                <ReactRoutes>
+                    <Route index element={<Panel user={user} />} />
+                    <Route path="/*" element={<Panel user={user} />} />
+                    <Route path="/profile" element={<Profile user={user} />} />
+                    <Route path="/history" element={<Reviews user={user} />} />
+                </ReactRoutes>
+            </>
+        ) : !user.approved ? (
             <ReactRoutes>
-                <Route index element={<Panel user={user} />} />
-                <Route path="/*" element={<Panel user={user} />} />
-                <Route path="/profile" element={<Profile user={user} />} />
+                <Route path="/*" element={<Analysis user={user} />} />
             </ReactRoutes>
-        </>
+        ) : (
+            <p> pipiipoopoo voce não é adm, aguarde um pouco</p>
+        )
     ) : (
         <ReactRoutes>
             <Route index element={<Home />} />

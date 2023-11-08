@@ -31,7 +31,7 @@ export const useNavigationList = () => {
         id: 1,
         title: "Administrador",
         //hidden: user?.adm == false,
-        location: "/",
+        location: "/adm",
         icon: <img src={GridPanel} />,
         drawer: [
             {
@@ -69,7 +69,7 @@ export const useNavigationList = () => {
             {
                 id: 1,
                 title: "Painel",
-                location: "",
+                location: "/",
                 icon: <img src={GridPanel} alt="Logotipo do App" />,
             },
             {
@@ -156,40 +156,5 @@ export const useNavigationList = () => {
         ],
     }
 
-    const profile: NavigationMenu = {
-        id: 8,
-        title: "Perfil",
-        drawer: [],
-        hidden: true,
-        icon: <img src={GridPanel} alt="Logotipo do App" />,
-        location: "/profile",
-        bottom: [
-            {
-                id: 1,
-                title: "Perfil",
-                location: "/",
-                icon: <AppsIcon />,
-            },
-            {
-                id: 2,
-                title: "Seja um Corretor",
-                location: "/agent",
-                icon: <MultipleStopIcon />,
-            },
-            {
-                id: 3,
-                title: "Meu Negócio",
-                location: "/business",
-                icon: <BarChartIcon />,
-            },
-            {
-                id: 4,
-                title: "Minha Transportadora",
-                location: "/shipping",
-                icon: <LocalShippingIcon />,
-            },
-        ],
-    }
-
-    return { admin, employee, profile, producer }
+    return { admin, employee, producer }
 }

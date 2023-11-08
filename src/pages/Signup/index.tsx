@@ -128,8 +128,8 @@ export const Signup: React.FC<SignupProps> = ({}) => {
             setLoading(false)
             if (user) {
                 // login({ login: user.username, password: user.password })
-                snackbar({ severity: "success", text: "Cadastro realizado com sucesso!" })
-                navigate("../Login")
+                snackbar({ severity: "success", text: "Cadastro enviado para análise!" })
+                navigate("../analysis")
             }
         })
 

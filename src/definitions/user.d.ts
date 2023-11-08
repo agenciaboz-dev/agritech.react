@@ -11,6 +11,8 @@ declare interface User {
     image64?: string
     address?: Address
     isAdmin: boolean
+    approved: boolean
+    rejected?: string
 
     employee?: Employee
     producer?: Producer
@@ -34,6 +36,8 @@ interface UserForm {
     image64: string
     address: Address
     isAdmin: boolean
+    approved: boolean
+    rejected?: string
 
     employee?: Employee
     producer?: Producer

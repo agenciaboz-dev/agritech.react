@@ -8,7 +8,7 @@ import logo from "../assets/logo/logo.png"
 import { useNavigate } from "react-router-dom"
 import { Formik, Form } from "formik"
 import { useSnackbar } from "burgos-snackbar"
-import { textField, textStyle } from "../style/input"
+import { textField } from "../style/input"
 import { buttonStyle } from "../style/button"
 
 interface LoginProps {}
@@ -30,7 +30,6 @@ export const Login: React.FC<LoginProps> = ({}) => {
     const initialValues: LoginValues = {
         login: "",
         password: "",
-
     }
 
     const handleLogin = async (values: LoginValues) => {
@@ -47,17 +46,11 @@ export const Login: React.FC<LoginProps> = ({}) => {
             setLoading(false)
             console.log("Admin logado:", user)
             setUser(user)
-            if (user) {
-                snackbar({ severity: "success", text: "Adm conectado!" })
-            }
         })
         io.on("user:login:success", (user: User) => {
             setLoading(false)
-            console.log("Usuário definido:", user)
             setUser(user)
-            if (user) {
-                snackbar({ severity: "success", text: "Conectado!" })
-            }
+            console.log("Usuário definido:", user)
         })
 
         io.on("user:login:failed", () => {
