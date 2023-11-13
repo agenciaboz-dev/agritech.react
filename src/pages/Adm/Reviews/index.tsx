@@ -1,10 +1,9 @@
 import { Box, Tab, Tabs } from "@mui/material"
-import React, { useEffect, useState } from "react"
+import React, { useEffect } from "react"
 import { colors } from "../../../style/colors"
 import { Header } from "../../../components/Header"
 import { useHeader } from "../../../hooks/useHeader"
 import { tabStyle } from "../../../style/tabStyle"
-import { useIo } from "../../../hooks/useIo"
 
 interface ReviewsProps {
     user: User
@@ -12,33 +11,14 @@ interface ReviewsProps {
 
 export const Reviews: React.FC<ReviewsProps> = ({ user }) => {
     const header = useHeader()
-    const io = useIo()
-
-    const [pendingUsers, setPendingUsers] = useState<User[]>([])
     const [tab, setTab] = React.useState("requests")
     const changeTab = (event: React.SyntheticEvent, newValue: string) => {
         setTab(newValue)
     }
 
-    const listUsersPending = () => {
-        io.emit("user:pendingApproval")
-    }
-
-    useEffect(() => {
-        io.on("user:pendingApprovalList:success", (listUsers) => {
-            setPendingUsers(listUsers)
-        })
-        io.on("user:pendingApprovalList:error", () => {})
-
-        return () => {
-            io.off("user:pendingApprovalList")
-        }
-    }, [user])
-
     useEffect(() => {
         header.setTitle("Análises")
     }, [])
-
     return (
         <Box
             sx={{
@@ -85,7 +65,7 @@ export const Reviews: React.FC<ReviewsProps> = ({ user }) => {
                     <Tab sx={tabStyle} value="approved" label="Aprovados" />
                     <Tab sx={tabStyle} value="reject" label="Reprovados" />
 
-                    {tab === "requests" && pendingUsers.map((user) => <li key={user.id}>{user.name}</li>)}
+                    {tab === "requests"}
                     {tab === "approved"}
                     {tab === "reject"}
                 </Tabs>
