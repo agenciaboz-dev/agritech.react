@@ -207,7 +207,17 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
                         {({ values, handleChange }) => (
                             <Form>
                                 <Box sx={{ gap: "4vw" }}>
-                                    <HeaderProfile values={values} handleChange={handleChange} />
+                                    <HeaderProfile
+                                        values={values}
+                                        handleChange={handleChange}
+                                        style={{
+                                            flexDirection: "row",
+                                            gap: "5vw",
+                                            width: "100%",
+                                            height: "100%",
+                                            alignItems: "center",
+                                        }}
+                                    />
                                     <InfoProfile values={values} handleChange={handleChange} />
                                     <Button
                                         variant="contained"

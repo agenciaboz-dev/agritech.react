@@ -12,7 +12,7 @@ import { Professional } from "./Professional"
 
 interface InfoProfileProps {
     values: FormValues
-    handleChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
+    handleChange?: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
 }
 
 export const InfoProfile: React.FC<InfoProfileProps> = ({ values, handleChange }) => {
@@ -39,12 +39,18 @@ export const InfoProfile: React.FC<InfoProfileProps> = ({ values, handleChange }
                 <Tab sx={tabStyle} value="bank" label="Dados Bancários" />
                 <Tab sx={tabStyle} value="professional" label="Profissional" />
             </Tabs>
-            {tab === "personal" && <Personal values={values} handleChange={handleChange} />}
-            {tab === "documentation" && <Documentation values={values} handleChange={handleChange} />}
-            {tab === "contact" && <Contact values={values} handleChange={handleChange} />}
-            {tab === "address" && <Address values={values} handleChange={handleChange} />}
-            {tab === "bank" && values.employee && <Bank values={values} handleChange={handleChange} />}
-            {tab === "professional" && values.employee && <Professional values={values} handleChange={handleChange} />}
+            {tab === "personal" && <Personal values={values} handleChange={handleChange ? handleChange : () => {}} />}
+            {tab === "documentation" && (
+                <Documentation values={values} handleChange={handleChange ? handleChange : () => {}} />
+            )}
+            {tab === "contact" && <Contact values={values} handleChange={handleChange ? handleChange : () => {}} />}
+            {tab === "address" && <Address values={values} handleChange={handleChange ? handleChange : () => {}} />}
+            {tab === "bank" && values.employee && (
+                <Bank values={values} handleChange={handleChange ? handleChange : () => {}} />
+            )}
+            {tab === "professional" && values.employee && (
+                <Professional values={values} handleChange={handleChange ? handleChange : () => {}} />
+            )}
         </Box>
     )
 }

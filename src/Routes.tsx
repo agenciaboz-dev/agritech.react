@@ -10,6 +10,7 @@ import { useNavigationList } from "./hooks/useNavigationList"
 import { BottomNavigation } from "./components/BottomNavigation"
 import { Analysis } from "./pages/Analysis"
 import { Reviews } from "./pages/Adm/Reviews"
+import { Userprofile } from "./pages/Adm/Reviews/UserProfile"
 
 interface RoutesProps {}
 
@@ -25,6 +26,7 @@ export const Routes: React.FC<RoutesProps> = ({}) => {
                     <Route index element={<Panel user={user} />} />
                     <Route path="/*" element={<Panel user={user} />} />
                     <Route path="/profile" element={<Profile user={user} />} />
+                    <Route path="/profile/:userId" element={<Userprofile />} />
                     <Route path="/history" element={<Reviews user={user} />} />
                 </ReactRoutes>
             </>
@@ -41,6 +43,7 @@ export const Routes: React.FC<RoutesProps> = ({}) => {
             <Route path="/home" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
+            <Route path="/*" element={<Home />} />
         </ReactRoutes>
     )
 }

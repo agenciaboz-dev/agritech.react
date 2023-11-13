@@ -1,25 +1,22 @@
 import { Avatar } from "@files-ui/react"
-import { Box, TextField } from "@mui/material"
+import { Box, TextField, SxProps } from "@mui/material"
 import React, { ChangeEventHandler, useState } from "react"
 import { textField } from "../../style/input"
 import MaskedInput from "../../components/MaskedInput"
 
 interface HeaderProfileProps {
     values: FormValues
-    handleChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
+    handleChange?: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
+    style?: SxProps
 }
 
-export const HeaderProfile: React.FC<HeaderProfileProps> = ({ values, handleChange }) => {
+export const HeaderProfile: React.FC<HeaderProfileProps> = ({ values, handleChange, style }) => {
     const [image, setImage] = useState<File>()
 
     return (
         <Box
             sx={{
-                flexDirection: "row",
-                gap: "5vw",
-                width: "100%",
-                height: "100%",
-                alignItems: "center",
+                ...style,
             }}
         >
             <Avatar
