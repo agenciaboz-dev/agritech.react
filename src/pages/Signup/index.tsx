@@ -51,6 +51,9 @@ export const Signup: React.FC<SignupProps> = ({}) => {
             complement: "",
         },
         isAdmin: false,
+        approved: false,
+        rejected: "",
+        
 
         employee: {
             rg: "",
@@ -90,7 +93,9 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                 number: values.address.number,
                 city: values.address.city,
                 cep: values.address.cep,
-                uf: estados.find((estado) => estado.id == Number(values.address.uf))!.value,
+                // uf: estados.find((estado) => estado.value == values.address.uf)!.value,
+                uf: "AM",
+                
                 complement: values.address.complement,
             },
         }
@@ -99,7 +104,8 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                 ...data,
                 employee: {
                     rg: data.employee?.rg,
-                    gender: gender.find((gender) => gender.id == String(data.employee?.gender))!.value,
+                    // gender: gender.find((gender) => gender.id == String(data.employee?.gender))!.value,
+                    gender:"Fem",
                     nationality: data.employee?.nationality,
                     relationship: data.employee?.relationship,
                     voter_card: data.employee?.voter_card,
@@ -201,7 +207,7 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                     paddingBottom: "8vw",
                 }}
             >
-                <Formik initialValues={initialValues} onSubmit={(values) => handleSignup(values)}>
+                <Formik initialValues={initialValues} onSubmit={(values) => handleSignup(values)} >
                     {({ values, handleChange }) => (
                         <Form>
                             <Box

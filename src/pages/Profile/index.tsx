@@ -50,6 +50,8 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
         },
 
         isAdmin: user.isAdmin,
+        approved: user.approved,
+        rejected:user.rejected,
 
         employee: {
             id: user.employee?.id,

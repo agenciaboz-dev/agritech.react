@@ -90,49 +90,15 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, typeUser, 
                         label={"Data de Nascimento"}
                         name="birth"
                         value={data.birth}
-                        sx={{ ...textField, width: "50%" }}
+                        sx={{ ...textField, width: "100%" }}
                         InputProps={{
                             inputComponent: MaskedInput,
                             inputProps: { mask: "00/00/0000" },
                         }}
                         onChange={handleChange}
                     />
-                    <TextField
-                        select
-                        onChange={handleChange}
-                        label="Estado Civil"
-                        name="relationship"
-                        sx={{
-                            ...textField,
-                            width: "50%",
-                        }}
-                        variant="outlined"
-                        value={data.employee?.relationship}
-                        InputProps={{
-                            sx: { ...textField },
-                        }}
-                        SelectProps={{
-                            MenuProps: { MenuListProps: { sx: { maxHeight: "80vw", overflowY: "auto" } } },
-                        }}
-                    >
-                        <MenuItem
-                            value={0}
-                            sx={{
-                                display: "none",
-                            }}
-                        ></MenuItem>
-                        {typeRelationship.map((relationship) => (
-                            <MenuItem
-                                key={relationship.value}
-                                value={relationship.id}
-                                sx={{
-                                    width: "100%",
-                                }}
-                            >
-                                {relationship.value}
-                            </MenuItem>
-                        ))}
-                    </TextField>
+                   
+                      
                 </Box>
                 <TextField
                     label={"E-mail"}
@@ -144,7 +110,7 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, typeUser, 
                 />
                 <Box sx={{ alignItems: "center", justifyContent: "center", gap: "5vw" }}>
                     {typeUser == "employee" && (
-                        <>
+                        <Box sx={{flexDirection:"row", width:"100%", gap:"2vw"}}>
                             <TextField
                                 select
                                 onChange={handleChange}
@@ -152,7 +118,7 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, typeUser, 
                                 name="gender"
                                 sx={{
                                     ...textField,
-                                    width: "100%",
+                                    width: "50%",
                                 }}
                                 variant="outlined"
                                 value={data.employee?.gender}
@@ -181,7 +147,43 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, typeUser, 
                                     </MenuItem>
                                 ))}
                             </TextField>
-                        </>
+                            <TextField
+                            select
+                            onChange={handleChange}
+                            label="Estado Civil"
+                            name="relationship"
+                            sx={{
+                                ...textField,
+                                width: "50%",
+                            }}
+                            variant="outlined"
+                            value={data.employee?.relationship}
+                            InputProps={{
+                                sx: { ...textField },
+                            }}
+                            SelectProps={{
+                                MenuProps: { MenuListProps: { sx: { maxHeight: "80vw", overflowY: "auto" } } },
+                            }}
+                        >
+                            <MenuItem
+                                value={0}
+                                sx={{
+                                    display: "none",
+                                }}
+                            ></MenuItem>
+                            {typeRelationship.map((relationship) => (
+                                <MenuItem
+                                    key={relationship.value}
+                                    value={relationship.id}
+                                    sx={{
+                                        width: "100%",
+                                    }}
+                                >
+                                    {relationship.value}
+                                </MenuItem>
+                            ))}
+                        </TextField>
+                        </Box>
                     )}
                 </Box>
 

@@ -19,7 +19,8 @@ export const UsersPendingProvider: React.FC<{ children: ReactNode }> = ({ childr
         io.on("user:pendingApprovalList:error", () => {})
 
         return () => {
-            io.off("user:pendingApprovalList")
+            io.off("user:pendingApprovalList:success")
+            io.off("user:pendingApprovalList:error")
         }
     }, [])
 

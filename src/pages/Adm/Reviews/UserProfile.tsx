@@ -9,11 +9,13 @@ import { useDataHandler } from "../../../hooks/useDataHandler"
 import { useSnackbar } from "burgos-snackbar"
 import { HeaderProfile } from "../../Profile/HeaderProfile"
 import { InfoProfile } from "../../Profile/InfoProfile"
+import { useIo } from "../../../hooks/useIo"
 
 interface UserprofileProps {}
 
 export const Userprofile: React.FC<UserprofileProps> = ({}) => {
     const header = useHeader()
+    const io = useIo()
     const { userId } = useParams()
     const { pendingUsers, setPendingUsers } = useUsersPending()
 
@@ -21,7 +23,8 @@ export const Userprofile: React.FC<UserprofileProps> = ({}) => {
     const { snackbar } = useSnackbar()
 
     const [profile, setProfile] = useState<User>()
-    const [loading, setLoading] = useState(false)
+    const [loadingApprove, setLoadingApprove] = useState(false)
+    const [loadingReject, setLoadingReject] = useState(false)
 
     useEffect(() => {
         const user = pendingUsers.find((user) => String(user.id) === userId)
@@ -48,6 +51,8 @@ export const Userprofile: React.FC<UserprofileProps> = ({}) => {
         },
 
         isAdmin: false,
+        approved: profile?.approved || false,
+        rejected: profile?.rejected || "",
 
         employee: {
             id: profile?.employee?.id,
@@ -70,6 +75,32 @@ export const Userprofile: React.FC<UserprofileProps> = ({}) => {
             cnpj: profile?.producer?.cnpj || "",
         },
     }
+
+    const handleApprove = async (valuesUser: FormValues) => {
+        const data = {
+            ...valuesUser,
+            approved: true,
+            id: Number(userId),
+        }
+        setProfile(data)
+        setLoadingApprove(true)
+
+        io.emit("admin:approve", data.id)
+    }
+
+    useEffect(() => {
+        const handleApprovalSuccess = () => {
+            console.log("deu certo aprovou")
+            setLoadingApprove(false)
+            snackbar({ severity: "success", text: "Usuário aprovado" })
+        }
+
+        io.on("application:status:approved", handleApprovalSuccess)
+
+        return () => {
+            io.off("application:status:approved", handleApprovalSuccess)
+        }
+    }, [])
 
     useEffect(() => {
         header.setTitle("Análise de Perfil")
@@ -124,7 +155,7 @@ export const Userprofile: React.FC<UserprofileProps> = ({}) => {
                             textTransform: "none",
                         }}
                     >
-                        {loading ? (
+                        {loadingReject ? (
                             <CircularProgress size={"9vw"} sx={{ color: colors.text.white, width: "0.5vw" }} />
                         ) : (
                             "Não Aprovar"
@@ -141,8 +172,9 @@ export const Userprofile: React.FC<UserprofileProps> = ({}) => {
                             borderRadius: "5vw",
                             textTransform: "none",
                         }}
+                        onClick={() => handleApprove(valuesUser)}
                     >
-                        {loading ? (
+                        {loadingApprove ? (
                             <CircularProgress size={"9vw"} sx={{ color: colors.text.white, width: "0.5vw" }} />
                         ) : (
                             "Aprovar"

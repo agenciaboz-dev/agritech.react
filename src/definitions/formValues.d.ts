@@ -17,6 +17,8 @@ declare interface FormValues {
         complement?: string
     }
     isAdmin: boolean
+    approved: boolean
+    rejected?: string 
 
     //Employee
     employee?: Employee
