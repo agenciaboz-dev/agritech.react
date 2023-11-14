@@ -86,7 +86,7 @@ export const Userprofile: React.FC<UserprofileProps> = ({}) => {
         setProfile(data)
         setLoadingApprove(true)
 
-        io.emit("admin:approve", data.id)
+        io.emit("user:approve", data.id)
     }
     const handleReject = async (valuesUser: FormValues) => {
         const data = {
@@ -98,7 +98,7 @@ export const Userprofile: React.FC<UserprofileProps> = ({}) => {
         setProfile(data)
         setLoadingReject(true)
 
-        io.emit("admin:reject", data.id)
+        io.emit("user:reject", data.id)
     }
 
     useEffect(() => {

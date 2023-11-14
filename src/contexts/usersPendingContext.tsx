@@ -15,6 +15,13 @@ export const UsersPendingProvider: React.FC<{ children: ReactNode }> = ({ childr
 
     useEffect(() => {
         io.emit("user:pendingApproval")
+        io.on("admin:list:update", (user) => {
+            const updatedPendingUsers = [...pendingUsers]
+
+            updatedPendingUsers.push(user)
+
+            setPendingUsers(updatedPendingUsers)
+        })
         io.on("user:pendingApprovalList:success", setPendingUsers)
         io.on("user:pendingApprovalList:error", () => {})
 
