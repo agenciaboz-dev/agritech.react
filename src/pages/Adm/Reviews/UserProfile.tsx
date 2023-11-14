@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { useUsersPending } from "../../../hooks/useUsers"
 import { Box, Button, CircularProgress } from "@mui/material"
 import { colors } from "../../../style/colors"
@@ -15,6 +15,7 @@ interface UserprofileProps {}
 
 export const Userprofile: React.FC<UserprofileProps> = ({}) => {
     const header = useHeader()
+    const navigate = useNavigate()
     const io = useIo()
     const { userId } = useParams()
     const { pendingUsers, setPendingUsers } = useUsersPending()
@@ -87,18 +88,41 @@ export const Userprofile: React.FC<UserprofileProps> = ({}) => {
 
         io.emit("admin:approve", data.id)
     }
+    const handleReject = async (valuesUser: FormValues) => {
+        const data = {
+            ...valuesUser,
+            approved: false,
+            rejected: "Rejeitado por motivos de ....",
+            id: Number(userId),
+        }
+        setProfile(data)
+        setLoadingReject(true)
+
+        io.emit("admin:reject", data.id)
+    }
 
     useEffect(() => {
         const handleApprovalSuccess = () => {
             console.log("deu certo aprovou")
             setLoadingApprove(false)
             snackbar({ severity: "success", text: "Usuário aprovado" })
+            io.emit("user:pendingApproval")
+            navigate("../history")
+        }
+        const handleRejectionSuccess = () => {
+            console.log("REPROVADO")
+            setLoadingReject(false)
+            snackbar({ severity: "error", text: "Usuário reprovado" })
+            io.emit("user:pendingApproval")
+            navigate("../history")
         }
 
         io.on("application:status:approved", handleApprovalSuccess)
+        io.on("application:status:rejected", handleRejectionSuccess)
 
         return () => {
-            io.off("application:status:approved", handleApprovalSuccess)
+            io.off("application:status:approved")
+            io.off("application:status:rejected")
         }
     }, [])
 
@@ -142,6 +166,7 @@ export const Userprofile: React.FC<UserprofileProps> = ({}) => {
             >
                 <HeaderProfile values={valuesUser} style={{ flexDirection: "row", gap: "5vw" }} />
                 <InfoProfile values={valuesUser} />
+
                 <Box sx={{ gap: "2vw", flexDirection: "row" }}>
                     <Button
                         variant="contained"
@@ -154,6 +179,7 @@ export const Userprofile: React.FC<UserprofileProps> = ({}) => {
                             borderRadius: "5vw",
                             textTransform: "none",
                         }}
+                        onClick={() => handleReject(valuesUser)}
                     >
                         {loadingReject ? (
                             <CircularProgress size={"9vw"} sx={{ color: colors.text.white, width: "0.5vw" }} />
