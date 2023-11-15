@@ -24,6 +24,7 @@ export const Reviews: React.FC<ReviewsProps> = ({ user }) => {
     const [listProducer, setListProducer] = useState<User[]>()
     const [listEmployee, setListEmployee] = useState<User[]>()
     const [reject, setReject] = useState<User[]>()
+    const [requests, setRequests] = useState<User[]>()
 
     console.log("USUARIOS PENDENTES QUE CHEGAM:", pendingUsers)
 
@@ -36,6 +37,7 @@ export const Reviews: React.FC<ReviewsProps> = ({ user }) => {
             pendingUsers.filter((user) => user.employee !== null && user.isAdmin === false && user.rejected === null)
         )
         setReject(pendingUsers.filter((user) => user.approved == false && user.rejected !== null))
+        setRequests(pendingUsers.filter((user) => user.isAdmin === false))
     }, [pendingUsers])
 
     useEffect(() => {
@@ -88,12 +90,14 @@ export const Reviews: React.FC<ReviewsProps> = ({ user }) => {
                     scrollButtons="auto"
                     allowScrollButtonsMobile
                 >
+                    <Tab sx={tabStyle} value="all" label="Solicitações" />
                     <Tab sx={tabStyle} value="requestsEmployee" label="Cadastro de Funcionários" />
                     <Tab sx={tabStyle} value="requestsProducer" label="Cadastro de Produtores" />
-                    {/* <Tab sx={tabStyle} value="approved" label="Aprovados" /> */}
                     <Tab sx={tabStyle} value="reject" label="Reprovados" />
                 </Tabs>
                 <Box sx={{ width: "100%", height: "82%", overflow: "auto", gap: "1vw" }}>
+                    {tab === "all" &&
+                        requests?.map((user) => <CardUser user={user} key={user.id} location={`/profile/${user.id}`} />)}
                     {tab === "requestsEmployee" &&
                         listEmployee?.map((user) => <CardUser user={user} key={user.id} location={`/profile/${user.id}`} />)}
                     {tab === "requestsProducer" &&
