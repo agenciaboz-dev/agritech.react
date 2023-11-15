@@ -21,7 +21,6 @@ export const Reviews: React.FC<ReviewsProps> = ({ user }) => {
         setTab(newValue)
     }
     const { pendingUsers, setPendingUsers } = useUsersPending()
-    const [listProducer, setListProducer] = useState<User[]>()
     const [listEmployee, setListEmployee] = useState<User[]>()
     const [reject, setReject] = useState<User[]>()
     const [requests, setRequests] = useState<User[]>()
@@ -30,9 +29,6 @@ export const Reviews: React.FC<ReviewsProps> = ({ user }) => {
 
     useEffect(() => {
         console.log("opaopao", pendingUsers)
-        setListProducer(
-            pendingUsers.filter((user) => user.producer !== null && user.isAdmin === false && user.rejected === null)
-        )
         setListEmployee(
             pendingUsers.filter((user) => user.employee !== null && user.isAdmin === false && user.rejected === null)
         )
@@ -92,7 +88,6 @@ export const Reviews: React.FC<ReviewsProps> = ({ user }) => {
                 >
                     <Tab sx={tabStyle} value="all" label="Solicitações" />
                     <Tab sx={tabStyle} value="requestsEmployee" label="Cadastro de Funcionários" />
-                    <Tab sx={tabStyle} value="requestsProducer" label="Cadastro de Produtores" />
                     <Tab sx={tabStyle} value="reject" label="Reprovados" />
                 </Tabs>
                 <Box sx={{ width: "100%", height: "82%", overflow: "auto", gap: "1vw" }}>
@@ -100,8 +95,6 @@ export const Reviews: React.FC<ReviewsProps> = ({ user }) => {
                         requests?.map((user) => <CardUser user={user} key={user.id} location={`/profile/${user.id}`} />)}
                     {tab === "requestsEmployee" &&
                         listEmployee?.map((user) => <CardUser user={user} key={user.id} location={`/profile/${user.id}`} />)}
-                    {tab === "requestsProducer" &&
-                        listProducer?.map((user) => <CardUser user={user} key={user.id} location={`/profile/${user.id}`} />)}
                     {tab === "reject" &&
                         reject?.map((user) => <CardUser user={user} key={user.id} location={`/profile/${user.id}`} />)}
                 </Box>
