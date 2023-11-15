@@ -53,7 +53,6 @@ export const Signup: React.FC<SignupProps> = ({}) => {
         isAdmin: false,
         approved: false,
         rejected: "",
-        
 
         employee: {
             rg: "",
@@ -95,7 +94,7 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                 cep: values.address.cep,
                 // uf: estados.find((estado) => estado.value == values.address.uf)!.value,
                 uf: "AM",
-                
+
                 complement: values.address.complement,
             },
         }
@@ -105,7 +104,7 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                 employee: {
                     rg: data.employee?.rg,
                     // gender: gender.find((gender) => gender.id == String(data.employee?.gender))!.value,
-                    gender:"Fem",
+                    gender: "Fem",
                     nationality: data.employee?.nationality,
                     relationship: data.employee?.relationship,
                     voter_card: data.employee?.voter_card,
@@ -124,7 +123,7 @@ export const Signup: React.FC<SignupProps> = ({}) => {
             console.log(data)
         } else if (typeUser === "producer") {
             console.log(data)
-            io.emit("user:signup", { ...data, producer: { cnpj: data.producer?.cnpj } })
+            io.emit("user:signup", { ...data, approved: true, producer: { cnpj: data.producer?.cnpj } })
         }
         setLoading(true)
     }
@@ -135,7 +134,9 @@ export const Signup: React.FC<SignupProps> = ({}) => {
             if (user) {
                 // login({ login: user.username, password: user.password })
                 snackbar({ severity: "success", text: "Cadastro enviado para análise!" })
-                navigate("../analysis")
+                {
+                    typeUser === "producer" ? navigate("../panel") : navigate("../analysis")
+                }
             }
         })
 
@@ -207,7 +208,7 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                     paddingBottom: "8vw",
                 }}
             >
-                <Formik initialValues={initialValues} onSubmit={(values) => handleSignup(values)} >
+                <Formik initialValues={initialValues} onSubmit={(values) => handleSignup(values)}>
                     {({ values, handleChange }) => (
                         <Form>
                             <Box

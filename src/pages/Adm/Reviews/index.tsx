@@ -25,7 +25,10 @@ export const Reviews: React.FC<ReviewsProps> = ({ user }) => {
     const [listEmployee, setListEmployee] = useState<User[]>()
     const [reject, setReject] = useState<User[]>()
 
+    console.log("USUARIOS PENDENTES QUE CHEGAM:", pendingUsers)
+
     useEffect(() => {
+        console.log("opaopao", pendingUsers)
         setListProducer(
             pendingUsers.filter((user) => user.producer !== null && user.isAdmin === false && user.rejected === null)
         )

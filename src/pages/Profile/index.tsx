@@ -51,7 +51,7 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
 
         isAdmin: user.isAdmin,
         approved: user.approved,
-        rejected:user.rejected,
+        rejected: user.rejected,
 
         employee: {
             id: user.employee?.id,
@@ -186,7 +186,7 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
                     flexDirection: "row",
                 }}
             >
-                <Header back />
+                <Header back location="../panel" />
             </Box>
             <Box
                 sx={{

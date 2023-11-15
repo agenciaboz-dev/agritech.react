@@ -112,7 +112,7 @@ export const Userprofile: React.FC<UserprofileProps> = ({}) => {
         const handleRejectionSuccess = () => {
             console.log("REPROVADO")
             setLoadingReject(false)
-            snackbar({ severity: "error", text: "Usuário reprovado" })
+            snackbar({ severity: "info", text: "Usuário reprovado" })
             io.emit("user:pendingApproval")
             navigate("../history")
         }
