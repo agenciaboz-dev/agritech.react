@@ -7,15 +7,7 @@ declare interface FormValues {
     birth: string
     phone: string
     image: string
-    address: {
-        street: string
-        district: string
-        number: string
-        city: string
-        cep: string
-        uf: string
-        complement?: string
-    }
+    address: Address
     isAdmin: boolean
     approved: boolean
     rejected?: string 
@@ -24,3 +16,4 @@ declare interface FormValues {
     employee?: Employee
     producer?: Producer
 }
+

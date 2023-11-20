@@ -1,10 +1,10 @@
-import React from 'react';
-import { useUser } from './hooks/useUser';
+import React from "react"
+import { useUser } from "./hooks/useUser"
 import { Route, Routes as ReactRoutes } from "react-router-dom"
-import { Signup } from './pages/Signup';
-import { Panel } from './pages/Adm/Panel';
-import { Login } from './pages/Login';
-import { Home } from './pages/Home';
+import { Signup } from "./pages/Signup"
+import { Panel } from "./pages/Adm/Panel"
+import { Login } from "./pages/Login"
+import { Home } from "./pages/Home"
 import { Profile } from "./pages/Profile"
 import { useNavigationList } from "./hooks/useNavigationList"
 import { BottomNavigation } from "./components/BottomNavigation"
@@ -33,6 +33,7 @@ export const Routes: React.FC<RoutesProps> = ({}) => {
         ) : !user.approved ? (
             <ReactRoutes>
                 <Route path="/*" element={<Analysis user={user} />} />
+                <Route index element={<Analysis user={user} />} />
             </ReactRoutes>
         ) : (
             <p> pipiipoopoo voce não é adm, aguarde um pouco</p>

@@ -12,6 +12,7 @@ import { InfoProfile } from "./InfoProfile"
 import { useDataHandler } from "../../hooks/useDataHandler"
 import { useEstadosBrasil } from "../../hooks/useEstadosBrasil"
 import { useGender } from "../../hooks/useGender"
+import { useNavigate } from "react-router-dom"
 
 interface ProfileProps {
     user: User
@@ -19,6 +20,7 @@ interface ProfileProps {
 
 export const Profile: React.FC<ProfileProps> = ({ user }) => {
     const header = useHeader()
+    const navigate = useNavigate()
     const io = useIo()
     const { setUser } = useUser()
 
@@ -81,8 +83,10 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
                 ...values,
                 cpf: unmask(values.cpf),
                 phone: unmask(values.phone),
-
+                id: user.id,
                 isAdmin: values.isAdmin,
+                approved: values.approved,
+                rejected: values.rejected,
                 address: {
                     cep: unmask(values.address.cep),
                     city: values.address.city,
@@ -139,6 +143,7 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
             console.log("atualizado", dataUser)
             setLoading(false)
             snackbar({ severity: "success", text: "Dados alterados!" })
+            // navigate("../home")
         })
 
         io.on("user:update:failed", (error) => {
@@ -146,8 +151,6 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
             setLoading(false)
             snackbar({ severity: "error", text: "Algo deu errado!" })
         })
-
-        io.emit("user:find", user.id)
 
         io.on("user:find:success", (dataUser: User) => {
             setUser(dataUser)

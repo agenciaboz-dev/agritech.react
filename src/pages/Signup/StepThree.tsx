@@ -23,7 +23,7 @@ export const StepThree: React.FC<StepThreeProps> = ({ data, handleChange, setCur
                         variant="outlined"
                         label={"Nacionalidade"}
                         value={data.employee?.nationality}
-                        name="nationality"
+                        name="employee.nationality"
                         sx={{ ...textField, width: "100%" }}
                         onChange={handleChange}
                     />
@@ -31,7 +31,7 @@ export const StepThree: React.FC<StepThreeProps> = ({ data, handleChange, setCur
                         variant="outlined"
                         label={"Nº do título de eleitor"}
                         value={data.employee?.voter_card}
-                        name="voter_card"
+                        name="employee.voter_card"
                         sx={{ ...textField, width: "100%" }}
                         onChange={handleChange}
                     />
@@ -39,7 +39,7 @@ export const StepThree: React.FC<StepThreeProps> = ({ data, handleChange, setCur
                         variant="outlined"
                         label={"Nº da carteira de trabalho"}
                         value={data.employee?.work_card}
-                        name="work_card"
+                        name="employee.work_card"
                         sx={{ ...textField, width: "100%" }}
                         onChange={handleChange}
                     />

@@ -9,11 +9,11 @@ declare interface User {
     phone: string
     image?: string
     image64?: string
-    address?: Address
     isAdmin: boolean
     approved: boolean
     rejected?: string
-
+    
+    address?: Address
     employee?: Employee
     producer?: Producer
 }
@@ -34,11 +34,11 @@ interface UserForm {
     phone: string
     image: string
     image64: string
-    address: Address
     isAdmin: boolean
     approved: boolean
     rejected?: string
-
+    
+    address: Address
     employee?: Employee
     producer?: Producer
 }

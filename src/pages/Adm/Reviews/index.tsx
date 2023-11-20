@@ -16,7 +16,7 @@ export const Reviews: React.FC<ReviewsProps> = ({ user }) => {
     const header = useHeader()
     const io = useIo()
 
-    const [tab, setTab] = React.useState("requestsEmployee")
+    const [tab, setTab] = React.useState("all")
     const changeTab = (event: React.SyntheticEvent, newValue: string) => {
         setTab(newValue)
     }

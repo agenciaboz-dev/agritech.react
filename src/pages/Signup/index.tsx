@@ -54,26 +54,32 @@ export const Signup: React.FC<SignupProps> = ({}) => {
         approved: false,
         rejected: "",
 
-        employee: {
-            rg: "",
-            gender: "",
-            nationality: "",
-            relationship: "",
-            voter_card: "",
-            work_card: "",
-            military: "",
-            residence: "",
-            // bank_data: {
-            //     account: "",
-            //     agency: "",
-            //     name: "",
-            //     type: "",
-            // },
-        },
+        employee:
+            typeUser === "employee"
+                ? {
+                      rg: "",
+                      gender: "",
+                      nationality: "",
+                      relationship: "",
+                      voter_card: "",
+                      work_card: "",
+                      military: "",
+                      residence: "",
+                      // bank_data: {
+                      //     account: "",
+                      //     agency: "",
+                      //     name: "",
+                      //     type: "",
+                      // },
+                  }
+                : undefined,
 
-        producer: {
-            cnpj: "",
-        },
+        producer:
+            typeUser === "producer"
+                ? {
+                      cnpj: "",
+                  }
+                : undefined,
     }
     const handleTypeUser = (event: React.ChangeEvent<HTMLInputElement>) => {
         setTypeUser((event.target as HTMLInputElement).value)
@@ -123,7 +129,7 @@ export const Signup: React.FC<SignupProps> = ({}) => {
             console.log(data)
         } else if (typeUser === "producer") {
             console.log(data)
-            io.emit("user:signup", { ...data, approved: true, producer: { cnpj: data.producer?.cnpj } })
+            io.emit("user:signup", { ...data, approved: true, producer: { cnpj: unmask(data.producer?.cnpj || "") } })
         }
         setLoading(true)
     }

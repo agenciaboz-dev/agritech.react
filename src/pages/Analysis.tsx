@@ -1,4 +1,4 @@
-import { Box, Button, CircularProgress, IconButton } from "@mui/material"
+import { Box, Button, IconButton } from "@mui/material"
 import React, { useState } from "react"
 import { useUser } from "../hooks/useUser"
 import LogoutIcon from "@mui/icons-material/Logout"
@@ -12,7 +12,8 @@ interface AnalysisProps {
 
 export const Analysis: React.FC<AnalysisProps> = ({ user }) => {
     const { logout } = useUser()
-    const [loading, setLoading] = useState(false)
+
+    console.log({ rejectedUser: user })
 
     return (
         <Box style={{ flex: 1, backgroundColor: colors.button, paddingTop: "10vw" }}>
@@ -58,10 +59,9 @@ export const Analysis: React.FC<AnalysisProps> = ({ user }) => {
                     textAlign: "center",
                 }}
             >
-                {user.rejected === null ? (
+                {user.rejected === null && !user.isAdmin ? (
                     <>
                         {" "}
-                        <CircularProgress size={"8vw"} sx={{ color: colors.primary }} />
                         <p style={{ fontSize: "5vw", fontWeight: "800" }}>Aguardando</p>
                         <p style={{ fontSize: "3.5vw", fontWeight: "400", textAlign: "center" }}>
                             Estamos analisando seu cadastro. O processo demora em torno de 2 dias. Acompanhe seu e-mail para
