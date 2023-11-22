@@ -1,5 +1,6 @@
 export const useRelationship = () => {
     const typeRelationship = [
+       
         { id: "casado", value: "Casado(a)" },
         { id: "viuvo", value: "Viúvo(a)" },
         { id: "solteiro", value: "Solteiro(a)" },

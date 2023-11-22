@@ -13,6 +13,7 @@ import { useEstadosBrasil } from "../../hooks/useEstadosBrasil"
 import { useGender } from "../../hooks/useGender"
 import { useSnackbar } from "burgos-snackbar"
 import { buttonStyle } from "../../style/button"
+import { useRelationship } from "../../hooks/useRelationship"
 
 interface SignupProps {}
 
@@ -25,12 +26,13 @@ export const Signup: React.FC<SignupProps> = ({}) => {
 
     const estados = useEstadosBrasil()
     const gender = useGender()
+    const typeRelationship = useRelationship()
 
     const [typeUser, setTypeUser] = useState("")
     const [currentStep, setCurrentStep] = useState(0)
     const [loading, setLoading] = useState(false)
 
-    const initialValues: FormValues = {
+    const initialValues: SignupValues = {
         name: "",
         email: "",
         username: "",
@@ -55,7 +57,7 @@ export const Signup: React.FC<SignupProps> = ({}) => {
         rejected: "",
 
         employee:
-            typeUser === "employee"
+            typeUser == "employee"
                 ? {
                       rg: "",
                       gender: "",
@@ -65,17 +67,10 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                       work_card: "",
                       military: "",
                       residence: "",
-                      // bank_data: {
-                      //     account: "",
-                      //     agency: "",
-                      //     name: "",
-                      //     type: "",
-                      // },
                   }
                 : undefined,
-
         producer:
-            typeUser === "producer"
+            typeUser == "producer"
                 ? {
                       cnpj: "",
                   }
@@ -86,7 +81,8 @@ export const Signup: React.FC<SignupProps> = ({}) => {
         setCurrentStep(1)
     }
 
-    const handleSignup = async (values: FormValues) => {
+    const handleSignup = async (values: SignupValues) => {
+        console.log(values.address.uf)
         const data = {
             ...values,
             cpf: unmask(values.cpf),
@@ -98,9 +94,7 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                 number: values.address.number,
                 city: values.address.city,
                 cep: values.address.cep,
-                // uf: estados.find((estado) => estado.value == values.address.uf)!.value,
-                uf: "AM",
-
+                uf: estados.find((estado) => estado.value == values.address.uf)?.value || "",
                 complement: values.address.complement,
             },
         }
@@ -109,21 +103,15 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                 ...data,
                 employee: {
                     rg: data.employee?.rg,
-                    // gender: gender.find((gender) => gender.id == String(data.employee?.gender))!.value,
-                    gender: "Fem",
+                    gender: gender.find((gender) => gender.id == String(data.employee?.gender))?.value || "",
+                    relationship:
+                        typeRelationship.find((relationship) => relationship.value == data.employee?.relationship)?.value ||
+                        "",
                     nationality: data.employee?.nationality,
-                    relationship: data.employee?.relationship,
                     voter_card: data.employee?.voter_card,
                     work_card: data.employee?.work_card,
                     military: data.employee?.military,
                     residence: data.employee?.residence,
-
-                    // bank_data: {
-                    //     account: data.employee?.bank_data.account,
-                    //     type: data.employee?.bank_data.type,
-                    //     agency: data.employee?.bank_data.agency,
-                    //     name: data.employee?.bank_data.name,
-                    // },
                 },
             })
             console.log(data)
@@ -214,7 +202,7 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                     paddingBottom: "8vw",
                 }}
             >
-                <Formik initialValues={initialValues} onSubmit={(values) => handleSignup(values)}>
+                <Formik initialValues={initialValues} onSubmit={(values) => handleSignup(values)} enableReinitialize>
                     {({ values, handleChange }) => (
                         <Form>
                             <Box

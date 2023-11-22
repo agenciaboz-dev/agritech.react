@@ -5,7 +5,7 @@ import { textField } from "../../style/input"
 import { useBankAccount } from "../../hooks/useBankAccount"
 
 interface StepThreeProps {
-    data: FormValues
+    data: SignupValues
     handleChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
     setCurrentStep: (value: React.SetStateAction<number>) => void
 }
@@ -26,6 +26,7 @@ export const StepThree: React.FC<StepThreeProps> = ({ data, handleChange, setCur
                         name="employee.nationality"
                         sx={{ ...textField, width: "100%" }}
                         onChange={handleChange}
+                        required
                     />
                     <TextField
                         variant="outlined"
@@ -34,6 +35,7 @@ export const StepThree: React.FC<StepThreeProps> = ({ data, handleChange, setCur
                         name="employee.voter_card"
                         sx={{ ...textField, width: "100%" }}
                         onChange={handleChange}
+                        required
                     />
                     <TextField
                         variant="outlined"
@@ -42,6 +44,7 @@ export const StepThree: React.FC<StepThreeProps> = ({ data, handleChange, setCur
                         name="employee.work_card"
                         sx={{ ...textField, width: "100%" }}
                         onChange={handleChange}
+                        required
                     />
                 </Box>
                 <Box sx={{ gap: "2vw" }}>

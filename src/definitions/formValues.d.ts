@@ -1,4 +1,4 @@
-declare interface FormValues {
+declare interface SignupValues {
     name: string
     email: string
     username: string
@@ -10,10 +10,9 @@ declare interface FormValues {
     address: Address
     isAdmin: boolean
     approved: boolean
-    rejected?: string 
+    rejected?: string
 
     //Employee
     employee?: Employee
     producer?: Producer
 }
-
