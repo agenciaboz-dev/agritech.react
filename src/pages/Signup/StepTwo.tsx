@@ -6,7 +6,7 @@ import { useEstadosBrasil } from "../../hooks/useEstadosBrasil"
 import { textField } from "../../style/input"
 
 interface StepTwoProps {
-    data: FormValues
+    data: SignupValues
     handleChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
     typeUser: string
     setCurrentStep: (value: React.SetStateAction<number>) => void
@@ -20,7 +20,14 @@ export const StepTwo: React.FC<StepTwoProps> = ({ data, handleChange, typeUser, 
             <p style={{ fontSize: "4.5vw", fontFamily: "MalgunGothic2", textAlign: "left", fontWeight: "800" }}>Login</p>
 
             <Box sx={{ gap: "3vw" }}>
-                <TextField name="username" label={"Username"} value={data.username} sx={textField} onChange={handleChange} />
+                <TextField
+                    name="username"
+                    label={"Username"}
+                    value={data.username}
+                    sx={textField}
+                    onChange={handleChange}
+                    required
+                />
                 <TextField
                     name="password"
                     type="password"
@@ -28,6 +35,7 @@ export const StepTwo: React.FC<StepTwoProps> = ({ data, handleChange, typeUser, 
                     value={data.password}
                     sx={textField}
                     onChange={handleChange}
+                    required
                 />
             </Box>
 
@@ -45,9 +53,10 @@ export const StepTwo: React.FC<StepTwoProps> = ({ data, handleChange, typeUser, 
                         sx={textField}
                         InputProps={{
                             inputComponent: MaskedInput,
-                            inputProps: { mask: " (00) 0 0000-0000" },
+                            inputProps: { mask: " (00) 0 0000-0000", inputMode: "numeric" },
                         }}
                         onChange={handleChange}
+                        required
                     />
                     <TextField
                         name="address.street"
@@ -55,6 +64,7 @@ export const StepTwo: React.FC<StepTwoProps> = ({ data, handleChange, typeUser, 
                         value={data.address.street}
                         sx={textField}
                         onChange={handleChange}
+                        required
                     />
                     <TextField
                         name="address.district"
@@ -62,6 +72,7 @@ export const StepTwo: React.FC<StepTwoProps> = ({ data, handleChange, typeUser, 
                         value={data.address.district}
                         sx={textField}
                         onChange={handleChange}
+                        required
                     />
                     <Box sx={{ width: "100%", flexDirection: "row", gap: "2vw" }}>
                         <TextField
@@ -70,6 +81,7 @@ export const StepTwo: React.FC<StepTwoProps> = ({ data, handleChange, typeUser, 
                             value={data.address.number}
                             sx={textField}
                             onChange={handleChange}
+                            required
                         />
                         <TextField
                             name="address.cep"
@@ -81,6 +93,7 @@ export const StepTwo: React.FC<StepTwoProps> = ({ data, handleChange, typeUser, 
                                 inputProps: { mask: "00.000-000", inputMode: "numeric" },
                             }}
                             onChange={handleChange}
+                            required
                         />
                     </Box>
                     <Box sx={{ width: "100%", flexDirection: "row", gap: "2vw" }}>
@@ -90,6 +103,7 @@ export const StepTwo: React.FC<StepTwoProps> = ({ data, handleChange, typeUser, 
                             value={data.address.city}
                             sx={textField}
                             onChange={handleChange}
+                            required
                         />
                         <TextField
                             select
@@ -104,6 +118,7 @@ export const StepTwo: React.FC<StepTwoProps> = ({ data, handleChange, typeUser, 
                             InputProps={{
                                 sx: {
                                     ...textField,
+                                    height: "12vw",
                                 },
                             }}
                             SelectProps={{
@@ -111,6 +126,7 @@ export const StepTwo: React.FC<StepTwoProps> = ({ data, handleChange, typeUser, 
                                     MenuListProps: { sx: { width: "100%", maxHeight: "80vw", overflowY: "auto" } },
                                 },
                             }}
+                            required
                         >
                             <MenuItem
                                 value={0}
@@ -138,6 +154,7 @@ export const StepTwo: React.FC<StepTwoProps> = ({ data, handleChange, typeUser, 
                         value={data.address.complement}
                         sx={{ ...textField, width: "100%" }}
                         onChange={handleChange}
+                        required
                     />
                 </Box>
                 <Box sx={{ gap: "2vw" }}>

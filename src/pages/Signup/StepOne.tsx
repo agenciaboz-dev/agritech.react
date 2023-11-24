@@ -8,7 +8,7 @@ import { textField } from "../../style/input"
 import { useRelationship } from "../../hooks/useRelationship"
 
 interface StepOneProps {
-    data: FormValues
+    data: SignupValues
     handleChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
     typeUser: string
     setCurrentStep: (value: React.SetStateAction<number>) => void
@@ -18,7 +18,6 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, typeUser, 
     const gender = useGender()
     const typeRelationship = useRelationship()
     const [image, setImage] = useState<File>()
-
     return (
         <Box sx={{ width: "100%", height: "100%", gap: "4vw", flexDirection: "column" }}>
             <p style={{ fontSize: "4.5vw", fontFamily: "MalgunGothic2", textAlign: "left", fontWeight: "800" }}>
@@ -44,7 +43,7 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, typeUser, 
                 </Box>
             </Box>
             <Box sx={{ gap: "3vw", width: "100%", height: "100%" }}>
-                <TextField label={"Nome"} name="name" value={data.name} sx={textField} onChange={handleChange} />
+                <TextField label={"Nome"} name="name" value={data.name} sx={textField} onChange={handleChange} required />
                 <Box sx={{ flexDirection: "row", gap: "2vw", width: "100%" }}>
                     <TextField
                         label={"CPF"}
@@ -53,11 +52,12 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, typeUser, 
                         sx={{ ...textField, width: "50%" }}
                         InputProps={{
                             inputComponent: MaskedInput,
-                            inputProps: { mask: "000.000.000-00" },
+                            inputProps: { mask: "000.000.000-00", inputMode: "numeric" },
                         }}
                         onChange={handleChange}
+                        required
                     />
-                    {typeUser == "producer" && (
+                    {data.producer && (
                         <TextField
                             label={"CNPJ"}
                             name="producer.cnpj"
@@ -65,22 +65,24 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, typeUser, 
                             sx={{ ...textField, width: "50%" }}
                             InputProps={{
                                 inputComponent: MaskedInput,
-                                inputProps: { mask: "00.000.000/0000-00" },
+                                inputProps: { mask: "00.000.000/0000-00", inputMode: "numeric" },
                             }}
                             onChange={handleChange}
+                            required
                         />
                     )}
-                    {typeUser == "employee" && (
+                    {data.employee && (
                         <TextField
                             label={"Rg"}
                             name="employee.rg"
-                            value={data.employee?.rg}
+                            value={data.employee.rg}
                             sx={{ ...textField, width: "50%" }}
                             InputProps={{
                                 inputComponent: MaskedInput,
                                 inputProps: { mask: "0000000000000", inputMode: "numeric" },
                             }}
                             onChange={handleChange}
+                            required
                         />
                     )}
                 </Box>
@@ -94,8 +96,10 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, typeUser, 
                         InputProps={{
                             inputComponent: MaskedInput,
                             inputProps: { mask: "00/00/0000" },
+                            inputMode: "numeric",
                         }}
                         onChange={handleChange}
+                        required
                     />
                 </Box>
                 <TextField
@@ -105,9 +109,10 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, typeUser, 
                     type="email"
                     sx={textField}
                     onChange={handleChange}
+                    required
                 />
                 <Box sx={{ alignItems: "center", justifyContent: "center", gap: "5vw" }}>
-                    {typeUser == "employee" && (
+                    {data.employee && (
                         <Box sx={{ flexDirection: "row", width: "100%", gap: "2vw" }}>
                             <TextField
                                 select
@@ -116,23 +121,28 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, typeUser, 
                                 name="employee.gender"
                                 sx={{
                                     ...textField,
-                                    width: "50%",
+                                    width: "48%",
                                 }}
-                                variant="outlined"
-                                value={data.employee?.gender}
+                                value={data.employee.gender}
                                 InputProps={{
-                                    sx: { ...textField },
+                                    sx: {
+                                        ...textField,
+                                        height: "12vw",
+                                    },
                                 }}
                                 SelectProps={{
-                                    MenuProps: { MenuListProps: { sx: { maxHeight: "80vw", overflowY: "auto" } } },
+                                    MenuProps: {
+                                        MenuListProps: { sx: { width: "100%", maxHeight: "80vw", overflowY: "auto" } },
+                                    },
                                 }}
+                                required
                             >
                                 <MenuItem
                                     value={0}
                                     sx={{
                                         display: "none",
                                     }}
-                                ></MenuItem>
+                                />
                                 {gender.map((gender) => (
                                     <MenuItem
                                         key={gender.value}
@@ -154,13 +164,16 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, typeUser, 
                                     ...textField,
                                     width: "50%",
                                 }}
+                                required
                                 variant="outlined"
-                                value={data.employee?.relationship}
+                                value={data.employee.relationship}
                                 InputProps={{
-                                    sx: { ...textField },
+                                    sx: { ...textField, height: "12vw" },
                                 }}
                                 SelectProps={{
-                                    MenuProps: { MenuListProps: { sx: { maxHeight: "80vw", overflowY: "auto" } } },
+                                    MenuProps: {
+                                        MenuListProps: { sx: { width: "100%", maxHeight: "80vw", overflowY: "auto" } },
+                                    },
                                 }}
                             >
                                 <MenuItem
