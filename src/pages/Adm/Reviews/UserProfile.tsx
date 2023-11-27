@@ -32,7 +32,7 @@ export const Userprofile: React.FC<UserprofileProps> = ({}) => {
         setProfile(user)
     }, [pendingUsers, userId])
 
-    const valuesUser: FormValues = {
+    const valuesUser: SignupValues = {
         name: profile?.name || "",
         cpf: profile?.cpf || "",
         phone: profile?.phone || "",
@@ -77,7 +77,7 @@ export const Userprofile: React.FC<UserprofileProps> = ({}) => {
         },
     }
 
-    const handleApprove = async (valuesUser: FormValues) => {
+    const handleApprove = async (valuesUser: SignupValues) => {
         const data = {
             ...valuesUser,
             approved: true,
@@ -88,7 +88,7 @@ export const Userprofile: React.FC<UserprofileProps> = ({}) => {
 
         io.emit("user:approve", data.id)
     }
-    const handleReject = async (valuesUser: FormValues) => {
+    const handleReject = async (valuesUser: SignupValues) => {
         const data = {
             ...valuesUser,
             approved: false,

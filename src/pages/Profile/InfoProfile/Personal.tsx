@@ -5,7 +5,7 @@ import { useGender } from "../../../hooks/useGender"
 import { useRelationship } from "../../../hooks/useRelationship"
 
 interface PersonalProps {
-    values: FormValues
+    values: SignupValues
     handleChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
 }
 
@@ -38,7 +38,7 @@ export const Personal: React.FC<PersonalProps> = ({ values, handleChange }) => {
                     variant="outlined"
                     value={values.employee?.gender}
                     InputProps={{
-                        style: {},
+                        sx: { ...textField, height: "12vw" },
                     }}
                     SelectProps={{
                         MenuProps: { MenuListProps: { sx: { maxHeight: "80vw", overflowY: "auto" } } },
@@ -72,13 +72,16 @@ export const Personal: React.FC<PersonalProps> = ({ values, handleChange }) => {
                         ...textField,
                         width: "50%",
                     }}
+                    required
                     variant="outlined"
                     value={values.employee?.relationship}
                     InputProps={{
-                        sx: { ...textField },
+                        sx: { ...textField, height: "12vw" },
                     }}
                     SelectProps={{
-                        MenuProps: { MenuListProps: { sx: { maxHeight: "80vw", overflowY: "auto" } } },
+                        MenuProps: {
+                            MenuListProps: { sx: { width: "100%", maxHeight: "80vw", overflowY: "auto" } },
+                        },
                     }}
                 >
                     <MenuItem
@@ -90,7 +93,7 @@ export const Personal: React.FC<PersonalProps> = ({ values, handleChange }) => {
                     {typeRelationship.map((relationship) => (
                         <MenuItem
                             key={relationship.value}
-                            value={relationship.id}
+                            value={relationship.value}
                             sx={{
                                 width: "100%",
                             }}

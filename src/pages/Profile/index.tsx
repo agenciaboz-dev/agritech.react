@@ -13,6 +13,7 @@ import { useDataHandler } from "../../hooks/useDataHandler"
 import { useEstadosBrasil } from "../../hooks/useEstadosBrasil"
 import { useGender } from "../../hooks/useGender"
 import { useNavigate } from "react-router-dom"
+import { useRelationship } from "../../hooks/useRelationship"
 
 interface ProfileProps {
     user: User
@@ -29,10 +30,11 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
 
     const estados = useEstadosBrasil()
     const gender = useGender()
+    const typeRelationship = useRelationship()
 
     const [loading, setLoading] = useState(false)
 
-    const initialValues: FormValues = {
+    const initialValues: SignupValues = {
         name: user.name || "",
         cpf: user.cpf || "",
         phone: user.phone || "",
@@ -77,7 +79,7 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
         },
     }
 
-    const handleSubmit = async (values: FormValues) => {
+    const handleSubmit = async (values: SignupValues) => {
         try {
             const data = {
                 ...values,
@@ -106,7 +108,9 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
                         rg: data.employee?.rg,
                         gender: gender.find((gender) => gender.value == data.employee?.gender)!.value,
                         nationality: data.employee?.nationality,
-                        relationship: data.employee?.relationship,
+                        relationship:
+                            typeRelationship.find((relationship) => relationship.value == data.employee?.relationship)
+                                ?.value || 0,
                         voter_card: data.employee?.voter_card,
                         work_card: data.employee?.work_card,
                         military: data.employee?.military,

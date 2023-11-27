@@ -11,7 +11,7 @@ import { Bank } from "./Bank"
 import { Professional } from "./Professional"
 
 interface InfoProfileProps {
-    values: FormValues
+    values: SignupValues
     handleChange?: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
 }
 

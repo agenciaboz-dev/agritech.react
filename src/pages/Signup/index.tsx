@@ -83,7 +83,8 @@ export const Signup: React.FC<SignupProps> = ({}) => {
     }
 
     const handleSignup = async (values: SignupValues) => {
-        console.log(isValidDateString(values.birth))
+        
+        
         
         if (!isValidDateString(values.birth)) {
             console.log("Data de nascimento inválida");
