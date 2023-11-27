@@ -39,9 +39,7 @@ export const Address: React.FC<AddressProps> = ({ values, handleChange }) => {
                     }}
                     value={values.address.uf}
                     InputProps={{
-                        sx: {
-                            ...textField,
-                        },
+                        sx: { ...textField, height: "12vw" },
                     }}
                     SelectProps={{
                         MenuProps: {

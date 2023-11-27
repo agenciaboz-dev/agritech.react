@@ -227,7 +227,7 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
                                             alignItems: "center",
                                         }}
                                     />
-                                    <InfoProfile values={values} handleChange={handleChange} />
+                                    <InfoProfile values={values} handleChange={handleChange} review={false} />
                                     <Button
                                         variant="contained"
                                         type="submit"

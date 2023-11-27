@@ -165,7 +165,7 @@ export const Userprofile: React.FC<UserprofileProps> = ({}) => {
                 }}
             >
                 <HeaderProfile values={valuesUser} style={{ flexDirection: "row", gap: "5vw" }} />
-                <InfoProfile values={valuesUser} />
+                <InfoProfile values={valuesUser} review />
 
                 <Box sx={{ gap: "2vw", flexDirection: "row" }}>
                     <Button
