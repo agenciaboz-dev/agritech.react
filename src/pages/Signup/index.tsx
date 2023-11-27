@@ -20,7 +20,7 @@ interface SignupProps {}
 export const Signup: React.FC<SignupProps> = ({}) => {
     const io = useIo()
     const navigate = useNavigate()
-    const { login, setUser } = useUser()
+    const { setUser } = useUser()
     const { unmask } = useDataHandler()
     const { snackbar } = useSnackbar()
 
@@ -87,13 +87,13 @@ export const Signup: React.FC<SignupProps> = ({}) => {
             ...values,
             cpf: unmask(values.cpf),
             phone: unmask(values.phone),
-            cep: unmask(values.address.cep),
+            approved: typeUser === "employee" ? false : true,
             address: {
                 street: values.address.street,
                 district: values.address.district,
                 number: values.address.number,
                 city: values.address.city,
-                cep: values.address.cep,
+                cep: unmask(values.address.cep),
                 uf: estados.find((estado) => estado.value == values.address.uf)?.value || "",
                 complement: values.address.complement,
             },
@@ -105,8 +105,7 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                     rg: data.employee?.rg,
                     gender: gender.find((gender) => gender.id == String(data.employee?.gender))?.value || "",
                     relationship:
-                        typeRelationship.find((relationship) => relationship.value == data.employee?.relationship)?.value ||
-                        "",
+                        typeRelationship.find((relationship) => relationship.id == data.employee?.relationship)?.value || "",
                     nationality: data.employee?.nationality,
                     voter_card: data.employee?.voter_card,
                     work_card: data.employee?.work_card,
@@ -117,7 +116,7 @@ export const Signup: React.FC<SignupProps> = ({}) => {
             console.log(data)
         } else if (typeUser === "producer") {
             console.log(data)
-            io.emit("user:signup", { ...data, approved: true, producer: { cnpj: unmask(data.producer?.cnpj || "") } })
+            io.emit("user:signup", { ...data, producer: { cnpj: unmask(data.producer?.cnpj || "") } })
         }
         setLoading(true)
     }
@@ -126,18 +125,22 @@ export const Signup: React.FC<SignupProps> = ({}) => {
         io.on("user:signup:success", (user: User) => {
             setLoading(false)
             if (user) {
-                // login({ login: user.username, password: user.password })
-                snackbar({ severity: "success", text: "Cadastro enviado para análise!" })
+                console.log(typeUser)
+                //login({ login: user.username, password: user.password, isAdmin: user.isAdmin })
+                snackbar({
+                    severity: "success",
+                    text: "Cadastrado com sucesso!",
+                })
                 {
                     typeUser === "producer" ? navigate("../panel") : navigate("../analysis")
                 }
             }
         })
 
-        io.on("user:login:success", (user: User) => {
-            setUser(user)
-            snackbar({ severity: "success", text: "Conectado!" })
-        })
+        // io.on("user:login:success", (user: User) => {
+        //     setUser(user)
+        //     snackbar({ severity: "success", text: "Conectado!" })
+        // })
 
         io.on("user:signup:failed", (data) => {
             const errorMessage = data.error ? data.error : "Falha no cadastro!"

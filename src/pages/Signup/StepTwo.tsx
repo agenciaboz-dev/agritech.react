@@ -137,7 +137,7 @@ export const StepTwo: React.FC<StepTwoProps> = ({ data, handleChange, typeUser, 
                             {estados.map((estado) => (
                                 <MenuItem
                                     key={estado.value}
-                                    value={estado.id}
+                                    value={estado.value}
                                     sx={{
                                         width: "100%",
                                     }}
@@ -154,7 +154,7 @@ export const StepTwo: React.FC<StepTwoProps> = ({ data, handleChange, typeUser, 
                         value={data.address.complement}
                         sx={{ ...textField, width: "100%" }}
                         onChange={handleChange}
-                        required
+                        
                     />
                 </Box>
                 <Box sx={{ gap: "2vw" }}>

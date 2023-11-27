@@ -5,7 +5,7 @@ import { textField } from "../../../style/input"
 import { useEstadosBrasil } from "../../../hooks/useEstadosBrasil"
 
 interface AddressProps {
-    values: FormValues
+    values: SignupValues
     handleChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
 }
 
