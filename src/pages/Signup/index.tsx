@@ -14,6 +14,7 @@ import { useGender } from "../../hooks/useGender"
 import { useSnackbar } from "burgos-snackbar"
 import { buttonStyle } from "../../style/button"
 import { useRelationship } from "../../hooks/useRelationship"
+import { useDateValidator } from "../../hooks/useDateValidator"
 
 interface SignupProps {}
 
@@ -23,7 +24,7 @@ export const Signup: React.FC<SignupProps> = ({}) => {
     const { setUser } = useUser()
     const { unmask } = useDataHandler()
     const { snackbar } = useSnackbar()
-
+    const { isValidDateString } = useDateValidator()
     const estados = useEstadosBrasil()
     const gender = useGender()
     const typeRelationship = useRelationship()
@@ -82,7 +83,13 @@ export const Signup: React.FC<SignupProps> = ({}) => {
     }
 
     const handleSignup = async (values: SignupValues) => {
-        console.log(values.address.uf)
+        console.log(isValidDateString(values.birth))
+        
+        if (!isValidDateString(values.birth)) {
+            console.log("Data de nascimento inválida");
+            snackbar({severity:"error",text:"Data de nascimento inválida"})
+            return;
+        }
         const data = {
             ...values,
             cpf: unmask(values.cpf),
@@ -126,7 +133,6 @@ export const Signup: React.FC<SignupProps> = ({}) => {
             setLoading(false)
             if (user) {
                 console.log(typeUser)
-                //login({ login: user.username, password: user.password, isAdmin: user.isAdmin })
                 snackbar({
                     severity: "success",
                     text: "Cadastrado com sucesso!",
@@ -137,22 +143,15 @@ export const Signup: React.FC<SignupProps> = ({}) => {
             }
         })
 
-        // io.on("user:login:success", (user: User) => {
-        //     setUser(user)
-        //     snackbar({ severity: "success", text: "Conectado!" })
-        // })
-
-        io.on("user:signup:failed", (data) => {
+        io.on("user:status:failed", (data) => {
             const errorMessage = data.error ? data.error : "Falha no cadastro!"
             snackbar({ severity: "error", text: errorMessage })
-
             setLoading(false)
         })
 
         return () => {
             io.off("user:signup:success")
-            io.off("user:signup:failed")
-            io.off("user:login:success")
+            io.off("user:status:failed")
         }
     }, [])
 
