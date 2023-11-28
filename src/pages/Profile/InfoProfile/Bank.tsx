@@ -4,7 +4,7 @@ import { textField } from "../../../style/input"
 import { useBankAccount } from "../../../hooks/useBankAccount"
 
 interface BankProps {
-    values: FormValues
+    values: SignupValues
     handleChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
 }
 
@@ -14,7 +14,7 @@ export const Bank: React.FC<BankProps> = ({ values, handleChange }) => {
         <Box sx={{ flexDirection: "column", gap: "3vw" }}>
             <TextField
                 label={"Banco"}
-                name={"nameBank"}
+                name={"employee.bank_data.name"}
                 sx={textField}
                 value={values.employee?.bank_data?.name}
                 onChange={handleChange}
@@ -23,7 +23,7 @@ export const Bank: React.FC<BankProps> = ({ values, handleChange }) => {
                 select
                 onChange={handleChange}
                 label="Tipo de conta"
-                name="type"
+                name="employee.bank_data.type"
                 sx={{
                     ...textField,
                     width: "100%",
@@ -58,7 +58,7 @@ export const Bank: React.FC<BankProps> = ({ values, handleChange }) => {
             <Box sx={{ flexDirection: "row", gap: "3vw" }}>
                 <TextField
                     label={"Agência"}
-                    name={"agency"}
+                    name={"employee.bank_data.agency"}
                     sx={textField}
                     value={values.employee?.bank_data?.agency}
                     onChange={handleChange}
@@ -67,7 +67,7 @@ export const Bank: React.FC<BankProps> = ({ values, handleChange }) => {
             </Box>
             <TextField
                 label={"Nº da conta"}
-                name={"account"}
+                name={"employee.bank_data.account"}
                 sx={textField}
                 value={values.employee?.bank_data?.account}
                 onChange={handleChange}
