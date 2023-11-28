@@ -12,6 +12,7 @@ import { useIo } from "../../../hooks/useIo"
 import { useUser } from "../../../hooks/useUser"
 import { useSnackbar } from "burgos-snackbar"
 import { useMenuDrawer } from "../../../hooks/useMenuDrawer"
+import { useNavigate } from "react-router-dom"
 
 interface PanelProps {
     user: User
@@ -22,6 +23,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
     const io = useIo()
     const { setUser } = useUser()
     const { snackbar } = useSnackbar()
+    const navigate = useNavigate()
 
     const menu = useMenuDrawer()
 
@@ -44,12 +46,11 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                         flexDirection: "row",
                         paddingBottom: "2vw",
                         alignItems: "center",
-                        paddingLeft: "4vw",
-                        paddingRight: "4vw",
+                        paddingTop:" 0vw",
                         gap: "1vw",
                     }}
                 >
-                    <img src={drone} style={{ width: 40 }} />
+                    <img src={drone} style={{ width: "10vw" }} />
                     <p
                         style={{
                             color: colors.text.white,
@@ -68,7 +69,6 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                         sx={{ color: "#fff" }}
                         onClick={() => {
                             menu.toggle()
-                            console.log("menu abriu")
                         }}
                     />
                 </Box>
@@ -78,8 +78,8 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                     justifyContent: "center",
                     flex: 1,
                     backgroundColor: colors.primary,
-                    borderTopLeftRadius: 20,
-                    borderTopRightRadius: 20,
+                    borderTopLeftRadius: "5vw",
+                    borderTopRightRadius: "5vw",
                     paddingTop: 10,
                 }}
             >
@@ -87,15 +87,15 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                     style={{
                         flexDirection: "row",
                         alignItems: "center",
-                        paddingBottom: "4vw",
+                        paddingBottom: "5vw",
                         justifyContent: "space-between",
-                        padding: "3vw",
+                        padding: "1vw 3vw",
                     }}
                 >
                     <p style={{ color: colors.text.white, fontSize: "5vw", fontFamily: "MalgunGothic2" }}>
                         Configuração de Kits
                     </p>
-                    <IconButton>
+                    <IconButton onClick={() => navigate("/settings-kit")}>
                         <ArrowForwardIosIcon sx={{ color: "#fff", width: "5vw" }} />
                     </IconButton>
                 </Box>

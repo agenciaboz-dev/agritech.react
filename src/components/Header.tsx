@@ -15,9 +15,10 @@ import drone from "../assets/logo/droneIcon.png"
 interface HeaderProps {
     back?: boolean
     location?: string
+    style?: Sxprops
 }
 
-export const Header: React.FC<HeaderProps> = ({ back, location }) => {
+export const Header: React.FC<HeaderProps> = ({ back, location, style }) => {
     const header = useHeader()
     // const notifications = useNotifications()
     const menuDrawer = useMenuDrawer()
@@ -43,6 +44,7 @@ export const Header: React.FC<HeaderProps> = ({ back, location }) => {
                 borderRadius: 0,
                 position: "fixed",
                 top: 0,
+                ...style
             }}
         >
             <Box sx={{ flexDirection: "row", alignItems: "center" }}>

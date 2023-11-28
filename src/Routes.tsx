@@ -11,6 +11,7 @@ import { BottomNavigation } from "./components/BottomNavigation"
 import { Analysis } from "./pages/Analysis"
 import { Reviews } from "./pages/Adm/Reviews"
 import { Userprofile } from "./pages/Adm/Reviews/UserProfile"
+import { SettingsRoutes } from "./pages/Adm/Panel/SettingsRoutes"
 
 interface RoutesProps {}
 
@@ -24,6 +25,7 @@ export const Routes: React.FC<RoutesProps> = ({}) => {
                 <BottomNavigation section={bottomMenu.admin} />
                 <ReactRoutes>
                     <Route index element={<Panel user={user} />} />
+                    <Route path="/settings-kit/*" element={<SettingsRoutes />} />
                     <Route path="/*" element={<Panel user={user} />} />
                     <Route path="/profile" element={<Profile user={user} />} />
                     <Route path="/profile/:userId" element={<Userprofile />} />

@@ -5,7 +5,7 @@ import { textField } from "../../style/input"
 import MaskedInput from "../../components/MaskedInput"
 
 interface HeaderProfileProps {
-    values: FormValues
+    values: SignupValues
     handleChange?: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
     style?: SxProps
 }
