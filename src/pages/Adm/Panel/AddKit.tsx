@@ -1,17 +1,16 @@
 import { Box, Button } from "@mui/material"
 import React from "react"
-import { useHeader } from "../../../hooks/useHeader"
 import { colors } from "../../../style/colors"
 import { Header } from "../../../components/Header"
 import SaveIcon from "../../../assets/icons/floppy_disk.svg"
-import DeleteIcon from "../../../assets/icons/trash.svg"
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined"
 import { ContentKit } from "./ContentKit"
+import { useNavigate } from "react-router-dom"
 
 interface AddKitProps {}
 
 export const AddKit: React.FC<AddKitProps> = ({}) => {
-    const header = useHeader()
+    const navigate = useNavigate()
     return (
         <Box
             sx={{
@@ -70,6 +69,7 @@ export const AddKit: React.FC<AddKitProps> = ({}) => {
                                 fontSize: "3vw",
                                 width: "55%",
                             }}
+                            onClick={() => navigate("../")}
                         >
                             <DeleteOutlineOutlinedIcon fontSize="small" sx={{ color: "#fff" }} />
                             Descartar kit
@@ -105,8 +105,8 @@ export const AddKit: React.FC<AddKitProps> = ({}) => {
                         overflowY: "hidden",
                     }}
                 >
-                    <Box sx={{ overflowX: "hidden", overflowY: "auto", height: "88%", p: "0 2vw", }}>
-                        <ContentKit edit/>
+                    <Box sx={{ overflowX: "hidden", overflowY: "auto", height: "88%", p: "0 2vw" }}>
+                        <ContentKit edit />
                     </Box>
                 </Box>
             </Box>

@@ -33,7 +33,7 @@ export const ContentKit: React.FC<ContentKitProps> = ({ edit }) => {
                         <TextField
                             label={"Nome do Kit"}
                             name="name"
-                            value={""}
+                            value={edit ? "" : "Kit 1" }
                             sx={{ ...textField, width: "100%" }}
                             // onChange={handleChange}
                             required
@@ -41,7 +41,7 @@ export const ContentKit: React.FC<ContentKitProps> = ({ edit }) => {
                         <TextField
                             label={"Descrição"}
                             name="description"
-                            value={""}
+                            value={edit ? "" : "Loren impsum dolor sit amet" }
                             sx={textField}
                             // onChange={}
                             required
@@ -52,7 +52,7 @@ export const ContentKit: React.FC<ContentKitProps> = ({ edit }) => {
             <Box sx={{ gap: "4vw" }}>
                 <TitleComponents title="Objetos" button />
                 <Box sx={{ flexDirection: "row", gap: "5vw", p: "2vw" }}>
-                    <p style={{ fontSize: "3.5vw" }}>1x</p>
+                    <p style={{ fontSize: "3.5vw" }}>2x</p>
                     <Box sx={{ flexDirection: "column" }}>
                         <p style={{ fontSize: "3.5vw" }}>List Item</p>
                         <p
@@ -72,7 +72,7 @@ export const ContentKit: React.FC<ContentKitProps> = ({ edit }) => {
                     <TextField
                         label={"Qtd"}
                         name="quantity"
-                        value={""}
+                        value={edit ? "":2}
                         sx={{ ...textField, width: "20%" }}
                         // onChange={handleChange}
                     />
@@ -80,7 +80,7 @@ export const ContentKit: React.FC<ContentKitProps> = ({ edit }) => {
                         <TextField
                             label={"Objeto"}
                             name="name"
-                            value={""}
+                            value={edit ? "" : "Objeto 1"}
                             sx={{ ...textField, width: "100%" }}
                             // onChange={handleChange}
                             required
@@ -88,7 +88,7 @@ export const ContentKit: React.FC<ContentKitProps> = ({ edit }) => {
                         <TextField
                             label={"Descrição"}
                             name="description"
-                            value={""}
+                            value={edit ? "" : "Lorem ipsum dolor sit amet"}
                             sx={textField}
                             // onChange={}
                             required

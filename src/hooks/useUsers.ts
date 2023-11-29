@@ -1,10 +1,10 @@
 import { useContext } from "react"
-import UsersPendingContext from "../contexts/usersPendingContext"
+import UsersContext from "../contexts/usersContext"
 
-export const useUsersPending = () => {
-    const context = useContext(UsersPendingContext)
+export const useUsers = () => {
+    const context = useContext(UsersContext)
     if (!context) {
-        throw new Error("usePendingUsers must be used within a UsersProvider")
+        throw new Error("useUsers must be used within a UsersProvider")
     }
     return context
 }

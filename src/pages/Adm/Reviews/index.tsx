@@ -6,7 +6,7 @@ import { useHeader } from "../../../hooks/useHeader"
 import { tabStyle } from "../../../style/tabStyle"
 import { useIo } from "../../../hooks/useIo"
 import { CardUser } from "../../../components/CardUser"
-import { useUsersPending } from "../../../hooks/useUsers"
+import { useUsers } from "../../../hooks/useUsers"
 
 interface ReviewsProps {
     user: User
@@ -20,7 +20,7 @@ export const Reviews: React.FC<ReviewsProps> = ({ user }) => {
     const changeTab = (event: React.SyntheticEvent, newValue: string) => {
         setTab(newValue)
     }
-    const { pendingUsers, setPendingUsers } = useUsersPending()
+    const { pendingUsers, setPendingUsers } = useUsers()
     const [listEmployee, setListEmployee] = useState<User[]>()
     const [reject, setReject] = useState<User[]>()
     const [requests, setRequests] = useState<User[]>()
@@ -92,11 +92,17 @@ export const Reviews: React.FC<ReviewsProps> = ({ user }) => {
                 </Tabs>
                 <Box sx={{ width: "100%", height: "82%", overflow: "auto", gap: "1vw" }}>
                     {tab === "all" &&
-                        requests?.map((user) => <CardUser user={user} key={user.id} location={`/profile/${user.id}`} />)}
+                        requests?.map((user) => (
+                            <CardUser review user={user} key={user.id} location={`/review/profile/${user.id}`} />
+                        ))}
                     {tab === "requestsEmployee" &&
-                        listEmployee?.map((user) => <CardUser user={user} key={user.id} location={`/profile/${user.id}`} />)}
+                        listEmployee?.map((user) => (
+                            <CardUser review user={user} key={user.id} location={`/review//profile/${user.id}`} />
+                        ))}
                     {tab === "reject" &&
-                        reject?.map((user) => <CardUser user={user} key={user.id} location={`/profile/${user.id}`} />)}
+                        reject?.map((user) => (
+                            <CardUser user={user} review key={user.id} location={`/review//profile/${user.id}`} />
+                        ))}
                 </Box>
             </Box>
         </Box>

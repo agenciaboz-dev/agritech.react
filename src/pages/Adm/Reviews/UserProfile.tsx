@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
-import { useUsersPending } from "../../../hooks/useUsers"
-import { Box, Button, CircularProgress } from "@mui/material"
+import { useUsers } from "../../../hooks/useUsers"
+import { Box, Button, ButtonBase, CircularProgress } from "@mui/material"
 import { colors } from "../../../style/colors"
 import { Header } from "../../../components/Header"
 import { useHeader } from "../../../hooks/useHeader"
@@ -11,14 +11,17 @@ import { HeaderProfile } from "../../Profile/HeaderProfile"
 import { InfoProfile } from "../../Profile/InfoProfile"
 import { useIo } from "../../../hooks/useIo"
 
-interface UserprofileProps {}
+interface UserprofileProps {
+    view?: boolean
+}
 
-export const Userprofile: React.FC<UserprofileProps> = ({}) => {
+export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
     const header = useHeader()
     const navigate = useNavigate()
     const io = useIo()
     const { userId } = useParams()
-    const { pendingUsers, setPendingUsers } = useUsersPending()
+    const { pendingUsers, setPendingUsers } = useUsers()
+    const { listUsers, setListUsers } = useUsers()
 
     const { unmask } = useDataHandler()
     const { snackbar } = useSnackbar()
@@ -27,10 +30,15 @@ export const Userprofile: React.FC<UserprofileProps> = ({}) => {
     const [loadingApprove, setLoadingApprove] = useState(false)
     const [loadingReject, setLoadingReject] = useState(false)
 
-    useEffect(() => {
-        const user = pendingUsers.find((user) => String(user.id) === userId)
-        setProfile(user)
-    }, [pendingUsers, userId])
+    !view
+        ? useEffect(() => {
+              const user = pendingUsers.find((user) => String(user.id) === userId)
+              setProfile(user)
+          }, [pendingUsers, userId])
+        : useEffect(() => {
+              const user = listUsers?.find((user) => String(user.id) === userId)
+              setProfile(user)
+          }, [listUsers, userId])
 
     const valuesUser: SignupValues = {
         name: profile?.name || "",
@@ -127,14 +135,14 @@ export const Userprofile: React.FC<UserprofileProps> = ({}) => {
     }, [])
 
     useEffect(() => {
-        header.setTitle("Análise de Perfil")
+        header.setTitle(view ? valuesUser.name : "Análise de Perfil")
     })
     return (
         <Box
             sx={{
                 width: "100%",
                 height: "100%",
-                backgroundColor: colors.secondary,
+                backgroundColor: view ? colors.button : colors.secondary,
                 flexDirection: "column",
             }}
         >
@@ -149,7 +157,7 @@ export const Userprofile: React.FC<UserprofileProps> = ({}) => {
                     flexDirection: "row",
                 }}
             >
-                <Header back location="../history" />
+                <Header back location={view ? "../" : "../history"} />
             </Box>
             <Box
                 style={{
@@ -161,52 +169,66 @@ export const Userprofile: React.FC<UserprofileProps> = ({}) => {
                     borderTopRightRadius: "7vw",
 
                     flexDirection: "column",
-                    gap: "4vw",
+                    gap: "5vw",
                 }}
             >
-                <HeaderProfile values={valuesUser} style={{ flexDirection: "row", gap: "5vw" }} />
-                <InfoProfile values={valuesUser} review />
-
-                <Box sx={{ gap: "2vw", flexDirection: "row" }}>
-                    <Button
-                        variant="contained"
-                        type="submit"
-                        sx={{
-                            fontSize: "3.5vw",
-                            color: colors.text.white,
-                            width: "50%",
-                            backgroundColor: "#B3261E",
-                            borderRadius: "5vw",
-                            textTransform: "none",
-                        }}
-                        onClick={() => handleReject(valuesUser)}
-                    >
-                        {loadingReject ? (
-                            <CircularProgress size={"9vw"} sx={{ color: colors.text.white, width: "0.5vw" }} />
-                        ) : (
-                            "Não Aprovar"
-                        )}
-                    </Button>
-                    <Button
-                        variant="contained"
-                        type="submit"
-                        sx={{
-                            fontSize: "3.5vw",
-                            color: colors.text.white,
-                            width: "50%",
-                            backgroundColor: colors.button,
-                            borderRadius: "5vw",
-                            textTransform: "none",
-                        }}
-                        onClick={() => handleApprove(valuesUser)}
-                    >
-                        {loadingApprove ? (
-                            <CircularProgress size={"9vw"} sx={{ color: colors.text.white, width: "0.5vw" }} />
-                        ) : (
-                            "Aprovar"
-                        )}
-                    </Button>
+                <Box sx={{ flexDirection: "row", justifyContent: "space-between", width: "100%", alignItems: "center" }}>
+                    <p style={{ fontSize: "4.5vw", fontFamily: "MalgunGothic2", textAlign: "left" }}>Informações Pessoais</p>
+                    {view && (
+                        <Button
+                            variant="contained"
+                            size="small"
+                            sx={{ bgcolor: colors.button, borderRadius: "5vw", textTransform: "none", fontSize: "3vw" }}
+                        >
+                            Acessar cadastro
+                        </Button>
+                    )}
                 </Box>
+                <HeaderProfile values={valuesUser} style={{ flexDirection: "row", gap: "5vw" }} view />
+                <InfoProfile values={valuesUser} review view  />
+
+                {!view && (
+                    <Box sx={{ gap: "2vw", flexDirection: "row" }}>
+                        <Button
+                            variant="contained"
+                            type="submit"
+                            sx={{
+                                fontSize: "3.5vw",
+                                color: colors.text.white,
+                                width: "50%",
+                                backgroundColor: "#B3261E",
+                                borderRadius: "5vw",
+                                textTransform: "none",
+                            }}
+                            onClick={() => handleReject(valuesUser)}
+                        >
+                            {loadingReject ? (
+                                <CircularProgress size={"9vw"} sx={{ color: colors.text.white, width: "0.5vw" }} />
+                            ) : (
+                                "Não Aprovar"
+                            )}
+                        </Button>
+                        <Button
+                            variant="contained"
+                            type="submit"
+                            sx={{
+                                fontSize: "3.5vw",
+                                color: colors.text.white,
+                                width: "50%",
+                                backgroundColor: colors.button,
+                                borderRadius: "5vw",
+                                textTransform: "none",
+                            }}
+                            onClick={() => handleApprove(valuesUser)}
+                        >
+                            {loadingApprove ? (
+                                <CircularProgress size={"9vw"} sx={{ color: colors.text.white, width: "0.5vw" }} />
+                            ) : (
+                                "Aprovar"
+                            )}
+                        </Button>
+                    </Box>
+                )}
             </Box>
         </Box>
     )

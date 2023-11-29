@@ -6,9 +6,10 @@ import { useNavigate } from "react-router-dom"
 interface CardUserProps {
     user: User
     location: string
+    review?: boolean
 }
 
-export const CardUser: React.FC<CardUserProps> = ({ user, location }) => {
+export const CardUser: React.FC<CardUserProps> = ({ review, user, location }) => {
     const navigate = useNavigate()
 
     return (
@@ -26,17 +27,17 @@ export const CardUser: React.FC<CardUserProps> = ({ user, location }) => {
             key={user.id}
         >
             <Box sx={{ flexDirection: "row", gap: "3vw", alignItems: "center" }}>
-                <Avatar src="" sx={{ width: "12vw", height: "12vw" }} />
-                <p>{user.name}</p>
+                <Avatar src="" sx={{ width: "10vw", height: "10vw" }} />
+                <p style={{fontSize:"3.7vw"}}>{user.name}</p>
             </Box>
             <Box sx={{ alignItems: "center", flexDirection: "row" }}>
                 <p
-                    style={{ fontSize: "3.5vw" }}
+                    style={{ fontSize: "3.0vw" }}
                     onClick={() => {
                         navigate(location)
                     }}
                 >
-                    Revisar{" "}
+                    {review ? "Revisar" : "Verificar calendário"}
                 </p>
                 <ArrowForwardIosIcon sx={{ width: "3vw", padding: 0 }} />
             </Box>

@@ -1,7 +1,7 @@
 import React, { ChangeEventHandler } from "react"
 
 interface ProfessionalProps {
-    values: FormValues
+    values: SignupValues
     handleChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
 }
 

@@ -28,7 +28,8 @@ export const Routes: React.FC<RoutesProps> = ({}) => {
                     <Route path="/settings-kit/*" element={<SettingsRoutes />} />
                     <Route path="/*" element={<Panel user={user} />} />
                     <Route path="/profile" element={<Profile user={user} />} />
-                    <Route path="/profile/:userId" element={<Userprofile />} />
+                    <Route path="/review/profile/:userId" element={<Userprofile />} />
+                    <Route path="/profile/:userId" element={<Userprofile view />} />
                     <Route path="/history" element={<Reviews user={user} />} />
                 </ReactRoutes>
             </>

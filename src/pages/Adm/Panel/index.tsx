@@ -1,5 +1,5 @@
 import { Box, Button, Icon, IconButton } from "@mui/material"
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { colors } from "../../../style/colors"
 import drone from "../../../assets/logo/droneIcon.png"
 import SearchIcon from "@mui/icons-material/Search"
@@ -13,6 +13,8 @@ import { useUser } from "../../../hooks/useUser"
 import { useSnackbar } from "burgos-snackbar"
 import { useMenuDrawer } from "../../../hooks/useMenuDrawer"
 import { useNavigate } from "react-router-dom"
+import { useUsers } from "../../../hooks/useUsers"
+import { CardUser } from "../../../components/CardUser"
 
 interface PanelProps {
     user: User
@@ -26,6 +28,9 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
     const navigate = useNavigate()
 
     const menu = useMenuDrawer()
+    const { listUsers } = useUsers()
+    const [listEmployee, setListEmployee] = useState<User[]>()
+    const [listProducer, setListProducer] = useState<User[]>()
 
     useEffect(() => {
         io.on("user:disconnect", () => {
@@ -38,6 +43,12 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
             io.off("user:disconnect")
         }
     }, [])
+
+    useEffect(() => {
+        setListEmployee(listUsers?.filter((users) => users.employee !== null))
+        setListProducer(listUsers?.filter((users) => users.producer !== null))
+        
+    }, [listUsers])
     return (
         <Box style={{ flex: 1, backgroundColor: colors.button, paddingTop: "4vw" }}>
             <Box style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", padding: "0 4vw" }}>
@@ -46,7 +57,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                         flexDirection: "row",
                         paddingBottom: "2vw",
                         alignItems: "center",
-                        paddingTop:" 0vw",
+                        paddingTop: " 0vw",
                         gap: "1vw",
                     }}
                 >
@@ -122,8 +133,9 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                             Funcionários Fixados
                         </p>
                         <Box style={{ width: "100%" }}>
-                            {/* <Employee />
-                            <Employee /> */}
+                            {listEmployee?.slice(0,3).map((user) => (
+                                <CardUser user={user} key={user.id} location={`/profile/${user.id}`} />
+                            ))}
                         </Box>
                         <Box
                             style={{
@@ -132,6 +144,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                                 alignItems: "center",
                                 justifyContent: "space-between",
                                 gap: 20,
+                                paddingTop:"5vw"
                             }}
                         >
                             <Button
@@ -140,6 +153,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                                 sx={{
                                     width: "50%",
                                     padding: "2.5vw",
+                                    
                                     color: colors.text.white,
                                     fontWeight: "500",
                                     fontSize: "3vw",
@@ -153,7 +167,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                             <Box
                                 sx={{
                                     flexDirection: "row",
-                                    width: "30%",
+                                    width: "25%",
                                     alignItems: "center",
                                     justifyContent: "center",
                                     gap: "1vw",
@@ -186,8 +200,9 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                             Produtores Fixados
                         </p>
                         <Box style={{ width: "100%" }}>
-                            {/* <Employee />
-                            <Employee /> */}
+                            {listProducer?.slice(0,3).map((user) => (
+                                <CardUser user={user} key={user.id} location={`/profile/${user.id}`} />
+                            ))}
                         </Box>
                         <Box
                             style={{
@@ -204,6 +219,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                                     flexDirection: "row",
                                     alignItems: "center",
                                     justifyContent: "space-between",
+                                    paddingTop:"5vw"
                                 }}
                             >
                                 <Button

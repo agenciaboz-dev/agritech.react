@@ -1,16 +1,18 @@
 import { Avatar } from "@files-ui/react"
-import { Box, TextField, SxProps } from "@mui/material"
+import { Box, TextField, SxProps, Button } from "@mui/material"
 import React, { ChangeEventHandler, useState } from "react"
 import { textField } from "../../style/input"
 import MaskedInput from "../../components/MaskedInput"
+import { colors } from "../../style/colors"
 
 interface HeaderProfileProps {
     values: SignupValues
     handleChange?: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
     style?: SxProps
+    view?: boolean
 }
 
-export const HeaderProfile: React.FC<HeaderProfileProps> = ({ values, handleChange, style }) => {
+export const HeaderProfile: React.FC<HeaderProfileProps> = ({ values, handleChange, style, view }) => {
     const [image, setImage] = useState<File>()
 
     return (
@@ -35,7 +37,9 @@ export const HeaderProfile: React.FC<HeaderProfileProps> = ({ values, handleChan
             <Box sx={{ flexDirection: "column", gap: "3vw", width: "60%" }}>
                 <TextField label={"Nome Completo"} name="name" value={values.name} onChange={handleChange} sx={textField} />
                 <TextField label={"E-mail"} name="email" value={values.email} onChange={handleChange} sx={textField} />
-                <TextField
+                {view ? (
+                    <Button size="small" variant="contained" sx={{bgcolor:colors.button, textTransform:"none", borderRadius:"5vw"}}>Iniciar conversa</Button>
+                ):(<TextField
                     label={"Telefone"}
                     name="phone"
                     value={values.phone}
@@ -45,7 +49,8 @@ export const HeaderProfile: React.FC<HeaderProfileProps> = ({ values, handleChan
                         inputComponent: MaskedInput,
                         inputProps: { mask: "(00) 0 0000-0000" },
                     }}
-                />
+                />) }
+                
             </Box>
         </Box>
     )
