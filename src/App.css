@@ -86,12 +86,11 @@ section {
     /* flex-direction: column; */
 }
 
-div {
+.MuiBox-root {
     display: flex;
     /* flex-direction: column; */
     /* overflow-x: hidden; */
 }
-
 
 img {
     object-fit: contain;

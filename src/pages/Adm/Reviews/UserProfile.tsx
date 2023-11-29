@@ -30,6 +30,8 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
     const [loadingApprove, setLoadingApprove] = useState(false)
     const [loadingReject, setLoadingReject] = useState(false)
 
+    
+
     !view
         ? useEffect(() => {
               const user = pendingUsers.find((user) => String(user.id) === userId)
@@ -185,7 +187,7 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
                     )}
                 </Box>
                 <HeaderProfile values={valuesUser} style={{ flexDirection: "row", gap: "5vw" }} view />
-                <InfoProfile values={valuesUser} review view  />
+                <InfoProfile values={valuesUser} review   />
 
                 {!view && (
                     <Box sx={{ gap: "2vw", flexDirection: "row" }}>

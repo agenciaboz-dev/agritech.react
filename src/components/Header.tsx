@@ -1,5 +1,4 @@
 import { Box, IconButton, Paper, SxProps } from "@mui/material"
-import MenuIcon from "@mui/icons-material/Menu"
 import NotificationsIcon from "@mui/icons-material/Notifications"
 import { useHeader } from "../hooks/useHeader"
 import { useMenuDrawer } from "../hooks/useMenuDrawer"
@@ -9,13 +8,12 @@ import { useNavigate } from "react-router-dom"
 import SearchIcon from "@mui/icons-material/Search"
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone"
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline"
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos"
 import drone from "../assets/logo/droneIcon.png"
 
 interface HeaderProps {
     back?: boolean
     location?: string
-    style?: Sxprops
+    style?: SxProps
 }
 
 export const Header: React.FC<HeaderProps> = ({ back, location, style }) => {
@@ -34,6 +32,7 @@ export const Header: React.FC<HeaderProps> = ({ back, location, style }) => {
         <Paper
             elevation={0}
             sx={{
+                display: "flex",
                 justifyContent: "space-between",
                 width: "100%",
                 alignItems: "center",
@@ -44,7 +43,7 @@ export const Header: React.FC<HeaderProps> = ({ back, location, style }) => {
                 borderRadius: 0,
                 position: "fixed",
                 top: 0,
-                ...style
+                ...style,
             }}
         >
             <Box sx={{ flexDirection: "row", alignItems: "center" }}>
