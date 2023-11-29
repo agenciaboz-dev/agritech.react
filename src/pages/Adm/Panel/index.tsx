@@ -45,9 +45,8 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
     }, [])
 
     useEffect(() => {
-        setListEmployee(listUsers?.filter((users) => users.employee !== null))
+        setListEmployee(listUsers?.filter((users) => users.employee !== null && !users.isAdmin))
         setListProducer(listUsers?.filter((users) => users.producer !== null))
-        
     }, [listUsers])
     return (
         <Box style={{ flex: 1, backgroundColor: colors.button, paddingTop: "4vw" }}>
@@ -133,9 +132,10 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                             Funcionários Fixados
                         </p>
                         <Box style={{ width: "100%" }}>
-                            {listEmployee?.slice(0,3).map((user) => (
-                                <CardUser user={user} key={user.id} location={`/profile/${user.id}`} />
-                            ))}
+                            {listEmployee?.length !== 0 &&
+                                listEmployee
+                                    ?.slice(0, 2)
+                                    .map((user) => <CardUser user={user} key={user.id} location={`/profile/${user.id}`} />)}
                         </Box>
                         <Box
                             style={{
@@ -144,7 +144,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                                 alignItems: "center",
                                 justifyContent: "space-between",
                                 gap: 20,
-                                paddingTop:"5vw"
+                                paddingTop: "5vw",
                             }}
                         >
                             <Button
@@ -153,7 +153,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                                 sx={{
                                     width: "50%",
                                     padding: "2.5vw",
-                                    
+
                                     color: colors.text.white,
                                     fontWeight: "500",
                                     fontSize: "3vw",
@@ -200,9 +200,10 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                             Produtores Fixados
                         </p>
                         <Box style={{ width: "100%" }}>
-                            {listProducer?.slice(0,3).map((user) => (
-                                <CardUser user={user} key={user.id} location={`/profile/${user.id}`} />
-                            ))}
+                            {listProducer?.length !== 0 &&
+                                listProducer
+                                    ?.slice(0, 3)
+                                    .map((user) => <CardUser user={user} key={user.id} location={`/profile/${user.id}`} />)}
                         </Box>
                         <Box
                             style={{
@@ -219,7 +220,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                                     flexDirection: "row",
                                     alignItems: "center",
                                     justifyContent: "space-between",
-                                    paddingTop:"5vw"
+                                    paddingTop: "5vw",
                                 }}
                             >
                                 <Button
