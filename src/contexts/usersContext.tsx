@@ -5,7 +5,7 @@ interface UsersContextType {
     listUsers: User[] | undefined
     pendingUsers: User[]
     setPendingUsers: React.Dispatch<React.SetStateAction<User[]>>
-    setListUsers: React.Dispatch<React.SetStateAction<User[]>>
+    setListUsers: React.Dispatch<React.SetStateAction<User[] | undefined>>
 }
 
 const UsersContext = createContext<UsersContextType>(null!)
@@ -15,7 +15,7 @@ export const UsersProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     const io = useIo()
     const [pendingUsers, setPendingUsers] = useState<User[]>([])
 
-    const [listUsers, setListUsers] = useState<User[]>([])
+    const [listUsers, setListUsers] = useState<User[]>()
 
     useEffect(() => {
         io.emit("users:list")
@@ -30,19 +30,6 @@ export const UsersProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         }
         console.log(listUsers)
     }, [])
-    useEffect(() => {
-        io.emit("users:list")
-
-        const newListUsers = (newUser: User) => {
-            setListUsers((prevUsers) => [...prevUsers, newUser])
-        }
-
-        io.on("users:list:success", newListUsers)
-
-        return () => {
-            io.off("users:list:success", newListUsers)
-        }
-    }, [listUsers])
 
     useEffect(() => {
         io.emit("user:pendingApproval")
