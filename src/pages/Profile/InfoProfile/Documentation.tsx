@@ -5,7 +5,7 @@ import MaskedInput from "../../../components/MaskedInput"
 import { colors } from "../../../style/colors"
 
 interface DocumentationProps {
-    values: FormValues
+    values: SignupValues
     handleChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
 }
 
@@ -22,16 +22,18 @@ export const Documentation: React.FC<DocumentationProps> = ({ values, handleChan
                     InputProps={{
                         inputComponent: MaskedInput,
                         inputProps: { mask: "000.000.000-00" },
+                        readOnly:true
                     }}
                     disabled
                 />
                 <TextField
                     label={"RG"}
-                    name={"rg"}
+                    name={"employee.rg"}
                     sx={textField}
                     value={values.employee?.rg}
                     onChange={handleChange}
                     disabled
+                    aria-readonly
                 />
             </Box>
             <TextField
@@ -49,7 +51,7 @@ export const Documentation: React.FC<DocumentationProps> = ({ values, handleChan
 
             <TextField
                 label={"Carteira de trabalho"}
-                name={"relationship"}
+                name={"employee.work_card"}
                 sx={textField}
                 value={values.employee?.work_card}
                 onChange={handleChange}

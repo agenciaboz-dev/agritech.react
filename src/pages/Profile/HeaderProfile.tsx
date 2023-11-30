@@ -4,6 +4,7 @@ import React, { ChangeEventHandler, useState } from "react"
 import { textField } from "../../style/input"
 import MaskedInput from "../../components/MaskedInput"
 import { colors } from "../../style/colors"
+import avatar from "../../assets/logo/Avatar.png"
 
 interface HeaderProfileProps {
     values: SignupValues
@@ -22,7 +23,7 @@ export const HeaderProfile: React.FC<HeaderProfileProps> = ({ values, handleChan
             }}
         >
             <Avatar
-                src={image}
+                src={avatar}
                 onChange={(file) => setImage(file)}
                 changeLabel="Trocar foto"
                 emptyLabel="Adicionar foto"
@@ -38,19 +39,26 @@ export const HeaderProfile: React.FC<HeaderProfileProps> = ({ values, handleChan
                 <TextField label={"Nome Completo"} name="name" value={values.name} onChange={handleChange} sx={textField} />
                 <TextField label={"E-mail"} name="email" value={values.email} onChange={handleChange} sx={textField} />
                 {view ? (
-                    <Button size="small" variant="contained" sx={{bgcolor:colors.button, textTransform:"none", borderRadius:"5vw"}}>Iniciar conversa</Button>
-                ):(<TextField
-                    label={"Telefone"}
-                    name="phone"
-                    value={values.phone}
-                    onChange={handleChange}
-                    sx={textField}
-                    InputProps={{
-                        inputComponent: MaskedInput,
-                        inputProps: { mask: "(00) 0 0000-0000" },
-                    }}
-                />) }
-                
+                    <Button
+                        size="small"
+                        variant="contained"
+                        sx={{ bgcolor: colors.button, textTransform: "none", borderRadius: "5vw" }}
+                    >
+                        Iniciar conversa
+                    </Button>
+                ) : (
+                    <TextField
+                        label={"Telefone"}
+                        name="phone"
+                        value={values.phone}
+                        onChange={handleChange}
+                        sx={textField}
+                        InputProps={{
+                            inputComponent: MaskedInput,
+                            inputProps: { mask: "(00) 0 0000-0000" },
+                        }}
+                    />
+                )}
             </Box>
         </Box>
     )

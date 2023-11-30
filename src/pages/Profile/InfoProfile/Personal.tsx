@@ -30,7 +30,7 @@ export const Personal: React.FC<PersonalProps> = ({ values, handleChange }) => {
                     select
                     onChange={handleChange}
                     label="Gênero"
-                    name="gender"
+                    name="employee.gender"
                     sx={{
                         ...textField,
                         width: "50%",
@@ -41,7 +41,7 @@ export const Personal: React.FC<PersonalProps> = ({ values, handleChange }) => {
                         sx: { ...textField, height: "12vw" },
                     }}
                     SelectProps={{
-                        MenuProps: { MenuListProps: { sx: { maxHeight: "80vw", overflowY: "auto" } } },
+                        MenuProps: { MenuListProps: { sx: { width: "100%", maxHeight: "80vw", overflowY: "auto" } } },
                     }}
                 >
                     <MenuItem
@@ -55,7 +55,7 @@ export const Personal: React.FC<PersonalProps> = ({ values, handleChange }) => {
                             key={gender.value}
                             value={gender.value}
                             sx={{
-                                width: "50%",
+                                width: "100%",
                             }}
                         >
                             {gender.value}
@@ -67,7 +67,7 @@ export const Personal: React.FC<PersonalProps> = ({ values, handleChange }) => {
                     select
                     onChange={handleChange}
                     label="Estado Civil"
-                    name="relationship"
+                    name="employee.relationship"
                     sx={{
                         ...textField,
                         width: "50%",
@@ -105,7 +105,7 @@ export const Personal: React.FC<PersonalProps> = ({ values, handleChange }) => {
             </Box>
             <TextField
                 label={"Nacionalidade"}
-                name={"nationality"}
+                name={"employee.nationality"}
                 sx={textField}
                 value={values.employee?.nationality}
                 onChange={handleChange}

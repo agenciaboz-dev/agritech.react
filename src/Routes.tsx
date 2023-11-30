@@ -12,6 +12,9 @@ import { Analysis } from "./pages/Analysis"
 import { Reviews } from "./pages/Adm/Reviews"
 import { Userprofile } from "./pages/Adm/Reviews/UserProfile"
 import { SettingsRoutes } from "./pages/Adm/Panel/SettingsRoutes"
+import { PanelUser } from "./pages/Users/Panel"
+import { ListUsers } from "./pages/Adm/Panel/Lists/ListUsers"
+import { Adm } from "./pages/Adm"
 
 interface RoutesProps {}
 
@@ -24,13 +27,15 @@ export const Routes: React.FC<RoutesProps> = ({}) => {
             <>
                 <BottomNavigation section={bottomMenu.admin} />
                 <ReactRoutes>
+                    <Route path="/*" element={<Panel user={user} />} />
                     <Route index element={<Panel user={user} />} />
                     <Route path="/settings-kit/*" element={<SettingsRoutes />} />
-                    <Route path="/*" element={<Panel user={user} />} />
                     <Route path="/profile" element={<Profile user={user} />} />
                     <Route path="/review/profile/:userId" element={<Userprofile />} />
                     <Route path="/profile/:userId" element={<Userprofile view />} />
                     <Route path="/history" element={<Reviews user={user} />} />
+                    <Route path="/users" element={<ListUsers />} />
+                    <Route path="/adm/*" element={<Adm user={user} />} />
                 </ReactRoutes>
             </>
         ) : !user.approved ? (
@@ -39,7 +44,12 @@ export const Routes: React.FC<RoutesProps> = ({}) => {
                 <Route index element={<Analysis user={user} />} />
             </ReactRoutes>
         ) : (
-            <p> pipiipoopoo voce não é adm, aguarde um pouco</p>
+            <ReactRoutes>
+                <Route path="/*" element={<PanelUser user={user} />} />
+                <Route index element={<PanelUser user={user} />} />
+                <Route path="/profile" element={<Profile user={user} />} />
+                <Route path="/profile/:userId" element={<Userprofile view />} />
+            </ReactRoutes>
         )
     ) : (
         <ReactRoutes>

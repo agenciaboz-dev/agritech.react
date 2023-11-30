@@ -19,7 +19,7 @@ export const Address: React.FC<AddressProps> = ({ values, handleChange }) => {
             <Box sx={{ flexDirection: "row", gap: "3vw" }}>
                 <TextField
                     label={"CEP"}
-                    name={"cep"}
+                    name={"address.cep"}
                     sx={textField}
                     value={values.address.cep}
                     onChange={handleChange}
@@ -32,7 +32,7 @@ export const Address: React.FC<AddressProps> = ({ values, handleChange }) => {
                     select
                     onChange={handleChange}
                     label="Estado"
-                    name={"uf"}
+                    name={"address.uf"}
                     sx={{
                         ...textField,
                         width: "48%",
@@ -67,10 +67,10 @@ export const Address: React.FC<AddressProps> = ({ values, handleChange }) => {
                 </TextField>
                 {/* <TextField label={"Estado"} name={"uf"} sx={textField} value={values.address.uf} onChange={handleChange} /> */}
             </Box>
-            <TextField label={"Cidade"} name={"city"} sx={textField} value={values.address.city} onChange={handleChange} />
+            <TextField label={"Cidade"} name={"address.city"} sx={textField} value={values.address.city} onChange={handleChange} />
             <TextField
                 label={"Bairro"}
-                name={"district"}
+                name={"address.district"}
                 sx={textField}
                 value={values.address.district}
                 onChange={handleChange}
@@ -78,19 +78,26 @@ export const Address: React.FC<AddressProps> = ({ values, handleChange }) => {
             <Box sx={{ flexDirection: "row", gap: "3vw" }}>
                 <TextField
                     label={"Logradouro, Rua, Avenida..."}
-                    name={"street"}
-                    sx={textField}
+                    name={"address.street"}
+                    sx={{...textField, width:"90%"}}
                     value={values.address.street}
                     onChange={handleChange}
                 />
                 <TextField
                     label={"Nº"}
-                    name={"number"}
+                    name={"address.number"}
                     sx={textField}
                     value={values.address.number}
                     onChange={handleChange}
                 />
             </Box>
+                <TextField
+                    label={"Nº"}
+                    name={"address.complement"}
+                    sx={textField}
+                    value={values.address.complement}
+                    onChange={handleChange}
+                />
         </Box>
     )
 }

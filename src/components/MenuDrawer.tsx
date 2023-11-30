@@ -6,6 +6,7 @@ import { useNavigationList } from "../hooks/useNavigationList"
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace"
 import { useNavigate } from "react-router-dom"
 import Ios from "../assets/icons/ios-settings.svg"
+import avatar from "../assets/logo/Avatar.png"
 
 import LogoutIcon from "@mui/icons-material/Logout"
 
@@ -72,7 +73,8 @@ export const MenuDrawer: React.FC<MenuDrawerProps> = ({}) => {
                         <KeyboardBackspaceIcon sx={iconStyle} />
                     </IconButton>
                     <Box sx={{ alignItems: "center", gap: "6vw" }}>
-                        <Avatar src={user?.image} sx={{ width: "50vw", height: "50vw", alignSelf: "center" }} />
+                        {/* <Avatar src={user?.image} sx={{ width: "50vw", height: "50vw", alignSelf: "center" }} /> */}
+                        <Avatar src={avatar} sx={{ width: "50vw", height: "50vw", alignSelf: "center" }} />
                         <p style={{ color: "#fff", fontSize: "5vw" }}>{user?.name}</p>
                     </Box>
                 </Box>

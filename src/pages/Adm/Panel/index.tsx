@@ -180,7 +180,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                                         fontFamily: "MalgunGothic2",
                                         fontWeight: "500",
                                     }}
-                                    onClick={() => {}}
+                                    onClick={() => {navigate("../users")}}
                                 >
                                     Ver todos
                                 </p>
@@ -255,7 +255,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                                             fontFamily: "MalgunGothic2",
                                             fontWeight: "500",
                                         }}
-                                        onClick={() => {}}
+                                        onClick={() => {navigate("../users")}}
                                     >
                                         Ver todos
                                     </p>
@@ -266,11 +266,6 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                         </Box>
                     </Box>
 
-                    {/* {Object.entries(user).map(([key, value]) => (
-                    <Text key={key}>
-                    {key}: {value}
-                    </Text>
-                ))} */}
                     <Box sx={{ flexDirection: "row" }}>
                         <BottomNavigation section={bottomMenu.admin} external />
                     </Box>
