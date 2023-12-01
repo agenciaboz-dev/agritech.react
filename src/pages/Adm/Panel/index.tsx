@@ -48,6 +48,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
         setListEmployee(listUsers?.filter((users) => users.employee !== null && !users.isAdmin))
         setListProducer(listUsers?.filter((users) => users.producer !== null))
     }, [listUsers])
+
     return (
         <Box style={{ flex: 1, backgroundColor: colors.button, paddingTop: "4vw" }}>
             <Box style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", padding: "0 4vw" }}>
@@ -105,7 +106,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                     <p style={{ color: colors.text.white, fontSize: "5vw", fontFamily: "MalgunGothic2" }}>
                         Configuração de Kits
                     </p>
-                    <IconButton onClick={() => navigate("/settings-kit")}>
+                    <IconButton onClick={() => navigate("/adm/settings-kit")}>
                         <ArrowForwardIosIcon sx={{ color: "#fff", width: "5vw" }} />
                     </IconButton>
                 </Box>
@@ -134,8 +135,8 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                         <Box style={{ width: "100%" }}>
                             {listEmployee?.length !== 0 &&
                                 listEmployee
-                                    ?.slice(0, 2)
-                                    .map((user) => <CardUser user={user} key={user.id} location={`/profile/${user.id}`} />)}
+                                    ?.slice(0, 3)
+                                    .map((user) => <CardUser user={user} key={user.id} location={`/adm/profile/${user.id}`} />)}
                         </Box>
                         <Box
                             style={{
@@ -180,7 +181,9 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                                         fontFamily: "MalgunGothic2",
                                         fontWeight: "500",
                                     }}
-                                    onClick={() => {navigate("../users")}}
+                                    onClick={() => {
+                                        navigate("../users")
+                                    }}
                                 >
                                     Ver todos
                                 </p>
@@ -255,7 +258,9 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                                             fontFamily: "MalgunGothic2",
                                             fontWeight: "500",
                                         }}
-                                        onClick={() => {navigate("../users")}}
+                                        onClick={() => {
+                                            navigate("../users")
+                                        }}
                                     >
                                         Ver todos
                                     </p>

@@ -30,8 +30,6 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
     const [loadingApprove, setLoadingApprove] = useState(false)
     const [loadingReject, setLoadingReject] = useState(false)
 
-    
-
     !view
         ? useEffect(() => {
               const user = pendingUsers.find((user) => String(user.id) === userId)
@@ -117,14 +115,14 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
             setLoadingApprove(false)
             snackbar({ severity: "success", text: "Usuário aprovado" })
             io.emit("user:pendingApproval")
-            navigate("../history")
+            navigate("../reviews")
         }
         const handleRejectionSuccess = () => {
             console.log("REPROVADO")
             setLoadingReject(false)
             snackbar({ severity: "info", text: "Usuário reprovado" })
             io.emit("user:pendingApproval")
-            navigate("../history")
+            navigate("../reviews")
         }
 
         io.on("application:status:approved", handleApprovalSuccess)
@@ -159,7 +157,7 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
                     flexDirection: "row",
                 }}
             >
-                <Header back location={view ? "../" : "../history"} />
+                <Header back location={view ? "../" : "../reviews"} />
             </Box>
             <Box
                 style={{
@@ -187,7 +185,7 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
                     )}
                 </Box>
                 <HeaderProfile values={valuesUser} style={{ flexDirection: "row", gap: "5vw" }} view />
-                <InfoProfile values={valuesUser} review   />
+                <InfoProfile values={valuesUser} review />
 
                 {!view && (
                     <Box sx={{ gap: "2vw", flexDirection: "row" }}>

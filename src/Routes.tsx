@@ -27,14 +27,7 @@ export const Routes: React.FC<RoutesProps> = ({}) => {
             <>
                 <BottomNavigation section={bottomMenu.admin} />
                 <ReactRoutes>
-                    <Route path="/*" element={<Panel user={user} />} />
-                    <Route index element={<Panel user={user} />} />
-                    <Route path="/settings-kit/*" element={<SettingsRoutes />} />
-                    <Route path="/profile" element={<Profile user={user} />} />
-                    <Route path="/review/profile/:userId" element={<Userprofile />} />
-                    <Route path="/profile/:userId" element={<Userprofile view />} />
-                    <Route path="/history" element={<Reviews user={user} />} />
-                    <Route path="/users" element={<ListUsers />} />
+                    <Route path="/" element={<Panel user={user} />} />
                     <Route path="/adm/*" element={<Adm user={user} />} />
                 </ReactRoutes>
             </>

@@ -18,11 +18,9 @@ const Android12Switch = styled(Switch)(({ theme }) => ({
             height: 16,
         },
         "&:before": {
-            
             left: 12,
         },
         "&:after": {
-            
             right: 12,
         },
     },
@@ -37,11 +35,10 @@ const Android12Switch = styled(Switch)(({ theme }) => ({
 interface CardKitProps {
     kit: number
 }
-export const CardKit: React.FC<CardKitProps> = ({kit}) => {
-    
-    const navigate= useNavigate()
+export const CardKit: React.FC<CardKitProps> = ({ kit }) => {
+    const navigate = useNavigate()
     return (
-        <Box sx={{ padding: "3vw 1vw", flexDirection: "row", alignItems: "center", borderBottom:"1px solid #88A486" }}>
+        <Box sx={{ padding: "3vw 1vw", flexDirection: "row", alignItems: "center", borderBottom: "1px solid #88A486" }}>
             <FormGroup sx={{ width: "90%" }}>
                 <FormControlLabel
                     control={<Android12Switch defaultChecked />}
@@ -63,7 +60,7 @@ export const CardKit: React.FC<CardKitProps> = ({kit}) => {
                     }
                 />
             </FormGroup>
-            <ArrowRightIcon onClick={ ()=>navigate(`/settings-kit/${kit}`) } />
+            <ArrowRightIcon onClick={() => navigate(`/adm/settings-kit/${kit}`)} />
         </Box>
     )
 }

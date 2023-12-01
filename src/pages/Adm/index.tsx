@@ -14,7 +14,8 @@ interface AdmProps {
 export const Adm: React.FC<AdmProps> = ({ user }) => {
     return (
         <ReactRoutes>
-            <Route path="/*" element={<Panel user={user} />} />
+            <Route path="/*" element={ <Panel user={ user } /> } />
+            <Route path="/adm" element={<Panel user={user} />} />
             <Route path="/settings-kit/*" element={<SettingsRoutes />} />
             <Route path="/profile" element={<Profile user={user} />} />
             <Route path="/review/profile/:userId" element={<Userprofile />} />

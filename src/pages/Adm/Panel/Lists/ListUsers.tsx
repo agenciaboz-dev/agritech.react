@@ -50,7 +50,7 @@ export const ListUsers: React.FC<ListUsersProps> = ({}) => {
                     flexDirection: "row",
                 }}
             >
-                <Header back location="../panel" />
+                <Header back location="../" />
             </Box>
             <Box
                 style={{
@@ -70,12 +70,10 @@ export const ListUsers: React.FC<ListUsersProps> = ({}) => {
                         backgroundColor: "#fff",
                         borderTopLeftRadius: "7vw",
                         borderTopRightRadius: "7vw",
-                        overflow:"hidden"
-                        
+                        overflow: "hidden",
                     }}
                 >
-                    <Box sx={{ gap: "2vw", height: "90%",overflow: "auto", }}>
-                       
+                    <Box sx={{ gap: "2vw", height: "90%", overflow: "auto" }}>
                         {listUsers?.map((user) => (
                             <CardUser user={user} key={user.id} location={`/profile/${user.id}`} />
                         ))}

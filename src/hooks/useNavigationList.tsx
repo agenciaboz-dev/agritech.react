@@ -37,7 +37,7 @@ export const useNavigationList = () => {
             {
                 id: 1,
                 title: "Meu Perfil",
-                location: "/profile",
+                location: "/adm/profile",
                 icon: <img src={User} style={{ padding: "0 1.5vw", width: "7vw" }} />,
             },
             {

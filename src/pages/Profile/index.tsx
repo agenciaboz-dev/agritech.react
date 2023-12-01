@@ -147,7 +147,6 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
             console.log("atualizado", dataUser)
             setLoading(false)
             snackbar({ severity: "success", text: "Dados alterados!" })
-            // navigate("../home")
         })
 
         io.on("user:update:failed", (error) => {
@@ -193,7 +192,7 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
                     flexDirection: "row",
                 }}
             >
-                <Header back location="../panel" />
+                <Header back location="../adm/" />
             </Box>
             <Box
                 sx={{

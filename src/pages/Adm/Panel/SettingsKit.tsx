@@ -23,7 +23,6 @@ export const SettingsKit: React.FC<SettingsKitProps> = ({}) => {
         header.setTitle("Painel")
     }, [])
     return (
-      
         <Box
             sx={{
                 width: "100%",
@@ -78,7 +77,7 @@ export const SettingsKit: React.FC<SettingsKitProps> = ({}) => {
                             width: "40%",
                             color: colors.text.black,
                         }}
-                        onClick={() => navigate("/settings-kit/addkit")}
+                        onClick={() => navigate("/adm/settings-kit/addkit")}
                     >
                         <img src={addIcon} style={{ width: "5vw" }} />
                         Adicionar kit
