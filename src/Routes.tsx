@@ -40,7 +40,7 @@ export const Routes: React.FC<RoutesProps> = ({}) => {
             </ReactRoutes>
         ) : (
             <>
-                <BottomNavigation section={user.employee ? bottomMenu.employee : bottomMenu.producer} />
+                {/* <BottomNavigation section={user.employee ? bottomMenu.employee : bottomMenu.producer} /> */}
                 <ReactRoutes>
                     {user.employee ? (
                         <Route path="/employee/*" element={<Employee user={user} />} />

@@ -11,22 +11,17 @@ import { useIo } from "../../../hooks/useIo"
 import { useUser } from "../../../hooks/useUser"
 import { useSnackbar } from "burgos-snackbar"
 import { useMenuDrawer } from "../../../hooks/useMenuDrawer"
-import { useNavigate } from "react-router-dom"
-import { useUsers } from "../../../hooks/useUsers"
 
 interface PanelUserProps {
     user: User
 }
 
 export const PanelUser: React.FC<PanelUserProps> = ({ user }) => {
-    const bottomMenu = useNavigationList()
     const io = useIo()
     const { setUser } = useUser()
     const { snackbar } = useSnackbar()
-    const navigate = useNavigate()
 
     const menu = useMenuDrawer()
-    const { listUsers } = useUsers()
 
     useEffect(() => {
         io.on("user:disconnect", () => {
