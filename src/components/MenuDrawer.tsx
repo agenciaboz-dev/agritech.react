@@ -15,6 +15,8 @@ interface MenuDrawerProps {}
 export const MenuDrawer: React.FC<MenuDrawerProps> = ({}) => {
     const navigationItems = useNavigationList()
     const admDrawerItems = navigationItems.admin.drawer
+    const employeeDrawer = navigationItems.employee.drawer
+    const producerDrawer = navigationItems.producer.drawer
 
     const navigate = useNavigate()
 
@@ -80,19 +82,47 @@ export const MenuDrawer: React.FC<MenuDrawerProps> = ({}) => {
                 </Box>
                 {/*  */}
                 <Box sx={{ flexDirection: "column", paddingTop: "4vw" }}>
-                    {admDrawerItems.map((menu) => (
-                        <MenuItem
-                            key={menu.location}
-                            onClick={() => {
-                                handleClose()
-                                navigate(menu.location)
-                            }}
-                            sx={menuItemStyle}
-                        >
-                            {menu.icon}
-                            {menu.title}
-                        </MenuItem>
-                    ))}
+                    {user?.isAdmin
+                        ? admDrawerItems.map((menu) => (
+                              <MenuItem
+                                  key={menu.location}
+                                  onClick={() => {
+                                      handleClose()
+                                      navigate(menu.location)
+                                  }}
+                                  sx={menuItemStyle}
+                              >
+                                  {menu.icon}
+                                  {menu.title}
+                              </MenuItem>
+                          ))
+                        : user?.employee
+                        ? employeeDrawer.map((menu) => (
+                              <MenuItem
+                                  key={menu.location}
+                                  onClick={() => {
+                                      handleClose()
+                                      navigate(menu.location)
+                                  }}
+                                  sx={menuItemStyle}
+                              >
+                                  {menu.icon}
+                                  {menu.title}
+                              </MenuItem>
+                          ))
+                        : producerDrawer.map((menu) => (
+                              <MenuItem
+                                  key={menu.location}
+                                  onClick={() => {
+                                      handleClose()
+                                      navigate(menu.location)
+                                  }}
+                                  sx={menuItemStyle}
+                              >
+                                  {menu.icon}
+                                  {menu.title}
+                              </MenuItem>
+                          ))}
                 </Box>
             </Box>
 

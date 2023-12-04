@@ -43,25 +43,25 @@ export const useNavigationList = () => {
             {
                 id: 2,
                 title: "Cadastrar Funcionário",
-                location: "/newEmployee",
+                location: "/adm/new_employee",
                 icon: <img src={AddEmployee} style={{ width: "6vw" }} />,
             },
             {
                 id: 3,
                 title: "Cadastrar Produtor",
-                location: "/newProducer",
+                location: "/adm/new_producer",
                 icon: <img src={AddUser} style={{ width: "6vw" }} />,
             },
             {
                 id: 4,
                 title: "Fixados",
-                location: "/fixed",
+                location: "/adm/fixed",
                 icon: <img src={Pin} style={{ width: "6vw" }} />,
             },
             {
                 id: 5,
                 title: "Histórico",
-                location: "/history",
+                location: "/adm/history",
                 icon: <img src={Timer} style={{ width: "6vw" }} />,
             },
         ],
@@ -105,7 +105,26 @@ export const useNavigationList = () => {
         title: "Produtor",
         location: "/producer",
         icon: <img src={GridPanel} alt="Logotipo do App" />,
-        drawer: [],
+        drawer: [
+            {
+                id: 1,
+                title: "Meu Perfil",
+                location: "/profile",
+                icon: <img src={User} style={{ padding: "0 1.5vw", width: "7vw" }} />,
+            },
+            {
+                id: 2,
+                title: "Cadastrar Lavoura",
+                location: "/producer/new_tillage",
+                icon: <img src={AddEmployee} style={{ width: "6vw" }} />,
+            },
+            {
+                id: 4,
+                title: "Fixados",
+                location: "/producer/fixed",
+                icon: <img src={Pin} style={{ width: "6vw" }} />,
+            },
+        ],
         bottom: [
             {
                 id: 1,
@@ -131,28 +150,53 @@ export const useNavigationList = () => {
     const employee: NavigationMenu = {
         id: 3,
         title: "Funcionário",
-        drawer: [],
+        drawer: [
+            {
+                id: 1,
+                title: "Meu Perfil",
+                location: "/profile",
+                icon: <img src={User} style={{ padding: "0 1.5vw", width: "7vw" }} />,
+            },
+            {
+                id: 2,
+                title: "Cadastrar produtor",
+                location: "/employee/new_producer",
+                icon: <img src={AddEmployee} style={{ width: "6vw" }} />,
+            },
+            {
+                id: 3,
+                title: "Abrir chamado",
+                location: "/employee/new_call",
+                icon: <img src={AddUser} style={{ width: "6vw" }} />,
+            },
+            {
+                id: 4,
+                title: "Fixados",
+                location: "/employee/fixed",
+                icon: <img src={Pin} style={{ width: "6vw" }} />,
+            },
+        ],
         location: "/employee",
         icon: <img src={GridPanel} />,
         bottom: [
-            // {
-            //     id: 1,
-            //     title: "Painel",
-            //     location: "/panel",
-            //     icon: <GridViewIcon sx={iconStyle} />,
-            // },
-            // {
-            //     id: 2,
-            //     title: "Conversas",
-            //     location: "/chats",
-            //     icon: <ChatIcon sx={iconStyle} />,
-            // },
-            // {
-            //     id: 3,
-            //     title: "Solicitações",
-            //     location: "/requests",
-            //     icon: <StorefrontIcon sx={iconStyle} />,
-            // },
+            {
+                id: 1,
+                title: "Painel ",
+                location: "/panel",
+                icon: <GridViewIcon sx={iconStyle} />,
+            },
+            {
+                id: 2,
+                title: "Conversas",
+                location: "/chats",
+                icon: <ChatIcon sx={iconStyle} />,
+            },
+            {
+                id: 3,
+                title: "Solicitações",
+                location: "/requests",
+                icon: <StorefrontIcon sx={iconStyle} />,
+            },
         ],
     }
 

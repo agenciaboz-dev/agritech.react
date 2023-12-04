@@ -8,13 +8,15 @@ import { Home } from "./pages/Home"
 import { Profile } from "./pages/Profile"
 import { useNavigationList } from "./hooks/useNavigationList"
 import { BottomNavigation } from "./components/BottomNavigation"
-import { Analysis } from "./pages/Analysis"
+import { Analysis } from "./pages/Signup/Analysis"
 import { Reviews } from "./pages/Adm/Reviews"
 import { Userprofile } from "./pages/Adm/Reviews/UserProfile"
 import { SettingsRoutes } from "./pages/Adm/Panel/SettingsRoutes"
 import { PanelUser } from "./pages/Users/Panel"
 import { ListUsers } from "./pages/Adm/Panel/Lists/ListUsers"
 import { Adm } from "./pages/Adm"
+import { Employee } from "./pages/Employee"
+import { Producer } from "./pages/Producer"
 
 interface RoutesProps {}
 
@@ -37,12 +39,19 @@ export const Routes: React.FC<RoutesProps> = ({}) => {
                 <Route index element={<Analysis user={user} />} />
             </ReactRoutes>
         ) : (
-            <ReactRoutes>
-                <Route path="/*" element={<PanelUser user={user} />} />
-                <Route index element={<PanelUser user={user} />} />
-                <Route path="/profile" element={<Profile user={user} />} />
-                <Route path="/profile/:userId" element={<Userprofile view />} />
-            </ReactRoutes>
+            <>
+                <BottomNavigation section={user.employee ? bottomMenu.employee : bottomMenu.producer} />
+                <ReactRoutes>
+                    {user.employee ? (
+                        <Route path="/employee/*" element={<Employee user={user} />} />
+                    ) : (
+                        <Route path="/producer/*" element={<Producer user={user} />} />
+                    )}
+
+                    <Route path="/profile" element={<Profile user={user} />} />
+                    <Route path="/profile/:userId" element={<Userprofile view />} />
+                </ReactRoutes>
+            </>
         )
     ) : (
         <ReactRoutes>

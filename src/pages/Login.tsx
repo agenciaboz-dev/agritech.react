@@ -51,7 +51,7 @@ export const Login: React.FC<LoginProps> = ({}) => {
             setLoading(false)
             setUser(user)
             console.log("Usuário definido:", user)
-            navigate("/adm")
+            navigate(user.isAdmin ? "/adm" : user.employee ? "/employee" : "/producer")
         })
 
         io.on("user:login:failed", () => {

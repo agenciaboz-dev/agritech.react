@@ -5,7 +5,7 @@ import { textField } from "../../style/input"
 import { useBankAccount } from "../../hooks/useBankAccount"
 
 interface StepFourProps {
-    data: FormValues
+    data: SignupValues
     handleChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
     setCurrentStep: (value: React.SetStateAction<number>) => void
 }

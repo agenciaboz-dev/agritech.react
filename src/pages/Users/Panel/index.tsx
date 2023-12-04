@@ -121,7 +121,6 @@ export const PanelUser: React.FC<PanelUserProps> = ({ user }) => {
                     </Box>
 
                     <Box sx={{ flexDirection: "row" }}>
-                        <BottomNavigation section={bottomMenu.admin} external />
                     </Box>
                 </Box>
             </Box>

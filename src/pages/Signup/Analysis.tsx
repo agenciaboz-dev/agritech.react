@@ -1,9 +1,9 @@
 import { Box, Button, IconButton } from "@mui/material"
 import React, { useState } from "react"
-import { useUser } from "../hooks/useUser"
+import { useUser } from "../../hooks/useUser"
 import LogoutIcon from "@mui/icons-material/Logout"
-import drone from "../assets/logo/droneIcon.png"
-import { colors } from "../style/colors"
+import drone from "../../assets/logo/droneIcon.png"
+import { colors } from "../../style/colors"
 import HighlightOffIcon from "@mui/icons-material/HighlightOff"
 
 interface AnalysisProps {
