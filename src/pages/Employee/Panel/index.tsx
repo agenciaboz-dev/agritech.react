@@ -1,18 +1,16 @@
-import { Box, Button, Icon, IconButton } from "@mui/material"
-import React, { useEffect, useState } from "react"
+import { Box, IconButton } from "@mui/material"
+import React, { useEffect } from "react"
 import { colors } from "../../../style/colors"
 import drone from "../../../assets/logo/droneIcon.png"
 import SearchIcon from "@mui/icons-material/Search"
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone"
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline"
-import { useNavigationList } from "../../../hooks/useNavigationList"
-import { BottomNavigation } from "../../../components/BottomNavigation"
 import { useIo } from "../../../hooks/useIo"
 import { useUser } from "../../../hooks/useUser"
 import { useSnackbar } from "burgos-snackbar"
 import { useMenuDrawer } from "../../../hooks/useMenuDrawer"
-import AddIcon from "@mui/icons-material/Add"
 import { useNavigate } from "react-router-dom"
+import PostAddIcon from "@mui/icons-material/PostAdd"
 
 interface PanelUserProps {
     user: User
@@ -105,23 +103,20 @@ export const PanelUser: React.FC<PanelUserProps> = ({ user }) => {
                         gap: "10vw",
                     }}
                 >
-                    {user.producer && (
-                        <IconButton
-                            sx={{
-                                bgcolor: colors.button,
-                                width: "12vw",
-                                height: "12vw",
-                                borderRadius: "10vw",
-                                position: "absolute",
-                                bottom: "26vw",
-                                right: "10vw",
-                            }}
-                            onClick={() => navigate("/producer/new_tillage")}
-                        >
-                            <AddIcon fontSize="large" sx={{ color: "#fff" }} />
-                        </IconButton>
-                        
-                    )}
+                    <IconButton
+                        sx={{
+                            bgcolor: colors.button,
+                            width: "12vw",
+                            height: "12vw",
+                            borderRadius: "10vw",
+                            position: "absolute",
+                            bottom: "26vw",
+                            right: "7vw",
+                        }}
+                        onClick={() => navigate("/employee/new_call")}
+                    >
+                        <PostAddIcon fontSize="medium" sx={{ color: "#fff" }} />
+                    </IconButton>
                 </Box>
             </Box>
         </Box>

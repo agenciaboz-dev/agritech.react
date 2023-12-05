@@ -10,8 +10,8 @@ import { useRelationship } from "../../hooks/useRelationship"
 interface StepOneProps {
     data: SignupValues
     handleChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
-    typeUser: string
     setCurrentStep: (value: React.SetStateAction<number>) => void
+    typeUser: string
 }
 
 export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, typeUser, setCurrentStep }) => {

@@ -1,4 +1,4 @@
-import { Routes } from "../Router"
+import { Routes } from "../Routes"
 
 export const routes = [
     { key: "panel", title: "Painel", focusedIcon: "grid" },

@@ -150,6 +150,7 @@ export const useNavigationList = () => {
     const employee: NavigationMenu = {
         id: 3,
         title: "Funcionário",
+        location: "/employee",
         drawer: [
             {
                 id: 1,
@@ -176,7 +177,7 @@ export const useNavigationList = () => {
                 icon: <img src={Pin} style={{ width: "6vw" }} />,
             },
         ],
-        location: "/employee",
+        
         icon: <img src={GridPanel} />,
         bottom: [
             {

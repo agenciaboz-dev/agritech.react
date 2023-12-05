@@ -192,7 +192,7 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
                     flexDirection: "row",
                 }}
             >
-                <Header back location="../adm/" />
+                <Header back location={user.isAdmin ? "../adm/" : user.employee ? "../employee/" : "../producer/"} />
             </Box>
             <Box
                 sx={{
