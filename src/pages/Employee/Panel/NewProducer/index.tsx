@@ -9,6 +9,7 @@ import MaskedInput from "../../../../components/MaskedInput"
 import { Avatar, ExtFile } from "@files-ui/react"
 import { useUser } from "../../../../hooks/useUser"
 import { useNavigate } from "react-router-dom"
+import { Geolocal } from "./Geolocal"
 
 interface NewProducerProps {}
 
@@ -21,7 +22,7 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
 
     useEffect(() => {
         header.setTitle("Novo Produtor")
-    })
+    }, [name])
 
     const initialValues: NewProducer = {
         name: "",
@@ -251,6 +252,13 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
                                                 Próximo
                                             </Button>
                                         </>
+                                    )}
+                                    {currentStep === 1 && (
+                                        <Geolocal
+                                            data={values}
+                                            handleChange={handleChange}
+                                            setCurrentStep={setCurrentStep}
+                                        />
                                     )}
                                     {currentStep === 5 && (
                                         <Button
