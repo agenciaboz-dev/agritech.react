@@ -1,4 +1,4 @@
-import { Box, Button, Icon, IconButton } from "@mui/material"
+import { Box, Button, IconButton } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { colors } from "../../../style/colors"
 import drone from "../../../assets/logo/droneIcon.png"
@@ -136,7 +136,9 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                             {listEmployee?.length !== 0 &&
                                 listEmployee
                                     ?.slice(0, 3)
-                                    .map((user) => <CardUser user={user} key={user.id} location={`/adm/profile/${user.id}`} />)}
+                                    .map((user) => (
+                                        <CardUser user={user} key={user.id} location={`/adm/profile/${user.id}`} />
+                                    ))}
                         </Box>
                         <Box
                             style={{
@@ -162,6 +164,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                                     borderRadius: "10vw",
                                     height: "10vw",
                                 }}
+                                onClick={() => navigate("/adm/new_employee")}
                             >
                                 Cadastrar novo funcionário
                             </Button>
@@ -239,6 +242,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                                         borderRadius: "10vw",
                                         height: "10vw",
                                     }}
+                                    onClick={() => navigate("/adm/new_producer")}
                                 >
                                     Cadastrar novo produtor
                                 </Button>

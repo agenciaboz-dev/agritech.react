@@ -1,15 +1,16 @@
 import { Box, Button, TextField } from "@mui/material"
 import React, { useEffect, useState } from "react"
-import { useHeader } from "../../../../hooks/useHeader"
-import { colors } from "../../../../style/colors"
-import { Header } from "../../../../components/Header"
-import { textField } from "../../../../style/input"
+import { useHeader } from "../../hooks/useHeader"
+import { colors } from "../../style/colors"
+import { Header } from "../Header"
+import { textField } from "../../style/input"
 import { Form, Formik } from "formik"
-import MaskedInput from "../../../../components/MaskedInput"
-import { Avatar, ExtFile } from "@files-ui/react"
-import { useUser } from "../../../../hooks/useUser"
+import MaskedInput from "../MaskedInput"
+import { Avatar } from "@files-ui/react"
+import { useUser } from "../../hooks/useUser"
 import { useNavigate } from "react-router-dom"
 import { Geolocal } from "./Geolocal"
+import { NewTillage } from "./NewTillage"
 
 interface NewProducerProps {}
 
@@ -54,6 +55,7 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
 
     const handleSubmit = (values: NewProducer) => {
         console.log(values)
+        setCurrentStep(2)
     }
 
     return (
@@ -88,6 +90,11 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
                     paddingTop: 10,
                 }}
             >
+                {currentStep === 1 && (
+                    <p style={{ color: colors.text.white, width: "100%", fontSize: "5vw", padding: "2vw 4vw" }}>
+                        Localização da lavoura
+                    </p>
+                )}
                 <Box
                     style={{
                         padding: "4vw",
@@ -237,6 +244,29 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
                                             </Button>
                                             <Button
                                                 variant="contained"
+                                                type="submit"
+                                                sx={{
+                                                    fontSize: 17,
+                                                    color: colors.text.white,
+                                                    width: "100%",
+                                                    backgroundColor: colors.button,
+                                                    borderRadius: "5vw",
+                                                    textTransform: "none",
+                                                }}
+                                            >
+                                                Salvar
+                                            </Button>
+                                        </>
+                                    )}
+                                    {currentStep === 1 && (
+                                        <>
+                                            <Geolocal
+                                                data={values}
+                                                handleChange={handleChange}
+                                                setCurrentStep={setCurrentStep}
+                                            />
+                                            <Button
+                                                variant="contained"
                                                 sx={{
                                                     fontSize: 17,
                                                     color: colors.text.white,
@@ -246,38 +276,18 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
                                                     textTransform: "none",
                                                 }}
                                                 onClick={() => {
-                                                    setCurrentStep(1)
+                                                    setCurrentStep(2)
                                                 }}
                                             >
                                                 Próximo
                                             </Button>
                                         </>
                                     )}
-                                    {currentStep === 1 && (
-                                        <Geolocal
+                                    {currentStep === 2 && (
+                                        <NewTillage
                                             data={values}
-                                            handleChange={handleChange}
-                                            setCurrentStep={setCurrentStep}
+                                          
                                         />
-                                    )}
-                                    {currentStep === 5 && (
-                                        <Button
-                                            type="submit"
-                                            variant="contained"
-                                            sx={{
-                                                fontSize: 17,
-                                                color: colors.text.white,
-                                                width: "100%",
-                                                backgroundColor: colors.button,
-                                                borderRadius: "5vw",
-                                                textTransform: "none",
-                                            }}
-                                            onClick={() => {
-                                                // setCurrentStep(2)
-                                            }}
-                                        >
-                                            Próximo
-                                        </Button>
                                     )}
                                 </Box>
                             </Form>

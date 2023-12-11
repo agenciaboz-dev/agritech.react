@@ -1,6 +1,6 @@
 import { Box } from "@mui/material"
 import React, { ChangeEventHandler, useEffect } from "react"
-import { useHeader } from "../../../../hooks/useHeader"
+import { useHeader } from "../../hooks/useHeader"
 
 interface GeolocalProps {
     data: NewProducer
@@ -15,5 +15,5 @@ export const Geolocal: React.FC<GeolocalProps> = ({ data, handleChange, setCurre
         header.setTitle(data.name)
     })
 
-    return <Box>{data.name}</Box>
+    return <Box>{data.email}</Box>
 }
