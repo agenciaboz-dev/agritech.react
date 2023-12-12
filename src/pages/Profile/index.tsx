@@ -52,7 +52,7 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
             uf: user.address?.uf || "",
             complement: user.address?.complement || "",
         },
-
+        office: user.office,
         isAdmin: user.isAdmin,
         approved: user.approved,
         rejected: user.rejected,

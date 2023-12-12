@@ -3,6 +3,7 @@ import { Box, Avatar } from "@mui/material"
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos"
 import { useNavigate } from "react-router-dom"
 import avatar from "../assets/logo/Avatar.png"
+import { OfficeDot } from "./OfficeDot"
 
 interface CardUserProps {
     user: User
@@ -12,7 +13,6 @@ interface CardUserProps {
 
 export const CardUser: React.FC<CardUserProps> = ({ review, user, location }) => {
     const navigate = useNavigate()
-    
 
     return (
         <Box
@@ -21,7 +21,7 @@ export const CardUser: React.FC<CardUserProps> = ({ review, user, location }) =>
                 flexDirection: "row",
                 gap: "3vw",
 
-                padding: "2vw",
+                padding: "4vw 2vw",
                 alignItems: "center",
                 borderBottom: "1px solid #88A486",
                 justifyContent: "space-between",
@@ -30,7 +30,10 @@ export const CardUser: React.FC<CardUserProps> = ({ review, user, location }) =>
         >
             <Box sx={{ flexDirection: "row", gap: "3vw", alignItems: "center" }}>
                 <Avatar src={avatar} sx={{ width: "10vw", height: "10vw" }} />
-                <p style={{ fontSize: "3.7vw" }}>{user.name}</p>
+                <Box sx={{flexDirection:"column", gap:"1vw"}}> 
+                    <OfficeDot office={user.office} />
+                    <p style={{ fontSize: "3.7vw" }}>{user.name}</p>
+                </Box>
             </Box>
             <Box sx={{ alignItems: "center", flexDirection: "row" }}>
                 <p
