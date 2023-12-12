@@ -30,6 +30,7 @@ export const Signup: React.FC<SignupProps> = ({}) => {
     const typeRelationship = useRelationship()
 
     const [typeUser, setTypeUser] = useState("")
+    const [typeOffice, setTypeOffice] = useState("")
     const [currentStep, setCurrentStep] = useState(0)
     const [loading, setLoading] = useState(false)
 
@@ -56,6 +57,7 @@ export const Signup: React.FC<SignupProps> = ({}) => {
         isAdmin: false,
         approved: false,
         rejected: "",
+        office: "",
 
         employee:
             typeUser == "employee"
@@ -79,17 +81,18 @@ export const Signup: React.FC<SignupProps> = ({}) => {
     }
     const handleTypeUser = (event: React.ChangeEvent<HTMLInputElement>) => {
         setTypeUser((event.target as HTMLInputElement).value)
+    }
+    const handleTypeOffice = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setTypeOffice((event.target as HTMLInputElement).value)
         setCurrentStep(1)
     }
 
     const handleSignup = async (values: SignupValues) => {
-        
-        
-        
+        console.log(values.office)
         if (!isValidDateString(values.birth)) {
-            console.log("Data de nascimento inválida");
-            snackbar({severity:"error",text:"Data de nascimento inválida"})
-            return;
+            console.log("Data de nascimento inválida")
+            snackbar({ severity: "error", text: "Data de nascimento inválida" })
+            return
         }
         const data = {
             ...values,
@@ -263,6 +266,62 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                                                 </RadioGroup>
                                             </FormControl>
                                         </Box>
+                                        {typeUser === "employee" && (
+                                            <Box
+                                                sx={{
+                                                    width: "100%",
+                                                    alignItems: "center",
+                                                    justifyContent: "center",
+                                                    gap: "5vw",
+                                                    flexDirection: "column",
+                                                }}
+                                            >
+                                                <p style={{ fontSize: "5vw", fontFamily: "MalgunGothic2" }}>
+                                                    Selecione o tipo de cargo
+                                                </p>
+                                                <FormControl>
+                                                    <RadioGroup
+                                                        aria-labelledby="demo-radio-buttons-group-label"
+                                                        defaultValue={typeOffice}
+                                                        name="office"
+                                                        value={values.office}
+                                                        onChange={handleChange}
+                                                        sx={{ width: "100%" }}
+                                                    >
+                                                        <FormControlLabel
+                                                            value="agronomist"
+                                                            sx={{
+                                                                fontWeight: typeOffice == "agronomist" ? "800" : "400",
+                                                                fontSize: "4vw",
+                                                                fontFamily: "MalgunGothic2",
+                                                            }}
+                                                            control={<Radio />}
+                                                            label="Agronômo"
+                                                        />
+                                                        <FormControlLabel
+                                                            value="pilot"
+                                                            sx={{
+                                                                fontWeight: typeOffice == "pilot" ? "800" : "400",
+                                                                fontSize: "4vw",
+                                                                fontFamily: "MalgunGothic2",
+                                                            }}
+                                                            control={<Radio />}
+                                                            label="Piloto de drone"
+                                                        />
+                                                        <FormControlLabel
+                                                            value="technician"
+                                                            sx={{
+                                                                fontWeight: typeOffice == "technician" ? "800" : "400",
+                                                                fontSize: "4vw",
+                                                                fontFamily: "MalgunGothic2",
+                                                            }}
+                                                            control={<Radio />}
+                                                            label="Técnico"
+                                                        />
+                                                    </RadioGroup>
+                                                </FormControl>
+                                            </Box>
+                                        )}
                                         <Button
                                             variant="outlined"
                                             sx={{
@@ -277,6 +336,21 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                                             onClick={() => navigate("/../home")}
                                         >
                                             Cancelar
+                                        </Button>
+                                        <Button
+                                            variant="outlined"
+                                            sx={{
+                                                padding: "3vw",
+                                                color: colors.text.black,
+                                                fontWeight: "600",
+                                                fontSize: "4vw",
+                                                textTransform: "none",
+                                                borderRadius: "10vw",
+                                                height: "10vw",
+                                            }}
+                                            onClick={() => setCurrentStep(1)}
+                                        >
+                                            Próximo
                                         </Button>
                                     </>
                                 )}
