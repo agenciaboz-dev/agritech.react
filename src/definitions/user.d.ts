@@ -12,6 +12,7 @@ declare interface User {
     isAdmin: boolean
     approved: boolean
     rejected?: string
+    office:string
     
     address?: Address
     employee?: Employee
