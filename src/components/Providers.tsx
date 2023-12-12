@@ -13,25 +13,23 @@ interface ProvidersProps {
 
 export const Providers: React.FC<ProvidersProps> = ({ children }) => {
     return (
-        <MantineProvider>
-            <SnackbarProvider>
-                <ConfirmDialogProvider>
-                    <IoProvider>
-                        <UserProvider>
-                            <UsersProvider>
-                                <MenuDrawerProvider>
-                                    <HeaderProvider>
-                                        <Snackbar />
-                                        <ConfirmDialog />
-                                        <MenuDrawer />
-                                        {children}
-                                    </HeaderProvider>
-                                </MenuDrawerProvider>
-                            </UsersProvider>
-                        </UserProvider>
-                    </IoProvider>
-                </ConfirmDialogProvider>
-            </SnackbarProvider>
-        </MantineProvider>
+        <SnackbarProvider>
+            <ConfirmDialogProvider>
+                <IoProvider>
+                    <UserProvider>
+                        <UsersProvider>
+                            <MenuDrawerProvider>
+                                <HeaderProvider>
+                                    <Snackbar />
+                                    <ConfirmDialog />
+                                    <MenuDrawer />
+                                    <MantineProvider>{children}</MantineProvider>
+                                </HeaderProvider>
+                            </MenuDrawerProvider>
+                        </UsersProvider>
+                    </UserProvider>
+                </IoProvider>
+            </ConfirmDialogProvider>
+        </SnackbarProvider>
     )
 }

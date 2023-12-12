@@ -1,21 +1,23 @@
 import { Box, Button } from "@mui/material"
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { colors } from "../../style/colors"
 import { Header } from "../Header"
 import { useHeader } from "../../hooks/useHeader"
 import { useLocation, useParams } from "react-router-dom"
 import { useUsers } from "../../hooks/useUsers"
-import { useOs } from "@mantine/hooks"
+import { DatePicker } from "@mantine/dates"
 
 interface CalendarProps {}
 
 export const Calendar: React.FC<CalendarProps> = ({}) => {
     const header = useHeader()
-
     const { userid } = useParams()
     const { listUsers } = useUsers()
 
+    const [value, setValue] = useState<Date | null>(null)
+
     const findUser = listUsers?.find((user) => String(user.id) === userid)
+
     useEffect(() => {
         header.setTitle(findUser?.name || "")
     }, [])
@@ -53,6 +55,7 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
                     overflow: "hidden",
                 }}
             >
+                <DatePicker value={value} onChange={setValue} />
                 <Box sx={{ width: "100%", height: "100%", gap: "4vw", flexDirection: "column" }}>
                     <Button
                         variant="contained"
