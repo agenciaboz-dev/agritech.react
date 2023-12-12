@@ -105,7 +105,7 @@ export const AddKit: React.FC<AddKitProps> = ({}) => {
                         overflowY: "hidden",
                     }}
                 >
-                    <Box sx={{ overflowX: "hidden", overflowY: "auto", height: "88%", p: "0 2vw" }}>
+                    <Box sx={{ overflowX: "hidden", overflowY: "auto", height: "82%", p: "0 2vw" }}>
                         <ContentKit edit />
                     </Box>
                 </Box>

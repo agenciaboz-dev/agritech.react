@@ -121,112 +121,34 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                         gap: "10vw",
                     }}
                 >
-                    <Box sx={{ gap: "2vw" }}>
-                        <p
-                            style={{
-                                color: colors.text.black,
-                                fontSize: "4.5vw",
-                                fontFamily: "MalgunGothic2",
-                                textAlign: "left",
-                            }}
-                        >
-                            Funcionários Fixados
-                        </p>
-                        <Box style={{ width: "100%" }}>
-                            {listEmployee?.length !== 0 &&
-                                listEmployee
-                                    ?.slice(0, 3)
-                                    .map((user) => (
-                                        <CardUser user={user} key={user.id} location={`/adm/profile/${user.id}`} />
-                                    ))}
-                        </Box>
-                        <Box
-                            style={{
-                                width: "100%",
-                                flexDirection: "row",
-                                alignItems: "center",
-                                justifyContent: "space-between",
-                                gap: 20,
-                                paddingTop: "5vw",
-                            }}
-                        >
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                sx={{
-                                    width: "50%",
-                                    padding: "2.5vw",
-
-                                    color: colors.text.white,
-                                    fontWeight: "500",
-                                    fontSize: "3vw",
-                                    textTransform: "none",
-                                    borderRadius: "10vw",
-                                    height: "10vw",
-                                }}
-                                onClick={() => navigate("/adm/new_employee")}
-                            >
-                                Cadastrar novo funcionário
-                            </Button>
-                            <Box
-                                sx={{
-                                    flexDirection: "row",
-                                    width: "25%",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    gap: "1vw",
+                    <Box sx={{gap:"4vw"}}>
+                        <Box sx={{ gap: "0vw" }}>
+                            <p
+                                style={{
+                                    color: colors.text.black,
+                                    fontSize: "4.5vw",
+                                    fontFamily: "MalgunGothic2",
+                                    textAlign: "left",
                                 }}
                             >
-                                <p
-                                    style={{
-                                        color: colors.primary,
-                                        fontSize: "3.5vw",
-                                        fontFamily: "MalgunGothic2",
-                                        fontWeight: "500",
-                                    }}
-                                    onClick={() => {
-                                        navigate("../users")
-                                    }}
-                                >
-                                    Ver todos
-                                </p>
-                                <ArrowForwardIosIcon color="primary" sx={{ width: "2vw" }} />
+                                Funcionários Fixados
+                            </p>
+                            <Box style={{ width: "100%" }}>
+                                {listEmployee?.length !== 0 &&
+                                    listEmployee
+                                        ?.slice(0, 3)
+                                        .map((user) => (
+                                            <CardUser user={user} key={user.id} location={`/adm/profile/${user.id}`} />
+                                        ))}
                             </Box>
-                        </Box>
-                    </Box>
-                    <Box sx={{ gap: "2vw" }}>
-                        <p
-                            style={{
-                                color: colors.text.black,
-                                fontSize: "4.5vw",
-                                fontFamily: "MalgunGothic2",
-                                textAlign: "left",
-                            }}
-                        >
-                            Produtores Fixados
-                        </p>
-                        <Box style={{ width: "100%" }}>
-                            {listProducer?.length !== 0 &&
-                                listProducer
-                                    ?.slice(0, 3)
-                                    .map((user) => <CardUser user={user} key={user.id} location={`/profile/${user.id}`} />)}
-                        </Box>
-                        <Box
-                            style={{
-                                width: "100%",
-                                flexDirection: "row",
-                                alignItems: "center",
-                                justifyContent: "space-between",
-                                gap: 20,
-                            }}
-                        >
                             <Box
                                 style={{
                                     width: "100%",
                                     flexDirection: "row",
                                     alignItems: "center",
                                     justifyContent: "space-between",
-                                    paddingTop: "5vw",
+                                    gap: 20,
+                                    paddingTop: "2vw",
                                 }}
                             >
                                 <Button
@@ -242,14 +164,14 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                                         borderRadius: "10vw",
                                         height: "10vw",
                                     }}
-                                    onClick={() => navigate("/adm/new_producer")}
+                                    onClick={() => navigate("/adm/new_employee")}
                                 >
-                                    Cadastrar novo produtor
+                                    Cadastrar novo funcionário
                                 </Button>
                                 <Box
                                     sx={{
                                         flexDirection: "row",
-                                        width: "30%",
+                                        width: "25%",
                                         alignItems: "center",
                                         justifyContent: "center",
                                         gap: "1vw",
@@ -268,8 +190,86 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                                     >
                                         Ver todos
                                     </p>
-
                                     <ArrowForwardIosIcon color="primary" sx={{ width: "2vw" }} />
+                                </Box>
+                            </Box>
+                        </Box>
+                        <Box sx={{ gap: "2vw" }}>
+                            <p
+                                style={{
+                                    color: colors.text.black,
+                                    fontSize: "4.5vw",
+                                    fontFamily: "MalgunGothic2",
+                                    textAlign: "left",
+                                }}
+                            >
+                                Produtores Fixados
+                            </p>
+                            <Box style={{ width: "100%" }}>
+                                {listProducer?.length !== 0 &&
+                                    listProducer
+                                        ?.slice(0, 3)
+                                        .map((user) => <CardUser user={user} key={user.id} location={`/adm/profile/${user.id}`} />)}
+                            </Box>
+                            <Box
+                                style={{
+                                    width: "100%",
+                                    flexDirection: "row",
+                                    alignItems: "center",
+                                    justifyContent: "space-between",
+                                    gap: 20,
+                                }}
+                            >
+                                <Box
+                                    style={{
+                                        width: "100%",
+                                        flexDirection: "row",
+                                        alignItems: "center",
+                                        justifyContent: "space-between",
+                                        paddingTop: "2vw",
+                                    }}
+                                >
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
+                                        sx={{
+                                            width: "50%",
+                                            padding: "2.5vw",
+                                            color: colors.text.white,
+                                            fontWeight: "500",
+                                            fontSize: "3vw",
+                                            textTransform: "none",
+                                            borderRadius: "10vw",
+                                            height: "10vw",
+                                        }}
+                                        onClick={() => navigate("/adm/new_producer")}
+                                    >
+                                        Cadastrar novo produtor
+                                    </Button>
+                                    <Box
+                                        sx={{
+                                            flexDirection: "row",
+                                            width: "30%",
+                                            alignItems: "center",
+                                            justifyContent: "center",
+                                            gap: "1vw",
+                                        }}
+                                    >
+                                        <p
+                                            style={{
+                                                color: colors.primary,
+                                                fontSize: "3.5vw",
+                                                fontFamily: "MalgunGothic2",
+                                                fontWeight: "500",
+                                            }}
+                                            onClick={() => {
+                                                navigate("../users")
+                                            }}
+                                        >
+                                            Ver todos
+                                        </p>
+                                        <ArrowForwardIosIcon color="primary" sx={{ width: "2vw" }} />
+                                    </Box>
                                 </Box>
                             </Box>
                         </Box>

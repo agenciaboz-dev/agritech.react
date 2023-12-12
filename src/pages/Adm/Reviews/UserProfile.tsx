@@ -62,6 +62,7 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
         isAdmin: false,
         approved: profile?.approved || false,
         rejected: profile?.rejected || "",
+        office: profile?.office,
 
         employee: {
             id: profile?.employee?.id,

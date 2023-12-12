@@ -5,7 +5,7 @@ import green from "../assets/icons/green.svg"
 import yellow from "../assets/icons/yellow.svg"
 import blue from "../assets/icons/blue.svg"
 interface OfficeDotProps {
-    office: string
+    office?: string
 }
 
 export const OfficeDot: React.FC<OfficeDotProps> = ({ office }) => {
