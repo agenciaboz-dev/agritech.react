@@ -8,6 +8,7 @@ import { Panel } from "./Panel"
 import { ListUsers } from "./Panel/Lists/ListUsers"
 import { NewProducer } from "../../components/NewProducer"
 import { Geolocal } from "../../components/NewProducer/Geolocal"
+import { Calendar } from "../../components/Calendar"
 
 interface AdmProps {
     user: User
@@ -26,7 +27,7 @@ export const Adm: React.FC<AdmProps> = ({ user }) => {
             <Route path="/users" element={<ListUsers />} />
             <Route path="/users" element={<ListUsers />} />
             <Route path="/new_producer" element={<NewProducer />} />
-            <Route path="/new_tillage" element={<NewProducer />} />
+            <Route path="/calendar/:userid" element={<Calendar />} />
         </ReactRoutes>
     )
 }

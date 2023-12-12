@@ -8,6 +8,8 @@ import { useNavigate } from "react-router-dom"
 import SearchIcon from "@mui/icons-material/Search"
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone"
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline"
+import Logo from "../assets/logo/Avatar.png"
+
 import drone from "../assets/logo/droneIcon.png"
 
 interface HeaderProps {
@@ -56,8 +58,9 @@ export const Header: React.FC<HeaderProps> = ({ back, location, style }) => {
             <Box style={{ flexDirection: "row", gap: "4vw" }}>
                 <SearchIcon sx={{ color: "#fff" }} />
                 <NotificationsNoneIcon sx={{ color: "#fff" }} />
-                <PersonOutlineIcon
-                    sx={{ color: "#fff" }}
+                <img
+                    src={Logo}
+                    style={{ color: "#fff", width:"6vw",height:"6vw" }}
                     onClick={() => {
                         menuDrawer.toggle()
                         console.log("menu abriu")

@@ -135,7 +135,7 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
                                             <Geolocal
                                                 data={values}
                                                 handleChange={handleChange}
-                                                setCurrentStep={setCurrentStep}
+                                                
                                             />
                                             <Button
                                                 variant="contained"

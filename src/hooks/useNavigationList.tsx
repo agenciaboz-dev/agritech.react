@@ -177,7 +177,7 @@ export const useNavigationList = () => {
                 icon: <img src={Pin} style={{ width: "6vw" }} />,
             },
         ],
-        
+
         icon: <img src={GridPanel} />,
         bottom: [
             {
