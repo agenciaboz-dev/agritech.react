@@ -3,22 +3,23 @@ import React, { useEffect, useState } from "react"
 import { useHeader } from "../../../hooks/useHeader"
 import { Avatar } from "@files-ui/react"
 import { textField } from "../../../style/input"
-import MaskedInput from "../../MaskedInput"
 import { colors } from "../../../style/colors"
 import { useNavigate } from "react-router-dom"
 import { tabStyle } from "../../../style/tabStyle"
 import GeoImage from "../../../assets/geo.svg"
 import { Form, Formik } from "formik"
 import { Team } from "./Team"
+import { Additional } from "./Additional"
+import { Gallery } from "./Gallery"
+import { useArray } from "burgos-array"
 
-interface NewTillageProps {
-    data: NewProducer
-}
+interface NewTillageProps {}
 
-export const NewTillage: React.FC<NewTillageProps> = ({ data }) => {
+export const NewTillage: React.FC<NewTillageProps> = ({}) => {
     const header = useHeader()
     const [image, setImage] = useState<File>()
     const navigate = useNavigate()
+    const listGallery = useArray().newArray(3)
 
     const [tab, setTab] = React.useState("team")
     const changeTab = (event: React.SyntheticEvent, newValue: string) => {
@@ -41,10 +42,10 @@ export const NewTillage: React.FC<NewTillageProps> = ({ data }) => {
     }
 
     useEffect(() => {
-        header.setTitle(data.name)
+        header.setTitle("Produtor")
     }, [])
     return (
-        <Box sx={{ width: "100%", height: "100%", gap: "4vw", flexDirection: "column" }}>
+        <Box sx={{ width: "100%", height: "90%", gap: "3vw", flexDirection: "column" }}>
             <p>Informações da Lavoura</p>
             <Formik initialValues={initialValues} onSubmit={handleSubmit}>
                 {({ values, handleChange }) => (
@@ -75,23 +76,23 @@ export const NewTillage: React.FC<NewTillageProps> = ({ data }) => {
                                 <TextField
                                     label={"Nome da lavoura"}
                                     name="name"
-                                    value={data.name}
+                                    value={values.name}
                                     sx={textField}
                                     onChange={handleChange}
                                     required
                                 />
                                 <TextField
                                     label={"Endereço"}
-                                    name="name"
-                                    value={data.name}
+                                    name="address"
+                                    value={""}
                                     sx={textField}
                                     onChange={handleChange}
                                     required
                                 />
                                 <TextField
                                     label={"Area"}
-                                    name="name"
-                                    value={data.name}
+                                    name="area"
+                                    value={values.area}
                                     sx={textField}
                                     onChange={handleChange}
                                     required
@@ -113,36 +114,60 @@ export const NewTillage: React.FC<NewTillageProps> = ({ data }) => {
                             <Tab sx={tabStyle} value="gallery" label="Imagens" />
                         </Tabs>
                         {tab === "team" && <Team data={values} handleChange={handleChange} />}
-                        <Button
-                            variant="outlined"
-                            sx={{
-                                padding: "3vw",
-                                color: colors.text.black,
-                                fontWeight: "600",
-                                fontSize: "4vw",
-                                textTransform: "none",
-                                borderRadius: "10vw",
-                                height: "10vw",
-                            }}
-                            onClick={() => {
-                                navigate("../")
-                            }}
-                        >
-                            Cancelar
-                        </Button>
-                        <Button
-                            variant="contained"
-                            sx={{
-                                fontSize: 17,
-                                color: colors.text.white,
-                                width: "100%",
-                                backgroundColor: colors.button,
-                                borderRadius: "5vw",
-                                textTransform: "none",
-                            }}
-                        >
-                            Salvar
-                        </Button>
+                        {tab === "additional" && <Additional data={values} handleChange={handleChange} />}
+                        {tab === "gallery" && (
+                            <Box sx={{ width: "100%", height: "52%", gap: "3vw" }}>
+                                <Box sx={{ width: "100%", height: "66%", overflowY: "auto", gap: "2vw" }}>
+                                    {listGallery.map((item, index) => (
+                                        <Gallery key={index} id={index + 1} />
+                                    ))}
+                                </Box>
+                                <p>Adicionar nova Galeria</p>
+                                <TextField
+                                    label={"Nome da Galeria"}
+                                    name="name_gallery"
+                                    value={""}
+                                    sx={textField}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </Box>
+                        )}
+                        <Box sx={{ flexDirection: "row", gap: "2vw" }}>
+                            <Button
+                                variant="outlined"
+                                sx={{
+                                    width: "50%",
+                                    padding: "3vw",
+                                    color: colors.text.black,
+                                    fontWeight: "600",
+                                    fontSize: "4vw",
+                                    textTransform: "none",
+                                    borderRadius: "10vw",
+                                    height: "10vw",
+                                }}
+                                onClick={() => {
+                                    navigate("../")
+                                }}
+                            >
+                                Cancelar
+                            </Button>
+                            <Button
+                                variant="contained"
+                                sx={{
+                                    padding: "1vw",
+                                    width: "50%",
+                                    fontSize: 17,
+                                    color: colors.text.white,
+                                    backgroundColor: colors.button,
+                                    borderRadius: "5vw",
+                                    textTransform: "none",
+                                } }
+                                onClick={()=>navigate("/")}
+                            >
+                                Salvar
+                            </Button>
+                        </Box>
                     </Form>
                 )}
             </Formik>

@@ -11,13 +11,15 @@ import { useUser } from "../../hooks/useUser"
 import { useNavigate } from "react-router-dom"
 import { Geolocal } from "./Geolocal"
 import { NewTillage } from "./NewTillage"
+import { useDataHandler } from "../../hooks/useDataHandler"
+import { Profile } from "./Profile"
 
 interface NewProducerProps {}
 
 export const NewProducer: React.FC<NewProducerProps> = ({}) => {
     const header = useHeader()
     const { user } = useUser()
-    const [image, setImage] = useState<File>()
+    const { unmask } = useDataHandler()
     const navigate = useNavigate()
     const [currentStep, setCurrentStep] = useState(0)
 
@@ -55,7 +57,24 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
 
     const handleSubmit = (values: NewProducer) => {
         console.log(values)
-        setCurrentStep(2)
+
+        const data = {
+            ...values,
+            cpf: unmask(values.cpf),
+            phone: unmask(values.phone),
+            approved: true,
+            address: {
+                street: values.address.street,
+                district: values.address.district,
+                number: values.address.number,
+                city: values.address.city,
+                cep: unmask(values.address.cep),
+                complement: values.address.complement,
+                uf: "AM",
+                // uf: estados.find((estado) => estado.value == values.address.uf)?.value || "",
+            },
+        }
+        setCurrentStep(1)
     }
 
     return (
@@ -106,158 +125,11 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
                         overflow: "hidden",
                     }}
                 >
-                    <Formik initialValues={initialValues} onSubmit={handleSubmit}>
-                        {({ values, handleChange }) => (
-                            <Form>
-                                <Box sx={{ width: "100%", height: "100%", gap: "4vw", flexDirection: "column" }}>
-                                    {currentStep === 0 && (
-                                        <>
-                                            <p
-                                                style={{
-                                                    fontSize: "4.5vw",
-                                                    fontFamily: "MalgunGothic2",
-                                                    textAlign: "left",
-                                                    fontWeight: "800",
-                                                }}
-                                            >
-                                                Informações Pessoais
-                                            </p>
-                                            <Box
-                                                sx={{
-                                                    flexDirection: "row",
-                                                    gap: "5vw",
-                                                    width: "100%",
-                                                    height: "23%",
-                                                    alignItems: "center",
-                                                }}
-                                            >
-                                                <Avatar
-                                                    src={image}
-                                                    onChange={(file) => setImage(file)}
-                                                    changeLabel="Trocar foto"
-                                                    emptyLabel="Adicionar foto"
-                                                    variant="circle"
-                                                    style={{
-                                                        width: "30vw",
-                                                        height: "30vw",
-                                                        fontSize: "4vw",
-                                                        fontFamily: "MalgunGothic2",
-                                                    }}
-                                                />
-                                                <Box sx={{ flexDirection: "column", gap: "2vw", width: "65%" }}>
-                                                    <p
-                                                        style={{
-                                                            fontWeight: "600",
-                                                            fontFamily: "MalgunGothic2",
-                                                            textAlign: "start",
-                                                            fontSize: "4vw",
-                                                        }}
-                                                    >
-                                                        Foto (Opcional)
-                                                    </p>
-                                                    <p
-                                                        style={{
-                                                            fontSize: "3vw",
-                                                            fontFamily: "MalgunGothic2",
-                                                            textAlign: "start",
-                                                        }}
-                                                    >
-                                                        Clique na imagem ao lado para adicionar uma foto sua. A foto deve
-                                                        estar plenamente visível e sem adereços.
-                                                    </p>
-                                                </Box>
-                                            </Box>
-
-                                            <Box sx={{ width: "100%", flexDirection: "column", gap: "2vw" }}>
-                                                <TextField
-                                                    label={"Nome Completo"}
-                                                    name="name"
-                                                    value={values.name}
-                                                    sx={textField}
-                                                    onChange={handleChange}
-                                                    required
-                                                />
-                                                <TextField
-                                                    label={"E-mail"}
-                                                    name="email"
-                                                    value={values.email}
-                                                    type="email"
-                                                    sx={textField}
-                                                    onChange={handleChange}
-                                                    required
-                                                />
-                                                <TextField
-                                                    label={"CPF"}
-                                                    name="cpf"
-                                                    value={values.cpf}
-                                                    sx={{ ...textField, width: "100%" }}
-                                                    InputProps={{
-                                                        inputComponent: MaskedInput,
-                                                        inputProps: { mask: "000.000.000-00", inputMode: "numeric" },
-                                                    }}
-                                                    onChange={handleChange}
-                                                    required
-                                                />
-                                                <TextField
-                                                    label={"CNPJ"}
-                                                    name="producer.cnpj"
-                                                    value={values.producer?.cnpj}
-                                                    sx={{ ...textField, width: "100%" }}
-                                                    InputProps={{
-                                                        inputComponent: MaskedInput,
-                                                        inputProps: { mask: "00.000.000/0000-00", inputMode: "numeric" },
-                                                    }}
-                                                    onChange={handleChange}
-                                                    required
-                                                />
-                                                <TextField
-                                                    label={"Telefone"}
-                                                    name="phone"
-                                                    value={values.phone}
-                                                    sx={textField}
-                                                    onChange={handleChange}
-                                                    InputProps={{
-                                                        inputComponent: MaskedInput,
-                                                        inputProps: { mask: "(00) 0 0000-0000" },
-                                                        inputMode: "numeric",
-                                                    }}
-                                                    required
-                                                />
-                                            </Box>
-
-                                            <Button
-                                                variant="outlined"
-                                                sx={{
-                                                    padding: "3vw",
-                                                    color: colors.text.black,
-                                                    fontWeight: "600",
-                                                    fontSize: "4vw",
-                                                    textTransform: "none",
-                                                    borderRadius: "10vw",
-                                                    height: "10vw",
-                                                }}
-                                                onClick={() => {
-                                                    navigate("../")
-                                                }}
-                                            >
-                                                Cancelar
-                                            </Button>
-                                            <Button
-                                                variant="contained"
-                                                type="submit"
-                                                sx={{
-                                                    fontSize: 17,
-                                                    color: colors.text.white,
-                                                    width: "100%",
-                                                    backgroundColor: colors.button,
-                                                    borderRadius: "5vw",
-                                                    textTransform: "none",
-                                                }}
-                                            >
-                                                Salvar
-                                            </Button>
-                                        </>
-                                    )}
+                    <Box sx={{ width: "100%", height: "100%", gap: "4vw", flexDirection: "column" }}>
+                        <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+                            {({ values, handleChange }) => (
+                                <Form>
+                                    {currentStep === 0 && <Profile values={values} handleChange={handleChange} />}
                                     {currentStep === 1 && (
                                         <>
                                             <Geolocal
@@ -283,16 +155,11 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
                                             </Button>
                                         </>
                                     )}
-                                    {currentStep === 2 && (
-                                        <NewTillage
-                                            data={values}
-                                          
-                                        />
-                                    )}
-                                </Box>
-                            </Form>
-                        )}
-                    </Formik>
+                                </Form>
+                            )}
+                        </Formik>
+                        {currentStep === 2 && <NewTillage />}
+                    </Box>
                 </Box>
             </Box>
         </Box>

@@ -5,10 +5,9 @@ import { useHeader } from "../../hooks/useHeader"
 interface GeolocalProps {
     data: NewProducer
     handleChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
-    setCurrentStep: (value: React.SetStateAction<number>) => void
 }
 
-export const Geolocal: React.FC<GeolocalProps> = ({ data, handleChange, setCurrentStep }) => {
+export const Geolocal: React.FC<GeolocalProps> = ({ data, handleChange }) => {
     const header = useHeader()
 
     useEffect(() => {
