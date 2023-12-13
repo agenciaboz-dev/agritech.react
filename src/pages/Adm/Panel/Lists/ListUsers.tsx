@@ -75,7 +75,11 @@ export const ListUsers: React.FC<ListUsersProps> = ({}) => {
                 >
                     <Box sx={{ gap: "2vw", height: "90%", overflow: "auto" }}>
                         {listUsers?.map((user) => (
-                            <CardUser user={user} key={user.id} location={`/profile/${user.id}`} />
+                            <CardUser
+                                user={user}
+                                key={user.id}
+                                location={user.employee ? `/adm/calendar/${user.id}` : `/adm/profile/${user.id}`}
+                            />
                         ))}
                         <Box style={{ width: "100%", height: "80%", overflow: "auto" }}></Box>
                     </Box>

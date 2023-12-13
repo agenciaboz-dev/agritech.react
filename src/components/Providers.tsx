@@ -7,11 +7,15 @@ import { MenuDrawer } from "./MenuDrawer"
 import { HeaderProvider } from "../contexts/headerContext"
 import { UsersProvider } from "../contexts/usersContext"
 import { MantineProvider } from "@mantine/core"
+import { useMantineTheme } from "../hooks/useMantineTheme"
+import "@mantine/core/styles.css"
+import "@mantine/dates/styles.css"
 interface ProvidersProps {
     children: React.ReactNode
 }
 
 export const Providers: React.FC<ProvidersProps> = ({ children }) => {
+    const mantine_theme = useMantineTheme()
     return (
         <SnackbarProvider>
             <ConfirmDialogProvider>
@@ -23,7 +27,7 @@ export const Providers: React.FC<ProvidersProps> = ({ children }) => {
                                     <Snackbar />
                                     <ConfirmDialog />
                                     <MenuDrawer />
-                                    <MantineProvider>{children}</MantineProvider>
+                                    <MantineProvider theme={mantine_theme} >{children}</MantineProvider>
                                 </HeaderProvider>
                             </MenuDrawerProvider>
                         </UsersProvider>

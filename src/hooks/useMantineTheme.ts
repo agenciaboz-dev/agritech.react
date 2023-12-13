@@ -6,7 +6,7 @@ export const useMantineTheme = () => {
         colors: {
             brown: [
                 colors.primary,
-                colors.primary,
+                colors.secondary,
                 colors.primary,
                 colors.primary,
                 colors.primary,
@@ -17,6 +17,7 @@ export const useMantineTheme = () => {
                 colors.primary,
             ],
         },
+        
         primaryColor: "brown",
     })
 

@@ -3,24 +3,48 @@ import React, { useEffect, useState } from "react"
 import { colors } from "../../style/colors"
 import { Header } from "../Header"
 import { useHeader } from "../../hooks/useHeader"
-import { useLocation, useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { useUsers } from "../../hooks/useUsers"
-import { DatePicker } from "@mantine/dates"
+import { DatePicker, DatePickerProps } from "@mantine/dates"
+import { Indicator } from "@mantine/core"
+import useDateISO from "../../hooks/useDateISO"
+import { LogsCard } from "./LogsCard"
+import { IconUser } from "@tabler/icons-react"
 
 interface CalendarProps {}
-
+const dayRenderer: DatePickerProps["renderDay"] = (date) => {
+    const day = date.getDate()
+    return (
+        <Indicator size={7} color={"#88A486"} offset={-3} disabled={day !== 22}>
+            <div>{day}</div>
+        </Indicator>
+    )
+}
 export const Calendar: React.FC<CalendarProps> = ({}) => {
     const header = useHeader()
+    const navigate = useNavigate()
+
+    //Users
     const { userid } = useParams()
     const { listUsers } = useUsers()
-
-    const [value, setValue] = useState<Date | null>(null)
-
     const findUser = listUsers?.find((user) => String(user.id) === userid)
+
+    //Methods and variables Date
+    const [value, setValue] = useState<Date | null>(null)
+    const dayCurrent = new Date().getDate()
+
+    const handleFindCall = (value: Date | null) => {
+        const dateIso = useDateISO(value)
+    }
+
+    useEffect(() => {
+        handleFindCall(value)
+    }, [value])
 
     useEffect(() => {
         header.setTitle(findUser?.name || "")
     }, [])
+
     return (
         <Box
             sx={{
@@ -53,9 +77,71 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
                     borderTopLeftRadius: "7vw",
                     borderTopRightRadius: "7vw",
                     overflow: "hidden",
+                    alignItems: "center",
+                    gap: "4vw",
                 }}
             >
-                <DatePicker value={value} onChange={setValue} />
+                <Button
+                    size="small"
+                    variant="contained"
+                    sx={{
+                        alignItems: "center",
+                        gap: "0vw",
+                        backgroundColor: "#88A486",
+                        color: colors.text.white,
+                        textTransform: "none",
+                        borderRadius: "5vw",
+                        fontSize: "3.5vw",
+                        p: "2vw",
+                        width: "100%",
+                    }}
+                    onClick={() => navigate(`/adm/profile/${userid}`)}
+                >
+                    <IconUser fontSize="xs" color="#fff" />
+                    Acessar cadastro funcionário
+                </Button>
+                <DatePicker
+                    locale="pt-br"
+                    renderDay={dayRenderer}
+                    weekendDays={[0]}
+                    styles={{
+                        day: { borderRadius: "100%" },
+                    }}
+                    getDayProps={(day) => ({
+                        style: {
+                            border: day.getDate() == dayCurrent ? `1px solid ${colors.secondary}` : "",
+                            color:
+                                day.getDate() == dayCurrent
+                                    ? colors.secondary
+                                    : day.getDate() == value?.getDate()
+                                    ? "white"
+                                    : "",
+                        },
+                    })}
+                    value={value}
+                    onChange={setValue}
+                    size={"lg"}
+                />
+                <Box
+                    sx={{
+                        flexDirection: "column",
+                        width: "100%",
+                        height: "100%",
+                        overflowY: "auto",
+                        p: "2vw 4vw",
+                        gap: "3vw",
+                    }}
+                >
+                    {value?.getDate() === 22 && (
+                        <>
+                            <LogsCard variant user={findUser} />
+                            <LogsCard variant user={findUser} />
+                            <LogsCard variant user={findUser} />
+                        </>
+                    )}
+                  
+                </Box>
+
                 <Box sx={{ width: "100%", height: "100%", gap: "4vw", flexDirection: "column" }}>
                     <Button
                         variant="contained"
