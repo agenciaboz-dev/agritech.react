@@ -1,14 +1,15 @@
 import React from "react"
-import { Route, Routes as ReactRoutes, useNavigate } from "react-router-dom"
+import { Route, Routes as ReactRoutes } from "react-router-dom"
 import { SettingsRoutes } from "./Panel/SettingsRoutes"
 import { Profile } from "../Profile"
-import { Userprofile } from "./Reviews/UserProfile"
-import { Reviews } from "./Reviews"
+import { Userprofile } from "./ReviewsEmployee/UserProfile"
+import { ReviewsEmployee } from "./ReviewsEmployee"
 import { Panel } from "./Panel"
 import { ListProducer } from "./Panel/Lists/ListProducer"
 import { NewProducer } from "../../components/NewProducer"
 import { Calendar } from "../../components/Calendar"
 import { ListEmployee } from "./Panel/Lists/ListEmployee"
+import { ReviewsCall } from "./ReviewsCall"
 
 interface AdmProps {
     user: User
@@ -23,11 +24,12 @@ export const Adm: React.FC<AdmProps> = ({ user }) => {
             <Route path="/profile" element={<Profile user={user} />} />
             <Route path="/review/profile/:userId" element={<Userprofile />} />
             <Route path="/profile/:userId" element={<Userprofile view />} />
-            <Route path="/reviews" element={<Reviews user={user} />} />
+            <Route path="/reviews" element={<ReviewsEmployee user={user} />} />
             <Route path="/employees" element={<ListEmployee />} />
             <Route path="/producers" element={<ListProducer />} />
             <Route path="/new_producer/*" element={<NewProducer />} />
             <Route path="/calendar/:userid" element={<Calendar />} />
+            <Route path="/calls" element={<ReviewsCall user={user} />} />
         </ReactRoutes>
     )
 }

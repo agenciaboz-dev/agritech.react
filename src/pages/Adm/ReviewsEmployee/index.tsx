@@ -1,4 +1,4 @@
-import { Box, Tab, Tabs, Avatar } from "@mui/material"
+import { Box, Tab, Tabs, Avatar, Button } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { colors } from "../../../style/colors"
 import { Header } from "../../../components/Header"
@@ -8,11 +8,11 @@ import { useIo } from "../../../hooks/useIo"
 import { CardUser } from "../../../components/CardUser"
 import { useUsers } from "../../../hooks/useUsers"
 
-interface ReviewsProps {
+interface ReviewsEmployeeProps {
     user: User
 }
 
-export const Reviews: React.FC<ReviewsProps> = ({ user }) => {
+export const ReviewsEmployee: React.FC<ReviewsEmployeeProps> = ({ user }) => {
     const header = useHeader()
     const io = useIo()
 
@@ -66,11 +66,32 @@ export const Reviews: React.FC<ReviewsProps> = ({ user }) => {
                     backgroundColor: "#fff",
                     borderTopLeftRadius: "7vw",
                     borderTopRightRadius: "7vw",
-                    gap: "4vw",
+                    gap: "2vw",
                     overflow: "hidden",
                     flexDirection: "column",
                 }}
             >
+                <Box sx={{ alignItems: "center", width: "100%", justifyContent: "space-between", flexDirection:"row" }}>
+                    <p style={{ padding: "0 2vw", fontSize: "4.55vw" }}>Pendentes</p>
+                    <Button
+                        size="small"
+                        variant="contained"
+                        sx={{
+                            alignItems: "center",
+                            gap: "0vw",
+                            backgroundColor: colors.button,
+                            color: colors.text.white,
+                            textTransform: "none",
+                            borderRadius: "5vw",
+                            fontSize: "3.0vw",
+                            p: "1vw 3vw",
+                            width: "fit-content",
+                        }}
+                        onClick={() => {}}
+                    >
+                        Ações em massa
+                    </Button>
+                </Box>
                 <Tabs
                     value={tab}
                     onChange={changeTab}
@@ -81,20 +102,14 @@ export const Reviews: React.FC<ReviewsProps> = ({ user }) => {
                     scrollButtons="auto"
                     allowScrollButtonsMobile
                 >
-                    {/* <Tab sx={tabStyle} value="all" label="Solicitações" /> */}
                     <Tab sx={tabStyle} value="requestsEmployee" label="Cadastro de Funcionários" />
-                    <Tab sx={tabStyle} value="calls" label="Chamados" />
                 </Tabs>
                 <Box sx={{ width: "100%", height: "82%", overflow: "auto", gap: "1vw" }}>
-                    {/* {tab === "all" &&
-                        requests?.map((user) => (
-                            <CardUser review user={user} key={user.id} location={`/adm/review/profile/${user.id}`} />
-                        ))} */}
                     {tab === "requestsEmployee" &&
                         listEmployee?.map((user) => (
                             <CardUser review user={user} key={user.id} location={`/adm/review/profile/${user.id}`} />
                         ))}
-                    {tab === "calls" && <></>}
+                    
                 </Box>
             </Box>
         </Box>

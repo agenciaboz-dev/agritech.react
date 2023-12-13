@@ -16,6 +16,8 @@ import AddUser from "../assets/icons/add-user.svg"
 import AddEmployee from "../assets/icons/add-database-script.svg"
 import Pin from "../assets/icons/pin.svg"
 import Timer from "../assets/icons/timer.svg"
+import Receipt from "../assets/icons/receipt.svg"
+import Alert from "../assets/icons/circle_alert.svg"
 
 // import CircumIcon from "@klarr-agency/circum-icons-react" // React
 
@@ -81,15 +83,15 @@ export const useNavigationList = () => {
             {
                 id: 3,
                 title: "Calendário",
-                location: "/calendary",
+                location: "/calendar",
                 icon: <img src={Calendar} alt="Logotipo do App" />,
             },
 
             {
                 id: 4,
-                title: "Estatísticas",
-                location: "/statistics",
-                icon: <img src={Statistics} alt="Logotipo do App" />,
+                title: "Chamados",
+                location: "/calls",
+                icon: <img src={ Alert } alt="Logotipo do App" style={ {width:"6vw"} } />,
             },
             {
                 id: 5,

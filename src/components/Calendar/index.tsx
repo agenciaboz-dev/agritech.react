@@ -126,7 +126,7 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
                     sx={{
                         flexDirection: "column",
                         width: "100%",
-                        height: "100%",
+                        height: "38%",
                         overflowY: "auto",
                         p: "2vw 4vw",
                         gap: "3vw",
@@ -137,27 +137,15 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
                             <LogsCard variant user={findUser} />
                             <LogsCard variant user={findUser} />
                             <LogsCard variant user={findUser} />
+                            <LogsCard variant user={findUser} />
+                            <LogsCard variant user={findUser} />
+                            <LogsCard variant user={findUser} />
                         </>
                     )}
                   
                 </Box>
 
-                <Box sx={{ width: "100%", height: "100%", gap: "4vw", flexDirection: "column" }}>
-                    <Button
-                        variant="contained"
-                        sx={{
-                            fontSize: 17,
-                            color: colors.text.white,
-                            width: "100%",
-                            backgroundColor: colors.button,
-                            borderRadius: "5vw",
-                            textTransform: "none",
-                        }}
-                        onClick={() => {}}
-                    >
-                        Próximo
-                    </Button>
-                </Box>
+               
             </Box>
         </Box>
     )
