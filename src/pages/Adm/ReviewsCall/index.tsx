@@ -33,7 +33,7 @@ export const ReviewsCall: React.FC<ReviewsCallProps> = ({ user }) => {
     }, [pendingUsers])
 
     useEffect(() => {
-        header.setTitle("Análise de Contas")
+        header.setTitle("Chamados")
     }, [])
 
     return (
