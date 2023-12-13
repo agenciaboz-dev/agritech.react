@@ -9,15 +9,14 @@ import { useHeader } from "../../../../hooks/useHeader"
 import { useUsers } from "../../../../hooks/useUsers"
 import { CardUser } from "../../../../components/CardUser"
 
-interface ListUsersProps {}
+interface ListProducerProps {}
 
-export const ListUsers: React.FC<ListUsersProps> = ({}) => {
+export const ListProducer: React.FC<ListProducerProps> = ({}) => {
     const navigate = useNavigate()
     const bottomMenu = useNavigationList()
     const header = useHeader()
 
     const { listUsers } = useUsers()
-    const [listEmployee, setListEmployee] = useState<User[]>()
     const [listProducer, setListProducer] = useState<User[]>()
 
     useEffect(() => {
@@ -26,7 +25,6 @@ export const ListUsers: React.FC<ListUsersProps> = ({}) => {
     })
 
     useEffect(() => {
-        setListEmployee(listUsers?.filter((users) => users.employee !== null && !users.isAdmin))
         setListProducer(listUsers?.filter((users) => users.producer !== null))
     }, [listUsers])
 
@@ -74,13 +72,15 @@ export const ListUsers: React.FC<ListUsersProps> = ({}) => {
                     }}
                 >
                     <Box sx={{ gap: "2vw", height: "90%", overflow: "auto" }}>
-                        {listUsers?.map((user) => (
+                        
+                        {listProducer?.map((user) => (
                             <CardUser
                                 user={user}
                                 key={user.id}
                                 location={user.employee ? `/adm/calendar/${user.id}` : `/adm/profile/${user.id}`}
                             />
-                        ))}
+                        )) }
+                        
                         <Box style={{ width: "100%", height: "80%", overflow: "auto" }}></Box>
                     </Box>
                 </Box>

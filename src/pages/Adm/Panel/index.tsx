@@ -17,7 +17,6 @@ import { useUsers } from "../../../hooks/useUsers"
 import { CardUser } from "../../../components/CardUser"
 import Logo from "../../../assets/logo/Avatar.png"
 
-
 interface PanelProps {
     user: User
 }
@@ -78,8 +77,9 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                 <Box style={{ flexDirection: "row", gap: "4vw" }}>
                     <SearchIcon sx={{ color: "#fff" }} />
                     <NotificationsNoneIcon sx={{ color: "#fff" }} />
-                    <img src={Logo}
-                        style={{ color: "#fff", width:"6vw",height:"6vw" }}
+                    <img
+                        src={Logo}
+                        style={{ color: "#fff", width: "6vw", height: "6vw" }}
                         onClick={() => {
                             menu.toggle()
                         }}
@@ -187,7 +187,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                                             fontWeight: "500",
                                         }}
                                         onClick={() => {
-                                            navigate("../users")
+                                            navigate("/adm/employees")
                                         }}
                                     >
                                         Ver todos
@@ -267,7 +267,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                                                 fontWeight: "500",
                                             }}
                                             onClick={() => {
-                                                navigate("../users")
+                                                navigate("/adm/producers")
                                             }}
                                         >
                                             Ver todos
