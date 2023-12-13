@@ -21,7 +21,7 @@ export const ListEmployee: React.FC<ListEmployeeProps> = ({}) => {
 
     useEffect(() => {
         // header.setTitle(`${title}`)
-        header.setTitle("Usuários")
+        header.setTitle("Funcionários")
     })
 
     useEffect(() => {
@@ -78,9 +78,8 @@ export const ListEmployee: React.FC<ListEmployeeProps> = ({}) => {
                                 key={user.id}
                                 location={user.employee ? `/adm/calendar/${user.id}` : `/adm/profile/${user.id}`}
                             />
-                        )) }
-                        
-                        
+                        ))}
+
                         <Box style={{ width: "100%", height: "80%", overflow: "auto" }}></Box>
                     </Box>
                 </Box>

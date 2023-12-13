@@ -20,8 +20,7 @@ export const ListProducer: React.FC<ListProducerProps> = ({}) => {
     const [listProducer, setListProducer] = useState<User[]>()
 
     useEffect(() => {
-        // header.setTitle(`${title}`)
-        header.setTitle("Usuários")
+        header.setTitle("Produtores")
     })
 
     useEffect(() => {
@@ -72,15 +71,14 @@ export const ListProducer: React.FC<ListProducerProps> = ({}) => {
                     }}
                 >
                     <Box sx={{ gap: "2vw", height: "90%", overflow: "auto" }}>
-                        
                         {listProducer?.map((user) => (
                             <CardUser
                                 user={user}
                                 key={user.id}
                                 location={user.employee ? `/adm/calendar/${user.id}` : `/adm/profile/${user.id}`}
                             />
-                        )) }
-                        
+                        ))}
+
                         <Box style={{ width: "100%", height: "80%", overflow: "auto" }}></Box>
                     </Box>
                 </Box>
