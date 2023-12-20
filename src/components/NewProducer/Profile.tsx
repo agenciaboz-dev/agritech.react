@@ -16,7 +16,7 @@ export const Profile: React.FC<ProfileProps> = ({ values, handleChange }) => {
     const [image, setImage] = useState<File>()
 
     return (
-        <>
+        <Box sx={{ p: "4vw", gap: "4vw" }}>
             <p
                 style={{
                     fontSize: "4.5vw",
@@ -80,7 +80,7 @@ export const Profile: React.FC<ProfileProps> = ({ values, handleChange }) => {
                     value={values.name}
                     sx={textField}
                     onChange={handleChange}
-                    required
+                    // required
                 />
                 <TextField
                     label={"E-mail"}
@@ -89,7 +89,7 @@ export const Profile: React.FC<ProfileProps> = ({ values, handleChange }) => {
                     type="email"
                     sx={textField}
                     onChange={handleChange}
-                    required
+                    // required
                 />
                 <TextField
                     label={"CPF"}
@@ -101,7 +101,7 @@ export const Profile: React.FC<ProfileProps> = ({ values, handleChange }) => {
                         inputProps: { mask: "000.000.000-00", inputMode: "numeric" },
                     }}
                     onChange={handleChange}
-                    required
+                    // required
                 />
                 <TextField
                     label={"CNPJ"}
@@ -113,7 +113,7 @@ export const Profile: React.FC<ProfileProps> = ({ values, handleChange }) => {
                         inputProps: { mask: "00.000.000/0000-00", inputMode: "numeric" },
                     }}
                     onChange={handleChange}
-                    required
+                    // required
                 />
                 <TextField
                     label={"Telefone"}
@@ -126,7 +126,19 @@ export const Profile: React.FC<ProfileProps> = ({ values, handleChange }) => {
                         inputProps: { mask: "(00) 0 0000-0000" },
                         inputMode: "numeric",
                     }}
-                    required
+                    // required
+                />
+                <TextField
+                    label={"cep"}
+                    name="address.cep"
+                    value={values.address.cep}
+                    sx={{ ...textField, width: "100%" }}
+                    InputProps={{
+                        inputComponent: MaskedInput,
+                        inputProps: { mask: "00.000-000", inputMode: "numeric" },
+                    }}
+                    onChange={handleChange}
+                    // required
                 />
             </Box>
 
@@ -147,20 +159,7 @@ export const Profile: React.FC<ProfileProps> = ({ values, handleChange }) => {
             >
                 Cancelar
             </Button>
-            <Button
-                variant="contained"
-                type="submit"
-                sx={{
-                    fontSize: 17,
-                    color: colors.text.white,
-                    width: "100%",
-                    backgroundColor: colors.button,
-                    borderRadius: "5vw",
-                    textTransform: "none",
-                }}
-            >
-                Salvar
-            </Button>
-        </>
+            
+        </Box>
     )
 }

@@ -12,8 +12,12 @@ import { Team } from "./Team"
 import { Additional } from "./Additional"
 import { Gallery } from "./Gallery"
 import { useArray } from "burgos-array"
+import { LatLngExpression, LatLngTuple } from "leaflet"
 
-interface NewTillageProps {}
+interface NewTillageProps {
+    coordinates: LatLngTuple[]
+    origin: LatLngExpression
+}
 
 export const NewTillage: React.FC<NewTillageProps> = ({}) => {
     const header = useHeader()
@@ -45,7 +49,7 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
         header.setTitle("Produtor")
     }, [])
     return (
-        <Box sx={{ width: "100%", height: "90%", gap: "3vw", flexDirection: "column" }}>
+        <Box sx={{ width: "100%", height: "90%", gap: "3vw", flexDirection: "column", p: "4vw" }}>
             <p>Informações da Lavoura</p>
             <Formik initialValues={initialValues} onSubmit={handleSubmit}>
                 {({ values, handleChange }) => (
@@ -162,8 +166,8 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
                                     backgroundColor: colors.button,
                                     borderRadius: "5vw",
                                     textTransform: "none",
-                                } }
-                                onClick={()=>navigate("/")}
+                                }}
+                                onClick={() => navigate("/")}
                             >
                                 Salvar
                             </Button>

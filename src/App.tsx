@@ -1,11 +1,11 @@
 import "./App.css"
 import { useMuiTheme } from "./hooks/useMuiTheme"
-
 import { ThemeProvider } from "@mui/material"
 import { BrowserRouter } from "react-router-dom"
 import { Routes } from "./Routes"
 import { Providers } from "./components/Providers"
 import { MantineProvider } from "@mantine/core"
+import "leaflet/dist/leaflet.css"
 
 function App() {
     const theme = useMuiTheme()
