@@ -10,6 +10,7 @@ import { NewProducer } from "../../components/NewProducer"
 import { Calendar } from "../../components/Calendar"
 import { ListEmployee } from "./Panel/Lists/ListEmployee"
 import { ReviewsCall } from "./ReviewsCall"
+import { ApproveCall } from "./ReviewsCall/ApproveCall"
 
 interface AdmProps {
     user: User
@@ -30,6 +31,7 @@ export const Adm: React.FC<AdmProps> = ({ user }) => {
             <Route path="/new_producer/*" element={<NewProducer />} />
             <Route path="/calendar/:userid" element={<Calendar />} />
             <Route path="/calls" element={<ReviewsCall user={user} />} />
+            <Route path="/calls/:callid" element={<ApproveCall user={user} />} />
         </ReactRoutes>
     )
 }

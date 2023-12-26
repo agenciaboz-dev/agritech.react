@@ -106,7 +106,7 @@ export const ReviewsCall: React.FC<ReviewsCallProps> = ({ user }) => {
                     <Tab sx={tabStyle} value="calls" label="Chamados" />
                 </Tabs>
                 <Box sx={{ width: "100%", height: "82%", overflow: "auto", gap: "1vw" }}>
-                    { tab === "calls" && listEmployee?.map((user,index) => <LogsCard key={index } user={user} variant />)}
+                    {tab === "calls" && listEmployee?.map((user, index) => <LogsCard key={index} user={user} review />)}
                 </Box>
             </Box>
         </Box>
