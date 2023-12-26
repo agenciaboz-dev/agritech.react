@@ -21,7 +21,7 @@ export const HeaderProvider: React.FC<HeaderProviderProps> = ({ children }) => {
     const menus = useNavigationList()
 
     const [title, setTitle] = useState<string>("")
-    const [currentSection, setCurrentSection] = useState<NavigationMenu>(menus[0])
+    const [currentSection, setCurrentSection] = useState<NavigationMenu>(menus.admin)
 
     return (
         <HeaderContext.Provider value={{ title, setTitle, currentSection, setCurrentSection }}>

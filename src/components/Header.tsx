@@ -7,10 +7,9 @@ import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace"
 import { useNavigate } from "react-router-dom"
 import SearchIcon from "@mui/icons-material/Search"
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone"
-import PersonOutlineIcon from "@mui/icons-material/PersonOutline"
 import Logo from "../assets/logo/Avatar.png"
-
 import drone from "../assets/logo/droneIcon.png"
+import { useNotificationDrawer } from "../hooks/useNotificationDrawer"
 
 interface HeaderProps {
     back?: boolean
@@ -20,8 +19,8 @@ interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = ({ back, location, style }) => {
     const header = useHeader()
-    // const notifications = useNotifications()
     const menuDrawer = useMenuDrawer()
+    const notificationDrawer = useNotificationDrawer()
     const navigate = useNavigate()
 
     const iconStyle: SxProps = {
@@ -57,13 +56,19 @@ export const Header: React.FC<HeaderProps> = ({ back, location, style }) => {
             {/* <IconButton color="primary" onClick={notifications.toggle}> */}
             <Box style={{ flexDirection: "row", gap: "4vw" }}>
                 <SearchIcon sx={{ color: "#fff" }} />
-                <NotificationsNoneIcon sx={{ color: "#fff" }} />
+                <NotificationsNoneIcon
+                    sx={{ color: "#fff" }}
+                    onClick={() => {
+                        notificationDrawer.toggle()
+                        console.log("tem qe abrir")
+                    }}
+                />
                 <img
                     src={Logo}
-                    style={{ color: "#fff", width:"6vw",height:"6vw" }}
+                    style={{ color: "#fff", width: "6vw", height: "6vw" }}
                     onClick={() => {
                         menuDrawer.toggle()
-                        console.log("menu abriu")
+                        console.log("abriu")
                     }}
                 />
             </Box>

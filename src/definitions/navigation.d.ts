@@ -15,3 +15,4 @@ declare interface NavigationMenu {
 }
 
 declare type MenusList = "admin" | "producer" | "employee"
+

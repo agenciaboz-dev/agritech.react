@@ -10,6 +10,8 @@ import { MantineProvider } from "@mantine/core"
 import { useMantineTheme } from "../hooks/useMantineTheme"
 import "@mantine/core/styles.css"
 import "@mantine/dates/styles.css"
+import { NotificationDrawerProvider } from "../contexts/notificationDrawer"
+import { NotificationDrawer } from "./NotificationDrawer"
 interface ProvidersProps {
     children: React.ReactNode
 }
@@ -22,14 +24,17 @@ export const Providers: React.FC<ProvidersProps> = ({ children }) => {
                 <IoProvider>
                     <UserProvider>
                         <UsersProvider>
-                            <MenuDrawerProvider>
-                                <HeaderProvider>
-                                    <Snackbar />
-                                    <ConfirmDialog />
-                                    <MenuDrawer />
-                                    <MantineProvider theme={mantine_theme} >{children}</MantineProvider>
-                                </HeaderProvider>
-                            </MenuDrawerProvider>
+                            <NotificationDrawerProvider>
+                                <MenuDrawerProvider>
+                                    <HeaderProvider>
+                                        <Snackbar />
+                                        <ConfirmDialog />
+                                        <NotificationDrawer />
+                                        <MenuDrawer />
+                                        <MantineProvider theme={mantine_theme}>{children}</MantineProvider>
+                                    </HeaderProvider>
+                                </MenuDrawerProvider>
+                            </NotificationDrawerProvider>
                         </UsersProvider>
                     </UserProvider>
                 </IoProvider>

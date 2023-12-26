@@ -4,7 +4,7 @@ import { colors } from "../style/colors"
 export const useMuiTheme = () => {
     const THEME = createTheme({
         typography: {
-            fontFamily: ["MalgunGothic2"].join(","),
+            fontFamily: ["MalgunGothic2", "MalgunGothicBold"].join(","),
             fontSize: 14,
             fontWeightLight: 300,
             fontWeightRegular: 400,

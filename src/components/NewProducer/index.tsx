@@ -202,6 +202,7 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
                                             </Button>
                                         </>
                                     )}
+                                    {currentStep === 2 && <NewTillage />}
                                 </Form>
                             )}
                         </Formik>

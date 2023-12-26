@@ -15,8 +15,8 @@ import { useArray } from "burgos-array"
 import { LatLngExpression, LatLngTuple } from "leaflet"
 
 interface NewTillageProps {
-    coordinates: LatLngTuple[]
-    origin: LatLngExpression
+    // coordinates: LatLngTuple[]
+    // origin: LatLngExpression
 }
 
 export const NewTillage: React.FC<NewTillageProps> = ({}) => {

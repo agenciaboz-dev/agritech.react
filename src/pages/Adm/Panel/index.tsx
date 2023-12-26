@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom"
 import { useUsers } from "../../../hooks/useUsers"
 import { CardUser } from "../../../components/CardUser"
 import Logo from "../../../assets/logo/Avatar.png"
+import { useNotificationDrawer } from "../../../hooks/useNotificationDrawer"
 
 interface PanelProps {
     user: User
@@ -29,6 +30,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
     const navigate = useNavigate()
 
     const menu = useMenuDrawer()
+    const notificationDrawer = useNotificationDrawer()
     const { listUsers } = useUsers()
     const [listEmployee, setListEmployee] = useState<User[]>()
     const [listProducer, setListProducer] = useState<User[]>()
@@ -76,12 +78,19 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                 </Box>
                 <Box style={{ flexDirection: "row", gap: "4vw" }}>
                     <SearchIcon sx={{ color: "#fff" }} />
-                    <NotificationsNoneIcon sx={{ color: "#fff" }} />
+                    <NotificationsNoneIcon
+                        sx={{ color: "#fff" }}
+                        onClick={() => {
+                            notificationDrawer.toggle()
+                            console.log("opa")
+                        }}
+                    />
                     <img
                         src={Logo}
                         style={{ color: "#fff", width: "6vw", height: "6vw" }}
                         onClick={() => {
                             menu.toggle()
+                            console.log("abriu")
                         }}
                     />
                 </Box>

@@ -23,6 +23,7 @@ import Alert from "../assets/icons/circle_alert.svg"
 
 import { SxProps } from "@mui/material"
 import { useUser } from "./useUser"
+import { CardNotification } from "../components/CardNotification"
 
 export const useNavigationList = () => {
     const { user } = useUser()
@@ -91,7 +92,7 @@ export const useNavigationList = () => {
                 id: 4,
                 title: "Chamados",
                 location: "/calls",
-                icon: <img src={ Alert } alt="Logotipo do App" style={ {width:"6vw"} } />,
+                icon: <img src={Alert} alt="Logotipo do App" style={{ width: "6vw" }} />,
             },
             {
                 id: 5,
@@ -202,6 +203,34 @@ export const useNavigationList = () => {
             },
         ],
     }
+    const notifications: NavigationMenu = {
+        id: 4,
+        title: "Notificações",
+        location: "/",
+        drawer: [
+            {
+                id: 1,
+                title: "",
+                location: "/profile",
+                icon: <CardNotification />,
+            },
+            {
+                id: 2,
+                title: "",
+                location: "/node_modules",
+                icon: <CardNotification />,
+            },
+            {
+                id: 3,
+                title: "",
+                location: "/kfj",
+                icon: <CardNotification />,
+            },
+        ],
 
-    return { admin, employee, producer }
+        icon: "",
+        bottom: [],
+    }
+
+    return { admin, employee, producer, notifications }
 }
