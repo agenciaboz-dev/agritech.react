@@ -1,23 +1,20 @@
-import { Box, Tab, Tabs, Avatar, Button } from "@mui/material"
 import React, { useEffect, useState } from "react"
-import { colors } from "../../../style/colors"
-import { Header } from "../../../components/Header"
-import { useHeader } from "../../../hooks/useHeader"
-import { tabStyle } from "../../../style/tabStyle"
-import { useIo } from "../../../hooks/useIo"
-import { CardUser } from "../../../components/CardUser"
-import { useUsers } from "../../../hooks/useUsers"
-import { LogsCard } from "../../Calls/LogsCard"
+import { useHeader } from "../../hooks/useHeader"
+import { useIo } from "../../hooks/useIo"
+import { useUsers } from "../../hooks/useUsers"
+import { Box, Button, Tab, Tabs } from "@mui/material"
+import { Header } from "../../components/Header"
+import { colors } from "../../style/colors"
+import { tabStyle } from "../../style/tabStyle"
+import { LogsCard } from "./LogsCard"
 
-interface ReviewsCallProps {
-    user: User
-}
+interface MyCallsProps {}
 
-export const ReviewsCall: React.FC<ReviewsCallProps> = ({ user }) => {
+export const MyCalls: React.FC<MyCallsProps> = ({}) => {
     const header = useHeader()
     const io = useIo()
 
-    const [tab, setTab] = React.useState("calls")
+    const [tab, setTab] = React.useState("late")
     const changeTab = (event: React.SyntheticEvent, newValue: string) => {
         setTab(newValue)
     }
@@ -33,7 +30,7 @@ export const ReviewsCall: React.FC<ReviewsCallProps> = ({ user }) => {
     }, [pendingUsers])
 
     useEffect(() => {
-        header.setTitle("Chamados")
+        header.setTitle("Meus chamados")
     }, [])
 
     return (
@@ -72,27 +69,6 @@ export const ReviewsCall: React.FC<ReviewsCallProps> = ({ user }) => {
                     flexDirection: "column",
                 }}
             >
-                <Box sx={{ alignItems: "center", width: "100%", justifyContent: "space-between", flexDirection: "row" }}>
-                    <p style={{ padding: "0 2vw", fontSize: "4.55vw" }}>Pendentes</p>
-                    <Button
-                        size="small"
-                        variant="contained"
-                        sx={{
-                            alignItems: "center",
-                            gap: "0vw",
-                            backgroundColor: colors.button,
-                            color: colors.text.white,
-                            textTransform: "none",
-                            borderRadius: "5vw",
-                            fontSize: "3.0vw",
-                            p: "1vw 3vw",
-                            width: "fit-content",
-                        }}
-                        onClick={() => {}}
-                    >
-                        Ações em massa
-                    </Button>
-                </Box>
                 <Tabs
                     value={tab}
                     onChange={changeTab}
@@ -103,10 +79,14 @@ export const ReviewsCall: React.FC<ReviewsCallProps> = ({ user }) => {
                     scrollButtons="auto"
                     allowScrollButtonsMobile
                 >
-                    <Tab sx={tabStyle} value="calls" label="Chamados" />
+                    <Tab sx={tabStyle} value="late" label="Atrasados" />
+                    <Tab sx={tabStyle} value="waiting" label="Aguardando" />
+                    <Tab sx={tabStyle} value="concluded" label="Concluídos" />
                 </Tabs>
                 <Box sx={{ width: "100%", height: "82%", overflow: "auto", gap: "1vw" }}>
-                    {tab === "calls" && listEmployee?.map((user, index) => <LogsCard key={index} user={user} review />)}
+                    {tab === "late" && listEmployee?.map((user, index) => <LogsCard key={index} user={user} review />)}
+                    {tab === "waiting" && listEmployee?.map((user, index) => <LogsCard key={index} user={user} review />)}
+                    {tab === "concluded" && listEmployee?.map((user, index) => <p key={index}>Nenhum chamado </p>)}
                 </Box>
             </Box>
         </Box>

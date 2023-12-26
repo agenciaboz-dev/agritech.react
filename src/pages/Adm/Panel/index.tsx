@@ -17,6 +17,7 @@ import { useUsers } from "../../../hooks/useUsers"
 import { CardUser } from "../../../components/CardUser"
 import Logo from "../../../assets/logo/Avatar.png"
 import { useNotificationDrawer } from "../../../hooks/useNotificationDrawer"
+import PostAddIcon from "@mui/icons-material/PostAdd"
 
 interface PanelProps {
     user: User
@@ -287,6 +288,20 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                             </Box>
                         </Box>
                     </Box>
+                    <IconButton
+                        sx={{
+                            bgcolor: colors.button,
+                            width: "12vw",
+                            height: "12vw",
+                            borderRadius: "10vw",
+                            position: "absolute",
+                            bottom: "26vw",
+                            right: "7vw",
+                        }}
+                        onClick={() => navigate("/adm/call/new")}
+                    >
+                        <PostAddIcon fontSize="medium" sx={{ color: "#fff" }} />
+                    </IconButton>
 
                     <Box sx={{ flexDirection: "row" }}>
                         <BottomNavigation section={bottomMenu.admin} external />

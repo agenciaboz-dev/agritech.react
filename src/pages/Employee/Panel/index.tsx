@@ -113,7 +113,7 @@ export const PanelUser: React.FC<PanelUserProps> = ({ user }) => {
                             bottom: "26vw",
                             right: "7vw",
                         }}
-                        onClick={() => navigate("/employee/new_call")}
+                        onClick={() => navigate("/call/new")}
                     >
                         <PostAddIcon fontSize="medium" sx={{ color: "#fff" }} />
                     </IconButton>

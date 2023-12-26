@@ -46,7 +46,7 @@ export const LogsCard: React.FC<LogsCardProps> = ({ review, user }) => {
                     </Menu>
                 </Group>
             ) : (
-                <IconButton onClick={() => navigate(`/adm/calls/${user?.id}`)}>
+                <IconButton onClick={() => navigate(user?.isAdmin ? `/adm/calls/${user?.id}` : `/call/1/report`)}>
                     <IoIosArrowForward style={{ width: "5vw", height: "5vw" }} />
                 </IconButton>
             )}

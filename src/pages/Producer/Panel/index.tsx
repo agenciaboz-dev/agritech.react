@@ -113,7 +113,7 @@ export const PanelUser: React.FC<PanelUserProps> = ({ user }) => {
                             bottom: "26vw",
                             right: "8vw",
                         }}
-                        onClick={() => navigate("/producer/new_tillage")}
+                        onClick={() => navigate("/call/new")}
                     >
                         <AddIcon fontSize="large" sx={{ color: "#fff" }} />
                     </IconButton>

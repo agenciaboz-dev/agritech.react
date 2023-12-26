@@ -170,11 +170,17 @@ export const useNavigationList = () => {
             {
                 id: 3,
                 title: "Abrir chamado",
-                location: "/employee/new_call",
+                location: "/call/new",
                 icon: <img src={AddUser} style={{ width: "6vw" }} />,
             },
             {
                 id: 4,
+                title: "Meus chamados",
+                location: "/employee/requests",
+                icon: <img src={Pin} style={{ width: "6vw" }} />,
+            },
+            {
+                id: 5,
                 title: "Fixados",
                 location: "/employee/fixed",
                 icon: <img src={Pin} style={{ width: "6vw" }} />,
@@ -197,7 +203,7 @@ export const useNavigationList = () => {
             },
             {
                 id: 3,
-                title: "Solicitações",
+                title: "Chamados",
                 location: "/requests",
                 icon: <StorefrontIcon sx={iconStyle} />,
             },

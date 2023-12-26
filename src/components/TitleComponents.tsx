@@ -1,28 +1,32 @@
-import { Box, Button } from "@mui/material"
+import { Box, Button, SxProps } from "@mui/material"
 import React from "react"
 import { colors } from "../style/colors"
 
 interface TitleComponentsProps {
     title: string
     button?: boolean
+    textButton?: string
+    location?: string
+    style?: React.CSSProperties | undefined
+    variant?: boolean
 }
 
-export const TitleComponents: React.FC<TitleComponentsProps> = ({ title, button }) => {
+export const TitleComponents: React.FC<TitleComponentsProps> = ({ title, button, textButton, location, style, variant }) => {
     return (
         <Box sx={{ gap: "2vw" }}>
             <Box sx={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-                <p style={{ fontSize: "3.5vw", fontWeight: title === "Responsáveis" ? "bold" : "normal" }}>{title}</p>
+                <p style={{ ...style, fontWeight: title === "Responsáveis" ? "bold" : "normal" }}>{title}</p>
                 {button && (
                     <Button
                         size="small"
                         variant="contained"
                         sx={{ bgcolor: colors.button, textTransform: "none", borderRadius: "5vw" }}
                     >
-                        Adicionar
+                        {textButton ? textButton : "Adicionar"}
                     </Button>
                 )}
             </Box>
-            <hr style={{ color: "#88A486" }} />
+            {!variant && <hr style={{ color: "#88A486" }} />}
         </Box>
     )
 }

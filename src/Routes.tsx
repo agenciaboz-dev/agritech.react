@@ -9,14 +9,11 @@ import { Profile } from "./pages/Profile"
 import { useNavigationList } from "./hooks/useNavigationList"
 import { BottomNavigation } from "./components/BottomNavigation"
 import { Analysis } from "./pages/Signup/Analysis"
-import { Reviews } from "./pages/Adm/ReviewsEmployee"
 import { Userprofile } from "./pages/Adm/ReviewsEmployee/UserProfile"
-import { SettingsRoutes } from "./pages/Adm/Panel/SettingsRoutes"
-import { PanelUser } from "./pages/Users/Panel"
-import { ListUsers } from "./pages/Adm/Panel/Lists/ListProducer"
 import { Adm } from "./pages/Adm"
 import { Employee } from "./pages/Employee"
 import { Producer } from "./pages/Producer"
+import { Calls } from "./pages/Calls"
 
 interface RoutesProps {}
 
@@ -50,6 +47,7 @@ export const Routes: React.FC<RoutesProps> = ({}) => {
 
                     <Route path="/profile" element={<Profile user={user} />} />
                     <Route path="/profile/:userId" element={<Userprofile view />} />
+                    <Route path="/call/*" element={<Calls user={user} />} />
                 </ReactRoutes>
             </>
         )

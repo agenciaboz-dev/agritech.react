@@ -8,7 +8,7 @@ import { useUsers } from "../../hooks/useUsers"
 import { DatePicker, DatePickerProps } from "@mantine/dates"
 import { Indicator } from "@mantine/core"
 import useDateISO from "../../hooks/useDateISO"
-import { LogsCard } from "./LogsCard"
+import { LogsCard } from "../../pages/Calls/LogsCard"
 import { IconUser } from "@tabler/icons-react"
 
 interface CalendarProps {}
@@ -142,10 +142,7 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
                             <LogsCard variant user={findUser} />
                         </>
                     )}
-                  
                 </Box>
-
-               
             </Box>
         </Box>
     )
