@@ -167,7 +167,7 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
                                     borderRadius: "5vw",
                                     textTransform: "none",
                                 }}
-                                onClick={() => navigate("/")}
+                                onClick={() => navigate("/producer/1/1")}
                             >
                                 Salvar
                             </Button>

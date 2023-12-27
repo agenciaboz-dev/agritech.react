@@ -21,14 +21,12 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     const [user, setUser] = useState<User | null>(null)
 
     useEffect(() => {
-        console.log("USUARIO UPDATE", { userContext: user })
-
+        // console.log("USUARIO UPDATE", { userContext: user })
         // if (user) {
         //     io.on("connect", () => {
         //         console.log("reconnected, syncing user")
         //         io.emit("client:sync", user)
         //     })
-
         //     return () => {
         //         io.off("connect")
         //     }

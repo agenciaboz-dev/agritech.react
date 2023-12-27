@@ -14,6 +14,7 @@ import { Adm } from "./pages/Adm"
 import { Employee } from "./pages/Employee"
 import { Producer } from "./pages/Producer"
 import { Calls } from "./pages/Calls"
+import { TillageDetails } from "./pages/TillageDetails"
 
 interface RoutesProps {}
 
@@ -28,6 +29,7 @@ export const Routes: React.FC<RoutesProps> = ({}) => {
                 <ReactRoutes>
                     <Route path="/" element={<Panel user={user} />} />
                     <Route path="/adm/*" element={<Adm user={user} />} />
+                    <Route path="/producer/:producerid/:tillageid" element={<TillageDetails />} />
                 </ReactRoutes>
             </>
         ) : !user.approved ? (
@@ -40,9 +42,15 @@ export const Routes: React.FC<RoutesProps> = ({}) => {
                 <BottomNavigation section={user.employee ? bottomMenu.employee : bottomMenu.producer} />
                 <ReactRoutes>
                     {user.employee ? (
-                        <Route path="/employee/*" element={<Employee user={user} />} />
+                        <>
+                            <Route path="/employee/*" element={<Employee user={user} />} />
+                            <Route path="/producer/:producerid/:tillageid" element={<TillageDetails />} />
+                        </>
                     ) : (
-                        <Route path="/producer/*" element={<Producer user={user} />} />
+                        <>
+                            <Route path="/producer/*" element={<Producer user={user} />} />
+                            <Route path="/producer/:tillageid" element={<TillageDetails />} />
+                        </>
                     )}
 
                     <Route path="/profile" element={<Profile user={user} />} />

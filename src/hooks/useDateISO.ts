@@ -1,7 +1,7 @@
 const useDateISO = (date: Date | null) => {
     if (date) {
         const pickDate = date?.toISOString()
-        console.log(pickDate)
+        // console.log(pickDate)
         return pickDate
     }
 }
