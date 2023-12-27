@@ -7,6 +7,7 @@ import { ActionIcon, Group, Menu } from "@mantine/core"
 import { IconDots } from "@tabler/icons-react"
 import { IoIosArrowForward } from "react-icons/io"
 import { useNavigate } from "react-router-dom"
+import { useUser } from "../../hooks/useUser"
 
 interface LogsCardProps {
     review?: boolean
@@ -15,6 +16,7 @@ interface LogsCardProps {
 
 export const LogsCard: React.FC<LogsCardProps> = ({ review, user }) => {
     const navigate = useNavigate()
+    const account = useUser()
 
     return (
         <Box sx={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
@@ -46,7 +48,9 @@ export const LogsCard: React.FC<LogsCardProps> = ({ review, user }) => {
                     </Menu>
                 </Group>
             ) : (
-                <IconButton onClick={() => navigate(user?.isAdmin ? `/adm/calls/${user?.id}` : `/call/1/report`)}>
+                <IconButton
+                    onClick={() => navigate(account.user?.isAdmin ? `/adm/call/${user?.id}/report` : `/call/1/report`)}
+                >
                     <IoIosArrowForward style={{ width: "5vw", height: "5vw" }} />
                 </IconButton>
             )}

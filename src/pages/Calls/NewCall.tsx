@@ -9,6 +9,7 @@ import { OpenCall } from "../../definitions/call"
 import { textField } from "../../style/input"
 import listProducers from "../../hooks/listProducers"
 import useDateISO from "../../hooks/useDateISO"
+import { useUser } from "../../hooks/useUser"
 
 interface NewCallProps {
     user: User
@@ -16,6 +17,7 @@ interface NewCallProps {
 
 export const NewCall: React.FC<NewCallProps> = ({ user }) => {
     const header = useHeader()
+    const account = useUser()
 
     const [loading, setLoading] = useState(false)
     const [inputValue, setInputValue] = useState("")
@@ -64,7 +66,7 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                     flexDirection: "row",
                 }}
             >
-                <Header back location={user?.employee ? "/employee/panel" : user?.producer ? "/producer/panel" : "/"} />
+                <Header back location={account.user?.isAdmin ? "/" : user?.producer ? "/producer/" : "/employee/"} />
             </Box>
 
             <Box

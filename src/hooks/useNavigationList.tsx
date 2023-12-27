@@ -117,6 +117,12 @@ export const useNavigationList = () => {
             },
             {
                 id: 2,
+                title: "Chamados",
+                location: "/requests",
+                icon: <img src={Alert} alt="Logotipo do App" style={{ width: "6vw" }} />,
+            },
+            {
+                id: 3,
                 title: "Cadastrar Lavoura",
                 location: "/producer/new_tillage",
                 icon: <img src={AddEmployee} style={{ width: "6vw" }} />,
@@ -132,7 +138,7 @@ export const useNavigationList = () => {
             {
                 id: 1,
                 title: "Painel",
-                location: "/panel",
+                location: "/",
                 icon: <GridViewIcon sx={iconStyle} />,
             },
             {
@@ -146,6 +152,12 @@ export const useNavigationList = () => {
                 title: "Transações",
                 location: "/transactions",
                 icon: <SwapHorizIcon sx={iconStyle} />,
+            },
+            {
+                id: 4,
+                title: "Chamados",
+                location: "/requests",
+                icon: <img src={Alert} alt="Logotipo do App" style={{ width: "6vw" }} />,
             },
         ],
     }
@@ -177,7 +189,7 @@ export const useNavigationList = () => {
                 id: 4,
                 title: "Meus chamados",
                 location: "/employee/requests",
-                icon: <img src={Pin} style={{ width: "6vw" }} />,
+                icon: <img src={Alert} alt="Logotipo do App" style={{ width: "6vw" }} />,
             },
             {
                 id: 5,
@@ -205,7 +217,7 @@ export const useNavigationList = () => {
                 id: 3,
                 title: "Chamados",
                 location: "/requests",
-                icon: <StorefrontIcon sx={iconStyle} />,
+                icon: <img src={Alert} alt="Logotipo do App" style={{ width: "6vw" }} />,
             },
         ],
     }

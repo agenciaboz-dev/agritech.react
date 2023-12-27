@@ -90,7 +90,7 @@ export const ReportCall: React.FC<ReportCallProps> = ({ user }) => {
                     flexDirection: "row",
                 }}
             >
-                <Header back location={!user?.isAdmin ? "/employee/panel" : "/"} />
+                <Header back location={user?.isAdmin ? "/" : user?.producer ? "/producer/" : "/employee/"} />
             </Box>
 
             <Box
@@ -125,26 +125,28 @@ export const ReportCall: React.FC<ReportCallProps> = ({ user }) => {
                                         value={values.openCall}
                                         sx={{ ...textField }}
                                         inputProps={{ "aria-readonly": true }}
+                                        disabled={!user?.producer ? false : true}
                                     />
                                     <TextField
                                         label="Produtor"
                                         name="producer"
                                         value={values.producer}
                                         sx={{ ...textField }}
+                                        disabled={!user?.producer ? false : true}
                                     />
                                     <TextField
                                         label="Lavoura"
                                         name="tillage"
                                         value={values.tillage}
                                         sx={{ ...textField }}
-                                        onChange={handleChange}
+                                        disabled={!user?.producer ? false : true}
                                     />
                                 </Box>
                                 <StageDescription title={values.stages[1].name} values={values} change={handleChange} />
                                 <StageDescription title={values.stages[2].name} values={values} change={handleChange} />
                                 <StageDescription title={values.stages[3].name} values={values} change={handleChange} />
                             </Form>
-                            <ButtonComponent title="Reportar" location="" />
+                            {!user?.producer && <ButtonComponent title="Reportar" location="" />}
                         </Box>
                     )}
                 </Formik>
