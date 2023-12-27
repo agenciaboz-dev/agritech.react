@@ -8,6 +8,7 @@ import { TitleComponents } from "../../components/TitleComponents"
 import { Header } from "../../components/Header"
 import { colors } from "../../style/colors"
 import { textField } from "../../style/input"
+import { StageDescription } from "../../components/StageDescription"
 
 interface ReportCallProps {
     user: User
@@ -139,148 +140,9 @@ export const ReportCall: React.FC<ReportCallProps> = ({ user }) => {
                                         onChange={handleChange}
                                     />
                                 </Box>
-
-                                <Box sx={{ gap: "3vw" }}>
-                                    <Box sx={{ gap: "3vw" }}>
-                                        <p style={{ fontSize: "3.5vw", fontWeight: "bold" }}>{values.stages[1].name}</p>
-                                        <TextField
-                                            label="Data"
-                                            name="stages.date"
-                                            type="date"
-                                            value={values.stages[1].date}
-                                            sx={{ ...textField }}
-                                            inputProps={{ "aria-readonly": true }}
-                                        />
-                                        <Box sx={{ flexDirection: "row", gap: "2vw" }}>
-                                            <TextField
-                                                label="Início"
-                                                name="stages.start"
-                                                type="time"
-                                                value={values.stages[1].start}
-                                                sx={{ ...textField }}
-                                                onChange={handleChange}
-                                            />
-                                            <TextField
-                                                label="Finalização"
-                                                name="stages.finish"
-                                                type="time"
-                                                value={values.stages[1].finish}
-                                                sx={{ ...textField }}
-                                                onChange={handleChange}
-                                            />
-                                            <TextField
-                                                label="Duração"
-                                                name="stages.duration"
-                                                type="time"
-                                                value={values.stages[1].duration}
-                                                sx={{ ...textField }}
-                                                onChange={handleChange}
-                                            />
-                                        </Box>
-                                    </Box>
-                                    <TextField
-                                        multiline
-                                        label="Observações"
-                                        name="comments"
-                                        value={values.comments}
-                                        minRows={1}
-                                        maxRows={3}
-                                        sx={{
-                                            ...textField,
-                                        }}
-                                        onChange={handleChange}
-                                        InputProps={{
-                                            sx: {
-                                                "& .MuiOutlinedInput-root": {
-                                                    "&.Mui-focused fieldset": {
-                                                        borderColor: colors.secondary,
-                                                    },
-                                                    fieldset: {
-                                                        borderColor: "#232323",
-                                                    },
-                                                },
-                                            },
-                                        }}
-                                    />
-                                </Box>
-                                <Box sx={{ gap: "3vw" }}>
-                                    <Box sx={{ gap: "3vw" }}>
-                                        <p style={{ fontSize: "3.5vw", fontWeight: "bold" }}>{values.stages[2].name}</p>
-                                        <TextField
-                                            label="Data"
-                                            name="stages.date"
-                                            type="date"
-                                            value={values.stages[1].date}
-                                            sx={{ ...textField }}
-                                            inputProps={{ "aria-readonly": true }}
-                                        />
-                                        <Box sx={{ flexDirection: "row", gap: "2vw" }}>
-                                            <TextField
-                                                label="Início"
-                                                name="stages.start"
-                                                type="time"
-                                                value={values.stages[1].start}
-                                                sx={{ ...textField }}
-                                                onChange={handleChange}
-                                            />
-                                            <TextField
-                                                label="Finalização"
-                                                name="stages.finish"
-                                                type="time"
-                                                value={values.stages[1].finish}
-                                                sx={{ ...textField }}
-                                                onChange={handleChange}
-                                            />
-                                            <TextField
-                                                label="Duração"
-                                                name="stages.duration"
-                                                type="time"
-                                                value={values.stages[1].duration}
-                                                sx={{ ...textField }}
-                                                onChange={handleChange}
-                                            />
-                                        </Box>
-                                    </Box>
-                                </Box>
-                                <Box sx={{ gap: "3vw" }}>
-                                    <Box sx={{ gap: "3vw" }}>
-                                        <p style={{ fontSize: "3.5vw", fontWeight: "bold" }}>{values.stages[3].name}</p>
-                                        <TextField
-                                            label="Data"
-                                            name="stages.date"
-                                            type="date"
-                                            value={values.stages[1].date}
-                                            sx={{ ...textField }}
-                                            inputProps={{ "aria-readonly": true }}
-                                        />
-                                        <Box sx={{ flexDirection: "row", gap: "2vw" }}>
-                                            <TextField
-                                                label="Início"
-                                                name="stages.start"
-                                                type="time"
-                                                value={values.stages[1].start}
-                                                sx={{ ...textField }}
-                                                onChange={handleChange}
-                                            />
-                                            <TextField
-                                                label="Finalização"
-                                                name="stages.finish"
-                                                type="time"
-                                                value={values.stages[1].finish}
-                                                sx={{ ...textField }}
-                                                onChange={handleChange}
-                                            />
-                                            <TextField
-                                                label="Duração"
-                                                name="stages.duration"
-                                                type="time"
-                                                value={values.stages[1].duration}
-                                                sx={{ ...textField }}
-                                                onChange={handleChange}
-                                            />
-                                        </Box>
-                                    </Box>
-                                </Box>
+                                <StageDescription title={values.stages[1].name} values={values} change={handleChange} />
+                                <StageDescription title={values.stages[2].name} values={values} change={handleChange} />
+                                <StageDescription title={values.stages[3].name} values={values} change={handleChange} />
                             </Form>
                             <ButtonComponent title="Reportar" location="" />
                         </Box>

@@ -1,14 +1,14 @@
-import { Box, TextField } from "@mui/material"
-import React, { useEffect } from "react"
+import { Autocomplete, Box, Button, CircularProgress, TextField } from "@mui/material"
+import React, { useEffect, useState } from "react"
 import { colors } from "../../style/colors"
 import { Header } from "../../components/Header"
 import { useHeader } from "../../hooks/useHeader"
 import { TitleComponents } from "../../components/TitleComponents"
-import { useUser } from "../../hooks/useUser"
 import { Form, Formik } from "formik"
 import { OpenCall } from "../../definitions/call"
 import { textField } from "../../style/input"
-import { ButtonComponent } from "../../components/ButtonComponent"
+import listProducers from "../../hooks/listProducers"
+import useDateISO from "../../hooks/useDateISO"
 
 interface NewCallProps {
     user: User
@@ -16,21 +16,29 @@ interface NewCallProps {
 
 export const NewCall: React.FC<NewCallProps> = ({ user }) => {
     const header = useHeader()
-    // const { user } = useUser()
+
+    const [loading, setLoading] = useState(false)
+    const [inputValue, setInputValue] = useState("")
+    const [tillageValue, setTillageValue] = useState("")
+    const producers = listProducers()?.map((item) => item.name) || []
+    const options: string[] | undefined = ["Selecione um produtor", ...producers]
+    const tillages: string[] = ["Selecione a lavoura", "Fazenda Mormaço", "Tigrinho", "Zabelê"]
 
     const initialValues: OpenCall = {
         approved: false,
-        openCall: String(new Date()),
+        openCall: new Date().toLocaleDateString("pt-br"),
         init: "",
         caller: user,
         comments: "",
-        tillage: "select com as lavouras do produtor",
-        producer: user?.producer ? user?.name : "Aqui é um select",
+        tillage: "Selecione a lavoura",
+        producer: user?.producer ? user?.name : "Selecione um produtor",
         kit: user.isAdmin ? "Kit #Vuitton" : "",
     }
 
     const handleSubmit = (values: OpenCall) => {
         console.log(values)
+
+        setLoading(true)
     }
 
     useEffect(() => {
@@ -80,30 +88,56 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                     variant
                 />
                 <Formik initialValues={initialValues} onSubmit={handleSubmit}>
-                    {({ values, handleChange }) => (
+                    {({ values, handleChange, setFieldValue }) => (
                         <Box sx={{ gap: "4vw" }}>
                             <Form>
                                 <TextField
                                     label="Data Desejada"
-                                    name="open"
+                                    name="openCall"
+                                    // type="date"
                                     value={values.openCall}
                                     sx={{ ...textField }}
-                                    inputProps={{ "aria-readonly": true }}
+                                    disabled
                                 />
-                                <TextField
-                                    label="Produtor"
-                                    name="producerId"
+                                <Autocomplete
                                     value={values.producer}
-                                    sx={{ ...textField }}
-                                    onChange={user.employee ? handleChange : () => {}}
-                                    disabled={user.producer ? true : false}
+                                    onChange={(event, newValue) => {
+                                        setFieldValue("producer", newValue)
+                                    }}
+                                    inputValue={inputValue}
+                                    onInputChange={(event, newInputValue) => {
+                                        setInputValue(newInputValue)
+                                    }}
+                                    options={options || []}
+                                    isOptionEqualToValue={(option, value) => {
+                                        {
+                                            value === "Selecione um produtor" && option === "Selecione um produtor"
+                                        }
+                                        return option === value
+                                    }}
+                                    renderInput={(params) => (
+                                        <TextField {...params} sx={{ ...textField }} label="Produtor" required />
+                                    )}
                                 />
-                                <TextField
-                                    label="Lavoura"
-                                    name="tillage"
+                                <Autocomplete
                                     value={values.tillage}
-                                    sx={{ ...textField }}
-                                    onChange={handleChange}
+                                    onChange={(event, newValue) => {
+                                        setFieldValue("tillage", newValue)
+                                    }}
+                                    inputValue={tillageValue}
+                                    onInputChange={(event, newInputValue) => {
+                                        setTillageValue(newInputValue)
+                                    }}
+                                    options={tillages || []}
+                                    isOptionEqualToValue={(option, value) => {
+                                        {
+                                            value === "Selecione a lavoura" && option === "Selecione a lavoura"
+                                        }
+                                        return option === value
+                                    }}
+                                    renderInput={(params) => (
+                                        <TextField {...params} sx={{ ...textField }} label="Lavoura" required />
+                                    )}
                                 />
 
                                 {user.isAdmin && (
@@ -140,8 +174,22 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                                         },
                                     }}
                                 />
+                                <Button
+                                    variant="contained"
+                                    type="submit"
+                                    sx={{
+                                        fontSize: 17,
+                                        color: colors.text.white,
+                                        width: "90%",
+                                        backgroundColor: colors.button,
+                                        borderRadius: "5vw",
+                                        textTransform: "none",
+                                        margin: "0 5vw",
+                                    }}
+                                >
+                                    {loading ? <CircularProgress sx={{ color: "#fff" }} /> : "Abrir Chamado"}
+                                </Button>
                             </Form>
-                            <ButtonComponent title="Abrir Chamado" location="" />
                         </Box>
                     )}
                 </Formik>

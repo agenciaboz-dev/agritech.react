@@ -134,12 +134,12 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
                 >
                     {value?.getDate() === 22 && (
                         <>
-                            <LogsCard variant user={findUser} />
-                            <LogsCard variant user={findUser} />
-                            <LogsCard variant user={findUser} />
-                            <LogsCard variant user={findUser} />
-                            <LogsCard variant user={findUser} />
-                            <LogsCard variant user={findUser} />
+                            <LogsCard review user={findUser} />
+                            <LogsCard review user={findUser} />
+                            <LogsCard review user={findUser} />
+                            <LogsCard review user={findUser} />
+                            <LogsCard review user={findUser} />
+                            <LogsCard review user={findUser} />
                         </>
                     )}
                 </Box>
