@@ -160,7 +160,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                     {tab === "call" && !variant ? (
                         <OpenCallBox click={handleClickOpen} data={content} />
                     ) : (
-                        tab === "call" && <ProgressCall click={() => {}} data={progress} />
+                        tab === "call" && <ProgressCall click={() => navigate("/callDetail")} data={progress} />
                     )}
                     <DialogConfirm
                         open={open}

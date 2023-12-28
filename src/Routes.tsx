@@ -16,6 +16,7 @@ import { Producer } from "./pages/Producer"
 import { Calls } from "./pages/Calls"
 import { TillageDetails } from "./pages/TillageDetails"
 import { OpenCallBox } from "./components/OpenCallBox"
+import { CallDetails } from "./pages/Calls/CallDetails"
 
 interface RoutesProps {}
 
