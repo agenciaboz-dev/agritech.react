@@ -67,11 +67,11 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
             voter_card: user.employee?.voter_card || "",
             work_card: user.employee?.work_card || "",
             residence: user.employee?.residence || "",
-            bank_data: {
-                account: user.employee?.bank_data?.account || "",
-                name: user.employee?.bank_data?.name || "",
-                agency: user?.employee?.bank_data?.agency || "",
-                type: user?.employee?.bank_data?.type || "",
+            bank: {
+                account: user.employee?.bank?.account || "",
+                name: user.employee?.bank?.name || "",
+                agency: user?.employee?.bank?.agency || "",
+                type: user?.employee?.bank?.type || "",
             },
         },
         producer: {
@@ -117,16 +117,16 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
                         residence: data.employee?.residence,
                         userid: user.id,
 
-                        bank_data: {
-                            account: data.employee?.bank_data?.account,
-                            type: data.employee?.bank_data?.type,
-                            agency: data.employee?.bank_data?.agency,
-                            name: data.employee?.bank_data?.name,
+                        bank: {
+                            account: data.employee?.bank?.account,
+                            type: data.employee?.bank?.type,
+                            agency: data.employee?.bank?.agency,
+                            name: data.employee?.bank?.name,
                             employeeId: user.employee?.id,
                         },
                     },
                 })
-                console.log("DADOS MONTAdos:", data)
+                console.log("Dados:", data)
             } else if (data.producer) {
                 console.log(data)
                 io.emit("user:update", { ...data, producer: { cnpj: unmask(data.producer?.cnpj) } })

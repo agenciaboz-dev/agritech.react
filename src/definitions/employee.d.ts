@@ -9,5 +9,5 @@ declare interface Employee {
     military: string
     residence: string
 
-    bank_data?: Bank
+    bank?: Bank
 }

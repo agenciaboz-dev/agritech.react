@@ -14,10 +14,9 @@ interface InfoProfileProps {
     values: SignupValues
     handleChange?: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
     review: boolean
-    
 }
 
-export const InfoProfile: React.FC<InfoProfileProps> = ({ values, handleChange, review,  }) => {
+export const InfoProfile: React.FC<InfoProfileProps> = ({ values, handleChange, review }) => {
     const [tab, setTab] = React.useState("personal")
     const changeTab = (event: React.SyntheticEvent, newValue: string) => {
         setTab(newValue)
@@ -34,16 +33,16 @@ export const InfoProfile: React.FC<InfoProfileProps> = ({ values, handleChange, 
                 scrollButtons="auto"
                 allowScrollButtonsMobile
             >
-               <Tab sx={tabStyle} value="historic" label="Histórico" />
+                <Tab sx={tabStyle} value="historic" label="Histórico" />
                 <Tab sx={tabStyle} value="personal" label="Pessoal" />
-                <Tab sx={tabStyle} value="documentation" label="Documentação" />
+                {values.employee && <Tab sx={tabStyle} value="documentation" label="Documentação" />}
                 <Tab sx={tabStyle} value="contact" label="Contato" />
                 <Tab sx={tabStyle} value="address" label="Endereço" />
                 {!review && <Tab sx={tabStyle} value="bank" label="Dados Bancários" />}
                 {!review && <Tab sx={tabStyle} value="professional" label="Profissional" />}
             </Tabs>
             {tab === "personal" && <Personal values={values} handleChange={handleChange ? handleChange : () => {}} />}
-            {tab === "documentation" && (
+            {tab === "documentation" && values.employee && (
                 <Documentation values={values} handleChange={handleChange ? handleChange : () => {}} />
             )}
             {tab === "contact" && <Contact values={values} handleChange={handleChange ? handleChange : () => {}} />}
@@ -54,7 +53,6 @@ export const InfoProfile: React.FC<InfoProfileProps> = ({ values, handleChange, 
             {!review && tab === "professional" && values.employee && (
                 <Professional values={values} handleChange={handleChange ? handleChange : () => {}} />
             )}
-            
         </Box>
     )
 }

@@ -12,7 +12,7 @@ declare interface NewTillage {
     commments?: string
 
     //address         Address?
-    // local_tillage: Coordinate[]
+    // location: Coordinate[]
     // gallery: Gallery[]
 
     // producer: Producer

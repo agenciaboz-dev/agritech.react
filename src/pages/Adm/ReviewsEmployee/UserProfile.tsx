@@ -74,11 +74,11 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
             voter_card: profile?.employee?.voter_card || "",
             work_card: profile?.employee?.work_card || "",
             residence: profile?.employee?.residence || "",
-            bank_data: {
-                account: profile?.employee?.bank_data?.account || "",
-                name: profile?.employee?.bank_data?.name || "",
-                agency: profile?.employee?.bank_data?.agency || "",
-                type: profile?.employee?.bank_data?.type || "",
+            bank: {
+                account: profile?.employee?.bank?.account || "",
+                name: profile?.employee?.bank?.name || "",
+                agency: profile?.employee?.bank?.agency || "",
+                type: profile?.employee?.bank?.type || "",
             },
         },
         producer: {

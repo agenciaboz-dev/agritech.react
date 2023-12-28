@@ -56,7 +56,7 @@ export const Login: React.FC<LoginProps> = ({}) => {
 
         io.on("user:login:failed", () => {
             setLoading(false)
-            snackbar({ severity: "error", text: "Algo deu errado!" })
+            snackbar({ severity: "error", text: "Usuário ou senha inválido!" })
         })
 
         return () => {

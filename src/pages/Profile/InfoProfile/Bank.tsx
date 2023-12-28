@@ -14,22 +14,22 @@ export const Bank: React.FC<BankProps> = ({ values, handleChange }) => {
         <Box sx={{ flexDirection: "column", gap: "3vw" }}>
             <TextField
                 label={"Banco"}
-                name={"employee.bank_data.name"}
+                name={"employee.bank.name"}
                 sx={textField}
-                value={values.employee?.bank_data?.name}
+                value={values.employee?.bank?.name}
                 onChange={handleChange}
             />
             <TextField
                 select
                 onChange={handleChange}
                 label="Tipo de conta"
-                name="employee.bank_data.type"
+                name="employee.bank.type"
                 sx={{
                     ...textField,
                     width: "100%",
                 }}
                 variant="outlined"
-                value={values.employee?.bank_data?.type}
+                value={values.employee?.bank?.type}
                 InputProps={{
                     style: {},
                 }}
@@ -58,18 +58,18 @@ export const Bank: React.FC<BankProps> = ({ values, handleChange }) => {
             <Box sx={{ flexDirection: "row", gap: "3vw" }}>
                 <TextField
                     label={"Agência"}
-                    name={"employee.bank_data.agency"}
+                    name={"employee.bank.agency"}
                     sx={textField}
-                    value={values.employee?.bank_data?.agency}
+                    value={values.employee?.bank?.agency}
                     onChange={handleChange}
                 />
                 <TextField label={"Dígito"} name={"number"} sx={textField} onChange={handleChange} />
             </Box>
             <TextField
                 label={"Nº da conta"}
-                name={"employee.bank_data.account"}
+                name={"employee.bank.account"}
                 sx={textField}
-                value={values.employee?.bank_data?.account}
+                value={values.employee?.bank?.account}
                 onChange={handleChange}
             />
         </Box>
