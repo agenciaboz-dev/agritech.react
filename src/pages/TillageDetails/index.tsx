@@ -12,6 +12,7 @@ import { tabStyle } from "../../style/tabStyle"
 import { WeatherComponent } from "../../components/WeatherComponent"
 import { DialogConfirm } from "../../components/DialogConfirm"
 import { useNavigate } from "react-router-dom"
+import { OpenCallBox, ProgressCall } from "../../components/OpenCallBox"
 
 interface TillageDetailsProps {}
 
@@ -22,6 +23,18 @@ const openCall = {
     submitTitle: "Sim, iniciar",
     cancelTitle: "Não, cancelar",
 }
+const content = {
+    title: "Abrir um chamado de pulverização",
+    content:
+        "Abra um chamada para que nossa equipe encaminhe-se até o local Lavoura 1#, o prazo minino do chamado é de XX Horas segundo o contrato vigente.",
+    buttonTitle: "Abrir Chamado",
+}
+const progress = {
+    title: "Chamado em Aberto",
+    content:
+        "Abra um chamada para que nossa equipe encaminhe-se até o local Lavoura 1#, o prazo minino do chamado é de XX Horas segundo o contrato vigente.",
+    hour: "20:00",
+}
 
 export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
     const header = useHeader()
@@ -29,6 +42,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
 
     const images = useArray().newArray(5)
     const [open, setOpen] = useState(false)
+    const [variant, setVariant] = useState(false)
 
     const { producerid } = useParams() // temporario => na verdade deve ser tillageid que vai armazenar a info do produtor dela
     const producer = listProducers()?.filter((item) => String(item.id) == producerid) || []
@@ -143,37 +157,20 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                         <Tab sx={{ ...tabStyle, width: "50%" }} value="history" label="Histórico" />
                         <Tab sx={{ ...tabStyle, width: "50%" }} value="call" label="Chamado" />
                     </Tabs>
-                    {tab === "call" && (
-                        <Box
-                            sx={{
-                                bgcolor: "rgba(136, 164, 134, 0.29)",
-                                p: "6vw",
-                                borderRadius: "5vw",
-                                gap: "3vw",
-                                height: "45%",
-                                justifyContent: "space-between",
-                            }}
-                        >
-                            <Box
-                                sx={{
-                                    gap: "3vw",
-                                }}
-                            >
-                                <p style={{ fontSize: "4.5vw", fontWeight: "600" }}>Abrir um chamado de pulverização</p>
-                                <p style={{ fontSize: "3.2vw", textAlign: "justify" }}>
-                                    Abra um chamada para que nossa equipe encaminhe-se até o local Lavoura 1#, o prazo minino
-                                    do chamado é de XX Horas segundo o contrato vigente.
-                                </p>
-                            </Box>
-                            <p
-                                style={{ fontSize: "3.2vw", textAlign: "end", width: "100%", color: colors.primary }}
-                                onClick={handleClickOpen}
-                            >
-                                Abrir Chamado
-                            </p>
-                        </Box>
+                    {tab === "call" && !variant ? (
+                        <OpenCallBox click={handleClickOpen} data={content} />
+                    ) : (
+                        tab === "call" && <ProgressCall click={() => {}} data={progress} />
                     )}
-                    <DialogConfirm open={open} setOpen={setOpen} data={openCall} click={() => navigate("/")} />
+                    <DialogConfirm
+                        open={open}
+                        setOpen={setOpen}
+                        data={openCall}
+                        click={() => {
+                            setVariant(true)
+                            setOpen(false)
+                        }}
+                    />
                 </Box>
             </Box>
         </Box>

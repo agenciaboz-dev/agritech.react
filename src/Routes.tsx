@@ -15,6 +15,7 @@ import { Employee } from "./pages/Employee"
 import { Producer } from "./pages/Producer"
 import { Calls } from "./pages/Calls"
 import { TillageDetails } from "./pages/TillageDetails"
+import { OpenCallBox } from "./components/OpenCallBox"
 
 interface RoutesProps {}
 
@@ -30,6 +31,7 @@ export const Routes: React.FC<RoutesProps> = ({}) => {
                     <Route path="/" element={<Panel user={user} />} />
                     <Route path="/adm/*" element={<Adm user={user} />} />
                     <Route path="/producer/:producerid/:tillageid" element={<TillageDetails />} />
+                    <Route path="/callDetail" element={<CallDetails />} />
                 </ReactRoutes>
             </>
         ) : !user.approved ? (
