@@ -100,17 +100,34 @@ export const Analysis: React.FC<AnalysisProps> = ({ user }) => {
                         </Box>
                     </Box>
                 ) : (
-                    <>
-                        <Box sx={{ justifyContent: "center", alignItems: "center" }}>
-                            {" "}
-                            <HighlightOffIcon fontSize="large" sx={{ color: colors.primary }} />
-                            <p style={{ fontSize: "5vw", fontWeight: "800" }}>Cadastro recusado!</p>
-                            <p style={{ fontSize: "4vw", fontWeight: "400" }}>Motivo: {user.rejected}</p>
+                    <Box sx={{ justifyContent: "center", alignItems: "center", gap: "6vw" }}>
+                        <img src={logoColor} style={{ width: "100%", height: "40vw" }} />
+                        <Box sx={{ p: "1vw", gap: "3vw", alignItems: "center" }}>
+                            <p style={{ fontSize: "4.5vw", fontWeight: "400", textAlign: "center" }}>
+                                Seu cadastro foi recusado,{" "}
+                                <a href="" style={{ color: colors.primary }}>
+                                    clique aqui
+                                </a>{" "}
+                                para rever seu cadastro
+                            </p>
+                            {/* <p style={{ fontSize: "4.5vw", fontWeight: "400", textAlign: "center" }}>
+                                Motivo: Não completou o cadastro
+                            </p> */}
+                            <p style={{ fontSize: "3.6vw" }}>Situação:</p>
+                            <Button
+                                size="small"
+                                variant="contained"
+                                sx={{
+                                    bgcolor: colors.button,
+                                    textTransform: "none",
+                                    borderRadius: "5vw",
+                                    width: "fit-content",
+                                }}
+                            >
+                                Recusado
+                            </Button>
                         </Box>
-                        <Button variant="contained" sx={{ textTransform: "none", justifyContent: "flex-end" }}>
-                            Rever Cadastro
-                        </Button>
-                    </>
+                    </Box>
                 )}
             </Box>
         </Box>
