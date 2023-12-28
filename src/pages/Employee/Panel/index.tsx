@@ -96,7 +96,7 @@ export const PanelUser: React.FC<PanelUserProps> = ({ user }) => {
                     style={{
                         padding: "4vw",
                         width: "100%",
-                        height: "188vw",
+                        height: "100%",
                         backgroundColor: "#fff",
                         borderTopLeftRadius: "7vw",
                         borderTopRightRadius: "7vw",

@@ -24,9 +24,9 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
     const changeTab = (event: React.SyntheticEvent, newValue: string) => {
         setTab(newValue)
     }
-
+    console.log(producer)
     useEffect(() => {
-        header.setTitle(producer[0].name)
+        // header.setTitle(producer[0].name)
     })
 
     return (
@@ -109,7 +109,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                         height: "100%",
                     }}
                 >
-                   <WeatherComponent />
+                    <WeatherComponent />
                     <Tabs
                         value={tab}
                         onChange={changeTab}

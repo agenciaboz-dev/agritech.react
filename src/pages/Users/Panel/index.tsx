@@ -39,8 +39,16 @@ export const PanelUser: React.FC<PanelUserProps> = ({ user }) => {
     }, [])
 
     return (
-        <Box style={{ flex: 1, backgroundColor: colors.button, paddingTop: "4vw" }}>
-            <Box style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", padding: "0 4vw" }}>
+        <Box style={{ flex: 1, backgroundColor: colors.button, paddingTop: "4vw", height: "100%" }}>
+            <Box
+                style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    padding: "0 4vw",
+                    height: "100%",
+                }}
+            >
                 <Box
                     sx={{
                         flexDirection: "row",
@@ -48,6 +56,7 @@ export const PanelUser: React.FC<PanelUserProps> = ({ user }) => {
                         alignItems: "center",
                         paddingTop: " 0vw",
                         gap: "1vw",
+                        height: "100%",
                     }}
                 >
                     <img src={drone} style={{ width: "10vw" }} />
@@ -81,6 +90,7 @@ export const PanelUser: React.FC<PanelUserProps> = ({ user }) => {
                     borderTopLeftRadius: "5vw",
                     borderTopRightRadius: "5vw",
                     paddingTop: 10,
+                    height: "100%",
                 }}
             >
                 <Box
@@ -98,11 +108,11 @@ export const PanelUser: React.FC<PanelUserProps> = ({ user }) => {
                     style={{
                         padding: "4vw",
                         width: "100%",
-                        height: "188vw",
                         backgroundColor: "#fff",
                         borderTopLeftRadius: "7vw",
                         borderTopRightRadius: "7vw",
                         gap: "10vw",
+                        height: "100%",
                     }}
                 >
                     {user.producer && (
@@ -120,7 +130,6 @@ export const PanelUser: React.FC<PanelUserProps> = ({ user }) => {
                         >
                             <AddIcon fontSize="large" sx={{ color: "#fff" }} />
                         </IconButton>
-                        
                     )}
                 </Box>
             </Box>

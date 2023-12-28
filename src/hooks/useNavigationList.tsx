@@ -115,12 +115,7 @@ export const useNavigationList = () => {
                 location: "/profile",
                 icon: <img src={User} style={{ padding: "0 1.5vw", width: "7vw" }} />,
             },
-            {
-                id: 2,
-                title: "Chamados",
-                location: "/requests",
-                icon: <img src={Alert} alt="Logotipo do App" style={{ width: "6vw" }} />,
-            },
+
             {
                 id: 3,
                 title: "Cadastrar Lavoura",
@@ -185,12 +180,7 @@ export const useNavigationList = () => {
                 location: "/call/new",
                 icon: <img src={AddUser} style={{ width: "6vw" }} />,
             },
-            {
-                id: 4,
-                title: "Meus chamados",
-                location: "/employee/requests",
-                icon: <img src={Alert} alt="Logotipo do App" style={{ width: "6vw" }} />,
-            },
+
             {
                 id: 5,
                 title: "Fixados",
