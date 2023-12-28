@@ -35,14 +35,14 @@ export const InfoProfile: React.FC<InfoProfileProps> = ({ values, handleChange, 
             >
                 <Tab sx={tabStyle} value="historic" label="Histórico" />
                 <Tab sx={tabStyle} value="personal" label="Pessoal" />
-                {values.employee && <Tab sx={tabStyle} value="documentation" label="Documentação" />}
+                {values.employee?.id !== undefined && <Tab sx={tabStyle} value="documentation" label="Documentação" />}
                 <Tab sx={tabStyle} value="contact" label="Contato" />
                 <Tab sx={tabStyle} value="address" label="Endereço" />
                 {!review && <Tab sx={tabStyle} value="bank" label="Dados Bancários" />}
                 {!review && <Tab sx={tabStyle} value="professional" label="Profissional" />}
             </Tabs>
             {tab === "personal" && <Personal values={values} handleChange={handleChange ? handleChange : () => {}} />}
-            {tab === "documentation" && values.employee && (
+            {tab === "documentation" && values.employee?.id !== undefined && (
                 <Documentation values={values} handleChange={handleChange ? handleChange : () => {}} />
             )}
             {tab === "contact" && <Contact values={values} handleChange={handleChange ? handleChange : () => {}} />}

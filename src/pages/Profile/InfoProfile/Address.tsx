@@ -67,7 +67,13 @@ export const Address: React.FC<AddressProps> = ({ values, handleChange }) => {
                 </TextField>
                 {/* <TextField label={"Estado"} name={"uf"} sx={textField} value={values.address.uf} onChange={handleChange} /> */}
             </Box>
-            <TextField label={"Cidade"} name={"address.city"} sx={textField} value={values.address.city} onChange={handleChange} />
+            <TextField
+                label={"Cidade"}
+                name={"address.city"}
+                sx={textField}
+                value={values.address.city}
+                onChange={handleChange}
+            />
             <TextField
                 label={"Bairro"}
                 name={"address.district"}
@@ -79,7 +85,7 @@ export const Address: React.FC<AddressProps> = ({ values, handleChange }) => {
                 <TextField
                     label={"Logradouro, Rua, Avenida..."}
                     name={"address.street"}
-                    sx={{...textField, width:"90%"}}
+                    sx={{ ...textField, width: "90%" }}
                     value={values.address.street}
                     onChange={handleChange}
                 />
@@ -91,13 +97,13 @@ export const Address: React.FC<AddressProps> = ({ values, handleChange }) => {
                     onChange={handleChange}
                 />
             </Box>
-                <TextField
-                    label={"Nº"}
-                    name={"address.complement"}
-                    sx={textField}
-                    value={values.address.complement}
-                    onChange={handleChange}
-                />
+            <TextField
+                label={"Complemento"}
+                name={"address.adjunct"}
+                sx={textField}
+                value={values.address.adjunct}
+                onChange={handleChange}
+            />
         </Box>
     )
 }

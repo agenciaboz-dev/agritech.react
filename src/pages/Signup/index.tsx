@@ -53,7 +53,7 @@ export const Signup: React.FC<SignupProps> = ({}) => {
             city: "",
             cep: "",
             uf: "",
-            complement: "",
+            adjunct: "",
         },
         isAdmin: false,
         approved: false,
@@ -100,7 +100,7 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                 city: values.address.city,
                 cep: unmask(values.address.cep),
                 uf: estados.find((estado) => estado.value == values.address.uf)?.value || "",
-                complement: values.address.complement,
+                complement: values.address.adjunct,
             },
         }
         if (typeUser === "employee") {

@@ -50,7 +50,7 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
             number: user.address?.number || "",
             street: user.address?.street || "",
             uf: user.address?.uf || "",
-            complement: user.address?.complement || "",
+            adjunct: user.address?.adjunct || "",
         },
         office: user.office,
         isAdmin: user.isAdmin,
@@ -92,7 +92,7 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
                 address: {
                     cep: unmask(values.address.cep),
                     city: values.address.city,
-                    complement: values.address.complement,
+                    adjunct: values.address.adjunct,
                     district: values.address.district,
                     number: values.address.number,
                     street: values.address.street,

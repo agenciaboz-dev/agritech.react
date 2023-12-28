@@ -10,6 +10,7 @@ import GeoImage from "../../assets/geo.svg"
 import { useArray } from "burgos-array"
 import { tabStyle } from "../../style/tabStyle"
 import { WeatherComponent } from "../../components/WeatherComponent"
+import { useConfirmDialog } from "burgos-confirm"
 interface TillageDetailsProps {}
 
 export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
@@ -24,10 +25,6 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
     const changeTab = (event: React.SyntheticEvent, newValue: string) => {
         setTab(newValue)
     }
-    console.log(producer)
-    useEffect(() => {
-        // header.setTitle(producer[0].name)
-    })
 
     return (
         <Box
@@ -84,6 +81,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                 <Box sx={{ flexDirection: "row", gap: "2vw", width: "100%", overflow: "auto", p: "3vw 4vw 8vw" }}>
                     {images.map((item, index) => (
                         <Avatar
+                            key={index}
                             src={GeoImage}
                             style={{
                                 width: "28vw",

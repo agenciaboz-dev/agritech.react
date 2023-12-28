@@ -24,7 +24,6 @@ export const Documentation: React.FC<DocumentationProps> = ({ values, handleChan
                         inputProps: { mask: "000.000.000-00" },
                         readOnly: true,
                     }}
-                    disabled
                 />
                 <TextField
                     label={"RG"}
@@ -32,8 +31,7 @@ export const Documentation: React.FC<DocumentationProps> = ({ values, handleChan
                     sx={textField}
                     value={values.employee?.rg}
                     onChange={handleChange}
-                    disabled
-                    aria-readonly
+                    InputProps={{ readOnly: true }}
                 />
             </Box>
             {!values.producer && (

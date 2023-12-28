@@ -149,9 +149,9 @@ export const StepTwo: React.FC<StepTwoProps> = ({ data, handleChange, typeUser, 
                     </Box>
 
                     <TextField
-                        name="address.complement"
+                        name="address.adjunct"
                         label={"Complemento"}
-                        value={data.address.complement}
+                        value={data.address.adjunct}
                         sx={{ ...textField, width: "100%" }}
                         onChange={handleChange}
                     />

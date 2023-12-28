@@ -4,6 +4,7 @@ import { textField } from "../../../style/input"
 import { useGender } from "../../../hooks/useGender"
 import { useRelationship } from "../../../hooks/useRelationship"
 import MaskedInput from "../../../components/MaskedInput"
+import { useUser } from "../../../hooks/useUser"
 
 interface PersonalProps {
     values: SignupValues
@@ -13,6 +14,8 @@ interface PersonalProps {
 export const Personal: React.FC<PersonalProps> = ({ values, handleChange }) => {
     const gender = useGender()
     const typeRelationship = useRelationship()
+
+    const { user } = useUser()
 
     return (
         <Box sx={{ flexDirection: "column", gap: "3vw" }}>
@@ -24,9 +27,8 @@ export const Personal: React.FC<PersonalProps> = ({ values, handleChange }) => {
                 sx={textField}
                 value={values.birth}
                 onChange={handleChange}
-                disabled
             />
-            {values.producer && (
+            {values.employee?.id === undefined && (
                 <TextField
                     label={"CPF"}
                     name={"cpf"}
@@ -38,25 +40,23 @@ export const Personal: React.FC<PersonalProps> = ({ values, handleChange }) => {
                         inputProps: { mask: "000.000.000-00" },
                         readOnly: true,
                     }}
-                    disabled
                 />
             )}
-            {values.producer && (
+            {values.employee?.id === undefined && (
                 <TextField
                     label={"CNPJ"}
                     name={"producer.cnpj"}
                     sx={textField}
-                    value={values.producer.cnpj}
+                    value={values.producer?.cnpj}
                     onChange={handleChange}
                     InputProps={{
                         inputComponent: MaskedInput,
                         inputProps: { mask: "000.000.000/0000-0" },
                         readOnly: true,
                     }}
-                    disabled
                 />
             )}
-            {!values.producer && (
+            {values.employee?.id !== undefined && (
                 <>
                     <Box sx={{ flexDirection: "row", width: "100%", gap: "3vw" }}>
                         <TextField

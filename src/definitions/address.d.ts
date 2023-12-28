@@ -5,5 +5,5 @@ declare interface Address {
     city: string
     cep: string
     uf: string
-    complement?: string
+    adjunct?: string
 }
