@@ -1,5 +1,5 @@
 import { Avatar, Box, Tab, Tabs } from "@mui/material"
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { colors } from "../../style/colors"
 import { Header } from "../../components/Header"
 import { useHeader } from "../../hooks/useHeader"
@@ -10,21 +10,43 @@ import GeoImage from "../../assets/geo.svg"
 import { useArray } from "burgos-array"
 import { tabStyle } from "../../style/tabStyle"
 import { WeatherComponent } from "../../components/WeatherComponent"
-import { useConfirmDialog } from "burgos-confirm"
+import { DialogConfirm } from "../../components/DialogConfirm"
+import { useNavigate } from "react-router-dom"
+
 interface TillageDetailsProps {}
+
+const openCall = {
+    title: "Deseja abrir um novo chamado?",
+    content:
+        "Tem certeza que deseja iniciar um chamado para esse produtor? Uma vez que iniciado, esse chamado ficará registrado no histórico de todos os envolvidos.",
+    submitTitle: "Sim, iniciar",
+    cancelTitle: "Não, cancelar",
+}
 
 export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
     const header = useHeader()
+    const navigate = useNavigate()
+
     const images = useArray().newArray(5)
+    const [open, setOpen] = useState(false)
 
     const { producerid } = useParams() // temporario => na verdade deve ser tillageid que vai armazenar a info do produtor dela
-
     const producer = listProducers()?.filter((item) => String(item.id) == producerid) || []
 
     const [tab, setTab] = React.useState("call")
     const changeTab = (event: React.SyntheticEvent, newValue: string) => {
         setTab(newValue)
     }
+    const handleClickOpen = () => {
+        setOpen(true)
+    }
+
+    // const modal = {
+    //     title: "Tem certeza que deseja cancelar esse chamado?",
+    //     content: "Uma vez que cancelado o mesmo chamado não poderá ser refeito, apenas um novo poderá ser aberto.",
+    //     submitTitle: "Sim, cancelar",
+
+    // }
 
     return (
         <Box
@@ -143,11 +165,15 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                                     do chamado é de XX Horas segundo o contrato vigente.
                                 </p>
                             </Box>
-                            <p style={{ fontSize: "3.2vw", textAlign: "end", width: "100%", color: colors.primary }}>
+                            <p
+                                style={{ fontSize: "3.2vw", textAlign: "end", width: "100%", color: colors.primary }}
+                                onClick={handleClickOpen}
+                            >
                                 Abrir Chamado
                             </p>
                         </Box>
                     )}
+                    <DialogConfirm open={open} setOpen={setOpen} data={openCall} click={() => navigate("/")} />
                 </Box>
             </Box>
         </Box>
