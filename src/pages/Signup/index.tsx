@@ -15,6 +15,7 @@ import { useSnackbar } from "burgos-snackbar"
 import { buttonStyle } from "../../style/button"
 import { useRelationship } from "../../hooks/useRelationship"
 import { useDateValidator } from "../../hooks/useDateValidator"
+import { SelectAccount } from "./SelectAccount"
 
 interface SignupProps {}
 
@@ -79,13 +80,6 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                   }
                 : undefined,
     }
-    const handleTypeUser = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setTypeUser((event.target as HTMLInputElement).value)
-    }
-    const handleTypeOffice = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setTypeOffice((event.target as HTMLInputElement).value)
-        setCurrentStep(1)
-    }
 
     const handleSignup = async (values: SignupValues) => {
         console.log(values.office)
@@ -139,7 +133,7 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                 console.log(typeUser)
                 snackbar({
                     severity: "success",
-                    text: "Cadastrado com sucesso!",
+                    text: "Cadastro realizado com sucesso! Faça login.",
                 })
                 {
                     typeUser === "producer" ? navigate("../panel") : navigate("../analysis")
@@ -223,160 +217,154 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                             >
                                 {currentStep === 0 && (
                                     <>
-                                        <Box
-                                            sx={{
-                                                width: "100%",
-                                                alignItems: "center",
-                                                justifyContent: "center",
-                                                gap: "5vw",
-                                                flexDirection: "column",
-                                            }}
-                                        >
-                                            <p style={{ fontSize: "5vw", fontFamily: "MalgunGothic2" }}>
-                                                Selecione o tipo de conta
-                                            </p>
-                                            <FormControl>
-                                                <RadioGroup
-                                                    aria-labelledby="demo-radio-buttons-group-label"
-                                                    defaultValue={typeUser}
-                                                    name="typeAccount"
-                                                    onChange={handleTypeUser}
-                                                    sx={{ width: "100%" }}
-                                                >
-                                                    <FormControlLabel
-                                                        value="producer"
-                                                        sx={{
-                                                            fontWeight: typeUser == "producer" ? "800" : "400",
-                                                            fontSize: "4vw",
-                                                            fontFamily: "MalgunGothic2",
-                                                        }}
-                                                        control={<Radio />}
-                                                        label="Produtor"
-                                                    />
-                                                    <FormControlLabel
-                                                        value="employee"
-                                                        sx={{
-                                                            fontWeight: typeUser == "producer" ? "800" : "400",
-                                                            fontSize: "4vw",
-                                                            fontFamily: "MalgunGothic2",
-                                                        }}
-                                                        control={<Radio />}
-                                                        label="Funcionário"
-                                                    />
-                                                </RadioGroup>
-                                            </FormControl>
-                                        </Box>
-                                        {typeUser === "employee" && (
-                                            <Box
+                                        <SelectAccount
+                                            change={handleChange}
+                                            values={values}
+                                            typeUser={typeUser}
+                                            typeOffice={typeOffice}
+                                            setCurrentStep={setCurrentStep}
+                                            setUser={setTypeUser}
+                                            setOffice={setTypeOffice}
+                                        />
+                                        <Box sx={{ flexDirection: "row", gap: "2vw" }}>
+                                            <Button
+                                                variant="outlined"
                                                 sx={{
-                                                    width: "100%",
-                                                    alignItems: "center",
-                                                    justifyContent: "center",
-                                                    gap: "5vw",
-                                                    flexDirection: "column",
+                                                    padding: "3vw",
+                                                    color: colors.text.black,
+                                                    fontWeight: "600",
+                                                    fontSize: "4vw",
+                                                    textTransform: "none",
+                                                    borderRadius: "10vw",
+                                                    height: "10vw",
                                                 }}
+                                                onClick={() => navigate("/../home")}
                                             >
-                                                <p style={{ fontSize: "5vw", fontFamily: "MalgunGothic2" }}>
-                                                    Selecione o tipo de cargo
-                                                </p>
-                                                <FormControl>
-                                                    <RadioGroup
-                                                        aria-labelledby="demo-radio-buttons-group-label"
-                                                        defaultValue={typeOffice}
-                                                        name="office"
-                                                        value={values.office}
-                                                        onChange={handleChange}
-                                                        sx={{ width: "100%" }}
-                                                    >
-                                                        <FormControlLabel
-                                                            value="agronomist"
-                                                            sx={{
-                                                                fontWeight: typeOffice == "agronomist" ? "800" : "400",
-                                                                fontSize: "4vw",
-                                                                fontFamily: "MalgunGothic2",
-                                                            }}
-                                                            control={<Radio />}
-                                                            label="Agronômo"
-                                                        />
-                                                        <FormControlLabel
-                                                            value="pilot"
-                                                            sx={{
-                                                                fontWeight: typeOffice == "pilot" ? "800" : "400",
-                                                                fontSize: "4vw",
-                                                                fontFamily: "MalgunGothic2",
-                                                            }}
-                                                            control={<Radio />}
-                                                            label="Piloto de drone"
-                                                        />
-                                                        <FormControlLabel
-                                                            value="technician"
-                                                            sx={{
-                                                                fontWeight: typeOffice == "technician" ? "800" : "400",
-                                                                fontSize: "4vw",
-                                                                fontFamily: "MalgunGothic2",
-                                                            }}
-                                                            control={<Radio />}
-                                                            label="Técnico"
-                                                        />
-                                                    </RadioGroup>
-                                                </FormControl>
-                                            </Box>
-                                        )}
-                                        <Button
-                                            variant="outlined"
-                                            sx={{
-                                                padding: "3vw",
-                                                color: colors.text.black,
-                                                fontWeight: "600",
-                                                fontSize: "4vw",
-                                                textTransform: "none",
-                                                borderRadius: "10vw",
-                                                height: "10vw",
-                                            }}
-                                            onClick={() => navigate("/../home")}
-                                        >
-                                            Cancelar
-                                        </Button>
-                                        <Button
-                                            variant="outlined"
-                                            sx={{
-                                                padding: "3vw",
-                                                color: colors.text.black,
-                                                fontWeight: "600",
-                                                fontSize: "4vw",
-                                                textTransform: "none",
-                                                borderRadius: "10vw",
-                                                height: "10vw",
-                                            }}
-                                            onClick={() => setCurrentStep(1)}
-                                        >
-                                            Próximo
-                                        </Button>
+                                                Cancelar
+                                            </Button>
+                                            <Button
+                                                variant="contained"
+                                                sx={{
+                                                    padding: "3vw",
+                                                    color: colors.text.white,
+                                                    fontWeight: "600",
+                                                    fontSize: "4vw",
+                                                    textTransform: "none",
+                                                    borderRadius: "10vw",
+                                                    height: "10vw",
+                                                    bgcolor: colors.button,
+                                                }}
+                                                onClick={() => setCurrentStep(1)}
+                                            >
+                                                Próximo
+                                            </Button>
+                                        </Box>
                                     </>
                                 )}
 
                                 {currentStep === 1 && (
-                                    <StepOne
-                                        data={values}
-                                        handleChange={handleChange}
-                                        typeUser={typeUser}
-                                        setCurrentStep={setCurrentStep}
-                                    />
+                                    <>
+                                        <StepOne
+                                            data={values}
+                                            handleChange={handleChange}
+                                            typeUser={typeUser}
+                                            setCurrentStep={setCurrentStep}
+                                        />
+                                        <Box sx={{ width: "100%", gap: "2vw" }}>
+                                            <Button
+                                                variant="contained"
+                                                sx={{
+                                                    fontSize: "4vw",
+                                                    color: colors.text.white,
+                                                    width: "100%",
+                                                    backgroundColor: colors.button,
+                                                    borderRadius: "5vw",
+                                                    textTransform: "none",
+                                                }}
+                                                onClick={() => {
+                                                    setCurrentStep(2)
+                                                }}
+                                            >
+                                                Próximo
+                                            </Button>
+                                            <Button
+                                                variant="outlined"
+                                                sx={{
+                                                    padding: "3vw",
+                                                    color: colors.text.black,
+                                                    fontWeight: "600",
+                                                    fontSize: "4vw",
+                                                    textTransform: "none",
+                                                    borderRadius: "10vw",
+                                                    height: "10vw",
+                                                    width: "100%",
+                                                }}
+                                                onClick={() => {
+                                                    setCurrentStep(0)
+                                                }}
+                                            >
+                                                Voltar
+                                            </Button>
+                                        </Box>
+                                    </>
                                 )}
                                 {currentStep === 2 && (
-                                    <StepTwo
-                                        data={values}
-                                        handleChange={handleChange}
-                                        typeUser={typeUser}
-                                        setCurrentStep={setCurrentStep}
-                                    />
+                                    <>
+                                        <StepTwo
+                                            data={values}
+                                            handleChange={handleChange}
+                                            typeUser={typeUser}
+                                            setCurrentStep={setCurrentStep}
+                                        />
+                                        <Box sx={{ width: "100%", gap: "2vw" }}>
+                                            {typeUser === "employee" && (
+                                                <>
+                                                    <Button
+                                                        variant="contained"
+                                                        sx={{
+                                                            fontSize: "4vw",
+                                                            color: colors.text.white,
+                                                            width: "100%",
+                                                            backgroundColor: colors.button,
+                                                            borderRadius: "5vw",
+                                                            textTransform: "none",
+                                                        }}
+                                                        onClick={() => {
+                                                            setCurrentStep(3)
+                                                        }}
+                                                    >
+                                                        Próximo
+                                                    </Button>
+
+                                                    <Button
+                                                        variant="outlined"
+                                                        sx={{
+                                                            padding: "3vw",
+                                                            color: colors.text.black,
+                                                            fontWeight: "600",
+                                                            fontSize: "4vw",
+                                                            textTransform: "none",
+                                                            borderRadius: "10vw",
+                                                            height: "10vw",
+                                                            width: "100%",
+                                                        }}
+                                                        onClick={() => {
+                                                            setCurrentStep(1)
+                                                        }}
+                                                    >
+                                                        Voltar
+                                                    </Button>
+                                                </>
+                                            )}
+                                        </Box>
+                                    </>
                                 )}
                                 {currentStep === 3 && typeUser === "employee" && (
                                     <StepThree data={values} handleChange={handleChange} setCurrentStep={setCurrentStep} />
                                 )}
 
                                 {typeUser == "producer" && currentStep == 2 && (
-                                    <Box sx={{ width: "100%", position: "relative", bottom: "10vw" }}>
+                                    <Box sx={{ width: "100%", position: "relative", bottom: "10vw", gap: "2vw" }}>
                                         <Button
                                             type="submit"
                                             variant="contained"
@@ -392,10 +380,43 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                                         >
                                             {loading ? <CircularProgress size={30} sx={{ color: "#fff" }} /> : "Cadastrar"}
                                         </Button>
+                                        <Button
+                                            variant="outlined"
+                                            sx={{
+                                                padding: "3vw",
+                                                color: colors.text.black,
+                                                fontWeight: "600",
+                                                fontSize: "4vw",
+                                                textTransform: "none",
+                                                borderRadius: "10vw",
+                                                height: "10vw",
+                                                width: "100%",
+                                            }}
+                                            onClick={() => {
+                                                setCurrentStep(1)
+                                            }}
+                                        >
+                                            Voltar
+                                        </Button>
                                     </Box>
                                 )}
                                 {typeUser == "employee" && currentStep == 3 && (
-                                    <Box sx={{ width: "100%", gap: "3vw" }}>
+                                    <Box sx={{ width: "100%", gap: "2vw" }}>
+                                        <Button
+                                            type="submit"
+                                            variant="contained"
+                                            sx={{
+                                                ...buttonStyle,
+                                                fontSize: 17,
+                                                color: colors.text.white,
+                                                width: "100%",
+                                                backgroundColor: colors.button,
+                                                borderRadius: "5vw",
+                                                textTransform: "none",
+                                            }}
+                                        >
+                                            {loading ? <CircularProgress size={30} sx={{ color: "#fff" }} /> : "Cadastrar"}
+                                        </Button>
                                         <Button
                                             variant="outlined"
                                             sx={{
@@ -413,21 +434,6 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                                             }}
                                         >
                                             Voltar
-                                        </Button>
-                                        <Button
-                                            type="submit"
-                                            variant="contained"
-                                            sx={{
-                                                ...buttonStyle,
-                                                fontSize: 17,
-                                                color: colors.text.white,
-                                                width: "100%",
-                                                backgroundColor: colors.button,
-                                                borderRadius: "5vw",
-                                                textTransform: "none",
-                                            }}
-                                        >
-                                            {loading ? <CircularProgress size={30} sx={{ color: "#fff" }} /> : "Cadastrar"}
                                         </Button>
                                     </Box>
                                 )}

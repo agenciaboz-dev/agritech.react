@@ -197,40 +197,6 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, typeUser, 
                         </Box>
                     )}
                 </Box>
-
-                <Button
-                    variant="outlined"
-                    sx={{
-                        padding: "3vw",
-                        color: colors.text.black,
-                        fontWeight: "600",
-                        fontSize: "4vw",
-                        textTransform: "none",
-                        borderRadius: "10vw",
-                        height: "10vw",
-                    }}
-                    onClick={() => {
-                        setCurrentStep(0)
-                    }}
-                >
-                    Voltar
-                </Button>
-                <Button
-                    variant="contained"
-                    sx={{
-                        fontSize: 17,
-                        color: colors.text.white,
-                        width: "100%",
-                        backgroundColor: colors.button,
-                        borderRadius: "5vw",
-                        textTransform: "none",
-                    }}
-                    onClick={() => {
-                        setCurrentStep(2)
-                    }}
-                >
-                    Próximo
-                </Button>
             </Box>
         </Box>
     )

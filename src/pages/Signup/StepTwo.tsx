@@ -154,45 +154,7 @@ export const StepTwo: React.FC<StepTwoProps> = ({ data, handleChange, typeUser, 
                         value={data.address.complement}
                         sx={{ ...textField, width: "100%" }}
                         onChange={handleChange}
-                        
                     />
-                </Box>
-                <Box sx={{ gap: "2vw" }}>
-                    <Button
-                        variant="outlined"
-                        sx={{
-                            padding: "3vw",
-                            color: colors.text.black,
-                            fontWeight: "600",
-                            fontSize: "4vw",
-                            textTransform: "none",
-                            borderRadius: "10vw",
-                            height: "10vw",
-                        }}
-                        onClick={() => {
-                            setCurrentStep(1)
-                        }}
-                    >
-                        Voltar
-                    </Button>
-                    {typeUser === "employee" && (
-                        <Button
-                            variant="contained"
-                            sx={{
-                                fontSize: 17,
-                                color: colors.text.white,
-                                width: "100%",
-                                backgroundColor: colors.button,
-                                borderRadius: "5vw",
-                                textTransform: "none",
-                            }}
-                            onClick={() => {
-                                setCurrentStep(3)
-                            }}
-                        >
-                            Próximo
-                        </Button>
-                    )}
                 </Box>
             </Box>
         </Box>
