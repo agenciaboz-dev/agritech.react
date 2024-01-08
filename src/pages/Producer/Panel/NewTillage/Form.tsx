@@ -15,6 +15,7 @@ import { useArray } from "burgos-array"
 import { LatLngExpression, LatLngTuple } from "leaflet"
 import { useUser } from "../../../../hooks/useUser"
 import { CepAbertoApi } from "../../../../definitions/cepabertoApi"
+import { NewLavoura } from "../../../../definitions/newTillage"
 
 interface FormTillageProps {
     data: NewLavoura
@@ -40,12 +41,11 @@ export const FormTillage: React.FC<FormTillageProps> = ({ data, change, addressA
         console.log(values)
     }
 
-    console.log(addressApi?.cidade)
     useEffect(() => {
         header.setTitle(user?.name || "Produtor")
     }, [])
     return (
-        <Box sx={{ width: "100%", height: "90%", gap: "3vw", flexDirection: "column", p: "4vw" }}>
+        <Box sx={{ width: "100%", height: "90%", gap: "6vw", flexDirection: "column", p: "4vw" }}>
             <p>Informações da Lavoura</p>
 
             <Box
@@ -82,7 +82,7 @@ export const FormTillage: React.FC<FormTillageProps> = ({ data, change, addressA
                     <TextField
                         label={"Endereço"}
                         name="address.city"
-                        value={data.address.city}
+                        value={`${addressApi?.cidade.nome}, ${addressApi?.estado.sigla} - ${addressApi?.cep}`}
                         sx={textField}
                         onChange={change}
                         required
@@ -124,41 +124,6 @@ export const FormTillage: React.FC<FormTillageProps> = ({ data, change, addressA
                     />
                 </Box>
             )}
-            <Box sx={{ flexDirection: "row", gap: "2vw" }}>
-                <Button
-                    variant="outlined"
-                    sx={{
-                        width: "50%",
-                        padding: "3vw",
-                        color: colors.text.black,
-                        fontWeight: "600",
-                        fontSize: "4vw",
-                        textTransform: "none",
-                        borderRadius: "10vw",
-                        height: "10vw",
-                    }}
-                    onClick={() => {
-                        navigate("../")
-                    }}
-                >
-                    Cancelar
-                </Button>
-                <Button
-                    variant="contained"
-                    sx={{
-                        padding: "1vw",
-                        width: "50%",
-                        fontSize: 17,
-                        color: colors.text.white,
-                        backgroundColor: colors.button,
-                        borderRadius: "5vw",
-                        textTransform: "none",
-                    }}
-                    onClick={() => navigate("/producer/1/1")}
-                >
-                    Salvar
-                </Button>
-            </Box>
         </Box>
     )
 }

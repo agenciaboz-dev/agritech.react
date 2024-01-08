@@ -1,3 +1,5 @@
+import { Coordinate, NewCoordinate } from "./coordinate"
+
 declare interface NewLavoura {
     name: string
     area: string
@@ -10,7 +12,7 @@ declare interface NewLavoura {
     others?: string
     comments?: string
     address: Address
-    location?: Coordinate[]
+    location?: NewCoordinate[]
     gallery?: Gallery[]
 
     producerId?: number

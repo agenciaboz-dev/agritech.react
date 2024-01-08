@@ -8,19 +8,23 @@ import { useDataHandler } from "../../../../hooks/useDataHandler"
 import { CepAbertoApi } from "../../../../definitions/cepabertoApi"
 import { LatLngExpression, LatLngTuple } from "leaflet"
 import { colors } from "../../../../style/colors"
+import { NewLavoura } from "../../../../definitions/newTillage"
+import { useFormikContext } from "formik"
 
 interface GeolocalProps {
     infoCep: CepAbertoApi | undefined
     origin: LatLngExpression
     data: NewLavoura
     handleChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
+    coordinates: LatLngTuple[]
+    setCoordinates: React.Dispatch<React.SetStateAction<LatLngTuple[]>>
 }
 
-export const Geolocal: React.FC<GeolocalProps> = ({ data, handleChange, origin }) => {
+export const Geolocal: React.FC<GeolocalProps> = ({ data, handleChange, origin, coordinates, setCoordinates }) => {
     const io = useIo()
     const header = useHeader()
     const { unmask } = useDataHandler()
-    const [coordinates, setCoordinates] = useState<LatLngTuple[]>([])
+    // const [coordinates, setCoordinates] = useState<LatLngTuple[]>([])
 
     //functions map
     const MapClickHandler = () => {
@@ -36,6 +40,18 @@ export const Geolocal: React.FC<GeolocalProps> = ({ data, handleChange, origin }
             setCoordinates([...coordinates, coordinates[0]])
         }
     }
+
+    const { setFieldValue } = useFormikContext<NewLavoura>()
+
+    useEffect(() => {
+        // Atualiza o campo 'location' no Formik sempre que 'coordinates' mudar
+        const formattedCoordinates = coordinates.map((coord) => ({
+            x: coord[0].toString(),
+            y: coord[1].toString(),
+        }))
+
+        setFieldValue("location", formattedCoordinates)
+    }, [coordinates, setFieldValue])
 
     const mapRef = useRef<any>(null)
 
@@ -77,7 +93,7 @@ export const Geolocal: React.FC<GeolocalProps> = ({ data, handleChange, origin }
 
                 <MapClickHandler />
             </MapContainer>
-            <Button
+            {/* <Button
                 variant="contained"
                 color="primary"
                 onClick={handleSave}
@@ -92,7 +108,7 @@ export const Geolocal: React.FC<GeolocalProps> = ({ data, handleChange, origin }
                 }}
             >
                 Salvar Area
-            </Button>
+            </Button> */}
         </Box>
     )
 }
