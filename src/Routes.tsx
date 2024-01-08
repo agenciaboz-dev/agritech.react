@@ -52,7 +52,7 @@ export const Routes: React.FC<RoutesProps> = ({}) => {
                     ) : (
                         <>
                             <Route path="/producer/*" element={<Producer user={user} />} />
-                            <Route path="/producer/:tillageid" element={<TillageDetails />} />
+                            {/* <Route path="/producer/:tillageid" element={<TillageDetails />} /> */}
                         </>
                     )}
 

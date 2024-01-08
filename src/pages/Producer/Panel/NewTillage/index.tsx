@@ -1,27 +1,26 @@
 import { Box, Button, CircularProgress, TextField } from "@mui/material"
 import React, { useEffect, useState } from "react"
-import { useHeader } from "../../hooks/useHeader"
-import { colors } from "../../style/colors"
-import { Header } from "../Header"
+import { useHeader } from "../../../../hooks/useHeader"
+import { colors } from "../../../../style/colors"
+import { Header } from "../../../../components/Header"
 import { Form, Formik } from "formik"
-import { useUser } from "../../hooks/useUser"
+import { useUser } from "../../../../hooks/useUser"
 import { useNavigate } from "react-router-dom"
 import { Geolocal } from "./Geolocal"
-import { NewTillage } from "./NewTillage"
-import { useDataHandler } from "../../hooks/useDataHandler"
-import { Profile } from "./Profile"
-import { useIo } from "../../hooks/useIo"
-import { CepAbertoApi } from "../../definitions/cepabertoApi"
+import { FormTillage } from "./Form"
+import { useDataHandler } from "../../../../hooks/useDataHandler"
+import { useIo } from "../../../../hooks/useIo"
+import { CepAbertoApi } from "../../../../definitions/cepabertoApi"
 import { LatLngExpression } from "leaflet"
 
-interface NewProducerProps {}
+interface NewTillageProps {}
 
-export const NewProducer: React.FC<NewProducerProps> = ({}) => {
+export const NewTillage: React.FC<NewTillageProps> = ({}) => {
     const header = useHeader()
     const { user } = useUser()
     const { unmask } = useDataHandler()
     const navigate = useNavigate()
-    const [currentStep, setCurrentStep] = useState(0)
+    const [currentStep, setCurrentStep] = useState(1)
     const [loading, setLoading] = useState(false)
 
     const io = useIo()
@@ -30,7 +29,7 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
     const [origin, setOrigin] = useState<LatLngExpression>([0, 0])
 
     useEffect(() => {
-        header.setTitle("Novo Produtor")
+        header.setTitle("Nova Lavoura")
     }, [name])
 
     const initialValues: NewProducer = {
@@ -155,26 +154,6 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
                         <Formik initialValues={initialValues} onSubmit={handleSubmit}>
                             {({ values, handleChange }) => (
                                 <Form>
-                                    {currentStep === 0 && (
-                                        <>
-                                            <Profile values={values} handleChange={handleChange} />
-                                            <Button
-                                                variant="contained"
-                                                type="submit"
-                                                sx={{
-                                                    fontSize: 17,
-                                                    color: colors.text.white,
-                                                    width: "90%",
-                                                    backgroundColor: colors.button,
-                                                    borderRadius: "5vw",
-                                                    textTransform: "none",
-                                                    margin: "0 5vw",
-                                                }}
-                                            >
-                                                {loading ? <CircularProgress sx={{ color: "#fff" }} /> : "Próximo"}
-                                            </Button>
-                                        </>
-                                    )}
                                     {currentStep === 1 && (
                                         <>
                                             <Geolocal
@@ -202,7 +181,7 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
                                             </Button>
                                         </>
                                     )}
-                                    {currentStep === 2 && <NewTillage />}
+                                    {currentStep === 2 && <FormTillage />}
                                 </Form>
                             )}
                         </Formik>

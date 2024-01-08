@@ -18,6 +18,7 @@ import Pin from "../assets/icons/pin.svg"
 import Timer from "../assets/icons/timer.svg"
 import Receipt from "../assets/icons/receipt.svg"
 import Alert from "../assets/icons/circle_alert.svg"
+import { PiPlantLight } from "react-icons/pi"
 
 // import CircumIcon from "@klarr-agency/circum-icons-react" // React
 
@@ -117,9 +118,15 @@ export const useNavigationList = () => {
             },
 
             {
+                id: 2,
+                title: "Lavouras",
+                location: "/producer/tillages",
+                icon: <PiPlantLight style={{ width: "7vw", height: "6vw", paddingLeft: 0, paddingRight: 0 }} />,
+            },
+            {
                 id: 3,
                 title: "Cadastrar Lavoura",
-                location: "/producer/new_tillage",
+                location: "/producer/new",
                 icon: <img src={AddEmployee} style={{ width: "6vw" }} />,
             },
             {

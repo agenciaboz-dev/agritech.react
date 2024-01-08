@@ -115,22 +115,7 @@ export const PanelUser: React.FC<PanelUserProps> = ({ user }) => {
                         height: "100%",
                     }}
                 >
-                    {user.producer && (
-                        <IconButton
-                            sx={{
-                                bgcolor: colors.button,
-                                width: "12vw",
-                                height: "12vw",
-                                borderRadius: "10vw",
-                                position: "absolute",
-                                bottom: "26vw",
-                                right: "10vw",
-                            }}
-                            onClick={() => navigate("/producer/new_tillage")}
-                        >
-                            <AddIcon fontSize="large" sx={{ color: "#fff" }} />
-                        </IconButton>
-                    )}
+                    
                 </Box>
             </Box>
         </Box>

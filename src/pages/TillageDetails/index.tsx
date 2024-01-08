@@ -1,4 +1,4 @@
-import { Avatar, Box, Tab, Tabs } from "@mui/material"
+import { Avatar, Box, IconButton, Tab, Tabs } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { colors } from "../../style/colors"
 import { Header } from "../../components/Header"
@@ -13,6 +13,8 @@ import { WeatherComponent } from "../../components/WeatherComponent"
 import { DialogConfirm } from "../../components/DialogConfirm"
 import { useNavigate } from "react-router-dom"
 import { OpenCallBox, ProgressCall } from "../../components/OpenCallBox"
+import { useUser } from "../../hooks/useUser"
+import { PiPlantLight } from "react-icons/pi"
 
 interface TillageDetailsProps {}
 
@@ -39,7 +41,7 @@ const progress = {
 export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
     const header = useHeader()
     const navigate = useNavigate()
-
+    const { user } = useUser()
     const images = useArray().newArray(5)
     const [open, setOpen] = useState(false)
     const [variant, setVariant] = useState(false)
@@ -61,6 +63,10 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
     //     submitTitle: "Sim, cancelar",
 
     // }
+    useEffect(() => {
+        header.setTitle("Lavouras")
+    }, [])
+    console.log(user)
 
     return (
         <Box
@@ -171,6 +177,22 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                             setOpen(false)
                         }}
                     />
+                    {/* {user?.producer && (
+                        <IconButton
+                            sx={{
+                                bgcolor: colors.button,
+                                width: "12vw",
+                                height: "12vw",
+                                borderRadius: "10vw",
+                                position: "absolute",
+                                bottom: "26vw",
+                                right: "8vw",
+                            }}
+                            onClick={() => navigate("/producer/new")}
+                        >
+                            <PiPlantLight color="#fff" />
+                        </IconButton>
+                    )} */}
                 </Box>
             </Box>
         </Box>
