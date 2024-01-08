@@ -1,20 +1,17 @@
-declare interface NewTillage {
-    // id: number
+declare interface NewLavoura {
     name: string
     area: string
     owner: string
-    ceo?: string
+    ceo: string
     manager?: string
-    agronomist: string
+    agronomist?: string
     technician?: string
     pilot?: string
     others?: string
-    commments?: string
+    comments?: string
+    address: Address
+    location?: Coordinate[]
+    gallery?: Gallery[]
 
-    //address         Address?
-    // location: Coordinate[]
-    // gallery: Gallery[]
-
-    // producer: Producer
-    // producerId: number
+    producerId?: number
 }

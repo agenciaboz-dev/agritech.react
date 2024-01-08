@@ -1,5 +1,5 @@
 import { Box, Button, Tab, Tabs, TextField } from "@mui/material"
-import React, { useEffect, useState } from "react"
+import React, { ChangeEventHandler, useEffect, useState } from "react"
 import { useHeader } from "../../../../hooks/useHeader"
 import { Avatar } from "@files-ui/react"
 import { textField } from "../../../../style/input"
@@ -14,13 +14,17 @@ import { Gallery } from "../../../../components/NewProducer/NewTillage/Gallery"
 import { useArray } from "burgos-array"
 import { LatLngExpression, LatLngTuple } from "leaflet"
 import { useUser } from "../../../../hooks/useUser"
+import { CepAbertoApi } from "../../../../definitions/cepabertoApi"
 
 interface FormTillageProps {
+    data: NewLavoura
+    change: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
+    addressApi?: CepAbertoApi
     // coordinates: LatLngTuple[]
     // origin: LatLngExpression
 }
 
-export const FormTillage: React.FC<FormTillageProps> = ({}) => {
+export const FormTillage: React.FC<FormTillageProps> = ({ data, change, addressApi }) => {
     const header = useHeader()
     const { user } = useUser()
     const [image, setImage] = useState<File>()
@@ -32,151 +36,129 @@ export const FormTillage: React.FC<FormTillageProps> = ({}) => {
         setTab(newValue)
     }
 
-    const initialValues: NewTillage = {
-        name: "",
-        area: "",
-        owner: "",
-        ceo: "",
-        manager: "",
-        agronomist: "",
-        technician: "",
-        others: "",
-        commments: "",
-    }
-    const handleSubmit = (values: NewTillage) => {
+    const handleSubmit = (values: NewLavoura) => {
         console.log(values)
     }
 
+    console.log(addressApi?.cidade)
     useEffect(() => {
         header.setTitle(user?.name || "Produtor")
     }, [])
     return (
         <Box sx={{ width: "100%", height: "90%", gap: "3vw", flexDirection: "column", p: "4vw" }}>
             <p>Informações da Lavoura</p>
-            <Formik initialValues={initialValues} onSubmit={handleSubmit}>
-                {({ values, handleChange }) => (
-                    <Form>
-                        <Box
-                            sx={{
-                                flexDirection: "row",
-                                gap: "5vw",
-                                width: "100%",
-                                height: "23%",
-                                alignItems: "center",
-                            }}
-                        >
-                            <Avatar
-                                src={GeoImage}
-                                onChange={(file) => setImage(file)}
-                                changeLabel="Trocar foto"
-                                emptyLabel="Adicionar foto"
-                                variant="square"
-                                style={{
-                                    width: "40vw",
-                                    height: "40vw",
-                                    fontSize: "4vw",
-                                    fontFamily: "MalgunGothic2",
-                                }}
-                            />
-                            <Box sx={{ flexDirection: "column", gap: "2vw", width: "65%" }}>
-                                <TextField
-                                    label={"Nome da lavoura"}
-                                    name="name"
-                                    value={values.name}
-                                    sx={textField}
-                                    onChange={handleChange}
-                                    required
-                                />
-                                <TextField
-                                    label={"Endereço"}
-                                    name="address"
-                                    value={""}
-                                    sx={textField}
-                                    onChange={handleChange}
-                                    required
-                                />
-                                <TextField
-                                    label={"Area"}
-                                    name="area"
-                                    value={values.area}
-                                    sx={textField}
-                                    onChange={handleChange}
-                                    required
-                                />
-                            </Box>
-                        </Box>
-                        <Tabs
-                            value={tab}
-                            onChange={changeTab}
-                            textColor="primary"
-                            indicatorColor="primary"
-                            aria-label="tabs"
-                            variant="scrollable"
-                            scrollButtons="auto"
-                            allowScrollButtonsMobile
-                        >
-                            <Tab sx={tabStyle} value="team" label="Equipe" />
-                            <Tab sx={tabStyle} value="additional" label="Adicionais" />
-                            <Tab sx={tabStyle} value="gallery" label="Imagens" />
-                        </Tabs>
-                        {tab === "team" && <Team data={values} handleChange={handleChange} />}
-                        {tab === "additional" && <Additional data={values} handleChange={handleChange} />}
-                        {tab === "gallery" && (
-                            <Box sx={{ width: "100%", height: "52%", gap: "3vw" }}>
-                                <Box sx={{ width: "100%", height: "66%", overflowY: "auto", gap: "2vw" }}>
-                                    {listGallery.map((item, index) => (
-                                        <Gallery key={index} id={index + 1} />
-                                    ))}
-                                </Box>
-                                <p>Adicionar nova Galeria</p>
-                                <TextField
-                                    label={"Nome da Galeria"}
-                                    name="name_gallery"
-                                    value={""}
-                                    sx={textField}
-                                    onChange={handleChange}
-                                    required
-                                />
-                            </Box>
-                        )}
-                        <Box sx={{ flexDirection: "row", gap: "2vw" }}>
-                            <Button
-                                variant="outlined"
-                                sx={{
-                                    width: "50%",
-                                    padding: "3vw",
-                                    color: colors.text.black,
-                                    fontWeight: "600",
-                                    fontSize: "4vw",
-                                    textTransform: "none",
-                                    borderRadius: "10vw",
-                                    height: "10vw",
-                                }}
-                                onClick={() => {
-                                    navigate("../")
-                                }}
-                            >
-                                Cancelar
-                            </Button>
-                            <Button
-                                variant="contained"
-                                sx={{
-                                    padding: "1vw",
-                                    width: "50%",
-                                    fontSize: 17,
-                                    color: colors.text.white,
-                                    backgroundColor: colors.button,
-                                    borderRadius: "5vw",
-                                    textTransform: "none",
-                                }}
-                                onClick={() => navigate("/producer/1/1")}
-                            >
-                                Salvar
-                            </Button>
-                        </Box>
-                    </Form>
-                )}
-            </Formik>
+
+            <Box
+                sx={{
+                    flexDirection: "row",
+                    gap: "5vw",
+                    width: "100%",
+                    height: "23%",
+                    alignItems: "center",
+                }}
+            >
+                <Avatar
+                    src={GeoImage}
+                    onChange={(file) => setImage(file)}
+                    changeLabel="Trocar foto"
+                    emptyLabel="Adicionar foto"
+                    variant="square"
+                    style={{
+                        width: "40vw",
+                        height: "40vw",
+                        fontSize: "4vw",
+                        fontFamily: "MalgunGothic2",
+                    }}
+                />
+                <Box sx={{ flexDirection: "column", gap: "2vw", width: "65%" }}>
+                    <TextField
+                        label={"Nome da lavoura"}
+                        name="name"
+                        value={data.name}
+                        sx={textField}
+                        onChange={change}
+                        required
+                    />
+                    <TextField
+                        label={"Endereço"}
+                        name="address.city"
+                        value={data.address.city}
+                        sx={textField}
+                        onChange={change}
+                        required
+                    />
+                    <TextField label={"Area"} name="area" value={data.area} sx={textField} onChange={change} required />
+                </Box>
+            </Box>
+            <Tabs
+                value={tab}
+                onChange={changeTab}
+                textColor="primary"
+                indicatorColor="primary"
+                aria-label="tabs"
+                variant="scrollable"
+                scrollButtons="auto"
+                allowScrollButtonsMobile
+            >
+                <Tab sx={tabStyle} value="team" label="Equipe" />
+                <Tab sx={tabStyle} value="additional" label="Adicionais" />
+                <Tab sx={tabStyle} value="gallery" label="Imagens" />
+            </Tabs>
+            {tab === "team" && <Team data={data} handleChange={change} />}
+            {tab === "additional" && <Additional data={data} handleChange={change} />}
+            {tab === "gallery" && (
+                <Box sx={{ width: "100%", height: "52%", gap: "3vw" }}>
+                    <Box sx={{ width: "100%", height: "66%", overflowY: "auto", gap: "2vw" }}>
+                        {listGallery.map((item, index) => (
+                            <Gallery key={index} id={index + 1} />
+                        ))}
+                    </Box>
+                    <p>Adicionar nova Galeria</p>
+                    <TextField
+                        label={"Nome da Galeria"}
+                        name="name_gallery"
+                        value={""}
+                        sx={textField}
+                        onChange={change}
+                        required
+                    />
+                </Box>
+            )}
+            <Box sx={{ flexDirection: "row", gap: "2vw" }}>
+                <Button
+                    variant="outlined"
+                    sx={{
+                        width: "50%",
+                        padding: "3vw",
+                        color: colors.text.black,
+                        fontWeight: "600",
+                        fontSize: "4vw",
+                        textTransform: "none",
+                        borderRadius: "10vw",
+                        height: "10vw",
+                    }}
+                    onClick={() => {
+                        navigate("../")
+                    }}
+                >
+                    Cancelar
+                </Button>
+                <Button
+                    variant="contained"
+                    sx={{
+                        padding: "1vw",
+                        width: "50%",
+                        fontSize: 17,
+                        color: colors.text.white,
+                        backgroundColor: colors.button,
+                        borderRadius: "5vw",
+                        textTransform: "none",
+                    }}
+                    onClick={() => navigate("/producer/1/1")}
+                >
+                    Salvar
+                </Button>
+            </Box>
         </Box>
     )
 }

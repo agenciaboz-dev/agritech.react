@@ -57,16 +57,9 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
         setOpen(true)
     }
 
-    // const modal = {
-    //     title: "Tem certeza que deseja cancelar esse chamado?",
-    //     content: "Uma vez que cancelado o mesmo chamado não poderá ser refeito, apenas um novo poderá ser aberto.",
-    //     submitTitle: "Sim, cancelar",
-
-    // }
     useEffect(() => {
         header.setTitle("Lavouras")
     }, [])
-    console.log(user)
 
     return (
         <Box

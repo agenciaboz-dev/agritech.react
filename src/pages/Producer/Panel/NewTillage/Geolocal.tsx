@@ -1,5 +1,5 @@
-import { Box, Button } from "@mui/material"
-import React, { ChangeEventHandler, useEffect, useState } from "react"
+import { Box, Button, TextField } from "@mui/material"
+import React, { ChangeEventHandler, useEffect, useRef, useState } from "react"
 import { useHeader } from "../../../../hooks/useHeader"
 import { MapContainer, Polygon, TileLayer, useMapEvents } from "react-leaflet"
 import { Marker } from "react-leaflet/Marker"
@@ -12,7 +12,7 @@ import { colors } from "../../../../style/colors"
 interface GeolocalProps {
     infoCep: CepAbertoApi | undefined
     origin: LatLngExpression
-    data: NewProducer
+    data: NewLavoura
     handleChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
 }
 
@@ -20,9 +20,9 @@ export const Geolocal: React.FC<GeolocalProps> = ({ data, handleChange, origin }
     const io = useIo()
     const header = useHeader()
     const { unmask } = useDataHandler()
-
     const [coordinates, setCoordinates] = useState<LatLngTuple[]>([])
 
+    //functions map
     const MapClickHandler = () => {
         useMapEvents({
             click(e) {
@@ -37,9 +37,29 @@ export const Geolocal: React.FC<GeolocalProps> = ({ data, handleChange, origin }
         }
     }
 
+    const mapRef = useRef<any>(null)
+
+    // Função para atualizar o mapa completo
+    const updateMap = (coordinates: LatLngExpression) => {
+        if (mapRef.current) {
+            // Atualiza o centro do mapa e o zoom
+            mapRef.current.setView(coordinates, 12)
+        }
+    }
+
+    useEffect(() => {
+        // Chama a função para atualizar o mapa sempre que 'search' mudar
+        updateMap(origin)
+    }, [origin])
+    //update title
     useEffect(() => {
         header.setTitle(unmask(data.address.cep))
     }, [])
+
+    //array coordinates
+    useEffect(() => {
+        console.log("Coordenadas", coordinates)
+    }, [coordinates])
 
     return (
         <Box sx={{ width: "100%", height: "80%" }}>

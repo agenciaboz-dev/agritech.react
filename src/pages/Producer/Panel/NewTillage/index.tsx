@@ -1,48 +1,72 @@
-import { Box, Button, CircularProgress, TextField } from "@mui/material"
+import { Box, Button, SxProps, TextField } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { useHeader } from "../../../../hooks/useHeader"
 import { colors } from "../../../../style/colors"
 import { Header } from "../../../../components/Header"
 import { Form, Formik } from "formik"
 import { useUser } from "../../../../hooks/useUser"
-import { useNavigate } from "react-router-dom"
 import { Geolocal } from "./Geolocal"
 import { FormTillage } from "./Form"
 import { useDataHandler } from "../../../../hooks/useDataHandler"
 import { useIo } from "../../../../hooks/useIo"
 import { CepAbertoApi } from "../../../../definitions/cepabertoApi"
 import { LatLngExpression } from "leaflet"
+import { DialogConfirm } from "../../../../components/DialogConfirm"
+import { textField } from "../../../../style/input.ts"
 
 interface NewTillageProps {}
 
+const openCall = {
+    title: "Adicione um CEP",
+    content: "Insira o cep da sua lavoura. Caso não tenha, insira o cep mais próximo.",
+    submitTitle: "Continuar",
+    cancelTitle: "Cancelar",
+}
+const input: SxProps = {
+    "& .MuiInputBase-root": { color: "#fff" },
+    "& .MuiInputLabel-root.Mui-focused ": {
+        color: "#fff", // Cor do label quando o TextField está em foco (digitando)
+    },
+    "& .MuiInputLabel-root ": {
+        color: "#fff",
+    },
+    "& .MuiOutlinedInput-root": {
+        borderColor: colors.secondary,
+        fieldset: {
+            borderColor: colors.primary,
+        },
+    },
+}
 export const NewTillage: React.FC<NewTillageProps> = ({}) => {
+    const io = useIo()
     const header = useHeader()
     const { user } = useUser()
     const { unmask } = useDataHandler()
-    const navigate = useNavigate()
-    const [currentStep, setCurrentStep] = useState(1)
+    const [currentStep, setCurrentStep] = useState(0)
     const [loading, setLoading] = useState(false)
 
-    const io = useIo()
+    //control modal
+    const [open, setOpen] = useState(true)
+
     const [infoCep, setInfoCep] = useState<CepAbertoApi>()
     // const [origin, setOrigin] = useState<LatLngExpression>([-23.5489, -46.6388])
     const [origin, setOrigin] = useState<LatLngExpression>([0, 0])
 
     useEffect(() => {
         header.setTitle("Nova Lavoura")
-    }, [name])
+    }, [])
 
-    const initialValues: NewProducer = {
+    const initialValues: NewLavoura = {
         name: "",
-        email: "",
-        username: "",
-        password: "",
-        cpf: "",
-        birth: "",
-        phone: "",
-        image: "",
-
-        //address
+        area: "",
+        ceo: "",
+        owner: "",
+        manager: "",
+        agronomist: "",
+        technician: "",
+        pilot: "",
+        comments: "",
+        others: "",
         address: {
             street: "",
             district: "",
@@ -52,22 +76,15 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
             uf: "",
             adjunct: "",
         },
-        isAdmin: false,
-        approved: false,
-        rejected: "",
-
-        employeeId: user?.employee?.id,
-        producer: { cnpj: "", tillage: [] },
+        gallery: [],
+        location: [],
+        producerId: user?.id,
     }
-
-    const handleSubmit = (values: NewProducer) => {
+    const handleSubmit = (values: NewLavoura) => {
         console.log(values)
 
         const data = {
             ...values,
-            cpf: unmask(values.cpf),
-            phone: unmask(values.phone),
-            approved: true,
             address: {
                 street: values.address.street,
                 district: values.address.district,
@@ -79,7 +96,7 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
                 // uf: estados.find((estado) => estado.value == values.address.uf)?.value || "",
             },
         }
-        handleCoordinates(values.address.cep)
+        console.log(data)
     }
     const handleCoordinates = (value: string) => {
         io.emit("coordinate:cep", { data: unmask(value) })
@@ -88,13 +105,13 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
     useEffect(() => {
         io.on("coordinate:cep:success", (data: CepAbertoApi) => {
             setLoading(false)
-            console.log("atualizando")
+            console.log("Encontrando o cep")
             setInfoCep(data)
             setOrigin([Number(data.latitude), Number(data.longitude)])
             setCurrentStep(1)
         })
         io.on("coordinate:cep:error", () => {
-            console.log("Algo de errado não está certo!")
+            console.log("Algo deu errado. Tente Novamente!")
         })
 
         return () => {
@@ -154,6 +171,32 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
                         <Formik initialValues={initialValues} onSubmit={handleSubmit}>
                             {({ values, handleChange }) => (
                                 <Form>
+                                    {currentStep === 0 && (
+                                        <DialogConfirm
+                                            open={open}
+                                            setOpen={setOpen}
+                                            data={openCall}
+                                            children={
+                                                <TextField
+                                                    sx={{
+                                                        ...textField,
+                                                        ...input,
+                                                    }}
+                                                    label="CEP"
+                                                    name="address.cep"
+                                                    value={values.address.cep}
+                                                    onChange={handleChange}
+                                                />
+                                            }
+                                            click={() => {
+                                                {
+                                                    !loading && setOpen(false)
+                                                }
+                                                handleCoordinates(values.address.cep)
+                                            }}
+                                            loading={loading}
+                                        />
+                                    )}
                                     {currentStep === 1 && (
                                         <>
                                             <Geolocal
@@ -181,7 +224,9 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
                                             </Button>
                                         </>
                                     )}
-                                    {currentStep === 2 && <FormTillage />}
+                                    {currentStep === 2 && (
+                                        <FormTillage data={values} addressApi={infoCep} change={handleChange} />
+                                    )}
                                 </Form>
                             )}
                         </Formik>

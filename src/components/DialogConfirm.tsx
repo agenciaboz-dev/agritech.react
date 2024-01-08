@@ -1,4 +1,12 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, SxProps } from "@mui/material"
+import {
+    Button,
+    CircularProgress,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+} from "@mui/material"
 import React from "react"
 import { colors } from "../style/colors"
 
@@ -13,9 +21,11 @@ interface DialogConfirmProps {
     }
 
     click?: React.MouseEventHandler<HTMLButtonElement> | undefined
+    children?: React.ReactNode
+    loading?: boolean
 }
 
-export const DialogConfirm: React.FC<DialogConfirmProps> = ({ open, setOpen, data, click }) => {
+export const DialogConfirm: React.FC<DialogConfirmProps> = ({ open, setOpen, data, click, children, loading }) => {
     const handleClose = () => {
         setOpen(false)
     }
@@ -25,22 +35,23 @@ export const DialogConfirm: React.FC<DialogConfirmProps> = ({ open, setOpen, dat
             onClose={handleClose}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
-            PaperProps={{ sx: { bgcolor: colors.button, borderRadius: "7vw" } }}
+            PaperProps={{ sx: { bgcolor: colors.button, borderRadius: "7vw", p: "1vw" } }}
         >
             <DialogTitle id="alert-dialog-title" sx={{ color: colors.text.white, fontSize: "4.5vw" }}>
                 {data.title}
             </DialogTitle>
-            <DialogContent>
+            <DialogContent sx={{ gap: "6vw", display: "flex", flexDirection: "column" }}>
                 <DialogContentText id="alert-dialog-description" sx={{ color: colors.text.white, fontSize: "3vw" }}>
                     {data.content}
                 </DialogContentText>
+                {children}
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose} sx={{ color: colors.text.white, textTransform: "none" }}>
                     {data.cancelTitle}
                 </Button>
                 <Button onClick={click} autoFocus sx={{ color: colors.text.white, textTransform: "none" }}>
-                    {data.submitTitle}
+                    {loading ? <CircularProgress sx={{ color: "#fff" }} /> : data.submitTitle}
                 </Button>
             </DialogActions>
         </Dialog>
