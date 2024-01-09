@@ -31,7 +31,6 @@ export const Routes: React.FC<RoutesProps> = ({}) => {
                 <ReactRoutes>
                     <Route path="/" element={<Panel user={user} />} />
                     <Route path="/adm/*" element={<Adm user={user} />} />
-                    <Route path="/producer/:producerid/:tillageid" element={<TillageDetails />} />
                     <Route path="/callDetail" element={<CallDetails />} />
                 </ReactRoutes>
             </>

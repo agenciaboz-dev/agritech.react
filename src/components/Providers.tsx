@@ -12,6 +12,7 @@ import "@mantine/core/styles.css"
 import "@mantine/dates/styles.css"
 import { NotificationDrawerProvider } from "../contexts/notificationDrawer"
 import { NotificationDrawer } from "./NotificationDrawer"
+import { ProducerProvider } from "../contexts/producerContext"
 interface ProvidersProps {
     children: React.ReactNode
 }
@@ -23,19 +24,21 @@ export const Providers: React.FC<ProvidersProps> = ({ children }) => {
             <ConfirmDialogProvider>
                 <IoProvider>
                     <UserProvider>
-                        <UsersProvider>
-                            <NotificationDrawerProvider>
-                                <MenuDrawerProvider>
-                                    <HeaderProvider>
-                                        <Snackbar />
-                                        <ConfirmDialog />
-                                        <NotificationDrawer />
-                                        <MenuDrawer />
-                                        <MantineProvider theme={mantine_theme}>{children}</MantineProvider>
-                                    </HeaderProvider>
-                                </MenuDrawerProvider>
-                            </NotificationDrawerProvider>
-                        </UsersProvider>
+                        <ProducerProvider>
+                            <UsersProvider>
+                                <NotificationDrawerProvider>
+                                    <MenuDrawerProvider>
+                                        <HeaderProvider>
+                                            <Snackbar />
+                                            <ConfirmDialog />
+                                            <NotificationDrawer />
+                                            <MenuDrawer />
+                                            <MantineProvider theme={mantine_theme}>{children}</MantineProvider>
+                                        </HeaderProvider>
+                                    </MenuDrawerProvider>
+                                </NotificationDrawerProvider>
+                            </UsersProvider>
+                        </ProducerProvider>
                     </UserProvider>
                 </IoProvider>
             </ConfirmDialogProvider>

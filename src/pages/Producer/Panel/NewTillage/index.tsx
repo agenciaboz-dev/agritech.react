@@ -70,7 +70,7 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
         name: "",
         area: "",
         ceo: "",
-        owner: "",
+        owner: user?.name || " ", //corrigir para o nome do produtor
         manager: "",
         agronomist: "",
         technician: "",

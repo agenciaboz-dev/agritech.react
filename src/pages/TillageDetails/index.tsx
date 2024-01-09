@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom"
 import { OpenCallBox, ProgressCall } from "../../components/OpenCallBox"
 import { useUser } from "../../hooks/useUser"
 import { PiPlantLight } from "react-icons/pi"
+import { useProducer } from "../../hooks/useProducer"
 
 interface TillageDetailsProps {}
 
@@ -45,10 +46,12 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
     const images = useArray().newArray(5)
     const [open, setOpen] = useState(false)
     const [variant, setVariant] = useState(false)
+    const { tillageid } = useParams()
 
-    const { producerid } = useParams() // temporario => na verdade deve ser tillageid que vai armazenar a info do produtor dela
-    const producer = listProducers()?.filter((item) => String(item.id) == producerid) || []
+    const { listTillagesP } = useProducer()
+    const lavoura = listTillagesP?.filter((item) => item.id === Number(tillageid)) || []
 
+    const tillage = lavoura[0]
     const [tab, setTab] = React.useState("call")
     const changeTab = (event: React.SyntheticEvent, newValue: string) => {
         setTab(newValue)
@@ -58,7 +61,8 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
     }
 
     useEffect(() => {
-        header.setTitle("Lavouras")
+        header.setTitle(`Lavouras de ${tillage.owner}`)
+        console.log(tillage)
     }, [])
 
     return (
@@ -81,7 +85,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                     flexDirection: "row",
                 }}
             >
-                <Header />
+                <Header back location="../" />
             </Box>
             <Box
                 style={{
@@ -109,9 +113,16 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                             fontWeight: "bold",
                         }}
                     >
-                        Lavouras
+                        {tillage.name}
                     </p>
-                    <IoIosArrowForward color="white" size={"6vw"} />
+                    <IoIosArrowForward
+                        color="white"
+                        size={"6vw"}
+                        onClick={
+                            () => {}
+                            // navigate(user?.producer !== null ? "/producer/tillage/" : `${producerid}/tillage/list`)
+                        }
+                    />
                 </Box>
                 <Box sx={{ flexDirection: "row", gap: "2vw", width: "100%", overflow: "auto", p: "3vw 4vw 8vw" }}>
                     {images.map((item, index) => (
@@ -170,22 +181,6 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                             setOpen(false)
                         }}
                     />
-                    {/* {user?.producer && (
-                        <IconButton
-                            sx={{
-                                bgcolor: colors.button,
-                                width: "12vw",
-                                height: "12vw",
-                                borderRadius: "10vw",
-                                position: "absolute",
-                                bottom: "26vw",
-                                right: "8vw",
-                            }}
-                            onClick={() => navigate("/producer/new")}
-                        >
-                            <PiPlantLight color="#fff" />
-                        </IconButton>
-                    )} */}
                 </Box>
             </Box>
         </Box>
