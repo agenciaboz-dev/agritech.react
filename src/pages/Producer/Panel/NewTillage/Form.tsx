@@ -45,7 +45,7 @@ export const FormTillage: React.FC<FormTillageProps> = ({ data, change, addressA
         header.setTitle(user?.name || "Produtor")
     }, [])
     return (
-        <Box sx={{ width: "100%", height: "90%", gap: "6vw", flexDirection: "column", p: "4vw" }}>
+        <Box sx={{ width: "100%", height: "85%", gap: "6vw", flexDirection: "column", p: "4vw" }}>
             <p>Informações da Lavoura</p>
 
             <Box

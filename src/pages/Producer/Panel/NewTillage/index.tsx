@@ -16,6 +16,7 @@ import { textField } from "../../../../style/input.ts"
 import { NewLavoura } from "../../../../definitions/newTillage"
 import { useNavigate } from "react-router-dom"
 import { useSnackbar } from "burgos-snackbar"
+import MaskedInput from "../../../../components/MaskedInput.tsx"
 
 interface NewTillageProps {}
 
@@ -39,7 +40,13 @@ const input: SxProps = {
             borderColor: colors.primary,
         },
     },
+    "& .MuiInputBase-input.MuiOutlinedInput-input:-webkit-autofill": {
+        "-webkit-box-shadow": ` 0 0 0 100px ${colors.button} inset`,
+        borderRadius: "initial",
+        color: "#fff",
+    },
 }
+
 export const NewTillage: React.FC<NewTillageProps> = ({}) => {
     const io = useIo()
     const header = useHeader()
@@ -81,7 +88,7 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
         },
         // gallery: [],
         location: [],
-        producerId: user?.id,
+        producerId: user?.producer?.id,
     }
     const handleSubmit = (values: NewLavoura) => {
         console.log(values)
@@ -96,11 +103,12 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
 
     useEffect(() => {
         io.on("tillage:creation:success", () => {
+            snackbar({ severity: "success", text: "Lavoura adicionada!" })
             setLoadingSubmit(false)
             navigate("producer/1/1")
         })
         io.on("tillage:creation:failed", () => {
-            snackbar({ severity: "error", text: "Algo deu errado" })
+            snackbar({ severity: "error", text: "Algo deu errado!" })
         })
     }, [])
 
@@ -116,8 +124,10 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
             setOrigin([Number(data.latitude), Number(data.longitude)])
             setCurrentStep(1)
         })
-        io.on("coordinate:cep:error", () => {
-            console.log("Algo deu errado. Tente Novamente!")
+        io.on("coordinate:cep:empty", () => {
+            snackbar({ severity: "warning", text: "O CEP não existe! Insira um CEP válido." })
+            setOpen(true)
+            setLoading(false)
         })
 
         return () => {
@@ -178,7 +188,7 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
                         overflow: "hidden",
                     }}
                 >
-                    <Box sx={{ width: "100%", height: "84%", gap: "4vw", flexDirection: "column" }}>
+                    <Box sx={{ width: "100%", height: "87%", gap: "4vw", flexDirection: "column" }}>
                         <Formik initialValues={initialValues} onSubmit={handleSubmit}>
                             {({ values, handleChange }) => (
                                 <Form>
@@ -197,6 +207,10 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
                                                     name="address.cep"
                                                     value={values.address.cep}
                                                     onChange={handleChange}
+                                                    InputProps={{
+                                                        inputComponent: MaskedInput,
+                                                        inputProps: { mask: "00.000-000", inputMode: "numeric" },
+                                                    }}
                                                 />
                                             }
                                             click={() => {
