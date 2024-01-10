@@ -16,6 +16,7 @@ import { OpenCallBox, ProgressCall } from "../../components/OpenCallBox"
 import { useUser } from "../../hooks/useUser"
 import { PiPlantLight } from "react-icons/pi"
 import { useProducer } from "../../hooks/useProducer"
+import findProducer from "../../hooks/filterProducer"
 
 interface TillageDetailsProps {}
 
@@ -46,12 +47,17 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
     const images = useArray().newArray(5)
     const [open, setOpen] = useState(false)
     const [variant, setVariant] = useState(false)
-    const { tillageid } = useParams()
+    const { producerid, tillageid } = useParams()
 
+    //only producer
     const { listTillagesP } = useProducer()
     const lavoura = listTillagesP?.filter((item) => item.id === Number(tillageid)) || []
-
     const tillage = lavoura[0]
+
+    //only employee and adm
+    const producerSelect = findProducer(producerid || "")
+    const lavouraProducer = producerSelect?.producer?.tillage?.filter((tillage) => tillage.id === Number(tillageid)) || []
+
     const [tab, setTab] = React.useState("call")
     const changeTab = (event: React.SyntheticEvent, newValue: string) => {
         setTab(newValue)
@@ -61,7 +67,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
     }
 
     useEffect(() => {
-        header.setTitle(`Lavoura`)
+        header.setTitle(user?.producer === null ? `${producerSelect.name}` : "Lavoura")
         console.log(tillage)
     }, [])
 
@@ -85,7 +91,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                     flexDirection: "row",
                 }}
             >
-                <Header back location="../" />
+                <Header back location={user?.producer !== null ? "../" : `/adm/producer/${producerid}`} />
             </Box>
             <Box
                 style={{
@@ -113,7 +119,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                             fontWeight: "bold",
                         }}
                     >
-                        {tillage.name}
+                        {user?.producer !== null ? tillage?.name : lavouraProducer[0].name}
                     </p>
                     <IoIosArrowForward
                         color="white"

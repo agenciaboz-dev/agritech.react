@@ -1,25 +1,19 @@
-import { Box, Button } from "@mui/material"
-import React, { useEffect, useState } from "react"
+import { Box } from "@mui/material"
+import React, { useEffect } from "react"
 import { Header } from "../../components/Header"
 import { colors } from "../../style/colors"
-import { useNavigate, useParams } from "react-router-dom"
-import { useNavigationList } from "../../hooks/useNavigationList"
+import { useParams } from "react-router-dom"
 import { useHeader } from "../../hooks/useHeader"
-import { CardUser } from "../../components/CardUser"
 import { useProducer } from "../../hooks/useProducer"
 import { useUser } from "../../hooks/useUser"
 import { CardTillage } from "../../components/CardTillage"
-import { useUsers } from "../../hooks/useUsers"
 import findProducer from "../../hooks/filterProducer"
 
 interface ListTillagesProps {}
 
 export const ListTillages: React.FC<ListTillagesProps> = ({}) => {
-    const navigate = useNavigate()
-    const bottomMenu = useNavigationList()
     const header = useHeader()
 
-    const listUsers = useUsers()
     const { listTillagesP } = useProducer()
     const { user } = useUser()
 
@@ -28,11 +22,8 @@ export const ListTillages: React.FC<ListTillagesProps> = ({}) => {
 
     useEffect(() => {
         header.setTitle(user?.producer !== null ? "Minhas lavouras" : "Lavouras")
-    })
-
-    // useEffect(() => {
-    //     console.log(user?.producer !== null && listTillagesP)
-    // }, [])
+        console.log(producerSelect)
+    }, [])
 
     return (
         <Box
@@ -83,7 +74,11 @@ export const ListTillages: React.FC<ListTillagesProps> = ({}) => {
                                   <CardTillage key={index} tillage={item} location={`/producer/tillage/${item.id}`} />
                               ))
                             : producerSelect.producer?.tillage?.map((tillage, index) => (
-                                  <CardTillage key={index} tillage={tillage} location={`/producer/tillage/${tillage.id}`} />
+                                  <CardTillage
+                                      key={index}
+                                      tillage={tillage}
+                                      location={`/adm/producer/${producerSelect.producer?.id}/${tillage.id}`}
+                                  />
                               ))}
 
                         <Box style={{ width: "100%", height: "80%", overflow: "auto" }}></Box>
