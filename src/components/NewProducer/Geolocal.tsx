@@ -9,11 +9,12 @@ import { CepAbertoApi } from "../../definitions/cepabertoApi"
 import { LatLng, LatLngExpression, LatLngTuple } from "leaflet"
 import L from "leaflet"
 import { colors } from "../../style/colors"
+import { NewLavoura } from "../../definitions/newTillage"
 
 interface GeolocalProps {
     infoCep: CepAbertoApi | undefined
     origin: LatLngExpression
-    data: NewProducer
+    data: NewLavoura
     handleChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
 }
 
@@ -58,22 +59,6 @@ export const Geolocal: React.FC<GeolocalProps> = ({ data, handleChange, origin, 
 
                 <MapClickHandler />
             </MapContainer>
-            <Button
-                variant="contained"
-                color="primary"
-                onClick={handleSave}
-                sx={{
-                    fontSize: 17,
-                    color: colors.text.white,
-                    width: "90%",
-                    backgroundColor: colors.button,
-                    borderRadius: "5vw",
-                    textTransform: "none",
-                    margin: "0 5vw",
-                }}
-            >
-                Salvar Area
-            </Button>
         </Box>
     )
 }

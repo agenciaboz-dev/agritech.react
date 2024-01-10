@@ -6,34 +6,56 @@ import { Header } from "../Header"
 import { Form, Formik } from "formik"
 import { useUser } from "../../hooks/useUser"
 import { useNavigate } from "react-router-dom"
-import { Geolocal } from "./Geolocal"
-import { NewTillage } from "./NewTillage"
 import { useDataHandler } from "../../hooks/useDataHandler"
 import { Profile } from "./Profile"
 import { useIo } from "../../hooks/useIo"
 import { CepAbertoApi } from "../../definitions/cepabertoApi"
-import { LatLngExpression } from "leaflet"
+import { LatLngExpression, LatLngTuple } from "leaflet"
+import { DialogConfirm } from "../DialogConfirm"
+import MaskedInput from "../MaskedInput"
+import { textField, input } from "../../style/input.ts"
+import { NewLavoura } from "../../definitions/newTillage"
+import { useSnackbar } from "burgos-snackbar"
+import { FormTillage } from "../../pages/Producer/Panel/NewTillage/FormTillage.tsx"
+import { Geolocal } from "../../pages/Producer/Panel/NewTillage/Geolocal.tsx"
+import findProducer from "../../hooks/filterProducer.ts"
 
 interface NewProducerProps {}
 
+const openCall = {
+    title: "Adicione um CEP",
+    content: "Insira o cep da sua lavoura. Caso não tenha, insira o cep mais próximo.",
+    submitTitle: "Continuar",
+    cancelTitle: "Cancelar",
+}
+
 export const NewProducer: React.FC<NewProducerProps> = ({}) => {
+    const io = useIo()
     const header = useHeader()
     const { user } = useUser()
     const { unmask } = useDataHandler()
     const navigate = useNavigate()
+    const { snackbar } = useSnackbar()
+
     const [currentStep, setCurrentStep] = useState(0)
-    const [loading, setLoading] = useState(false)
+    const [open, setOpen] = useState(true)
+    const [loadingProducer, setLoadingProducer] = useState(false)
+    const [loadingCoordinate, setLoadingCoordinate] = useState(false)
+    const [loadingTillage, setLoadingTillage] = useState(false)
 
-    const io = useIo()
+    //control map
     const [infoCep, setInfoCep] = useState<CepAbertoApi>()
-    // const [origin, setOrigin] = useState<LatLngExpression>([-23.5489, -46.6388])
     const [origin, setOrigin] = useState<LatLngExpression>([0, 0])
+    const [coordinates, setCoordinates] = useState<LatLngTuple[]>([])
 
+    const [producer, setProducer] = useState<User>()
+    const [tillage, setTilllage] = useState<Tillage>()
+    // const producerSelect = findProducer(String(producer?.id)) || ""
     useEffect(() => {
         header.setTitle("Novo Produtor")
     }, [name])
 
-    const initialValues: NewProducer = {
+    const valuesProducer: NewProducer = {
         name: "",
         email: "",
         username: "",
@@ -56,16 +78,21 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
         isAdmin: false,
         approved: false,
         rejected: "",
+        office: "",
 
         employeeId: user?.employee?.id,
-        producer: { cnpj: "", tillage: [] },
+        producer: {
+            cnpj: "",
+            contract: true,
+            employeeId: user?.employee?.id,
+        },
     }
 
-    const handleSubmit = (values: NewProducer) => {
-        console.log(values)
-
+    const submitProducer = async (values: NewProducer) => {
         const data = {
             ...values,
+            username: values.email,
+            password: "2024",
             cpf: unmask(values.cpf),
             phone: unmask(values.phone),
             approved: true,
@@ -79,23 +106,105 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
                 uf: "AM",
                 // uf: estados.find((estado) => estado.value == values.address.uf)?.value || "",
             },
+            producer: {
+                cnpj: unmask(values.producer.cnpj),
+                contract: values.producer.contract,
+                tillage: values.producer.tillage,
+                employeeId: user?.employee?.id,
+            },
         }
-        handleCoordinates(values.address.cep)
+        console.log(data)
+
+        io.emit("user:signup", {
+            ...data,
+            producer: {
+                cnpj: unmask(data.producer?.cnpj || ""),
+                contract: values.producer.contract,
+                tillage: values.producer.tillage,
+            },
+        })
+        setLoadingProducer(true)
     }
-    const handleCoordinates = (value: string) => {
-        io.emit("coordinate:cep", { data: unmask(value) })
-        setLoading(true)
+
+    useEffect(() => {
+        console.log("Produtor recuperado", producer)
+    }, [producer])
+
+    useEffect(() => {
+        io.on("user:signup:success", (user: User) => {
+            setLoadingProducer(false)
+            if (user) {
+                snackbar({
+                    severity: "success",
+                    text: "Produtor cadastrado!",
+                })
+                setProducer(user)
+                setCurrentStep(1)
+            }
+        })
+
+        io.on("user:status:failed", (data) => {
+            const errorMessage = data.error ? data.error : "Falha no cadastro! Reveja as informações"
+            snackbar({ severity: "error", text: errorMessage })
+            setLoadingProducer(false)
+        })
+
+        return () => {
+            io.off("user:signup:success")
+            io.off("user:status:failed")
+        }
+    }, [producer])
+
+    console.log(producer?.producer?.id)
+    const valuesTillage: NewLavoura = {
+        name: "",
+        area: "",
+        ceo: "",
+        owner: producer?.name || " ", //corrigir para o nome do produtor
+        manager: "",
+        agronomist: "",
+        technician: "",
+        pilot: "",
+        comments: "",
+        others: "",
+        address: {
+            street: "",
+            district: "",
+            number: "",
+            city: infoCep?.cidade.nome || "",
+            cep: infoCep?.cep || "",
+            uf: infoCep?.estado.sigla || "",
+            adjunct: "",
+        },
+        // gallery: [],
+        location: [],
+        producerId: 0,
     }
+    const submitTillage = async (values: NewLavoura) => {
+        console.log(values)
+
+        const data = {
+            ...values,
+            producerId: producer?.producer?.id,
+        }
+        io.emit("tillage:create", data)
+        // console.log(data)
+
+        setLoadingTillage(true)
+    }
+
     useEffect(() => {
         io.on("coordinate:cep:success", (data: CepAbertoApi) => {
-            setLoading(false)
-            console.log("atualizando")
+            setLoadingCoordinate(false)
+            console.log("Encontrando o cep")
             setInfoCep(data)
             setOrigin([Number(data.latitude), Number(data.longitude)])
-            setCurrentStep(1)
+            setCurrentStep(2)
         })
-        io.on("coordinate:cep:error", () => {
-            console.log("Algo de errado não está certo!")
+        io.on("coordinate:cep:empty", () => {
+            snackbar({ severity: "warning", text: "O CEP não existe! Insira um CEP válido." })
+            setOpen(true)
+            setLoadingCoordinate(false)
         })
 
         return () => {
@@ -103,6 +212,26 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
             io.off("coordinate:cep:error")
         }
     }, [currentStep, origin])
+
+    useEffect(() => {
+        io.on("tillage:creation:success", (data: any) => {
+            console.log(data)
+            snackbar({ severity: "success", text: "Lavoura adicionada!" })
+            setLoadingTillage(false)
+            console.log("Olha o que vem do backend", data)
+            setTilllage(data.tillage)
+            navigate(`/adm/producer/${producer?.producer?.id}/${data.tillage.id}`)
+        })
+        io.on("tillage:creation:failed", () => {
+            snackbar({ severity: "error", text: "Algo deu errado!" })
+        })
+    }, [producer, tillage])
+
+    const handleCoordinates = (value: string) => {
+        io.emit("coordinate:cep", { data: unmask(value) })
+        setLoadingCoordinate(true)
+    }
+
     return (
         <Box
             sx={{
@@ -144,6 +273,7 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
                     sx={{
                         padding: "0vw",
                         width: "100%",
+                        height: "100%",
                         flex: 1,
                         backgroundColor: "#fff",
                         borderTopLeftRadius: "7vw",
@@ -152,32 +282,94 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
                     }}
                 >
                     <Box sx={{ width: "100%", height: "100%", gap: "4vw", flexDirection: "column" }}>
-                        <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+                        <Formik initialValues={valuesProducer} onSubmit={submitProducer}>
                             {({ values, handleChange }) => (
                                 <Form>
                                     {currentStep === 0 && (
-                                        <>
+                                        <Box
+                                            sx={{ justifyContent: "space-between", flexDirection: "column", height: "90%" }}
+                                        >
                                             <Profile values={values} handleChange={handleChange} />
-                                            <Button
-                                                variant="contained"
-                                                type="submit"
-                                                sx={{
-                                                    fontSize: 17,
-                                                    color: colors.text.white,
-                                                    width: "90%",
-                                                    backgroundColor: colors.button,
-                                                    borderRadius: "5vw",
-                                                    textTransform: "none",
-                                                    margin: "0 5vw",
-                                                }}
-                                            >
-                                                {loading ? <CircularProgress sx={{ color: "#fff" }} /> : "Próximo"}
-                                            </Button>
-                                        </>
+                                            <Box sx={{ flexDirection: "column", p: "4vw", gap: "2vw" }}>
+                                                <Button
+                                                    variant="outlined"
+                                                    sx={{
+                                                        padding: "3vw",
+                                                        color: colors.text.black,
+                                                        fontWeight: "600",
+                                                        fontSize: "4vw",
+                                                        textTransform: "none",
+                                                        borderRadius: "10vw",
+                                                        height: "10vw",
+                                                    }}
+                                                    onClick={() => {
+                                                        navigate("../")
+                                                    }}
+                                                >
+                                                    Cancelar
+                                                </Button>
+                                                <Button
+                                                    variant="contained"
+                                                    type="submit"
+                                                    sx={{
+                                                        fontSize: 17,
+                                                        color: colors.text.white,
+                                                        width: "100%",
+                                                        backgroundColor: colors.button,
+                                                        borderRadius: "5vw",
+                                                        textTransform: "none",
+                                                    }}
+                                                >
+                                                    {loadingProducer ? (
+                                                        <CircularProgress sx={{ color: "#fff" }} />
+                                                    ) : (
+                                                        "Salvar"
+                                                    )}
+                                                </Button>
+                                            </Box>
+                                        </Box>
                                     )}
                                     {currentStep === 1 && (
+                                        <DialogConfirm
+                                            open={open}
+                                            setOpen={setOpen}
+                                            data={openCall}
+                                            children={
+                                                <TextField
+                                                    sx={{
+                                                        ...textField,
+                                                        ...input,
+                                                    }}
+                                                    label="CEP"
+                                                    name="address.cep"
+                                                    value={values.address.cep}
+                                                    onChange={handleChange}
+                                                    InputProps={{
+                                                        inputComponent: MaskedInput,
+                                                        inputProps: { mask: "00.000-000", inputMode: "numeric" },
+                                                    }}
+                                                />
+                                            }
+                                            click={() => {
+                                                {
+                                                    !loadingCoordinate && setOpen(false)
+                                                }
+                                                handleCoordinates(values.address.cep)
+                                            }}
+                                            loading={loadingCoordinate}
+                                        />
+                                    )}
+                                </Form>
+                            )}
+                        </Formik>
+                        <Formik initialValues={valuesTillage} onSubmit={submitTillage}>
+                            {({ values, handleChange }) => (
+                                <Form>
+                                    {currentStep === 2 && (
                                         <>
                                             <Geolocal
+                                                coordinates={coordinates}
+                                                setCoordinates={setCoordinates}
                                                 data={values}
                                                 handleChange={handleChange}
                                                 origin={origin}
@@ -195,14 +387,59 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
                                                     margin: "0 5vw",
                                                 }}
                                                 onClick={() => {
-                                                    setCurrentStep(2)
+                                                    setCurrentStep(3)
                                                 }}
                                             >
                                                 Próximo
                                             </Button>
                                         </>
                                     )}
-                                    {currentStep === 2 && <NewTillage />}
+                                    {currentStep === 3 && (
+                                        <Box sx={{ height: "89%", justifyContent: "space-between" }}>
+                                            <FormTillage
+                                                data={values}
+                                                change={handleChange}
+                                                producerUser={producer}
+                                                addressApi={infoCep}
+                                            />
+                                            <Box sx={{ flexDirection: "column", gap: "2vw", p: "0 4vw" }}>
+                                                <Button
+                                                    variant="outlined"
+                                                    sx={{
+                                                        width: "100%",
+                                                        padding: "3vw",
+                                                        color: colors.text.black,
+                                                        fontWeight: "600",
+                                                        fontSize: "4vw",
+                                                        textTransform: "none",
+                                                        borderRadius: "10vw",
+                                                        height: "10vw",
+                                                    }}
+                                                    onClick={() => {
+                                                        setCurrentStep(1)
+                                                    }}
+                                                >
+                                                    Voltar
+                                                </Button>
+                                                <Button
+                                                    type="submit"
+                                                    variant="contained"
+                                                    sx={{
+                                                        padding: "1vw",
+                                                        width: "100%",
+                                                        fontSize: 17,
+                                                        color: colors.text.white,
+                                                        backgroundColor: colors.button,
+                                                        borderRadius: "5vw",
+                                                        textTransform: "none",
+                                                    }}
+                                                    onClick={() => setLoadingTillage(true)}
+                                                >
+                                                    {loadingTillage ? <CircularProgress sx={{ color: "#fff" }} /> : "Salvar"}
+                                                </Button>
+                                            </Box>
+                                        </Box>
+                                    )}
                                 </Form>
                             )}
                         </Formik>

@@ -1,3 +1,4 @@
+import { SxProps } from "@mui/material"
 import { colors } from "./colors"
 
 export const inputStyle = { height: 45, borderColor: colors.button }
@@ -20,5 +21,26 @@ export const textField = {
     },
     "& .MuiOutlinedInput-input": {
         height: "3.5vw",
+    },
+}
+
+export const input: SxProps = {
+    "& .MuiInputBase-root": { color: "#fff" },
+    "& .MuiInputLabel-root.Mui-focused ": {
+        color: "#fff", // Cor do label quando o TextField está em foco (digitando)
+    },
+    "& .MuiInputLabel-root ": {
+        color: "#fff",
+    },
+    "& .MuiOutlinedInput-root": {
+        borderColor: colors.secondary,
+        fieldset: {
+            borderColor: colors.primary,
+        },
+    },
+    "& .MuiInputBase-input.MuiOutlinedInput-input:-webkit-autofill": {
+        "-webkit-box-shadow": ` 0 0 0 100px ${colors.button} inset`,
+        borderRadius: "initial",
+        color: "#fff",
     },
 }

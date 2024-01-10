@@ -1,31 +1,32 @@
 import { Box, TextField } from "@mui/material"
 import React, { ChangeEventHandler } from "react"
 import { textField } from "../../../style/input"
+import { NewLavoura } from "../../../definitions/newTillage"
 
 interface TeamProps {
-    data: NewTillage
+    data: NewLavoura
     handleChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
+    producerName?: string
 }
 
-export const Team: React.FC<TeamProps> = ({ data, handleChange }) => {
+export const Team: React.FC<TeamProps> = ({ data, handleChange, producerName }) => {
     return (
-        <Box sx={{ width: "100%", flexDirection: "column", gap: "2vw", }}>
+        <Box sx={{ width: "100%", flexDirection: "column", gap: "2vw" }}>
             <TextField
                 label={"Prorietário"}
                 name="owner"
-                value={data.owner}
+                value={producerName}
                 sx={textField}
-                onChange={handleChange}
+                // onChange={handleChange}
                 required
             />
-            <TextField label={"CEO"} name="ceo" value={data.ceo} sx={textField} onChange={handleChange}  />
+            <TextField label={"CEO"} name="ceo" value={data.ceo} sx={textField} onChange={handleChange} />
             <TextField
                 label={"Gerente"}
                 name="manager"
                 value={data.manager}
                 sx={{ ...textField, width: "100%" }}
                 onChange={handleChange}
-                
             />
             <TextField
                 label={"Agronômo Responsável"}
@@ -33,7 +34,6 @@ export const Team: React.FC<TeamProps> = ({ data, handleChange }) => {
                 value={data.agronomist}
                 sx={{ ...textField, width: "100%" }}
                 onChange={handleChange}
-                
             />
             <TextField
                 label={"Técnico Responsável"}
@@ -41,7 +41,6 @@ export const Team: React.FC<TeamProps> = ({ data, handleChange }) => {
                 value={data.technician}
                 sx={{ ...textField, width: "100%" }}
                 onChange={handleChange}
-                
             />
             <TextField
                 label={"Outros"}
@@ -49,7 +48,6 @@ export const Team: React.FC<TeamProps> = ({ data, handleChange }) => {
                 value={data.others}
                 sx={{ ...textField, width: "100%" }}
                 onChange={handleChange}
-                
             />
         </Box>
     )

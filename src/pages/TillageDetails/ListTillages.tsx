@@ -19,10 +19,10 @@ export const ListTillages: React.FC<ListTillagesProps> = ({}) => {
 
     const { producerid } = useParams()
     const producerSelect = findProducer(producerid || "")
+    // console.log(producerid)
 
     useEffect(() => {
         header.setTitle(user?.producer !== null ? "Minhas lavouras" : "Lavouras")
-        console.log(producerSelect)
     }, [])
 
     return (
@@ -70,16 +70,24 @@ export const ListTillages: React.FC<ListTillagesProps> = ({}) => {
                 >
                     <Box sx={{ gap: "2vw", height: "90%", overflow: "auto" }}>
                         {user?.producer !== null
-                            ? listTillagesP?.map((item, index) => (
-                                  <CardTillage key={index} tillage={item} location={`/producer/tillage/${item.id}`} />
-                              ))
-                            : producerSelect.producer?.tillage?.map((tillage, index) => (
-                                  <CardTillage
-                                      key={index}
-                                      tillage={tillage}
-                                      location={`/adm/producer/${producerSelect.producer?.id}/${tillage.id}`}
-                                  />
-                              ))}
+                            ? listTillagesP?.map((item, index) =>
+                                  listTillagesP.length === 0 ? (
+                                      <p>Nenhuma lavoura encontrada.</p>
+                                  ) : (
+                                      <CardTillage key={index} tillage={item} location={`/producer/tillage/${item.id}`} />
+                                  )
+                              )
+                            : producerSelect.producer?.tillage?.map((tillage, index) =>
+                                  producerSelect.producer?.tillage?.length === 0 ? (
+                                      <p>Nenhuma lavoura encontrada.</p>
+                                  ) : (
+                                      <CardTillage
+                                          key={index}
+                                          tillage={tillage}
+                                          location={`/adm/producer/${producerSelect.producer?.id}/${tillage.id}`}
+                                      />
+                                  )
+                              )}
 
                         <Box style={{ width: "100%", height: "80%", overflow: "auto" }}></Box>
                     </Box>

@@ -6,13 +6,13 @@ import { Header } from "../../../../components/Header"
 import { Form, Formik } from "formik"
 import { useUser } from "../../../../hooks/useUser"
 import { Geolocal } from "./Geolocal"
-import { FormTillage } from "./Form"
+import { FormTillage } from "./FormTillage.tsx"
 import { useDataHandler } from "../../../../hooks/useDataHandler"
 import { useIo } from "../../../../hooks/useIo"
 import { CepAbertoApi } from "../../../../definitions/cepabertoApi"
 import { LatLngExpression, LatLngTuple } from "leaflet"
 import { DialogConfirm } from "../../../../components/DialogConfirm"
-import { textField } from "../../../../style/input.ts"
+import { textField, input } from "../../../../style/input.ts"
 import { NewLavoura } from "../../../../definitions/newTillage"
 import { useNavigate } from "react-router-dom"
 import { useSnackbar } from "burgos-snackbar"
@@ -26,26 +26,6 @@ const openCall = {
     submitTitle: "Continuar",
     cancelTitle: "Cancelar",
 }
-const input: SxProps = {
-    "& .MuiInputBase-root": { color: "#fff" },
-    "& .MuiInputLabel-root.Mui-focused ": {
-        color: "#fff", // Cor do label quando o TextField está em foco (digitando)
-    },
-    "& .MuiInputLabel-root ": {
-        color: "#fff",
-    },
-    "& .MuiOutlinedInput-root": {
-        borderColor: colors.secondary,
-        fieldset: {
-            borderColor: colors.primary,
-        },
-    },
-    "& .MuiInputBase-input.MuiOutlinedInput-input:-webkit-autofill": {
-        "-webkit-box-shadow": ` 0 0 0 100px ${colors.button} inset`,
-        borderRadius: "initial",
-        color: "#fff",
-    },
-}
 
 export const NewTillage: React.FC<NewTillageProps> = ({}) => {
     const io = useIo()
@@ -57,8 +37,8 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
 
     //controls view
     const [currentStep, setCurrentStep] = useState(0)
-    const [loading, setLoading] = useState(false)
-    const [loadingSubmit, setLoadingSubmit] = useState(false)
+    const [loadingCoordinate, setLoadingCoordinate] = useState(false)
+    const [loadingTillage, setLoadingTillage] = useState(false)
     const [open, setOpen] = useState(true)
 
     //control map
@@ -98,13 +78,13 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
         }
         io.emit("tillage:create", values)
         console.log(data)
-        setLoadingSubmit(true)
+        setLoadingTillage(true)
     }
 
     useEffect(() => {
         io.on("tillage:creation:success", () => {
             snackbar({ severity: "success", text: "Lavoura adicionada!" })
-            setLoadingSubmit(false)
+            setLoadingTillage(false)
             navigate("producer/1/1")
         })
         io.on("tillage:creation:failed", () => {
@@ -114,11 +94,11 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
 
     const handleCoordinates = (value: string) => {
         io.emit("coordinate:cep", { data: unmask(value) })
-        setLoading(true)
+        setLoadingCoordinate(true)
     }
     useEffect(() => {
         io.on("coordinate:cep:success", (data: CepAbertoApi) => {
-            setLoading(false)
+            setLoadingCoordinate(false)
             console.log("Encontrando o cep")
             setInfoCep(data)
             setOrigin([Number(data.latitude), Number(data.longitude)])
@@ -127,7 +107,7 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
         io.on("coordinate:cep:empty", () => {
             snackbar({ severity: "warning", text: "O CEP não existe! Insira um CEP válido." })
             setOpen(true)
-            setLoading(false)
+            setLoadingCoordinate(false)
         })
 
         return () => {
@@ -182,13 +162,14 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
                         padding: "0vw",
                         width: "100%",
                         flex: 1,
+                        height: "100%",
                         backgroundColor: "#fff",
                         borderTopLeftRadius: "7vw",
                         borderTopRightRadius: "7vw",
                         overflow: "hidden",
                     }}
                 >
-                    <Box sx={{ width: "100%", height: "87%", gap: "4vw", flexDirection: "column" }}>
+                    <Box sx={{ width: "100%", height: "90%", gap: "4vw", flexDirection: "column" }}>
                         <Formik initialValues={initialValues} onSubmit={handleSubmit}>
                             {({ values, handleChange }) => (
                                 <Form>
@@ -215,11 +196,11 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
                                             }
                                             click={() => {
                                                 {
-                                                    !loading && setOpen(false)
+                                                    !loadingCoordinate && setOpen(false)
                                                 }
                                                 handleCoordinates(values.address.cep)
                                             }}
-                                            loading={loading}
+                                            loading={loadingCoordinate}
                                         />
                                     )}
                                     {currentStep === 1 && (
@@ -252,7 +233,7 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
                                         </>
                                     )}
                                     {currentStep === 2 && (
-                                        <>
+                                        <Box sx={{ height: "100%" }}>
                                             <FormTillage data={values} addressApi={infoCep} change={handleChange} />
                                             <Box sx={{ flexDirection: "column", gap: "2vw", p: "0 4vw" }}>
                                                 <Button
@@ -286,10 +267,10 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
                                                         textTransform: "none",
                                                     }}
                                                 >
-                                                    {loadingSubmit ? <CircularProgress sx={{ color: "#fff" }} /> : "Salvar"}
+                                                    {loadingTillage ? <CircularProgress sx={{ color: "#fff" }} /> : "Salvar"}
                                                 </Button>
                                             </Box>
-                                        </>
+                                        </Box>
                                     )}
                                 </Form>
                             )}

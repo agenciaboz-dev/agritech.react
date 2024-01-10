@@ -21,11 +21,10 @@ interface FormTillageProps {
     data: NewLavoura
     change: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
     addressApi?: CepAbertoApi
-    // coordinates: LatLngTuple[]
-    // origin: LatLngExpression
+    producerUser?: User
 }
 
-export const FormTillage: React.FC<FormTillageProps> = ({ data, change, addressApi }) => {
+export const FormTillage: React.FC<FormTillageProps> = ({ data, change, addressApi, producerUser }) => {
     const header = useHeader()
     const { user } = useUser()
     const [image, setImage] = useState<File>()
@@ -42,10 +41,11 @@ export const FormTillage: React.FC<FormTillageProps> = ({ data, change, addressA
     }
 
     useEffect(() => {
-        header.setTitle(user?.name || "Produtor")
+        header.setTitle(producerUser ? producerUser.name : "Nova Lavoura")
+        console.log(producerUser)
     }, [])
     return (
-        <Box sx={{ width: "100%", height: "85%", gap: "6vw", flexDirection: "column", p: "4vw" }}>
+        <Box sx={{ width: "100%", height: "74%", gap: "6vw", flexDirection: "column", p: "4vw" }}>
             <p>Informações da Lavoura</p>
 
             <Box
@@ -104,7 +104,7 @@ export const FormTillage: React.FC<FormTillageProps> = ({ data, change, addressA
                 <Tab sx={tabStyle} value="additional" label="Adicionais" />
                 <Tab sx={tabStyle} value="gallery" label="Imagens" />
             </Tabs>
-            {tab === "team" && <Team data={data} handleChange={change} />}
+            {tab === "team" && <Team data={data} handleChange={change} producerName={producerUser?.name} />}
             {tab === "additional" && <Additional data={data} handleChange={change} />}
             {tab === "gallery" && (
                 <Box sx={{ width: "100%", height: "52%", gap: "3vw" }}>

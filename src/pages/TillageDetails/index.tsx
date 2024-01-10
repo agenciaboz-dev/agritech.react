@@ -67,9 +67,13 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
     }
 
     useEffect(() => {
-        header.setTitle(user?.producer === null ? `${producerSelect.name}` : "Lavoura")
-        console.log(tillage)
-    }, [])
+        header.setTitle(user?.producer === null ? `` : "Lavoura")
+        console.log(lavouraProducer)
+    }, [producerSelect])
+    useEffect(() => {
+        console.log({ producerId: producerid })
+        console.log({ tillageid: tillageid })
+    }, [producerSelect])
 
     return (
         <Box
@@ -91,7 +95,16 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                     flexDirection: "row",
                 }}
             >
-                <Header back location={user?.producer !== null ? "../" : `/adm/producer/${producerid}`} />
+                <Header
+                    back
+                    location={
+                        user?.producer !== null
+                            ? "/producer/"
+                            : user?.isAdmin
+                            ? `/adm/producer/${producerid}`
+                            : `/employee/producer/${producerid}`
+                    }
+                />
             </Box>
             <Box
                 style={{
@@ -119,7 +132,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                             fontWeight: "bold",
                         }}
                     >
-                        {user?.producer !== null ? tillage?.name : lavouraProducer[0].name}
+                        {/* {user?.producer !== null ? tillage?.name : lavouraProducer[0].name} */}
                     </p>
                     <IoIosArrowForward
                         color="white"

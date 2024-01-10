@@ -78,7 +78,7 @@ export const Geolocal: React.FC<GeolocalProps> = ({ data, handleChange, origin, 
     }, [coordinates])
 
     return (
-        <Box sx={{ width: "100%", height: "100%" }}>
+        <Box sx={{ width: "100%", height: "80%" }}>
             <MapContainer center={origin} zoom={16} scrollWheelZoom={true} style={{ height: "100%" }}>
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

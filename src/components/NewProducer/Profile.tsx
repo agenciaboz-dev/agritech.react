@@ -12,11 +12,10 @@ interface ProfileProps {
 }
 
 export const Profile: React.FC<ProfileProps> = ({ values, handleChange }) => {
-    const navigate = useNavigate()
     const [image, setImage] = useState<File>()
 
     return (
-        <Box sx={{ p: "4vw", gap: "4vw" }}>
+        <Box sx={{ p: "4vw", gap: "4vw", height: "80%" }}>
             <p
                 style={{
                     fontSize: "4.5vw",
@@ -80,7 +79,7 @@ export const Profile: React.FC<ProfileProps> = ({ values, handleChange }) => {
                     value={values.name}
                     sx={textField}
                     onChange={handleChange}
-                    // required
+                    required
                 />
                 <TextField
                     label={"E-mail"}
@@ -89,7 +88,7 @@ export const Profile: React.FC<ProfileProps> = ({ values, handleChange }) => {
                     type="email"
                     sx={textField}
                     onChange={handleChange}
-                    // required
+                    required
                 />
                 <TextField
                     label={"CPF"}
@@ -101,7 +100,7 @@ export const Profile: React.FC<ProfileProps> = ({ values, handleChange }) => {
                         inputProps: { mask: "000.000.000-00", inputMode: "numeric" },
                     }}
                     onChange={handleChange}
-                    // required
+                    required
                 />
                 <TextField
                     label={"CNPJ"}
@@ -113,7 +112,7 @@ export const Profile: React.FC<ProfileProps> = ({ values, handleChange }) => {
                         inputProps: { mask: "00.000.000/0000-00", inputMode: "numeric" },
                     }}
                     onChange={handleChange}
-                    // required
+                    required
                 />
                 <TextField
                     label={"Telefone"}
@@ -126,40 +125,9 @@ export const Profile: React.FC<ProfileProps> = ({ values, handleChange }) => {
                         inputProps: { mask: "(00) 0 0000-0000" },
                         inputMode: "numeric",
                     }}
-                    // required
-                />
-                <TextField
-                    label={"cep"}
-                    name="address.cep"
-                    value={values.address.cep}
-                    sx={{ ...textField, width: "100%" }}
-                    InputProps={{
-                        inputComponent: MaskedInput,
-                        inputProps: { mask: "00.000-000", inputMode: "numeric" },
-                    }}
-                    onChange={handleChange}
-                    // required
+                    required
                 />
             </Box>
-
-            <Button
-                variant="outlined"
-                sx={{
-                    padding: "3vw",
-                    color: colors.text.black,
-                    fontWeight: "600",
-                    fontSize: "4vw",
-                    textTransform: "none",
-                    borderRadius: "10vw",
-                    height: "10vw",
-                }}
-                onClick={() => {
-                    navigate("../")
-                }}
-            >
-                Cancelar
-            </Button>
-            
         </Box>
     )
 }
