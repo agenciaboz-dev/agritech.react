@@ -121,6 +121,7 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
                 cnpj: unmask(data.producer?.cnpj || ""),
                 contract: values.producer.contract,
                 tillage: values.producer.tillage,
+                // employeeId: user?.employee?.id,
             },
         })
         setLoadingProducer(true)
