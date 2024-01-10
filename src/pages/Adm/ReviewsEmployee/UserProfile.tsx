@@ -23,6 +23,8 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
     const { pendingUsers, setPendingUsers } = useUsers()
     const { listUsers, setListUsers } = useUsers()
 
+    const producerSelect = listUsers?.filter((item) => item.id === Number(userId)) || []
+
     const { unmask } = useDataHandler()
     const { snackbar } = useSnackbar()
 
@@ -56,7 +58,7 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
             number: profile?.address?.number || "",
             street: profile?.address?.street || "",
             uf: profile?.address?.uf || "",
-            complement: profile?.address?.complement || "",
+            adjunct: profile?.address?.adjunct || "",
         },
 
         isAdmin: false,
@@ -83,6 +85,9 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
         },
         producer: {
             cnpj: profile?.producer?.cnpj || "",
+            contract: profile?.producer?.contract || false,
+            id: profile?.producer?.id,
+            employeeId: profile?.producer?.employeeId,
         },
     }
 
@@ -180,6 +185,13 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
                             variant="contained"
                             size="small"
                             sx={{ bgcolor: colors.button, borderRadius: "5vw", textTransform: "none", fontSize: "3vw" }}
+                            onClick={() =>
+                                navigate(
+                                    producerSelect !== null
+                                        ? `/adm/producer/${producerSelect[0].producer?.id}`
+                                        : `/adm/employee/`
+                                )
+                            }
                         >
                             Acessar cadastro
                         </Button>

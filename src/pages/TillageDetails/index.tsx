@@ -61,7 +61,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
     }
 
     useEffect(() => {
-        header.setTitle(`Lavouras de ${tillage.owner}`)
+        header.setTitle(`Lavoura`)
         console.log(tillage)
     }, [])
 

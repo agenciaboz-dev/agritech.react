@@ -11,7 +11,7 @@ declare interface NewProducer {
     isAdmin: boolean
     approved: boolean
     rejected?: string
-
+   
     employeeId?: number
     producer: Producer
 }

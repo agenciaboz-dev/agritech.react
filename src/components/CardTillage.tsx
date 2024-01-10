@@ -31,7 +31,7 @@ export const CardTillage: React.FC<CardTillageProps> = ({ tillage, location }) =
                 <Avatar variant="rounded" src={geo} sx={{ width: "12vw", height: "12vw" }} />
                 <Box sx={{ flexDirection: "column", gap: "1vw" }}>
                     <p style={{ fontSize: "3.7vw", fontWeight: "bold" }}>{tillage.name}</p>
-                    <p style={{ fontSize: "3.5vw" }}> 1.500 Hc</p>
+                    <p style={{ fontSize: "3.5vw" }}> 1500 ha</p>
                 </Box>
             </Box>
             <Box sx={{ alignItems: "center", flexDirection: "row" }}>

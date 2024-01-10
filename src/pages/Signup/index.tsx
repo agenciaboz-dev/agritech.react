@@ -77,6 +77,8 @@ export const Signup: React.FC<SignupProps> = ({}) => {
             typeUser == "producer"
                 ? {
                       cnpj: "",
+                      contract: false,
+                      tillage: [],
                   }
                 : undefined,
     }

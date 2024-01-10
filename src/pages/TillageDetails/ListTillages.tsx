@@ -9,6 +9,8 @@ import { CardUser } from "../../components/CardUser"
 import { useProducer } from "../../hooks/useProducer"
 import { useUser } from "../../hooks/useUser"
 import { CardTillage } from "../../components/CardTillage"
+import { useUsers } from "../../hooks/useUsers"
+import findProducer from "../../hooks/filterProducer"
 
 interface ListTillagesProps {}
 
@@ -17,18 +19,20 @@ export const ListTillages: React.FC<ListTillagesProps> = ({}) => {
     const bottomMenu = useNavigationList()
     const header = useHeader()
 
-    // const { producerid } = useParams()
-
+    const listUsers = useUsers()
     const { listTillagesP } = useProducer()
     const { user } = useUser()
+
+    const { producerid } = useParams()
+    const producerSelect = findProducer(producerid || "")
 
     useEffect(() => {
         header.setTitle(user?.producer !== null ? "Minhas lavouras" : "Lavouras")
     })
 
-    useEffect(() => {
-        console.log(user?.producer !== null && listTillagesP)
-    }, [listTillagesP])
+    // useEffect(() => {
+    //     console.log(user?.producer !== null && listTillagesP)
+    // }, [])
 
     return (
         <Box
@@ -74,9 +78,13 @@ export const ListTillages: React.FC<ListTillagesProps> = ({}) => {
                     }}
                 >
                     <Box sx={{ gap: "2vw", height: "90%", overflow: "auto" }}>
-                        {listTillagesP?.map((item, index) => (
-                            <CardTillage key={index} tillage={item} location={`/producer/tillage/${item.id}`} />
-                        ))}
+                        {user?.producer !== null
+                            ? listTillagesP?.map((item, index) => (
+                                  <CardTillage key={index} tillage={item} location={`/producer/tillage/${item.id}`} />
+                              ))
+                            : producerSelect.producer?.tillage?.map((tillage, index) => (
+                                  <CardTillage key={index} tillage={tillage} location={`/producer/tillage/${tillage.id}`} />
+                              ))}
 
                         <Box style={{ width: "100%", height: "80%", overflow: "auto" }}></Box>
                     </Box>
