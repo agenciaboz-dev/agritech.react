@@ -9,10 +9,12 @@ import {
 } from "@mui/material"
 import React from "react"
 import { colors } from "../style/colors"
+import { useNavigate } from "react-router-dom"
 
 interface DialogConfirmProps {
     open: boolean
     setOpen: React.Dispatch<React.SetStateAction<boolean>>
+    user?: User | null
     data: {
         title: string
         content: string
@@ -25,17 +27,24 @@ interface DialogConfirmProps {
     loading?: boolean
 }
 
-export const DialogConfirm: React.FC<DialogConfirmProps> = ({ open, setOpen, data, click, children, loading }) => {
+export const DialogConfirm: React.FC<DialogConfirmProps> = ({ user, open, setOpen, data, click, children, loading }) => {
+    const navigate = useNavigate()
     const handleClose = () => {
         setOpen(false)
+        navigate(user?.producer ? "/producer" : user?.isAdmin ? "/adm" : "/employee")
     }
     return (
         <Dialog
             open={open}
-            onClose={handleClose}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
             PaperProps={{ sx: { bgcolor: colors.button, borderRadius: "7vw", p: "1vw" } }}
+            disableEscapeKeyDown
+            onClose={(event, reason) => {
+                if (reason !== "backdropClick" && reason !== "escapeKeyDown") {
+                    handleClose()
+                }
+            }}
         >
             <DialogTitle id="alert-dialog-title" sx={{ color: colors.text.white, fontSize: "4.5vw" }}>
                 {data.title}

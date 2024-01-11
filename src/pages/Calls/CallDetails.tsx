@@ -6,6 +6,7 @@ import { Header } from "../../components/Header"
 import { TitleComponents } from "../../components/TitleComponents"
 import { DialogConfirm } from "../../components/DialogConfirm"
 import { useNavigate } from "react-router-dom"
+import { useUser } from "../../hooks/useUser"
 
 interface CallDetailsProps {}
 
@@ -22,6 +23,7 @@ const p_style = {
 export const CallDetails: React.FC<CallDetailsProps> = ({}) => {
     const header = useHeader()
     const navigate = useNavigate()
+    const {user} = useUser()
 
     const [open, setOpen] = useState(false)
 
@@ -139,7 +141,7 @@ export const CallDetails: React.FC<CallDetailsProps> = ({}) => {
                             <p style={p_style}>Supporting line text lorem ipsum dolor sit amet, consectetur.</p>
                         </Box>
                     </Box>
-                    <DialogConfirm data={modal} open={open} setOpen={setOpen} click={() => navigate("/adm/producer/2/1")} />
+                    <DialogConfirm data={modal} user={user} open={open} setOpen={setOpen} click={() => navigate("/adm/producer/2/1")} />
                 </Box>
             </Box>
         </Box>

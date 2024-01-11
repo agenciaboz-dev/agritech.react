@@ -177,7 +177,8 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
                                         <DialogConfirm
                                             open={open}
                                             setOpen={setOpen}
-                                            data={openCall}
+                                            data={ openCall }
+                                            user={user}
                                             children={
                                                 <TextField
                                                     sx={{
@@ -219,10 +220,13 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
                                                     fontSize: 17,
                                                     color: colors.text.white,
                                                     width: "90%",
-                                                    backgroundColor: colors.button,
+                                                    backgroundColor: colors.primary,
                                                     borderRadius: "5vw",
                                                     textTransform: "none",
                                                     margin: "0 5vw",
+                                                    position: "absolute",
+                                                    zIndex: 1,
+                                                    bottom: "25vw",
                                                 }}
                                                 onClick={() => {
                                                     setCurrentStep(2)
@@ -233,7 +237,7 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
                                         </>
                                     )}
                                     {currentStep === 2 && (
-                                        <Box sx={{ height: "100%" }}>
+                                        <Box sx={{ height: "100%", justifyContent: "space-between" }}>
                                             <FormTillage data={values} addressApi={infoCep} change={handleChange} />
                                             <Box sx={{ flexDirection: "column", gap: "2vw", p: "0 4vw" }}>
                                                 <Button

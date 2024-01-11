@@ -29,6 +29,7 @@
     "coordenadas-do-cep": "^1.2.0",
     "date-fns": "^2.30.0",
     "dayjs": "^1.11.10",
+    "dotenv": "^16.3.1",
     "formik": "^2.4.5",
     "iconoir": "^6.11.0",
     "leaflet": "^1.9.4",

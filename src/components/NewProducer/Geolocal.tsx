@@ -1,14 +1,10 @@
-import { Box, Button, TextField } from "@mui/material"
-import React, { ChangeEventHandler, useEffect, useRef, useState } from "react"
-import { useHeader } from "../../../../hooks/useHeader"
+import { Box } from "@mui/material"
+import React, { ChangeEventHandler, useEffect, useRef } from "react"
 import { MapContainer, Polygon, TileLayer, useMapEvents } from "react-leaflet"
 import { Marker } from "react-leaflet/Marker"
-import { useIo } from "../../../../hooks/useIo"
-import { useDataHandler } from "../../../../hooks/useDataHandler"
-import { CepAbertoApi } from "../../../../definitions/cepabertoApi"
+import { CepAbertoApi } from "../../definitions/cepabertoApi"
 import { LatLngExpression, LatLngTuple } from "leaflet"
-import { colors } from "../../../../style/colors"
-import { NewLavoura } from "../../../../definitions/newTillage"
+import { NewLavoura } from "../../definitions/newTillage"
 import { useFormikContext } from "formik"
 
 interface GeolocalProps {
@@ -67,7 +63,7 @@ export const Geolocal: React.FC<GeolocalProps> = ({ data, handleChange, origin, 
     }, [coordinates])
 
     return (
-        <Box sx={{ width: "100%", height: "100%", zIndex: 0 }}>
+        <Box sx={{ width: "100%", height: "90%", zIndex: 0 }}>
             <MapContainer center={origin} zoom={16} scrollWheelZoom={true} style={{ height: "100%" }}>
                 <TileLayer
                     url={`https://api.mapbox.com/styles/v1/${mapboxStyleId}/tiles/{z}/{x}/{y}?access_token=${mapboxToken}`}

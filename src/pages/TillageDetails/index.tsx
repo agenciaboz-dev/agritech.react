@@ -86,7 +86,10 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                     flexDirection: "row",
                 }}
             >
-                <Header back location={user?.producer !== null ? "/producer/" : user?.isAdmin ? `/adm/` : `/employee/`} />
+                <Header
+                    back
+                    location={user?.producer !== null ? "/producer/tillages" : user?.isAdmin ? `/adm/` : `/employee/`}
+                />
             </Box>
             <Box
                 style={{
@@ -174,6 +177,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                         tab === "call" && <ProgressCall click={() => navigate("/callDetail")} data={progress} />
                     )}
                     <DialogConfirm
+                        user={user}
                         open={open}
                         setOpen={setOpen}
                         data={openCall}

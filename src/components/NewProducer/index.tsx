@@ -17,8 +17,8 @@ import { textField, input } from "../../style/input.ts"
 import { NewLavoura } from "../../definitions/newTillage"
 import { useSnackbar } from "burgos-snackbar"
 import { FormTillage } from "../../pages/Producer/Panel/NewTillage/FormTillage.tsx"
-import { Geolocal } from "../../pages/Producer/Panel/NewTillage/Geolocal.tsx"
 import { useProducer } from "../../hooks/useProducer.ts"
+import { Geolocal } from "./Geolocal.tsx"
 
 interface NewProducerProps {}
 
@@ -325,7 +325,8 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
                                         <DialogConfirm
                                             open={open}
                                             setOpen={setOpen}
-                                            data={openCall}
+                                            data={ openCall }
+                                            user={user}
                                             children={
                                                 <TextField
                                                     sx={{
@@ -373,10 +374,13 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
                                                     fontSize: 17,
                                                     color: colors.text.white,
                                                     width: "90%",
-                                                    backgroundColor: colors.button,
+                                                    backgroundColor: colors.primary,
                                                     borderRadius: "5vw",
                                                     textTransform: "none",
                                                     margin: "0 5vw",
+                                                    position: "absolute",
+                                                    zIndex: 1,
+                                                    bottom: "25vw",
                                                 }}
                                                 onClick={() => {
                                                     setCurrentStep(3)
