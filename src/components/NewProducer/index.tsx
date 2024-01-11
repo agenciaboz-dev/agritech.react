@@ -80,7 +80,7 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
         rejected: "",
         office: "",
 
-        employeeId: user?.employee?.id,
+        // employeeId: user?.employee?.id,
         producer: {
             cnpj: "",
             contract: true,
@@ -106,12 +106,6 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
                 uf: "AM",
                 // uf: estados.find((estado) => estado.value == values.address.uf)?.value || "",
             },
-            producer: {
-                cnpj: unmask(values.producer.cnpj),
-                contract: values.producer.contract,
-                tillage: values.producer.tillage,
-                employeeId: user?.employee?.id,
-            },
         }
         console.log(data)
 
@@ -121,7 +115,7 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
                 cnpj: unmask(data.producer?.cnpj || ""),
                 contract: values.producer.contract,
                 tillage: values.producer.tillage,
-                // employeeId: user?.employee?.id,
+                employeeId: user?.employee?.id,
             },
         })
         setLoadingProducer(true)
