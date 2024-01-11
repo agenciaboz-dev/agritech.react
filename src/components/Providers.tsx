@@ -19,13 +19,14 @@ interface ProvidersProps {
 
 export const Providers: React.FC<ProvidersProps> = ({ children }) => {
     const mantine_theme = useMantineTheme()
+
     return (
         <SnackbarProvider>
             <ConfirmDialogProvider>
                 <IoProvider>
                     <UserProvider>
-                        <ProducerProvider>
-                            <UsersProvider>
+                        <UsersProvider>
+                            <ProducerProvider>
                                 <NotificationDrawerProvider>
                                     <MenuDrawerProvider>
                                         <HeaderProvider>
@@ -37,8 +38,8 @@ export const Providers: React.FC<ProvidersProps> = ({ children }) => {
                                         </HeaderProvider>
                                     </MenuDrawerProvider>
                                 </NotificationDrawerProvider>
-                            </UsersProvider>
-                        </ProducerProvider>
+                            </ProducerProvider>
+                        </UsersProvider>
                     </UserProvider>
                 </IoProvider>
             </ConfirmDialogProvider>

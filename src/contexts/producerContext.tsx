@@ -3,12 +3,18 @@ import React from "react"
 import { useIo } from "../hooks/useIo"
 import { useSnackbar } from "burgos-snackbar"
 import { useUser } from "../hooks/useUser"
+import { useParams } from "react-router-dom"
 
 export interface Producer {}
 
 interface ProducerContextValue {
-    listTillagesP: Tillage[] | undefined
-    setListTillagesP: React.Dispatch<React.SetStateAction<Tillage[] | undefined>>
+    listTillages: Tillage[]
+    tillageUpdate: Boolean
+    setTillageUpdate: (value: boolean) => void
+    setListTillages: (value: Tillage[]) => void
+    setProducerid: (value: number) => void
+    // updateTillages: (value: Tillage[]) => void
+    addTillage: (newTillage: Tillage) => void
 }
 
 interface ProducerProviderProps {
@@ -24,27 +30,55 @@ export const ProducerProvider: React.FC<ProducerProviderProps> = ({ children }) 
     const { user } = useUser()
     const { snackbar } = useSnackbar()
 
-    const [listTillagesP, setListTillagesP] = useState<Tillage[]>()
+    const [producerid, setProducerid] = useState<Number | undefined>()
+    const [tillageUpdate, setTillageUpdate] = useState<Boolean>(false)
+    const [listTillages, setListTillages] = useState<Tillage[]>([])
 
     useEffect(() => {
         io.emit("tillage:list")
 
-        const updateListTillages = (updatedList: any) => {
-            setListTillagesP(updatedList)
-        }
         io.on("tillage:list:success", (data: Tillage[]) => {
-            const listId = data.filter((item) => item.producerId === user?.producer?.id) //lista de lavoura do respectivo usuário
-            updateListTillages(listId)
+            if (user?.producer) {
+                const listId = data.filter((item) => item.producerId === user?.producer?.id) //lista de lavoura do respectivo usuário produtor
+                setListTillages(listId)
+                setTillageUpdate(true)
+                snackbar({ severity: "success", text: "Lista atualizada" })
+            } else if (user?.employee) {
+                if (producerid) {
+                    const listTillagesId = data.filter((item) => item.producerId === producerid) //lista de lavoura do respectivo usuário employee ou adm
+                    setListTillages(listTillagesId)
+                    setTillageUpdate(true)
+                    snackbar({ severity: "success", text: "Lista atualizada" })
+                }
+            }
         })
         io.on("tillage:list:error", () => {
             snackbar({ severity: "error", text: "Algo deu errado!" })
         })
 
         return () => {
-            io.off("tillage:list:success", updateListTillages)
-            io.off("tillage:list:error", updateListTillages)
+            io.off("tillage:list:success")
+            io.off("tillage:list:error")
         }
-    }, [user?.id, user?.producer?.id])
+    }, [producerid, user?.employee, user?.producer?.id])
 
-    return <ProducerContext.Provider value={{ listTillagesP, setListTillagesP }}>{children}</ProducerContext.Provider>
+    useEffect(() => {
+        console.log({ listaUpdated: listTillages })
+    }, [listTillages])
+
+    const addTillage = (newTillage: Tillage) => {
+        const { producerId } = newTillage
+
+        if (user?.producer?.id === producerId) {
+            setListTillages((tillages) => [...tillages, newTillage])
+        }
+    }
+
+    return (
+        <ProducerContext.Provider
+            value={{ listTillages, setListTillages, addTillage, setProducerid, tillageUpdate, setTillageUpdate }}
+        >
+            {children}
+        </ProducerContext.Provider>
+    )
 }

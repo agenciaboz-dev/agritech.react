@@ -25,7 +25,7 @@ export const textField = {
 }
 
 export const input: SxProps = {
-    "& .MuiInputBase-root": { color: "#fff" },
+    "& .MuiInputBase-root": { color: "#fff", bgcolor: "#fff1" },
     "& .MuiInputLabel-root.Mui-focused ": {
         color: "#fff", // Cor do label quando o TextField está em foco (digitando)
     },
@@ -40,7 +40,8 @@ export const input: SxProps = {
     },
     "& .MuiInputBase-input.MuiOutlinedInput-input:-webkit-autofill": {
         "-webkit-box-shadow": ` 0 0 0 100px ${colors.button} inset`,
-        borderRadius: "initial",
+        borderRadius: "1vw",
         color: "#fff",
+        bgcolor: "",
     },
 }

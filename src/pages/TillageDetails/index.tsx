@@ -5,7 +5,6 @@ import { Header } from "../../components/Header"
 import { useHeader } from "../../hooks/useHeader"
 import { IoIosArrowForward } from "react-icons/io"
 import { useParams } from "react-router"
-import listProducers from "../../hooks/listProducers"
 import GeoImage from "../../assets/geo.svg"
 import { useArray } from "burgos-array"
 import { tabStyle } from "../../style/tabStyle"
@@ -14,7 +13,6 @@ import { DialogConfirm } from "../../components/DialogConfirm"
 import { useNavigate } from "react-router-dom"
 import { OpenCallBox, ProgressCall } from "../../components/OpenCallBox"
 import { useUser } from "../../hooks/useUser"
-import { PiPlantLight } from "react-icons/pi"
 import { useProducer } from "../../hooks/useProducer"
 import findProducer from "../../hooks/filterProducer"
 
@@ -50,13 +48,10 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
     const { producerid, tillageid } = useParams()
 
     //only producer
-    const { listTillagesP } = useProducer()
-    const lavoura = listTillagesP?.filter((item) => item.id === Number(tillageid)) || []
-    const tillage = lavoura[0]
+    const { listTillages, setProducerid, tillageUpdate } = useProducer()
 
-    //only employee and adm
+    // //only employee and adm
     const producerSelect = findProducer(producerid || "")
-    const lavouraProducer = producerSelect?.producer?.tillage?.filter((tillage) => tillage.id === Number(tillageid)) || []
 
     const [tab, setTab] = React.useState("call")
     const changeTab = (event: React.SyntheticEvent, newValue: string) => {
@@ -67,12 +62,8 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
     }
 
     useEffect(() => {
-        header.setTitle(user?.producer === null ? `` : "Lavoura")
-        console.log(lavouraProducer)
-    }, [producerSelect])
-    useEffect(() => {
-        console.log({ producerId: producerid })
-        console.log({ tillageid: tillageid })
+        header.setTitle(!producerSelect ? `Informações` : "Lavoura")
+        setProducerid(Number(producerid))
     }, [producerSelect])
 
     return (
@@ -95,16 +86,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                     flexDirection: "row",
                 }}
             >
-                <Header
-                    back
-                    location={
-                        user?.producer !== null
-                            ? "/producer/"
-                            : user?.isAdmin
-                            ? `/adm/producer/${producerid}`
-                            : `/employee/producer/${producerid}`
-                    }
-                />
+                <Header back location={user?.producer !== null ? "/producer/" : user?.isAdmin ? `/adm/` : `/employee/`} />
             </Box>
             <Box
                 style={{
@@ -132,7 +114,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                             fontWeight: "bold",
                         }}
                     >
-                        {/* {user?.producer !== null ? tillage?.name : lavouraProducer[0].name} */}
+                        {tillageUpdate && listTillages[0].name}
                     </p>
                     <IoIosArrowForward
                         color="white"

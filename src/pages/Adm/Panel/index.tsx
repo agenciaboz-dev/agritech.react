@@ -4,7 +4,6 @@ import { colors } from "../../../style/colors"
 import drone from "../../../assets/logo/droneIcon.png"
 import SearchIcon from "@mui/icons-material/Search"
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone"
-import PersonOutlineIcon from "@mui/icons-material/PersonOutline"
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos"
 import { useNavigationList } from "../../../hooks/useNavigationList"
 import { BottomNavigation } from "../../../components/BottomNavigation"
@@ -18,7 +17,6 @@ import { CardUser } from "../../../components/CardUser"
 import Logo from "../../../assets/logo/Avatar.png"
 import { useNotificationDrawer } from "../../../hooks/useNotificationDrawer"
 import PostAddIcon from "@mui/icons-material/PostAdd"
-import { PiPlantLight } from "react-icons/pi"
 
 interface PanelProps {
     user: User
@@ -291,20 +289,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                             </Box>
                         </Box>
                     </Box>
-                    <IconButton
-                        sx={{
-                            bgcolor: colors.button,
-                            width: "12vw",
-                            height: "12vw",
-                            borderRadius: "10vw",
-                            position: "absolute",
-                            bottom: "40vw",
-                            right: "7vw",
-                        }}
-                        onClick={() => navigate("/adm/producer/2/1")}
-                    >
-                        <PiPlantLight color="#fff" />
-                    </IconButton>
+
                     <IconButton
                         sx={{
                             bgcolor: colors.button,

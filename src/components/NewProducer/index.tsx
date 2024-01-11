@@ -18,7 +18,7 @@ import { NewLavoura } from "../../definitions/newTillage"
 import { useSnackbar } from "burgos-snackbar"
 import { FormTillage } from "../../pages/Producer/Panel/NewTillage/FormTillage.tsx"
 import { Geolocal } from "../../pages/Producer/Panel/NewTillage/Geolocal.tsx"
-import findProducer from "../../hooks/filterProducer.ts"
+import { useProducer } from "../../hooks/useProducer.ts"
 
 interface NewProducerProps {}
 
@@ -32,9 +32,10 @@ const openCall = {
 export const NewProducer: React.FC<NewProducerProps> = ({}) => {
     const io = useIo()
     const header = useHeader()
-    const { user } = useUser()
-    const { unmask } = useDataHandler()
     const navigate = useNavigate()
+    const { user } = useUser()
+    const { addTillage } = useProducer()
+    const { unmask } = useDataHandler()
     const { snackbar } = useSnackbar()
 
     const [currentStep, setCurrentStep] = useState(0)
@@ -50,10 +51,10 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
 
     const [producer, setProducer] = useState<User>()
     const [tillage, setTilllage] = useState<Tillage>()
-    // const producerSelect = findProducer(String(producer?.id)) || ""
+
     useEffect(() => {
-        header.setTitle("Novo Produtor")
-    }, [name])
+        header.setTitle(producer ? `${producer?.name}` : "Novo Produtor")
+    }, [producer?.name])
 
     const valuesProducer: NewProducer = {
         name: "",
@@ -150,7 +151,6 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
         }
     }, [producer])
 
-    console.log(producer?.producer?.id)
     const valuesTillage: NewLavoura = {
         name: "",
         area: "",
@@ -171,7 +171,7 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
             uf: infoCep?.estado.sigla || "",
             adjunct: "",
         },
-        // gallery: [],
+        gallery: [],
         location: [],
         producerId: 0,
     }
@@ -183,8 +183,6 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
             producerId: producer?.producer?.id,
         }
         io.emit("tillage:create", data)
-        // console.log(data)
-
         setLoadingTillage(true)
     }
 
@@ -210,11 +208,10 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
 
     useEffect(() => {
         io.on("tillage:creation:success", (data: any) => {
-            console.log(data)
+            setTilllage(data.tillage)
+            addTillage(data.tillage)
             snackbar({ severity: "success", text: "Lavoura adicionada!" })
             setLoadingTillage(false)
-            console.log("Olha o que vem do backend", data)
-            setTilllage(data.tillage)
             navigate(`/adm/producer/${producer?.producer?.id}/${data.tillage.id}`)
         })
         io.on("tillage:creation:failed", () => {

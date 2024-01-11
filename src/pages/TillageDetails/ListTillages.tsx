@@ -8,18 +8,21 @@ import { useProducer } from "../../hooks/useProducer"
 import { useUser } from "../../hooks/useUser"
 import { CardTillage } from "../../components/CardTillage"
 import findProducer from "../../hooks/filterProducer"
+import { useUsers } from "../../hooks/useUsers"
 
 interface ListTillagesProps {}
 
 export const ListTillages: React.FC<ListTillagesProps> = ({}) => {
     const header = useHeader()
 
-    const { listTillagesP } = useProducer()
     const { user } = useUser()
-
+    const { listTillages, tillageUpdate, setProducerid } = useProducer()
     const { producerid } = useParams()
+    setProducerid(Number(producerid))
+
     const producerSelect = findProducer(producerid || "")
-    // console.log(producerid)
+    const { listUsers } = useUsers()
+    const producerEncontrado = listUsers?.filter((item) => String(item.producer?.id) === producerid) || []
 
     useEffect(() => {
         header.setTitle(user?.producer !== null ? "Minhas lavouras" : "Lavouras")
@@ -69,16 +72,16 @@ export const ListTillages: React.FC<ListTillagesProps> = ({}) => {
                     }}
                 >
                     <Box sx={{ gap: "2vw", height: "90%", overflow: "auto" }}>
-                        {user?.producer !== null
-                            ? listTillagesP?.map((item, index) =>
-                                  listTillagesP.length === 0 ? (
+                        {tillageUpdate && user?.producer !== null
+                            ? listTillages?.map((item, index) =>
+                                  listTillages.length === 0 ? (
                                       <p>Nenhuma lavoura encontrada.</p>
                                   ) : (
                                       <CardTillage key={index} tillage={item} location={`/producer/tillage/${item.id}`} />
                                   )
                               )
                             : producerSelect.producer?.tillage?.map((tillage, index) =>
-                                  producerSelect.producer?.tillage?.length === 0 ? (
+                                  producerEncontrado[0].producer?.tillage?.length === 0 ? (
                                       <p>Nenhuma lavoura encontrada.</p>
                                   ) : (
                                       <CardTillage

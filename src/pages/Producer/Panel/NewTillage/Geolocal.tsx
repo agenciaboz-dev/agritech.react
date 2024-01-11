@@ -68,9 +68,6 @@ export const Geolocal: React.FC<GeolocalProps> = ({ data, handleChange, origin, 
         updateMap(origin)
     }, [origin])
     //update title
-    useEffect(() => {
-        header.setTitle(unmask(data.address.cep))
-    }, [])
 
     //array coordinates
     useEffect(() => {
