@@ -13,6 +13,7 @@ import { useIo } from "../../../hooks/useIo"
 import { useSnackbar } from "burgos-snackbar"
 import { useDisclosure } from "@mantine/hooks"
 import { Modal } from "@mantine/core"
+import { useKits } from "../../../hooks/useKits"
 
 interface AddKitProps {}
 
@@ -20,6 +21,7 @@ export const AddKit: React.FC<AddKitProps> = ({}) => {
     const navigate = useNavigate()
     const io = useIo()
     const { snackbar } = useSnackbar()
+    const { listKits, setListKits, addKit } = useKits()
 
     const [opened, { open, close }] = useDisclosure(false)
     const [loading, setLoading] = useState(false)
@@ -69,6 +71,7 @@ export const AddKit: React.FC<AddKitProps> = ({}) => {
 
     useEffect(() => {
         io.on("kit:creation:success", (data: Kit) => {
+            addKit(data)
             snackbar({ severity: "success", text: "Kit adicionado!" })
             setLoading(false)
             navigate("/adm/settings-kit/")

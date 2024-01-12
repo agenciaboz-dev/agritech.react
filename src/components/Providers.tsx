@@ -13,6 +13,7 @@ import "@mantine/dates/styles.css"
 import { NotificationDrawerProvider } from "../contexts/notificationDrawer"
 import { NotificationDrawer } from "./NotificationDrawer"
 import { ProducerProvider } from "../contexts/producerContext"
+import { KitProvider } from "../contexts/kitContext"
 interface ProvidersProps {
     children: React.ReactNode
 }
@@ -25,21 +26,23 @@ export const Providers: React.FC<ProvidersProps> = ({ children }) => {
             <ConfirmDialogProvider>
                 <IoProvider>
                     <UserProvider>
-                        <UsersProvider>
-                            <ProducerProvider>
-                                <NotificationDrawerProvider>
-                                    <MenuDrawerProvider>
-                                        <HeaderProvider>
-                                            <Snackbar />
-                                            <ConfirmDialog />
-                                            <NotificationDrawer />
-                                            <MenuDrawer />
-                                            <MantineProvider theme={mantine_theme}>{children}</MantineProvider>
-                                        </HeaderProvider>
-                                    </MenuDrawerProvider>
-                                </NotificationDrawerProvider>
-                            </ProducerProvider>
-                        </UsersProvider>
+                        <KitProvider>
+                            <UsersProvider>
+                                <ProducerProvider>
+                                    <NotificationDrawerProvider>
+                                        <MenuDrawerProvider>
+                                            <HeaderProvider>
+                                                <Snackbar />
+                                                <ConfirmDialog />
+                                                <NotificationDrawer />
+                                                <MenuDrawer />
+                                                <MantineProvider theme={mantine_theme}>{children}</MantineProvider>
+                                            </HeaderProvider>
+                                        </MenuDrawerProvider>
+                                    </NotificationDrawerProvider>
+                                </ProducerProvider>
+                            </UsersProvider>
+                        </KitProvider>
                     </UserProvider>
                 </IoProvider>
             </ConfirmDialogProvider>
