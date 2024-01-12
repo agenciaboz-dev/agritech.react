@@ -1,7 +1,7 @@
 import { Box, FormControl, FormControlLabel, FormGroup, Stack, styled } from "@mui/material"
 import React from "react"
 import Switch, { SwitchProps } from "@mui/material/Switch"
-import { colors } from "../style/colors"
+import { colors } from "../../style/colors"
 import ArrowRightIcon from "@mui/icons-material/ArrowRight"
 import { useNavigate } from "react-router-dom"
 

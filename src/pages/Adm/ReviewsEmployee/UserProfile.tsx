@@ -209,7 +209,7 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
                                 fontSize: "3.5vw",
                                 color: colors.text.white,
                                 width: "50%",
-                                backgroundColor: "#B3261E",
+                                backgroundColor: colors.delete,
                                 borderRadius: "5vw",
                                 textTransform: "none",
                             }}

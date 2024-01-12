@@ -9,9 +9,10 @@ interface TitleComponentsProps {
     location?: string
     style?: React.CSSProperties | undefined
     variant?: boolean
+    click?: React.MouseEventHandler<HTMLButtonElement> | undefined
 }
 
-export const TitleComponents: React.FC<TitleComponentsProps> = ({ title, button, textButton, location, style, variant }) => {
+export const TitleComponents: React.FC<TitleComponentsProps> = ({ title, button, textButton, click, style, variant }) => {
     return (
         <Box sx={{ gap: "2vw" }}>
             <Box sx={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
@@ -21,6 +22,7 @@ export const TitleComponents: React.FC<TitleComponentsProps> = ({ title, button,
                         size="small"
                         variant="contained"
                         sx={{ bgcolor: colors.button, textTransform: "none", borderRadius: "5vw" }}
+                        onClick={click}
                     >
                         {textButton ? textButton : "Adicionar"}
                     </Button>

@@ -98,7 +98,7 @@ export const CallDetails: React.FC<CallDetailsProps> = ({}) => {
                             size="small"
                             variant="contained"
                             sx={{
-                                bgcolor: "#B3261E",
+                                bgcolor: colors.delete,
                                 textTransform: "none",
                                 borderRadius: "5vw",
                                 width: "fit-content",
