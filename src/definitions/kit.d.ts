@@ -4,7 +4,7 @@ declare interface NewKit {
     name: string
     description: string
 
-    objects?: Object[]
+    objects?: NewObject[]
     employees?: Employee[]
     calls?: Call[]
 

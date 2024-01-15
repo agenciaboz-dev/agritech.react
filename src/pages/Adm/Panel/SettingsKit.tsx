@@ -101,13 +101,10 @@ export const SettingsKit: React.FC<SettingsKitProps> = ({}) => {
                         gap: "1vw",
                     }}
                 >
-                    <Box sx={{ overflowY: "auto", overflowX: "hidden", height: "70%", p: "0 2vw" }}>
+                    <Box sx={{ overflowY: "auto", overflowX: "hidden", height: "56%", p: "0 2vw" }}>
                         {listKits.map((kit, index) => (
                             <CardKit key={index} kit={kit} />
                         ))}
-                    </Box>
-                    <Box sx={{ flexDirection: "row" }}>
-                        <BottomNavigation section={bottomMenu.admin} external />
                     </Box>
                 </Box>
             </Box>

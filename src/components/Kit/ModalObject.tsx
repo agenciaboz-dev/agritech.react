@@ -73,7 +73,7 @@ export const ModalObject: React.FC<ModalObjectProps> = ({ opened, close, object,
                             onChange={(e) => handleChange(index, e)}
                         />
                         <TextInput
-                            label="Quantidade"
+                            label="Qtd."
                             name="quantity"
                             type="number"
                             value={objeto.quantity}

@@ -8,6 +8,7 @@ interface KitContextValue {
     listKits: Kit[]
     setListKits: (value: Kit[]) => void
     addKit: (newKit: Kit) => void
+    updateKit: (kitUpdate: Kit) => void
 }
 
 interface KitProviderProps {
@@ -49,5 +50,18 @@ export const KitProvider: React.FC<KitProviderProps> = ({ children }) => {
         setListKits((kits) => [...kits, newKit])
     }
 
-    return <KitContext.Provider value={{ listKits, setListKits, addKit }}>{children}</KitContext.Provider>
+    const updateKit = (kitUpdate: Kit) => {
+        setListKits((kits) => {
+            const findKit = kits.findIndex((kitId) => kitId.id === kitUpdate.id)
+            if (findKit === -1) {
+                return kits
+            }
+            const updatedKits = [...kits]
+            updatedKits[findKit] = kitUpdate
+
+            return updatedKits
+        })
+    }
+
+    return <KitContext.Provider value={{ listKits, setListKits, addKit, updateKit }}>{children}</KitContext.Provider>
 }
