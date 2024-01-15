@@ -8,28 +8,32 @@ import { IconDots } from "@tabler/icons-react"
 import { IoIosArrowForward } from "react-icons/io"
 import { useNavigate } from "react-router-dom"
 import { useUser } from "../../hooks/useUser"
+import { Call } from "../../definitions/call"
+import findProducer from "../../hooks/filterProducer"
+import { useKits } from "../../hooks/useKits"
+import { useUsers } from "../../hooks/useUsers"
 
 interface LogsCardProps {
     review?: boolean
-    user: User | undefined
+    call: Call
 }
 
-export const LogsCard: React.FC<LogsCardProps> = ({ review, user }) => {
+export const LogsCard: React.FC<LogsCardProps> = ({ review, call }) => {
     const navigate = useNavigate()
     const account = useUser()
+    const { listKits } = useKits()
+    const { listUsers } = useUsers()
+    const kitSelected = listKits.find((item) => item.id === call.kitId)
+    const producerSelected = listUsers?.find((item) => item.producer?.id === call.producerId)
 
     return (
         <Box sx={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
             <Box sx={{ flexDirection: "column" }}>
                 <Box sx={{ flexDirection: "row", alignItems: "center", gap: "2vw" }}>
-                    <img
-                        style={{ width: "2vw", height: "2vw" }}
-                        src={user?.office === "agronomist" ? green : user?.office === "technician" ? yellow : blue}
-                    />
                     <p style={{ fontSize: "3vw", color: "gray" }}>11:00 - 13:00</p>
                 </Box>
-                <p style={{ fontSize: "3.5vw", fontWeight: "600" }}>Chamado aberto para {user?.name}</p>
-                <p style={{ fontSize: "3vw", color: "gray" }}>Utilizando #Kit 3</p>
+                <p style={{ fontSize: "3.5vw", fontWeight: "600" }}>Chamado aberto para {producerSelected?.name}</p>
+                <p style={{ fontSize: "3vw", color: "gray" }}>Utilizando #Kit {kitSelected?.name}</p>
             </Box>
             {!review ? (
                 <Group gap={0} justify="flex-end">
@@ -49,7 +53,8 @@ export const LogsCard: React.FC<LogsCardProps> = ({ review, user }) => {
                 </Group>
             ) : (
                 <IconButton
-                    onClick={() => navigate(account.user?.isAdmin ? `/adm/call/${user?.id}/report` : `/call/1/report`)}
+                    onClick={() => navigate(account.user?.isAdmin ? `/adm/calls/${call?.id}` : `/call/1`)}
+                    // onClick={() => navigate(account.user?.isAdmin ? `/adm/call/${user?.id}/report` : `/call/1/report`)}
                 >
                     <IoIosArrowForward style={{ width: "5vw", height: "5vw" }} />
                 </IconButton>

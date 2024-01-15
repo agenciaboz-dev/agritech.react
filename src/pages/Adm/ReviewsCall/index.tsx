@@ -4,10 +4,9 @@ import { colors } from "../../../style/colors"
 import { Header } from "../../../components/Header"
 import { useHeader } from "../../../hooks/useHeader"
 import { tabStyle } from "../../../style/tabStyle"
-import { useIo } from "../../../hooks/useIo"
-import { CardUser } from "../../../components/CardUser"
-import { useUsers } from "../../../hooks/useUsers"
 import { LogsCard } from "../../Calls/LogsCard"
+import { useCall } from "../../../hooks/useCall"
+import { useIo } from "../../../hooks/useIo"
 
 interface ReviewsCallProps {
     user: User
@@ -16,24 +15,16 @@ interface ReviewsCallProps {
 export const ReviewsCall: React.FC<ReviewsCallProps> = ({ user }) => {
     const header = useHeader()
     const io = useIo()
+    const { listCallsPending } = useCall()
 
     const [tab, setTab] = React.useState("calls")
     const changeTab = (event: React.SyntheticEvent, newValue: string) => {
         setTab(newValue)
     }
-    const { pendingUsers, setPendingUsers } = useUsers()
-    const [listEmployee, setListEmployee] = useState<User[]>()
-    const [requests, setRequests] = useState<User[]>()
 
     useEffect(() => {
-        setListEmployee(
-            pendingUsers.filter((user) => user.employee !== null && user.isAdmin === false && user.rejected === null)
-        )
-        setRequests(pendingUsers.filter((user) => user.isAdmin === false))
-    }, [pendingUsers])
-
-    useEffect(() => {
-        header.setTitle("Chamados")
+        header.setTitle("Chamados Pendentes")
+        console.log(listCallsPending)
     }, [])
 
     return (
@@ -105,8 +96,8 @@ export const ReviewsCall: React.FC<ReviewsCallProps> = ({ user }) => {
                 >
                     <Tab sx={tabStyle} value="calls" label="Chamados" />
                 </Tabs>
-                <Box sx={{ width: "100%", height: "82%", overflow: "auto", gap: "1vw" }}>
-                    {tab === "calls" && listEmployee?.map((user, index) => <LogsCard key={index} user={user} review />)}
+                <Box sx={{ width: "100%", height: "78%", overflow: "auto", gap: "1vw" }}>
+                    {tab === "calls" && listCallsPending?.map((call, index) => <LogsCard key={index} call={call} review />)}
                 </Box>
             </Box>
         </Box>

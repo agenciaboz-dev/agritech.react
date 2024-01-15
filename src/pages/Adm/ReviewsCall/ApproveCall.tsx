@@ -1,23 +1,25 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { Accordion, Box, Button, Radio } from "@mui/material"
 import { Avatar } from "@files-ui/react"
 import GeoImage from "../../../assets/geo.svg"
 import { Header } from "../../../components/Header"
 import { colors } from "../../../style/colors"
 import { useHeader } from "../../../hooks/useHeader"
-import { useParams } from "react-router-dom"
-import { useUsers } from "../../../hooks/useUsers"
+import { useNavigate, useParams } from "react-router-dom"
 import { TitleComponents } from "../../../components/TitleComponents"
 import { styled } from "@mui/material/styles"
-
 import MuiAccordionDetails from "@mui/material/AccordionDetails"
 import Typography from "@mui/material/Typography"
 import { AccordionSummary } from "../../../components/Accordion"
-import { useArray } from "burgos-array"
+import { useCall } from "../../../hooks/useCall"
+import { useKits } from "../../../hooks/useKits"
+import { ApprovedCall, Call } from "../../../definitions/call"
+import { Form, Formik } from "formik"
+import { NewObject } from "../../../definitions/object"
+import { useIo } from "../../../hooks/useIo"
+import { useSnackbar } from "burgos-snackbar"
 
-interface ApproveCallProps {
-    user: User
-}
+interface ApproveCallProps {}
 
 const p_style = {
     fontSize: "3vw",
@@ -29,26 +31,47 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
     borderTop: "1px solid rgba(0, 0, 0, .125)",
 }))
 
-export const ApproveCall: React.FC<ApproveCallProps> = ({ user }) => {
+export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
     const header = useHeader()
-    const kits = useArray().newArray(10)
+    const io = useIo()
+    const navigate = useNavigate()
     const { callid } = useParams()
+    const { listCallsPending, removeCallApprove } = useCall()
+    const { listKits } = useKits()
+
+    const { snackbar } = useSnackbar()
 
     const [expanded, setExpanded] = React.useState<string | false>("")
+    const [loading, setLoading] = useState(false)
 
-    const handleChange = (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
+    const expandendChange = (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
         setExpanded(newExpanded ? panel : false)
     }
 
-    const { pendingUsers } = useUsers()
-    const findUser = pendingUsers?.filter((user) => String(user.id) === callid)
+    const findCall = listCallsPending?.find((call) => String(call.id) === callid)
+
+    const initialValues: ApprovedCall = {
+        id: Number(callid),
+        kitId: findCall?.kitId || 0,
+    }
+    const approveCall = (values: ApprovedCall) => {
+        console.log(values)
+        io.emit("call:approve", values)
+        setLoading(true)
+    }
 
     useEffect(() => {
-        console.log(findUser)
-    }, [callid])
-
-    useEffect(() => {
-        header.setTitle(findUser[0].name)
+        io.on("call:approve:success", (data: Call) => {
+            console.log({ chamado_aprovado: data })
+            removeCallApprove(data)
+            snackbar({ severity: "success", text: "Chamado aprovado!" })
+            setLoading(false)
+            navigate("/adm/calls")
+        })
+        io.on("call:approve:failed", (error) => {
+            snackbar({ severity: "error", text: error })
+            setLoading(false)
+        })
     }, [])
 
     return (
@@ -71,7 +94,7 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({ user }) => {
                     flexDirection: "row",
                 }}
             >
-                <Header back location="../" />
+                <Header back location="/adm/calls" />
             </Box>
             <Box
                 style={{
@@ -109,7 +132,7 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({ user }) => {
                         <Box sx={{ flexDirection: "column", gap: "2vw", width: "65%" }}>
                             <Box>
                                 <p style={p_style}>Nome da Lavoura</p>
-                                <p>Fazenda Tomato</p>
+                                <p>Fazenda {findCall?.approved}</p>
                             </Box>
                             <Box>
                                 <p style={p_style}>Endereço </p>
@@ -123,27 +146,49 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({ user }) => {
                     </Box>
 
                     <Box sx={{ height: "63%" }}>
-                        <TitleComponents title="Escolha o kit para enviar" button />
-                        <Box sx={{ height: "100%", overflowY: "auto" }}>
-                            {kits.map((kit, index) => (
-                                <Accordion
-                                    elevation={0}
-                                    key={index}
-                                    expanded={expanded === String(index)}
-                                    onChange={handleChange(String(index))}
-                                >
-                                    <AccordionSummary aria-controls="panel1d-content" id={String(index)}>
-                                        <Typography>Kit #{index}</Typography>
-                                        <Radio />
-                                    </AccordionSummary>
-                                    <AccordionDetails>
-                                        <p>Objetos</p>
-                                        <p>1x Item</p>
-                                        <p>2x Ipsum</p>
-                                    </AccordionDetails>
-                                </Accordion>
-                            ))}
-                        </Box>
+                        <Formik initialValues={initialValues} onSubmit={approveCall}>
+                            {({ values, handleChange, setFieldValue }) => (
+                                <Form>
+                                    <TitleComponents
+                                        title="Escolha o kit para enviar"
+                                        button
+                                        textButton="Salvar Kit"
+                                        submit
+                                    />
+                                    <Box sx={{ height: "100%", overflowY: "auto" }}>
+                                        {listKits.map((kit, index) => (
+                                            <Accordion
+                                                elevation={0}
+                                                key={index}
+                                                expanded={expanded === String(index)}
+                                                onChange={handleChange(String(index))}
+                                            >
+                                                <AccordionSummary aria-controls="panel1d-content" id={String(index)}>
+                                                    <Typography>{kit.name}</Typography>
+                                                    <Radio
+                                                        name="kitId"
+                                                        value={kit.id}
+                                                        checked={values.kitId === kit.id}
+                                                        onChange={() => {
+                                                            setFieldValue("kitId", kit.id)
+                                                            expandendChange
+                                                        }}
+                                                    />
+                                                </AccordionSummary>
+                                                <AccordionDetails>
+                                                    <p>Objetos</p>
+                                                    {kit.objects?.map((obj: NewObject, index) => (
+                                                        <p key={index}>
+                                                            {obj.quantity}x {obj.name}
+                                                        </p>
+                                                    ))}
+                                                </AccordionDetails>
+                                            </Accordion>
+                                        ))}
+                                    </Box>
+                                </Form>
+                            )}
+                        </Formik>
                     </Box>
                 </Box>
             </Box>

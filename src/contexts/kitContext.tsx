@@ -42,10 +42,6 @@ export const KitProvider: React.FC<KitProviderProps> = ({ children }) => {
         }
     }, [])
 
-    // useEffect(() => {
-    //     console.log({ listaUpdated: listKits })
-    // }, [listKits])
-
     const addKit = (newKit: Kit) => {
         setListKits((kits) => [...kits, newKit])
     }

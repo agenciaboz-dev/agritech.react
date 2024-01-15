@@ -1,27 +1,24 @@
-export declare interface Call {
-    approved: boolean
-    openCall: string
+export declare interface CreateCall {
+    approved?: boolean
+    open: string
+    comments: string
+
+    // tillageId: number
+    kitId?: number
+    producerId: number
+    userId: number
+}
+export declare interface ApprovedCall {
+    id: number
+    kitId: number
+}
+export declare interface Call extends CreateCall {
+    id: number
     init: string
     finish: string
-    caller: User
-    comments: string
-    tillage: string
-    producer: string
-    stages: Stage[]
-    kit?: string
-}
 
-export declare interface OpenCall {
-    approved: boolean
-    openCall: string
-    init: string
-    caller: User
-    comments: string
-    tillage: string
-    producer: string
-    kit?: string
-    // producer: Producer
-    // kit: Kit
+    stages: Stage[]
+    tillageId: number
 }
 
 export declare interface Stage {
@@ -31,5 +28,5 @@ export declare interface Stage {
     finish: string
     duration: string
     comments: string
-    // callId: int
+    callId: number
 }

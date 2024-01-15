@@ -14,6 +14,7 @@ import { NotificationDrawerProvider } from "../contexts/notificationDrawer"
 import { NotificationDrawer } from "./NotificationDrawer"
 import { ProducerProvider } from "../contexts/producerContext"
 import { KitProvider } from "../contexts/kitContext"
+import CallContext, { CallProvider } from "../contexts/callsContext"
 interface ProvidersProps {
     children: React.ReactNode
 }
@@ -29,17 +30,19 @@ export const Providers: React.FC<ProvidersProps> = ({ children }) => {
                         <KitProvider>
                             <UsersProvider>
                                 <ProducerProvider>
-                                    <NotificationDrawerProvider>
-                                        <MenuDrawerProvider>
-                                            <HeaderProvider>
-                                                <Snackbar />
-                                                <ConfirmDialog />
-                                                <NotificationDrawer />
-                                                <MenuDrawer />
-                                                <MantineProvider theme={mantine_theme}>{children}</MantineProvider>
-                                            </HeaderProvider>
-                                        </MenuDrawerProvider>
-                                    </NotificationDrawerProvider>
+                                    <CallProvider>
+                                        <NotificationDrawerProvider>
+                                            <MenuDrawerProvider>
+                                                <HeaderProvider>
+                                                    <Snackbar />
+                                                    <ConfirmDialog />
+                                                    <NotificationDrawer />
+                                                    <MenuDrawer />
+                                                    <MantineProvider theme={mantine_theme}>{children}</MantineProvider>
+                                                </HeaderProvider>
+                                            </MenuDrawerProvider>
+                                        </NotificationDrawerProvider>
+                                    </CallProvider>
                                 </ProducerProvider>
                             </UsersProvider>
                         </KitProvider>

@@ -10,9 +10,18 @@ interface TitleComponentsProps {
     style?: React.CSSProperties | undefined
     variant?: boolean
     click?: React.MouseEventHandler<HTMLButtonElement> | undefined
+    submit?: boolean
 }
 
-export const TitleComponents: React.FC<TitleComponentsProps> = ({ title, button, textButton, click, style, variant }) => {
+export const TitleComponents: React.FC<TitleComponentsProps> = ({
+    submit,
+    title,
+    button,
+    textButton,
+    click,
+    style,
+    variant,
+}) => {
     return (
         <Box sx={{ gap: "2vw" }}>
             <Box sx={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
@@ -23,6 +32,7 @@ export const TitleComponents: React.FC<TitleComponentsProps> = ({ title, button,
                         variant="contained"
                         sx={{ bgcolor: colors.button, textTransform: "none", borderRadius: "5vw" }}
                         onClick={click}
+                        type={submit ? "submit" : "button"}
                     >
                         {textButton ? textButton : "Adicionar"}
                     </Button>

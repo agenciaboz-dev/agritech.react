@@ -5,52 +5,103 @@ import { Header } from "../../components/Header"
 import { useHeader } from "../../hooks/useHeader"
 import { TitleComponents } from "../../components/TitleComponents"
 import { Form, Formik } from "formik"
-import { OpenCall } from "../../definitions/call"
+import { Call, CreateCall } from "../../definitions/call"
 import { textField } from "../../style/input"
 import listProducers from "../../hooks/listProducers"
 import useDateISO from "../../hooks/useDateISO"
 import { useUser } from "../../hooks/useUser"
 import { useKits } from "../../hooks/useKits"
+import { useProducer } from "../../hooks/useProducer"
+import { useIo } from "../../hooks/useIo"
+import { useSnackbar } from "burgos-snackbar"
+import { useNavigate } from "react-router-dom"
+import { useCall } from "../../hooks/useCall"
 
 interface NewCallProps {
     user: User
 }
 
 export const NewCall: React.FC<NewCallProps> = ({ user }) => {
+    const io = useIo()
     const header = useHeader()
     const account = useUser()
+    const navigate = useNavigate()
+    const { snackbar } = useSnackbar()
+    const { listKits } = useKits()
+    const { listTillages } = useProducer()
+    const { addCallPending } = useCall()
 
     const [loading, setLoading] = useState(false)
+    const [producerId, setProducerId] = useState<number | null>(null)
+    const [tillageId, setTillageId] = useState<number | null>(null)
+    const [kitId, setKitId] = useState<number | null>(null)
     const [inputValue, setInputValue] = useState("")
     const [tillageValue, setTillageValue] = useState("")
     const [kitValue, setKitValue] = useState("")
-    const producers = listProducers()?.map((item) => item.name) || []
-    const options: string[] | undefined = ["Selecione um produtor", ...producers]
-    const tillages: string[] = ["Selecione a lavoura", "Fazenda Mormaço", "Tigrinho", "Zabelê"]
-    const { listKits } = useKits()
-    const kits = listKits.map((item) => item.name) || []
-    const kitsList: string[] | undefined = ["Selecione um kit", ...kits]
 
-    const initialValues: OpenCall = {
-        approved: false,
-        openCall: new Date().toLocaleDateString("pt-br"),
-        init: "",
-        caller: user,
+    const producers =
+        listProducers()?.map((item) => ({
+            id: item.producer?.id || 0,
+            name: item.name,
+        })) || []
+
+    const tillages =
+        listTillages
+            ?.filter((tillage) => tillage.producerId === producerId)
+            .map((tillage) => ({
+                id: tillage.id,
+                name: tillage.name,
+            })) || []
+
+    const kits =
+        listKits?.map((item) => ({
+            id: item.id || 0,
+            name: item.name,
+        })) || []
+
+    const initialValues: CreateCall = {
+        approved: user.isAdmin ? true : false,
+        open: new Date().toLocaleDateString("pt-br"),
         comments: "",
-        tillage: "Selecione a lavoura",
-        producer: user?.producer ? user?.name : "Selecione um produtor",
-        kit: user.isAdmin ? "Selecione um kit" : "",
+        producerId: 0,
+        kitId: 0,
+        userId: Number(account?.user?.id),
     }
 
-    const handleSubmit = (values: OpenCall) => {
+    const handleSubmit = (values: CreateCall) => {
         console.log(values)
-
+        io.emit("call:create", values)
         setLoading(true)
     }
 
     useEffect(() => {
+        io.on("call:creation:success", (data: Call) => {
+            console.log({ chamadoAberto: data })
+            {
+                !data.approved && addCallPending(data)
+            }
+            setLoading(false)
+            snackbar({
+                severity: "success",
+                text: !user.isAdmin ? "Chamado aberto! Aguarde a aprovação." : "Chamado aberto!",
+            })
+            navigate(user.isAdmin ? "/adm/calls" : user.employee ? "/employee/" : "/producer/")
+        })
+        io.on("call:creation:failed", (error) => {
+            console.log({ chamadoAberto: error })
+            snackbar({ severity: "error", text: "Algo deu errado" })
+            setLoading(false)
+        })
+        return () => {
+            io.off("call:creation:success")
+            io.off("call:creation:failed")
+        }
+    }, [])
+
+    useEffect(() => {
         header.setTitle("Painel")
     }, [])
+
     return (
         <Box
             sx={{
@@ -102,66 +153,52 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                                     label="Previsão da visita"
                                     name="openCall"
                                     // type="date"
-                                    value={values.openCall}
+                                    value={values.open}
                                     sx={{ ...textField }}
                                 />
                                 <Autocomplete
-                                    value={values.producer}
-                                    onChange={(event, newValue) => {
-                                        setFieldValue("producer", newValue)
-                                    }}
+                                    value={producers.find((prod) => prod.id === values.producerId) || null}
+                                    options={producers || []}
+                                    getOptionLabel={(option: { id: number; name: string }) => option.name}
                                     inputValue={inputValue}
-                                    onInputChange={(event, newInputValue) => {
-                                        setInputValue(newInputValue)
-                                    }}
-                                    options={options || []}
-                                    isOptionEqualToValue={(option, value) => {
-                                        {
-                                            value === "Selecione um produtor" && option === "Selecione um produtor"
+                                    onChange={(event, selected) => {
+                                        if (selected) {
+                                            setInputValue(selected.name)
+                                            setFieldValue("producerId", selected.id)
+                                            setProducerId(selected.id)
                                         }
-                                        return option === value
                                     }}
                                     renderInput={(params) => (
                                         <TextField {...params} sx={{ ...textField }} label="Produtor" required />
                                     )}
                                 />
-                                <Autocomplete
-                                    value={values.tillage}
-                                    onChange={(event, newValue) => {
-                                        setFieldValue("tillage", newValue)
-                                    }}
-                                    inputValue={tillageValue}
-                                    onInputChange={(event, newInputValue) => {
-                                        setTillageValue(newInputValue)
-                                    }}
+                                {/* <Autocomplete
+                                    value={tillages.find((tillage) => tillage.id === values.tillageId) || null}
                                     options={tillages || []}
-                                    isOptionEqualToValue={(option, value) => {
-                                        {
-                                            value === "Selecione a lavoura" && option === "Selecione a lavoura"
+                                    getOptionLabel={(option) => option.name}
+                                    onChange={(event, selected) => {
+                                        if (selected) {
+                                            setFieldValue("tillageId", selected.id)
+                                            setTillageId(selected.id)
                                         }
-                                        return option === value
                                     }}
                                     renderInput={(params) => (
                                         <TextField {...params} sx={{ ...textField }} label="Lavoura" required />
                                     )}
-                                />
+                                /> */}
 
                                 {user.isAdmin && (
                                     <Autocomplete
-                                        value={values.kit}
-                                        onChange={(event, newValue) => {
-                                            setFieldValue("kit", newValue)
-                                        }}
+                                        value={kits.find((kit) => kit.id === values.kitId) || null}
                                         inputValue={kitValue}
-                                        onInputChange={(event, newInputValue) => {
-                                            setKitValue(newInputValue)
-                                        }}
-                                        options={kitsList || []}
-                                        isOptionEqualToValue={(option, value) => {
-                                            {
-                                                value === "Selecione um Kit" && option === "Selecione um Kit"
+                                        getOptionLabel={(option: { id: number; name: string }) => option.name}
+                                        options={kits || []}
+                                        onChange={(event, selected) => {
+                                            if (selected) {
+                                                setFieldValue("kitId", selected.id)
+                                                setProducerId(selected.id)
+                                                setKitValue(selected.name)
                                             }
-                                            return option === value
                                         }}
                                         renderInput={(params) => (
                                             <TextField {...params} sx={{ ...textField }} label="Kit" required />
@@ -199,11 +236,10 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                                     sx={{
                                         fontSize: 17,
                                         color: colors.text.white,
-                                        width: "90%",
+                                        width: "100%",
                                         backgroundColor: colors.button,
                                         borderRadius: "5vw",
                                         textTransform: "none",
-                                        margin: "0 5vw",
                                     }}
                                 >
                                     {loading ? <CircularProgress sx={{ color: "#fff" }} /> : "Abrir Chamado"}
