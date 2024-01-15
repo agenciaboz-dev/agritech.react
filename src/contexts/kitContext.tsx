@@ -30,10 +30,10 @@ export const KitProvider: React.FC<KitProviderProps> = ({ children }) => {
 
         io.on("kit:list:success", (data: Kit[]) => {
             setListKits(data)
-            snackbar({ severity: "success", text: "Lista de kits atualizada" })
+            // snackbar({ severity: "success", text: "Lista de kits atualizada" })
         })
         io.on("kit:list:error", () => {
-            snackbar({ severity: "error", text: "Algo deu errado!" })
+            // snackbar({ severity: "error", text: "Algo deu errado!" })z
         })
 
         return () => {
@@ -42,9 +42,9 @@ export const KitProvider: React.FC<KitProviderProps> = ({ children }) => {
         }
     }, [])
 
-    useEffect(() => {
-        console.log({ listaUpdated: listKits })
-    }, [listKits])
+    // useEffect(() => {
+    //     console.log({ listaUpdated: listKits })
+    // }, [listKits])
 
     const addKit = (newKit: Kit) => {
         setListKits((kits) => [...kits, newKit])

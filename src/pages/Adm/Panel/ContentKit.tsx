@@ -12,6 +12,7 @@ import { NewObject } from "../../../definitions/object"
 import { ModalEmployee } from "../../../components/Kit/ModalEmployee"
 import { CardTeam } from "../../../components/Kit/CardTeam"
 import { CardObject } from "../../../components/Kit/CardObject"
+import { useHeader } from "../../../hooks/useHeader"
 
 interface ContentKitProps {
     edit?: boolean
@@ -28,10 +29,15 @@ interface ContentKitProps {
 
 export const ContentKit: React.FC<ContentKitProps> = ({ edit, values, handleChange, data }) => {
     const [image, setImage] = useState<File>()
+    const header = useHeader()
     const io = useIo()
 
     const [openedModalObjects, { open, close }] = useDisclosure(false)
     const [openedModalEmployees, { open: openEmployees, close: closeEmployees }] = useDisclosure(false)
+
+    useEffect(() => {
+        header.setTitle("Kits")
+    }, [])
 
     return (
         <Box sx={{ flexDirection: "column", gap: "1vw", width: "100%", height: "92%" }}>
