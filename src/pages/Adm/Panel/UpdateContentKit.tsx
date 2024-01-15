@@ -6,24 +6,23 @@ import { textField } from "../../../style/input"
 import { useDisclosure } from "@mantine/hooks"
 import { ModalObject } from "../../../components/Kit/ModalObject"
 import { useIo } from "../../../hooks/useIo"
-import listEmployees from "../../../hooks/listEmployees"
-import { Form, Formik } from "formik"
 import { NewObject } from "../../../definitions/object"
 import { ModalEmployee } from "../../../components/Kit/ModalEmployee"
 import { CardTeam } from "../../../components/Kit/CardTeam"
 import { CardObject } from "../../../components/Kit/CardObject"
-import findEmployee from "../../../hooks/filterEmployee"
+import { ModalObjectUpdate } from "../../../components/Kit/ModalObjectUpdate"
 
 interface UpdateContentKitProps {
     edit?: boolean
     values: NewKit
     handleChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> | undefined
-    data?: {
+    data: {
         list: User[] | undefined
         listObjects: NewObject[]
         setListObjects: (value: NewObject[]) => void
         team: User[]
         setListEmployees: (value: User[]) => void
+        dataEmployee: User[] | undefined
     }
 }
 
@@ -39,16 +38,12 @@ export const UpdateContentKit: React.FC<UpdateContentKitProps> = ({ edit, values
     const [openedModalObjects, { open, close }] = useDisclosure(false)
     const [openedModalEmployees, { open: openEmployees, close: closeEmployees }] = useDisclosure(false)
 
-    const dataEmployee = values.employees?.map((item) => {
-        return findEmployee(String(item.id))
-    })
-
     return (
         <Box sx={{ flexDirection: "column", gap: "1vw", width: "100%", height: "92%" }}>
-            {/* <ModalObject
+            <ModalObjectUpdate
                 opened={openedModalObjects}
                 close={close}
-                object={data.listObjects}
+                object={values.objects || []}
                 setObject={data.setListObjects}
             />
             <ModalEmployee
@@ -57,7 +52,7 @@ export const UpdateContentKit: React.FC<UpdateContentKitProps> = ({ edit, values
                 employees={data.team}
                 setEmployees={data.setListEmployees}
                 allEmployees={data.list}
-            /> */}
+            />
 
             <Box sx={{ gap: "3vw", height: "30%" }}>
                 <TitleComponents title="Informações Básicas" />
@@ -117,7 +112,7 @@ export const UpdateContentKit: React.FC<UpdateContentKitProps> = ({ edit, values
                 </Box>
                 <Box sx={{ gap: "3vw" }}>
                     <TitleComponents title="Responsáveis" button={edit} click={openEmployees} />
-                    {dataEmployee?.map((item, index) => (
+                    {data?.dataEmployee?.map((item, index) => (
                         <CardTeam key={index} employee={item} />
                     ))}
                 </Box>

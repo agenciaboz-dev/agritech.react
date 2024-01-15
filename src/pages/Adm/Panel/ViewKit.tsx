@@ -1,9 +1,7 @@
 import { Box, Button, CircularProgress } from "@mui/material"
 import React, { useEffect, useState } from "react"
-import { ContentKit } from "./ContentKit"
 import { colors } from "../../../style/colors"
 import { Header } from "../../../components/Header"
-import SaveIcon from "../../../assets/icons/floppy_disk.svg"
 import { useParams } from "react-router-dom"
 import { useKits } from "../../../hooks/useKits"
 import { useHeader } from "../../../hooks/useHeader"
@@ -15,6 +13,10 @@ import { Form, Formik } from "formik"
 import { NewObject } from "../../../definitions/object"
 import { UpdateContentKit } from "./UpdateContentKit"
 import { FiEdit2 } from "react-icons/fi"
+import { AiOutlineSave } from "react-icons/ai"
+import findEmployee from "../../../hooks/filterEmployee"
+import { useUsers } from "../../../hooks/useUsers"
+import listEmployees from "../../../hooks/listEmployees"
 
 interface ViewKitProps {}
 
@@ -24,6 +26,7 @@ export const ViewKit: React.FC<ViewKitProps> = ({}) => {
     const { snackbar } = useSnackbar()
     const { kitid } = useParams()
     const { listKits, updateKit } = useKits()
+    const { list } = listEmployees()
 
     const kit = listKits.filter((item) => item.id === Number(kitid))
 
@@ -31,7 +34,8 @@ export const ViewKit: React.FC<ViewKitProps> = ({}) => {
     const [loading, setLoading] = useState(false)
     const [edit, setEdit] = useState(false)
 
-    const initalValues: NewKit = {
+    const initalValues: Kit = {
+        id: kit[0].id,
         name: kit[0].name,
         description: kit[0].description,
         image: kit[0].image,
@@ -40,10 +44,13 @@ export const ViewKit: React.FC<ViewKitProps> = ({}) => {
         employees: kit[0].employees,
         calls: kit[0].calls,
     }
+    const dataEmployee = kit[0].employees?.map((item) => {
+        return findEmployee(String(item.id))
+    })
 
-    const [allEmployees, setAllEmployees] = useState<User[] | undefined>([])
-    const [listObjects, setListObjects] = useState<NewObject[]>()
-    const [team, setListEmployees] = useState<User[]>()
+    const [allEmployees, setAllEmployees] = useState<User[] | undefined>()
+    const [listObjects, setListObjects] = useState<NewObject[]>(kit[0].objects || [])
+    const [team, setListEmployees] = useState<User[]>(dataEmployee || [])
 
     const data = {
         list: allEmployees,
@@ -51,10 +58,27 @@ export const ViewKit: React.FC<ViewKitProps> = ({}) => {
         setListObjects: setListObjects,
         team: team,
         setListEmployees: setListEmployees,
+        dataEmployee: dataEmployee,
     }
 
+    const employeesIds = team
+        .map((item) => item.employee?.id)
+        .filter((id) => id !== undefined)
+        .map((id) => ({ id }))
+
     const handleUpdateKit = (values: Kit) => {
-        io.emit("kit:update", values)
+        const objects = listObjects.map((item) => ({
+            ...item,
+            quantity: Number(item.quantity), // Converte para número
+        }))
+        const data = {
+            ...values,
+            objects: objects,
+            employees: employeesIds,
+        }
+        console.log(data)
+        setEdit(!edit)
+        io.emit("kit:update", data)
         setLoading(true)
         open()
     }
@@ -78,6 +102,10 @@ export const ViewKit: React.FC<ViewKitProps> = ({}) => {
 
     useEffect(() => {
         header.setTitle("Kits")
+    }, [])
+
+    useEffect(() => {
+        setAllEmployees(list)
     }, [])
     return (
         <Formik initialValues={initalValues} onSubmit={handleUpdateKit}>
@@ -168,28 +196,29 @@ export const ViewKit: React.FC<ViewKitProps> = ({}) => {
                                     {kit !== null ? kit[0].name : "Kit"}
                                 </p>
                                 <Button
+                                    type="submit"
                                     size="small"
                                     variant="contained"
                                     sx={{
                                         alignItems: "center",
                                         gap: "1vw",
-                                        backgroundColor: "#fff",
+                                        backgroundColor: edit ? colors.primary : "#fff",
                                         textTransform: "none",
                                         borderRadius: "5vw",
                                         fontSize: "3vw",
                                         width: "fit-content",
-                                        color: colors.text.black,
+                                        color: edit ? colors.text.white : colors.text.black,
                                     }}
-                                    onClick={() => {
-                                        setEdit(!edit)
-                                    }}
+                                    onClick={() => {}}
                                 >
                                     {!edit ? (
                                         <Box sx={{ flexDirection: "row", alignItems: "center", gap: "2vw" }}>
                                             <FiEdit2 /> <p style={{ fontSize: "3.5vw" }}>Editar</p>
                                         </Box>
                                     ) : (
-                                        "Salvar informações"
+                                        <Box sx={{ flexDirection: "row", alignItems: "center", gap: "2vw" }}>
+                                            <p style={{ fontSize: "3.5vw" }}>Salvar Informações</p>
+                                        </Box>
                                     )}
                                 </Button>
                             </Box>
@@ -206,7 +235,7 @@ export const ViewKit: React.FC<ViewKitProps> = ({}) => {
                                 }}
                             >
                                 <Box sx={{ overflowX: "hidden", overflowY: "auto", height: "88%", p: "0 2vw" }}>
-                                    <UpdateContentKit edit={edit} values={values} handleChange={handleChange} />
+                                    <UpdateContentKit data={data} edit={edit} values={values} handleChange={handleChange} />
                                 </Box>
                             </Box>
                         </Box>
