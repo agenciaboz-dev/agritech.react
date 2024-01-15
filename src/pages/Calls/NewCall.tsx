@@ -10,6 +10,7 @@ import { textField } from "../../style/input"
 import listProducers from "../../hooks/listProducers"
 import useDateISO from "../../hooks/useDateISO"
 import { useUser } from "../../hooks/useUser"
+import { useKits } from "../../hooks/useKits"
 
 interface NewCallProps {
     user: User
@@ -22,9 +23,13 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
     const [loading, setLoading] = useState(false)
     const [inputValue, setInputValue] = useState("")
     const [tillageValue, setTillageValue] = useState("")
+    const [kitValue, setKitValue] = useState("")
     const producers = listProducers()?.map((item) => item.name) || []
     const options: string[] | undefined = ["Selecione um produtor", ...producers]
     const tillages: string[] = ["Selecione a lavoura", "Fazenda Mormaço", "Tigrinho", "Zabelê"]
+    const { listKits } = useKits()
+    const kits = listKits.map((item) => item.name) || []
+    const kitsList: string[] | undefined = ["Selecione um kit", ...kits]
 
     const initialValues: OpenCall = {
         approved: false,
@@ -34,7 +39,7 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
         comments: "",
         tillage: "Selecione a lavoura",
         producer: user?.producer ? user?.name : "Selecione um produtor",
-        kit: user.isAdmin ? "Kit #Vuitton" : "",
+        kit: user.isAdmin ? "Selecione um kit" : "",
     }
 
     const handleSubmit = (values: OpenCall) => {
@@ -94,12 +99,11 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                         <Box sx={{ gap: "4vw" }}>
                             <Form>
                                 <TextField
-                                    label="Data Desejada"
+                                    label="Previsão da visita"
                                     name="openCall"
                                     // type="date"
                                     value={values.openCall}
                                     sx={{ ...textField }}
-                                    disabled
                                 />
                                 <Autocomplete
                                     value={values.producer}
@@ -143,12 +147,25 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                                 />
 
                                 {user.isAdmin && (
-                                    <TextField
-                                        label="Equipe Responsável"
-                                        name="kit"
+                                    <Autocomplete
                                         value={values.kit}
-                                        sx={{ ...textField }}
-                                        onChange={handleChange}
+                                        onChange={(event, newValue) => {
+                                            setFieldValue("kit", newValue)
+                                        }}
+                                        inputValue={kitValue}
+                                        onInputChange={(event, newInputValue) => {
+                                            setKitValue(newInputValue)
+                                        }}
+                                        options={kitsList || []}
+                                        isOptionEqualToValue={(option, value) => {
+                                            {
+                                                value === "Selecione um Kit" && option === "Selecione um Kit"
+                                            }
+                                            return option === value
+                                        }}
+                                        renderInput={(params) => (
+                                            <TextField {...params} sx={{ ...textField }} label="Kit" required />
+                                        )}
                                     />
                                 )}
 
