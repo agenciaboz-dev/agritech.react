@@ -173,7 +173,6 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
         },
         gallery: [],
         location: [],
-        producerId: 0,
     }
     const submitTillage = async (values: NewLavoura) => {
         console.log(values)
@@ -325,7 +324,7 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
                                         <DialogConfirm
                                             open={open}
                                             setOpen={setOpen}
-                                            data={ openCall }
+                                            data={openCall}
                                             user={user}
                                             children={
                                                 <TextField
