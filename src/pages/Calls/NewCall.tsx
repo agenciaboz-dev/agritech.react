@@ -29,7 +29,7 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
     const { snackbar } = useSnackbar()
     const { listKits } = useKits()
     const { listTillages } = useProducer()
-    const { addCallPending } = useCall()
+    const { addCallPending, addCallApprove } = useCall()
 
     const [loading, setLoading] = useState(false)
     const [producerId, setProducerId] = useState<number | null>(null)
@@ -45,14 +45,6 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
             name: item.name,
         })) || []
 
-    const tillages =
-        listTillages
-            ?.filter((tillage) => tillage.producerId === producerId)
-            .map((tillage) => ({
-                id: tillage.id,
-                name: tillage.name,
-            })) || []
-
     const tillagesProducer =
         user.producer?.tillage?.map((tillage) => ({
             id: tillage.id,
@@ -64,6 +56,26 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
             id: item.id || 0,
             name: item.name,
         })) || []
+
+    const [tillages, setTillages] = useState<{ id: number; name: string }[]>([])
+
+    const producerSelect = listProducers()?.find((item) => item.producer?.id === producerId)
+    useEffect(() => {
+        console.log(
+            producerSelect?.producer?.tillage?.length !== 0
+                ? producerSelect?.producer?.tillage?.map((tillage) => ({
+                      id: tillage.id,
+                      name: tillage.name,
+                  }))
+                : undefined
+        )
+        setTillages(
+            producerSelect?.producer?.tillage?.map((tillage) => ({
+                id: tillage.id,
+                name: tillage.name,
+            })) || []
+        )
+    }, [producerId])
 
     const initialValues: CreateCall = {
         approved: user.isAdmin ? true : false,
@@ -85,7 +97,7 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
         io.on("call:creation:success", (data: Call) => {
             console.log({ chamadoAberto: data })
             {
-                !data.approved && addCallPending(data)
+                !data.approved ? addCallPending(data) : addCallApprove(data)
             }
             setLoading(false)
             snackbar({
@@ -169,22 +181,38 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                                     sx={{ ...textField }}
                                 />
                                 {user.employee && (
-                                    <Autocomplete
-                                        value={producers.find((prod) => prod.id === values.producerId) || null}
-                                        options={producers || []}
-                                        getOptionLabel={(option: { id: number; name: string }) => option.name}
-                                        inputValue={inputValue}
-                                        onChange={(event, selected) => {
-                                            if (selected) {
-                                                setInputValue(selected.name)
-                                                setFieldValue("producerId", selected.id)
-                                                setProducerId(selected.id)
-                                            }
-                                        }}
-                                        renderInput={(params) => (
-                                            <TextField {...params} sx={{ ...textField }} label="Produtor" required />
-                                        )}
-                                    />
+                                    <>
+                                        <Autocomplete
+                                            value={producers.find((prod) => prod.id === values.producerId) || null}
+                                            options={producers || []}
+                                            getOptionLabel={(option: { id: number; name: string }) => option.name}
+                                            inputValue={inputValue}
+                                            onChange={(event, selected) => {
+                                                if (selected) {
+                                                    setInputValue(selected.name)
+                                                    setFieldValue("producerId", selected.id)
+                                                    setProducerId(selected.id)
+                                                }
+                                            }}
+                                            renderInput={(params) => (
+                                                <TextField {...params} sx={{ ...textField }} label="Produtor" required />
+                                            )}
+                                        />
+                                        <Autocomplete
+                                            value={tillages.find((tillage) => tillage.id === values.tillageId) || null}
+                                            options={tillages || []}
+                                            getOptionLabel={(option: { id: number; name: string }) => option.name}
+                                            onChange={(event, selected) => {
+                                                if (selected) {
+                                                    setFieldValue("tillageId", selected.id)
+                                                    setTillageId(selected.id)
+                                                }
+                                            }}
+                                            renderInput={(params) => (
+                                                <TextField {...params} sx={{ ...textField }} label="Lavoura" required />
+                                            )}
+                                        />
+                                    </>
                                 )}
                                 {user.producer && (
                                     <Autocomplete
@@ -212,7 +240,6 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                                         onChange={(event, selected) => {
                                             if (selected) {
                                                 setFieldValue("kitId", selected.id)
-                                                setProducerId(selected.id)
                                                 setKitValue(selected.name)
                                             }
                                         }}

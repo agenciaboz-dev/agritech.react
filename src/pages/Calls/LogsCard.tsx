@@ -34,9 +34,13 @@ export const LogsCard: React.FC<LogsCardProps> = ({ review, call, variant }) => 
                 <Box sx={{ flexDirection: "row", alignItems: "center", gap: "2vw" }}>
                     <p style={{ fontSize: "3vw", color: "gray" }}>11:00 - 13:00</p>
                 </Box>
-                <p style={{ fontSize: "3.5vw", fontWeight: "600" }}>Chamado aberto para {producerSelected?.name}</p>
-                <p style={{ fontSize: "3vw", color: "gray" }}>
-                    {call.approved ? `Utilizando #Kit ${kitSelected?.name}` : "Selecione um kit"}
+                <p style={{ fontSize: "3.5vw", fontWeight: "600" }}>
+                    {call.approved
+                        ? `Chamado aberto para ${producerSelected?.name}`
+                        : `Chamado pendente para ${producerSelected?.name}`}
+                </p>
+                <p style={{ fontSize: "3vw", color: "gray", flexDirection: "column" }}>
+                    {tillageSelected?.name} - {call.approved ? `Utilizando #Kit ${kitSelected?.name}` : "Selecione um kit"}
                 </p>
             </Box>
             {!review ? (
