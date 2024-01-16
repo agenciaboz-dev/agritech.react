@@ -12,7 +12,7 @@ export const Calls: React.FC<CallsProps> = ({ user }) => {
     return (
         <ReactRoutes>
             <Route path="/new" element={<NewCall user={user} />} />
-            <Route path="/calls/:callid" element={<ApproveCall user={user} />} />
+            <Route path="/calls/:callid" element={<ApproveCall />} />
             <Route path="/:callid/report" element={<ReportCall user={user} />} />
         </ReactRoutes>
     )

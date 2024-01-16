@@ -1,21 +1,16 @@
-import { Box, Button, IconButton } from "@mui/material"
+import { Box, Button } from "@mui/material"
 import React, { useEffect } from "react"
 import { Header } from "../../../components/Header"
 import { colors } from "../../../style/colors"
-import { BottomNavigation } from "../../../components/BottomNavigation"
-import { useNavigationList } from "../../../hooks/useNavigationList"
 import { useHeader } from "../../../hooks/useHeader"
 import { CardKit } from "../../../components/Kit/CardKit"
-import { useArray } from "burgos-array"
 import addIcon from "../../../assets/icons/square_plus.svg"
-import { AddKit } from "./AddKit"
 import { useNavigate } from "react-router-dom"
 import { useKits } from "../../../hooks/useKits"
 
 interface SettingsKitProps {}
 
 export const SettingsKit: React.FC<SettingsKitProps> = ({}) => {
-    const bottomMenu = useNavigationList()
     const header = useHeader()
     const navigate = useNavigate()
     const { listKits } = useKits()
@@ -34,7 +29,6 @@ export const SettingsKit: React.FC<SettingsKitProps> = ({}) => {
                 overflowY: "hidden",
             }}
         >
-            {" "}
             <Box
                 sx={{
                     width: "100%",

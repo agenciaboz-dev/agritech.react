@@ -15,6 +15,10 @@ import { OpenCallBox, ProgressCall } from "../../components/OpenCallBox"
 import { useUser } from "../../hooks/useUser"
 import { useProducer } from "../../hooks/useProducer"
 import findProducer from "../../hooks/filterProducer"
+import { useIo } from "../../hooks/useIo"
+import { useSnackbar } from "burgos-snackbar"
+import { useCall } from "../../hooks/useCall"
+import { Call, CreateCall } from "../../definitions/call"
 
 interface TillageDetailsProps {}
 
@@ -39,14 +43,20 @@ const progress = {
 }
 
 export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
+    const io = useIo()
     const header = useHeader()
     const navigate = useNavigate()
+    const { snackbar } = useSnackbar()
     const { user } = useUser()
+    const { addCallPending } = useCall()
+
     const images = useArray().newArray(5)
     const [open, setOpen] = useState(false)
+    const [loading, setLoading] = useState(false)
     const [variant, setVariant] = useState(false)
     const { producerid, tillageid } = useParams()
 
+    const [call, setCall] = useState<Call>()
     //only producer
     const { listTillages, setProducerid, tillageUpdate } = useProducer()
 
@@ -61,11 +71,52 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
     const handleClickOpen = () => {
         setOpen(true)
     }
+    const initialValues: CreateCall = {
+        approved: user?.isAdmin ? true : false,
+        open: new Date().toLocaleDateString("pt-br"),
+        comments: "",
+        producerId: user?.producer ? user.producer.id || 0 : 0,
+        tillageId: tillageSelectProd?.id || 0,
+        kitId: undefined,
+        userId: Number(user?.id),
+    }
 
+    const handleSubmit = (values: CreateCall) => {
+        console.log(values)
+        io.emit("call:create", values)
+        setLoading(true)
+    }
     useEffect(() => {
         header.setTitle(!producerSelect ? `Informações` : "Lavoura")
         setProducerid(Number(producerid))
     }, [producerSelect])
+
+    useEffect(() => {
+        io.on("call:creation:success", (data: Call) => {
+            console.log({ chamadoAberto: data })
+            addCallPending(data)
+            setLoading(false)
+            setCall(data)
+            snackbar({
+                severity: "success",
+                text: !user?.isAdmin ? "Chamado aberto! Aguarde a aprovação." : "Chamado aberto!",
+            })
+        })
+        io.on("call:creation:failed", (error) => {
+            console.log({ chamadoAberto: error })
+            snackbar({ severity: "error", text: "Algo deu errado" })
+            setLoading(false)
+        })
+        io.on("call:update:failed", (error) => {
+            console.log({ chamadoAberto: error })
+            snackbar({ severity: "error", text: "Já existe chamado ativo pra essa lavoura!" })
+            setLoading(false)
+        })
+        return () => {
+            io.off("call:creation:success")
+            io.off("call:creation:failed")
+        }
+    }, [call])
 
     return (
         <Box
@@ -123,9 +174,8 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                     <IoIosArrowForward
                         color="white"
                         size={"6vw"}
-                        onClick={
-                            () => {}
-                            // navigate(user?.producer !== null ? "/producer/tillage/" : `${producerid}/tillage/list`)
+                        onClick={() =>
+                            navigate(user?.producer !== null ? `/producer/call/${call?.id}` : `/${producerid}/tillage/list`)
                         }
                     />
                 </Box>
@@ -185,6 +235,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                         click={() => {
                             setVariant(true)
                             setOpen(false)
+                            handleSubmit(initialValues)
                         }}
                     />
                 </Box>

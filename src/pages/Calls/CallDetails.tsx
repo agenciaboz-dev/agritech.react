@@ -5,8 +5,11 @@ import { colors } from "../../style/colors"
 import { Header } from "../../components/Header"
 import { TitleComponents } from "../../components/TitleComponents"
 import { DialogConfirm } from "../../components/DialogConfirm"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { useUser } from "../../hooks/useUser"
+import findProducer from "../../hooks/filterProducer"
+import { useKits } from "../../hooks/useKits"
+import { useCall } from "../../hooks/useCall"
 
 interface CallDetailsProps {}
 
@@ -23,16 +26,24 @@ const p_style = {
 export const CallDetails: React.FC<CallDetailsProps> = ({}) => {
     const header = useHeader()
     const navigate = useNavigate()
-    const {user} = useUser()
+    const { user } = useUser()
+    const { listKits } = useKits()
+    const { listCalls } = useCall()
 
     const [open, setOpen] = useState(false)
+
+    const { callid,producerId } = useParams()
+
+    // const producerSelect = findProducer(String(user?.producer?.id))
+    const callSelect = listCalls.find((item) => item.id === Number(callid))
+    const tillageSelectProd = user?.producer?.tillage?.find((item) => item.id === Number(callSelect?.tillageId))
 
     const handleClickOpen = () => {
         setOpen(true)
     }
 
     useEffect(() => {
-        header.setTitle("Produtor Tal")
+        header.setTitle(user?.producer ? tillageSelectProd?.name || user.name : "Produtor Tal")
     }, [])
 
     return (
@@ -55,7 +66,10 @@ export const CallDetails: React.FC<CallDetailsProps> = ({}) => {
                     flexDirection: "row",
                 }}
             >
-                <Header back location="/adm/producer/1/2" />
+                <Header
+                    back
+                    location={user?.producer ? `/producer/tillage/${callSelect?.tillageId}` : "/adm/producer/1/2"}
+                />
             </Box>
             <Box
                 style={{
@@ -141,7 +155,13 @@ export const CallDetails: React.FC<CallDetailsProps> = ({}) => {
                             <p style={p_style}>Supporting line text lorem ipsum dolor sit amet, consectetur.</p>
                         </Box>
                     </Box>
-                    <DialogConfirm data={modal} user={user} open={open} setOpen={setOpen} click={() => navigate("/adm/producer/2/1")} />
+                    <DialogConfirm
+                        data={modal}
+                        user={user}
+                        open={open}
+                        setOpen={setOpen}
+                        click={() => navigate("/adm/producer/2/1")}
+                    />
                 </Box>
             </Box>
         </Box>
