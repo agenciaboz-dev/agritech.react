@@ -9,7 +9,6 @@ import { IoIosArrowForward } from "react-icons/io"
 import { useNavigate } from "react-router-dom"
 import { useUser } from "../../hooks/useUser"
 import { Call } from "../../definitions/call"
-import findProducer from "../../hooks/filterProducer"
 import { useKits } from "../../hooks/useKits"
 import { useUsers } from "../../hooks/useUsers"
 
