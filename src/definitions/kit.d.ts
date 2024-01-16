@@ -3,7 +3,7 @@ declare interface NewKit {
     image64: string
     name: string
     description: string
-
+    active: boolean
     objects?: NewObject[]
     employees?: Employee[]
     calls?: Call[]

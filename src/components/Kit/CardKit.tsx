@@ -41,6 +41,7 @@ export const CardKit: React.FC<CardKitProps> = ({ kit }) => {
         <Box sx={{ padding: "3vw 1vw", flexDirection: "row", alignItems: "center", borderBottom: "1px solid #88A486" }}>
             <FormGroup sx={{ width: "90%" }}>
                 <FormControlLabel
+                    checked={kit.active}
                     control={<Android12Switch defaultChecked />}
                     label={
                         <Box sx={{ width: "100%" }}>
