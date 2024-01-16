@@ -15,6 +15,7 @@ interface ProducerContextValue {
     setProducerid: (value: number) => void
     // updateTillages: (value: Tillage[]) => void
     addTillage: (newTillage: Tillage) => void
+    addTillageProd: (newTillage: Tillage) => void
 }
 
 interface ProducerProviderProps {
@@ -73,10 +74,21 @@ export const ProducerProvider: React.FC<ProducerProviderProps> = ({ children }) 
             setListTillages((tillages) => [...tillages, newTillage])
         }
     }
+    const addTillageProd = (newTillage: Tillage) => {
+        setListTillages((tillages) => [...tillages, newTillage])
+    }
 
     return (
         <ProducerContext.Provider
-            value={{ listTillages, setListTillages, addTillage, setProducerid, tillageUpdate, setTillageUpdate }}
+            value={{
+                listTillages,
+                setListTillages,
+                addTillage,
+                addTillageProd,
+                setProducerid,
+                tillageUpdate,
+                setTillageUpdate,
+            }}
         >
             {children}
         </ProducerContext.Provider>

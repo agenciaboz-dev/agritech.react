@@ -16,16 +16,16 @@ export const ListTillages: React.FC<ListTillagesProps> = ({}) => {
     const header = useHeader()
 
     const { user } = useUser()
-    const { listTillages, tillageUpdate, setProducerid } = useProducer()
     const { producerid } = useParams()
-    setProducerid(Number(producerid))
+    const { listUsers } = useUsers()
 
     const producerSelect = findProducer(producerid || "")
-    const { listUsers } = useUsers()
     const producerEncontrado = listUsers?.filter((item) => String(item.producer?.id) === producerid) || []
+    const { listTillages, tillageUpdate, setProducerid } = useProducer()
 
     useEffect(() => {
         header.setTitle(user?.producer !== null ? "Minhas lavouras" : "Lavouras")
+        user?.employee && setProducerid(Number(producerid))
     }, [])
 
     return (
@@ -72,25 +72,25 @@ export const ListTillages: React.FC<ListTillagesProps> = ({}) => {
                     }}
                 >
                     <Box sx={{ gap: "2vw", height: "90%", overflow: "auto" }}>
-                        {tillageUpdate && user?.producer !== null
-                            ? listTillages?.map((item, index) =>
-                                  listTillages.length === 0 ? (
-                                      <p>Nenhuma lavoura encontrada.</p>
-                                  ) : (
-                                      <CardTillage key={index} tillage={item} location={`/producer/tillage/${item.id}`} />
-                                  )
-                              )
-                            : producerSelect.producer?.tillage?.map((tillage, index) =>
-                                  producerEncontrado[0].producer?.tillage?.length === 0 ? (
-                                      <p>Nenhuma lavoura encontrada.</p>
-                                  ) : (
-                                      <CardTillage
-                                          key={index}
-                                          tillage={tillage}
-                                          location={`/adm/producer/${producerSelect.producer?.id}/${tillage.id}`}
-                                      />
-                                  )
-                              )}
+                        {tillageUpdate && user?.producer !== null ? (
+                            listTillages.length !== 0 ? (
+                                listTillages?.map((item, index) => (
+                                    <CardTillage key={index} tillage={item} location={`/producer/tillage/${item.id}`} />
+                                ))
+                            ) : (
+                                listTillages.length === 0 && <p>Nenhuma lavoura encontrada.</p>
+                            )
+                        ) : producerEncontrado[0].producer?.tillage?.length !== 0 ? (
+                            producerSelect.producer?.tillage?.map((tillage, index) => (
+                                <CardTillage
+                                    key={index}
+                                    tillage={tillage}
+                                    location={`/adm/producer/${producerSelect.producer?.id}/${tillage.id}`}
+                                />
+                            ))
+                        ) : (
+                            <p>Nenhuma lavoura encontrada.</p>
+                        )}
 
                         <Box style={{ width: "100%", height: "80%", overflow: "auto" }}></Box>
                     </Box>

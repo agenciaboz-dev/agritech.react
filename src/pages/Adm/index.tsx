@@ -34,7 +34,7 @@ export const Adm: React.FC<AdmProps> = ({ user }) => {
             <Route path="/new_producer/*" element={<NewProducer />} />
             <Route path="/calendar/:userid" element={<Calendar />} />
             <Route path="/calls" element={<ReviewsCall user={user} />} />
-            <Route path="/calls/:callid" element={<ApproveCall user={user} />} />
+            <Route path="/calls/:callid" element={<ApproveCall />} />
             <Route path="/call/*" element={<Calls user={user} />} />
             <Route path="/producer/:producerid" element={<ListTillages />} />
             <Route path="/producer/:producerid/:tillageid" element={<TillageDetails />} />

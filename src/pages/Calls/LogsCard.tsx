@@ -16,9 +16,10 @@ import { useUsers } from "../../hooks/useUsers"
 interface LogsCardProps {
     review?: boolean
     call: Call
+    variant?: boolean
 }
 
-export const LogsCard: React.FC<LogsCardProps> = ({ review, call }) => {
+export const LogsCard: React.FC<LogsCardProps> = ({ review, call, variant }) => {
     const navigate = useNavigate()
     const account = useUser()
     const { listKits } = useKits()
@@ -28,7 +29,7 @@ export const LogsCard: React.FC<LogsCardProps> = ({ review, call }) => {
 
     const tillageSelected = producerSelected?.producer?.tillage?.find((item) => item.id === call.tillageId)
 
-    return (
+    return !variant ? (
         <Box sx={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
             <Box sx={{ flexDirection: "column" }}>
                 <Box sx={{ flexDirection: "row", alignItems: "center", gap: "2vw" }}>
@@ -63,6 +64,25 @@ export const LogsCard: React.FC<LogsCardProps> = ({ review, call }) => {
                     <IoIosArrowForward style={{ width: "5vw", height: "5vw" }} />
                 </IconButton>
             )}
+        </Box>
+    ) : (
+        <Box sx={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+            <Box sx={{ flexDirection: "column" }}>
+                <Box sx={{ flexDirection: "row", alignItems: "center", gap: "2vw" }}>
+                    <p style={{ fontSize: "3vw", color: "gray" }}>11:00 - 13:00</p>
+                </Box>
+                <p style={{ fontSize: "3.5vw", fontWeight: "600" }}>Chamado para {tillageSelected?.name}</p>
+                <p style={{ fontSize: "3vw", color: "gray" }}>
+                    {call.approved ? `Utilizando #Kit ${kitSelected?.name}` : "Aguardando aprovação"}
+                </p>
+            </Box>
+
+            {/* <IconButton
+                onClick={() => navigate(`/producer/calls/${call?.id}`)}
+                // onClick={() => navigate(account.user?.isAdmin ? `/adm/call/${user?.id}/report` : `/call/1/report`)}
+            >
+                <IoIosArrowForward style={{ width: "5vw", height: "5vw" }} />
+            </IconButton> */}
         </Box>
     )
 }

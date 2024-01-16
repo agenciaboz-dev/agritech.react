@@ -7,6 +7,7 @@ import { MyCalls } from "../Calls/MyCalls"
 import { NewTillage } from "./Panel/NewTillage/index"
 import { TillageDetails } from "../TillageDetails"
 import { ListTillages } from "../TillageDetails/ListTillages"
+import { Requests } from "./Panel/Requests"
 
 interface ProducerProps {
     user: User
@@ -21,7 +22,7 @@ export const Producer: React.FC<ProducerProps> = ({ user }) => {
             <ReactRoutes>
                 <Route path="/*" element={<PanelUser user={user} />} />
                 <Route path="/producer" element={<PanelUser user={user} />} />
-                <Route path="/requests" element={<MyCalls />} />
+                <Route path="/requests" element={<Requests />} />
                 <Route path="/new" element={<NewTillage />} />
                 <Route path="/tillages" element={<ListTillages />} />
                 <Route path="/tillage/:tillageid" element={<TillageDetails />} />

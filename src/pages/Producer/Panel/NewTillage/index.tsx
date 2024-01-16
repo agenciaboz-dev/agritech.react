@@ -17,6 +17,7 @@ import { NewLavoura } from "../../../../definitions/newTillage"
 import { useNavigate } from "react-router-dom"
 import { useSnackbar } from "burgos-snackbar"
 import MaskedInput from "../../../../components/MaskedInput.tsx"
+import { useProducer } from "../../../../hooks/useProducer.ts"
 
 interface NewTillageProps {}
 
@@ -32,6 +33,7 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
     const header = useHeader()
     const navigate = useNavigate()
     const { user } = useUser()
+    const { addTillageProd } = useProducer()
     const { unmask } = useDataHandler()
     const { snackbar } = useSnackbar()
 
@@ -82,10 +84,11 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
     }
 
     useEffect(() => {
-        io.on("tillage:creation:success", () => {
+        io.on("tillage:creation:success", (data: any) => {
             snackbar({ severity: "success", text: "Lavoura adicionada!" })
+            addTillageProd(data.tillage)
             setLoadingTillage(false)
-            navigate("producer/1/1")
+            navigate(`/producer/`)
         })
         io.on("tillage:creation:failed", () => {
             snackbar({ severity: "error", text: "Algo deu errado!" })
@@ -177,7 +180,7 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
                                         <DialogConfirm
                                             open={open}
                                             setOpen={setOpen}
-                                            data={ openCall }
+                                            data={openCall}
                                             user={user}
                                             children={
                                                 <TextField

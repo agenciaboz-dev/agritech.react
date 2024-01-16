@@ -101,9 +101,9 @@ export const SettingsKit: React.FC<SettingsKitProps> = ({}) => {
                     }}
                 >
                     <Box sx={{ overflowY: "auto", maxHeight: "90%", p: "0 2vw" }}>
-                        {listKits.map((kit, index) => (
-                            <CardKit key={index} kit={kit} />
-                        ))}
+                        {listKits.length !== 0
+                            ? listKits.map((kit, index) => <CardKit key={index} kit={kit} />)
+                            : "Nenhum Kit cadastrado"}
                     </Box>
                 </Box>
             </Box>

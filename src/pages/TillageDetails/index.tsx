@@ -52,6 +52,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
 
     // //only employee and adm
     const producerSelect = findProducer(producerid || "")
+    const tillageSelectProd = user?.producer?.tillage?.find((item) => item.id === Number(tillageid))
 
     const [tab, setTab] = React.useState("call")
     const changeTab = (event: React.SyntheticEvent, newValue: string) => {
@@ -117,7 +118,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                             fontWeight: "bold",
                         }}
                     >
-                        {tillageUpdate && listTillages[0].name}
+                        {!user?.producer ? tillageUpdate && listTillages[0].name : tillageSelectProd?.name}
                     </p>
                     <IoIosArrowForward
                         color="white"
