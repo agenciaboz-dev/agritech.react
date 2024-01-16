@@ -48,8 +48,9 @@ export const ModalObject: React.FC<ModalObjectProps> = ({ opened, close, object,
             style={{}}
             title="Inserir objetos"
             styles={{
-                body: { display: "flex", flexDirection: "column", gap: "6vw" },
+                body: { display: "flex", flexDirection: "column", gap: "6vw", borderRadius: "10vw" },
                 root: { maxHeight: "75%", minHeight: "fit-content" },
+                content: { borderRadius: "6vw" },
             }}
         >
             {object.map((objeto, index) => (

@@ -57,6 +57,7 @@ export const ModalObjectUpdate: React.FC<ModalObjectUpdateProps> = ({ opened, cl
             styles={{
                 body: { display: "flex", flexDirection: "column", gap: "6vw" },
                 root: { maxHeight: "75%", minHeight: "fit-content" },
+                content: { borderRadius: "6vw" },
             }}
         >
             {object.map((objeto, index) => (
