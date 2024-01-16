@@ -3,7 +3,7 @@ export declare interface CreateCall {
     open: string
     comments: string
 
-    // tillageId: number
+    tillageId: number
     kitId?: number
     producerId: number
     userId: number

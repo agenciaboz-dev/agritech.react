@@ -53,6 +53,12 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                 name: tillage.name,
             })) || []
 
+    const tillagesProducer =
+        user.producer?.tillage?.map((tillage) => ({
+            id: tillage.id,
+            name: tillage.name,
+        })) || []
+
     const kits =
         listKits?.map((item) => ({
             id: item.id || 0,
@@ -63,8 +69,9 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
         approved: user.isAdmin ? true : false,
         open: new Date().toLocaleDateString("pt-br"),
         comments: "",
-        producerId: 0,
-        kitId: 0,
+        producerId: user.producer ? user.producer.id || 0 : 0,
+        tillageId: tillageId || 0,
+        kitId: undefined,
         userId: Number(account?.user?.id),
     }
 
@@ -90,6 +97,11 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
         io.on("call:creation:failed", (error) => {
             console.log({ chamadoAberto: error })
             snackbar({ severity: "error", text: "Algo deu errado" })
+            setLoading(false)
+        })
+        io.on("call:update:failed", (error) => {
+            console.log({ chamadoAberto: error })
+            snackbar({ severity: "error", text: "Já existe chamado ativo pra essa lavoura!" })
             setLoading(false)
         })
         return () => {
@@ -156,36 +168,40 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                                     value={values.open}
                                     sx={{ ...textField }}
                                 />
-                                <Autocomplete
-                                    value={producers.find((prod) => prod.id === values.producerId) || null}
-                                    options={producers || []}
-                                    getOptionLabel={(option: { id: number; name: string }) => option.name}
-                                    inputValue={inputValue}
-                                    onChange={(event, selected) => {
-                                        if (selected) {
-                                            setInputValue(selected.name)
-                                            setFieldValue("producerId", selected.id)
-                                            setProducerId(selected.id)
-                                        }
-                                    }}
-                                    renderInput={(params) => (
-                                        <TextField {...params} sx={{ ...textField }} label="Produtor" required />
-                                    )}
-                                />
-                                {/* <Autocomplete
-                                    value={tillages.find((tillage) => tillage.id === values.tillageId) || null}
-                                    options={tillages || []}
-                                    getOptionLabel={(option) => option.name}
-                                    onChange={(event, selected) => {
-                                        if (selected) {
-                                            setFieldValue("tillageId", selected.id)
-                                            setTillageId(selected.id)
-                                        }
-                                    }}
-                                    renderInput={(params) => (
-                                        <TextField {...params} sx={{ ...textField }} label="Lavoura" required />
-                                    )}
-                                /> */}
+                                {user.employee && (
+                                    <Autocomplete
+                                        value={producers.find((prod) => prod.id === values.producerId) || null}
+                                        options={producers || []}
+                                        getOptionLabel={(option: { id: number; name: string }) => option.name}
+                                        inputValue={inputValue}
+                                        onChange={(event, selected) => {
+                                            if (selected) {
+                                                setInputValue(selected.name)
+                                                setFieldValue("producerId", selected.id)
+                                                setProducerId(selected.id)
+                                            }
+                                        }}
+                                        renderInput={(params) => (
+                                            <TextField {...params} sx={{ ...textField }} label="Produtor" required />
+                                        )}
+                                    />
+                                )}
+                                {user.producer && (
+                                    <Autocomplete
+                                        value={tillagesProducer.find((tillage) => tillage.id === values.tillageId) || null}
+                                        options={tillagesProducer || []}
+                                        getOptionLabel={(option: { id: number; name: string }) => option.name}
+                                        onChange={(event, selected) => {
+                                            if (selected) {
+                                                setFieldValue("tillageId", selected.id)
+                                                setTillageId(selected.id)
+                                            }
+                                        }}
+                                        renderInput={(params) => (
+                                            <TextField {...params} sx={{ ...textField }} label="Lavoura" required />
+                                        )}
+                                    />
+                                )}
 
                                 {user.isAdmin && (
                                     <Autocomplete

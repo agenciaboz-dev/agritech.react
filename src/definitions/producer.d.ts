@@ -1,5 +1,5 @@
 declare interface Producer {
-    id?: number
+    id: number
     cnpj: string
     contract: boolean
     tillage?: Tillage[]

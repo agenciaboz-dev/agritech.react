@@ -15,16 +15,15 @@ interface ReviewsCallProps {
 export const ReviewsCall: React.FC<ReviewsCallProps> = ({ user }) => {
     const header = useHeader()
     const io = useIo()
-    const { listCallsPending } = useCall()
+    const { listCallsPending, listCalls } = useCall()
 
-    const [tab, setTab] = React.useState("calls")
+    const [tab, setTab] = useState("pending")
     const changeTab = (event: React.SyntheticEvent, newValue: string) => {
         setTab(newValue)
     }
 
     useEffect(() => {
-        header.setTitle("Chamados Pendentes")
-        console.log(listCallsPending)
+        header.setTitle("Chamados")
     }, [])
 
     return (
@@ -64,7 +63,7 @@ export const ReviewsCall: React.FC<ReviewsCallProps> = ({ user }) => {
                 }}
             >
                 <Box sx={{ alignItems: "center", width: "100%", justifyContent: "space-between", flexDirection: "row" }}>
-                    <p style={{ padding: "0 2vw", fontSize: "4.55vw" }}>Pendentes</p>
+                    <p style={{ padding: "0 2vw", fontSize: "4.55vw" }}></p>
                     <Button
                         size="small"
                         variant="contained"
@@ -94,10 +93,13 @@ export const ReviewsCall: React.FC<ReviewsCallProps> = ({ user }) => {
                     scrollButtons="auto"
                     allowScrollButtonsMobile
                 >
-                    <Tab sx={tabStyle} value="calls" label="Chamados" />
+                    <Tab sx={tabStyle} value="pending" label="Pendentes" />
+                    <Tab sx={tabStyle} value="calls" label="Em andamento" />
                 </Tabs>
                 <Box sx={{ width: "100%", height: "78%", overflow: "auto", gap: "1vw" }}>
-                    {tab === "calls" && listCallsPending?.map((call, index) => <LogsCard key={index} call={call} review />)}
+                    {tab === "pending" &&
+                        listCallsPending?.map((call, index) => <LogsCard key={index} call={call} review />)}
+                    {tab === "calls" && listCalls?.map((call, index) => <LogsCard key={index} call={call} review />)}
                 </Box>
             </Box>
         </Box>
