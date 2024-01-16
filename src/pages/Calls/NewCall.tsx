@@ -49,6 +49,7 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
         user.producer?.tillage?.map((tillage) => ({
             id: tillage.id,
             name: tillage.name,
+            call: tillage.call,
         })) || []
 
     const kits =
@@ -66,6 +67,7 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                 ? producerSelect?.producer?.tillage?.map((tillage) => ({
                       id: tillage.id,
                       name: tillage.name,
+                      call: tillage.call,
                   }))
                 : undefined
         )
@@ -73,9 +75,11 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
             producerSelect?.producer?.tillage?.map((tillage) => ({
                 id: tillage.id,
                 name: tillage.name,
+                call: tillage.call,
             })) || []
         )
     }, [producerId])
+    console.log(tillagesProducer)
 
     const initialValues: CreateCall = {
         approved: user.isAdmin ? true : false,
@@ -208,6 +212,16 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                                                     setTillageId(selected.id)
                                                 }
                                             }}
+                                            renderOption={(props, option) => (
+                                                <li
+                                                    {...props}
+                                                    style={{
+                                                        // backgroundColor: option.approved ? "corDesejada" : "corPadrao",
+                                                    }}
+                                                >
+                                                    {option.name}
+                                                </li>
+                                            )}
                                             renderInput={(params) => (
                                                 <TextField {...params} sx={{ ...textField }} label="Lavoura" required />
                                             )}

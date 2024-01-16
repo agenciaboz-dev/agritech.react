@@ -48,7 +48,7 @@ export const CallProvider: React.FC<CallProviderProps> = ({ children }) => {
         return () => {
             io.off("call:listPending:success")
         }
-    }, [])
+    }, [listCallsPending])
 
     useEffect(() => {
         io.emit("call:listApproved")
@@ -60,7 +60,7 @@ export const CallProvider: React.FC<CallProviderProps> = ({ children }) => {
         return () => {
             io.off("call:listApproved:success")
         }
-    }, [])
+    }, [listCalls])
 
     return (
         <CallContext.Provider

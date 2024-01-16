@@ -68,7 +68,8 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
             uf: infoCep?.estado.sigla || "",
             adjunct: "",
         },
-        // gallery: [],
+        gallery: [],
+        // call: {},
         location: [],
         producerId: user?.producer?.id,
     }
@@ -88,7 +89,7 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
             snackbar({ severity: "success", text: "Lavoura adicionada!" })
             addTillageProd(data.tillage)
             setLoadingTillage(false)
-            navigate(`/producer/`)
+            navigate(`/producer/tillages`)
         })
         io.on("tillage:creation:failed", () => {
             snackbar({ severity: "error", text: "Algo deu errado!" })

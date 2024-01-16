@@ -77,32 +77,35 @@ export const ReviewsCall: React.FC<ReviewsCallProps> = ({ user }) => {
                             fontSize: "3.0vw",
                             p: "1vw 3vw",
                             width: "fit-content",
+                            zIndex: 1,
                         }}
                         onClick={() => {}}
                     >
                         Ações em massa
                     </Button>
                 </Box>
-                <Tabs
-                    value={tab}
-                    onChange={changeTab}
-                    textColor="primary"
-                    indicatorColor="primary"
-                    aria-label="tabs"
-                    variant="scrollable"
-                    scrollButtons="auto"
-                    allowScrollButtonsMobile
-                >
-                    <Tab sx={tabStyle} value="pending" label="Pendentes" />
-                    <Tab sx={tabStyle} value="calls" label="Em andamento" />
-                </Tabs>
-                <Box sx={{ width: "100%", height: "78%", overflow: "auto", gap: "1vw" }}>
-                    {tab === "pending" && listCallsPending.length !== 0
-                        ? listCallsPending?.map((call, index) => <LogsCard key={index} call={call} review />)
-                        : tab === "pending" && "Nenhum chamado pendente"}
-                    {tab === "calls" && listCalls.length !== 0
-                        ? listCalls?.map((call, index) => <LogsCard key={index} call={call} review />)
-                        : tab === "calls" && "Nenhum chamado aberto"}
+                <Box sx={{ position: "relative", zIndex: 0, bottom: "11vw", gap: "3vw" }}>
+                    <Tabs
+                        value={tab}
+                        onChange={changeTab}
+                        textColor="primary"
+                        indicatorColor="primary"
+                        aria-label="tabs"
+                        variant="scrollable"
+                        scrollButtons="auto"
+                        allowScrollButtonsMobile
+                    >
+                        <Tab sx={tabStyle} value="pending" label="Pendentes" />
+                        <Tab sx={tabStyle} value="calls" label="Em andamento" />
+                    </Tabs>
+                    <Box sx={{ width: "100%", height: "78%", overflow: "auto", gap: "1vw" }}>
+                        {tab === "pending" && listCallsPending.length !== 0
+                            ? listCallsPending?.map((call, index) => <LogsCard key={index} call={call} review />)
+                            : tab === "pending" && "Nenhum chamado pendente"}
+                        {tab === "calls" && listCalls.length !== 0
+                            ? listCalls?.map((call, index) => <LogsCard key={index} call={call} review />)
+                            : tab === "calls" && "Nenhum chamado aberto"}
+                    </Box>
                 </Box>
             </Box>
         </Box>

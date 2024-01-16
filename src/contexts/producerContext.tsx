@@ -61,11 +61,11 @@ export const ProducerProvider: React.FC<ProducerProviderProps> = ({ children }) 
             io.off("tillage:list:success")
             io.off("tillage:list:error")
         }
-    }, [producerid, user?.employee, user?.producer?.id])
+    }, [producerid, user?.employee, user?.producer?.id, listTillages])
 
-    useEffect(() => {
-        console.log({ listaUpdated: listTillages })
-    }, [listTillages])
+    // useEffect(() => {
+    //     console.log({ listaUpdated: listTillages })
+    // }, [listTillages])
 
     const addTillage = (newTillage: Tillage) => {
         const { producerId } = newTillage

@@ -40,7 +40,7 @@ export const KitProvider: React.FC<KitProviderProps> = ({ children }) => {
             io.off("kit:list:success")
             io.off("kit:list:error")
         }
-    }, [])
+    }, [listKits])
 
     const addKit = (newKit: Kit) => {
         setListKits((kits) => [...kits, newKit])

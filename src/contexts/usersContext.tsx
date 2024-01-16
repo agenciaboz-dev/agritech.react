@@ -28,8 +28,8 @@ export const UsersProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         return () => {
             io.off("users:list:success", updateListUsers)
         }
-        console.log(listUsers)
-    }, [])
+    
+    }, [listUsers])
 
     useEffect(() => {
         io.emit("user:pendingApproval")
