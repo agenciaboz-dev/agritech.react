@@ -71,13 +71,15 @@ export const ListEmployee: React.FC<ListEmployeeProps> = ({}) => {
                     }}
                 >
                     <Box sx={{ gap: "2vw", height: "90%", overflow: "auto" }}>
-                        {listEmployee?.map((user) => (
-                            <CardUser
-                                user={user}
-                                key={user.id}
-                                location={user.employee ? `/adm/calendar/${user.id}` : `/adm/profile/${user.id}`}
-                            />
-                        ))}
+                        {listEmployee?.length !== 0
+                            ? listEmployee?.map((user) => (
+                                  <CardUser
+                                      user={user}
+                                      key={user.id}
+                                      location={user.employee ? `/adm/calendar/${user.id}` : `/adm/profile/${user.id}`}
+                                  />
+                              ))
+                            : "Nenhum funcionário encontrado"}
 
                         <Box style={{ width: "100%", height: "80%", overflow: "auto" }}></Box>
                     </Box>

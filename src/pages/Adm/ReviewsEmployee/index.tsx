@@ -71,7 +71,7 @@ export const ReviewsEmployee: React.FC<ReviewsEmployeeProps> = ({ user }) => {
                     flexDirection: "column",
                 }}
             >
-                <Box sx={{ alignItems: "center", width: "100%", justifyContent: "space-between", flexDirection:"row" }}>
+                <Box sx={{ alignItems: "center", width: "100%", justifyContent: "space-between", flexDirection: "row" }}>
                     <p style={{ padding: "0 2vw", fontSize: "4.55vw" }}>Pendentes</p>
                     <Button
                         size="small"
@@ -105,11 +105,11 @@ export const ReviewsEmployee: React.FC<ReviewsEmployeeProps> = ({ user }) => {
                     <Tab sx={tabStyle} value="requestsEmployee" label="Cadastro de Funcionários" />
                 </Tabs>
                 <Box sx={{ width: "100%", height: "82%", overflow: "auto", gap: "1vw" }}>
-                    {tab === "requestsEmployee" &&
-                        listEmployee?.map((user) => (
-                            <CardUser review user={user} key={user.id} location={`/adm/review/profile/${user.id}`} />
-                        ))}
-                    
+                    {tab === "requestsEmployee" && listEmployee?.length !== 0
+                        ? listEmployee?.map((user) => (
+                              <CardUser review user={user} key={user.id} location={`/adm/review/profile/${user.id}`} />
+                          ))
+                        : tab === "requestsEmployee" && "Nenhum cadastro de funcionário"}
                 </Box>
             </Box>
         </Box>

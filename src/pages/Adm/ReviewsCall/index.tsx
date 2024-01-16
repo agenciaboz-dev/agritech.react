@@ -97,9 +97,12 @@ export const ReviewsCall: React.FC<ReviewsCallProps> = ({ user }) => {
                     <Tab sx={tabStyle} value="calls" label="Em andamento" />
                 </Tabs>
                 <Box sx={{ width: "100%", height: "78%", overflow: "auto", gap: "1vw" }}>
-                    {tab === "pending" &&
-                        listCallsPending?.map((call, index) => <LogsCard key={index} call={call} review />)}
-                    {tab === "calls" && listCalls?.map((call, index) => <LogsCard key={index} call={call} review />)}
+                    {tab === "pending" && listCallsPending.length !== 0
+                        ? listCallsPending?.map((call, index) => <LogsCard key={index} call={call} review />)
+                        : tab === "pending" && "Nenhum chamado pendente"}
+                    {tab === "calls" && listCalls.length !== 0
+                        ? listCalls?.map((call, index) => <LogsCard key={index} call={call} review />)
+                        : tab === "calls" && "Nenhum chamado aberto"}
                 </Box>
             </Box>
         </Box>
