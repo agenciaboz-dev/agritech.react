@@ -15,5 +15,6 @@ declare interface NewLavoura {
     location?: NewCoordinate[]
     gallery?: Gallery[]
 
+    call?: Call
     producerId?: number
 }

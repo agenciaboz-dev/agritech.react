@@ -69,12 +69,11 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
             adjunct: "",
         },
         gallery: [],
-        // call: {},
         location: [],
         producerId: user?.producer?.id,
     }
     const handleSubmit = (values: NewLavoura) => {
-        console.log(values)
+        console.log({ enviados: values })
 
         const data = {
             ...values,

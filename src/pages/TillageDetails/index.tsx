@@ -48,7 +48,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
     const navigate = useNavigate()
     const { snackbar } = useSnackbar()
     const { user } = useUser()
-    const { addCallPending } = useCall()
+    const { addCallPending, listCalls } = useCall()
 
     const images = useArray().newArray(5)
     const [open, setOpen] = useState(false)
@@ -63,11 +63,20 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
     // //only employee and adm
     const producerSelect = findProducer(producerid || "")
     const tillageSelectProd = user?.producer?.tillage?.find((item) => item.id === Number(tillageid))
+    const [callStatus, setCallStatus] = useState(false)
 
     const [tab, setTab] = React.useState("call")
     const changeTab = (event: React.SyntheticEvent, newValue: string) => {
         setTab(newValue)
     }
+
+    useEffect(() => {
+        const callTillage = listCalls.filter((item) => item.tillageId === Number(tillageid))
+        callTillage.length === 0 ? setCallStatus(false) : setCallStatus(true)
+        setCall(callTillage[0])
+    }, [listCalls, callStatus])
+
+    console.log(call)
     const handleClickOpen = () => {
         setOpen(true)
     }
@@ -86,6 +95,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
         io.emit("call:create", values)
         setLoading(true)
     }
+
     useEffect(() => {
         header.setTitle(!producerSelect ? `Informações` : "Lavoura")
         setProducerid(Number(producerid))
@@ -116,7 +126,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
             io.off("call:creation:success")
             io.off("call:creation:failed")
         }
-    }, [call])
+    }, [call, callStatus])
 
     return (
         <Box
@@ -171,13 +181,17 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                     >
                         {!user?.producer ? tillageUpdate && listTillages[0].name : tillageSelectProd?.name}
                     </p>
-                    <IoIosArrowForward
-                        color="white"
-                        size={"6vw"}
-                        onClick={() =>
-                            navigate(user?.producer !== null ? `/producer/call/${call?.id}` : `/${producerid}/tillage/list`)
-                        }
-                    />
+                    {callStatus && (
+                        <IoIosArrowForward
+                            color="white"
+                            size={"6vw"}
+                            onClick={() =>
+                                navigate(
+                                    user?.producer !== null ? `/producer/call/${call?.id}` : `/${producerid}/tillage/list`
+                                )
+                            }
+                        />
+                    )}
                 </Box>
                 <Box sx={{ flexDirection: "row", gap: "2vw", width: "100%", overflow: "auto", p: "3vw 4vw 8vw" }}>
                     {images.map((item, index) => (
@@ -222,10 +236,17 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                         <Tab sx={{ ...tabStyle, width: "50%" }} value="history" label="Histórico" />
                         <Tab sx={{ ...tabStyle, width: "50%" }} value="call" label="Chamado" />
                     </Tabs>
-                    {tab === "call" && !variant ? (
-                        <OpenCallBox click={handleClickOpen} data={content} />
+                    {tab === "call" && !callStatus ? (
+                        <OpenCallBox click={handleClickOpen} data={content} callStatus={callStatus} call={call} />
                     ) : (
-                        tab === "call" && <ProgressCall click={() => navigate("/callDetail")} data={progress} />
+                        tab === "call" && (
+                            <ProgressCall
+                                click={() => navigate("/callDetail")}
+                                data={progress}
+                                call={call}
+                                tillage={tillageSelectProd}
+                            />
+                        )
                     )}
                     <DialogConfirm
                         user={user}

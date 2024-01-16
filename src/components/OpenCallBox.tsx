@@ -1,7 +1,9 @@
-import { Box, IconButton } from "@mui/material"
+import { Box } from "@mui/material"
 import React from "react"
 import { colors } from "../style/colors"
 import { IoIosArrowForward } from "react-icons/io"
+import { Call } from "../definitions/call"
+import { useKits } from "../hooks/useKits"
 
 interface OpenCallBoxProps {
     data: {
@@ -11,9 +13,12 @@ interface OpenCallBoxProps {
         hour?: string
     }
     click: React.MouseEventHandler<HTMLParagraphElement> | undefined
+    callStatus?: boolean
+    call?: Call
+    tillage?: Tillage
 }
 
-export const OpenCallBox: React.FC<OpenCallBoxProps> = ({ data, click }) => {
+export const OpenCallBox: React.FC<OpenCallBoxProps> = ({ data, click, callStatus, call }) => {
     return (
         <Box
             sx={{
@@ -39,7 +44,11 @@ export const OpenCallBox: React.FC<OpenCallBoxProps> = ({ data, click }) => {
         </Box>
     )
 }
-export const ProgressCall: React.FC<OpenCallBoxProps> = ({ data, click }) => {
+export const ProgressCall: React.FC<OpenCallBoxProps> = ({ data, click, tillage, call }) => {
+    const { listKits } = useKits()
+
+    const callSelected = listKits.find((item) => item.id === call?.kitId)
+
     return (
         <Box
             sx={{
@@ -67,11 +76,18 @@ export const ProgressCall: React.FC<OpenCallBoxProps> = ({ data, click }) => {
             <Box sx={{ flexDirection: "row", height: "28%", gap: "2vw" }}>
                 <Box sx={{ border: "1px solid gray", width: "50%", borderRadius: "2vw", height: "100%", p: "2vw" }}>
                     <p style={{ fontSize: "3vw" }}>Kit selecionado</p>
-                    <p style={{ fontSize: "3vw" }}>Kit #2</p>
+                    <p style={{ fontSize: "3vw" }}>{callSelected?.name}</p>
                 </Box>
                 <Box sx={{ border: "1px solid gray", width: "50%", borderRadius: "2vw", height: "100%", p: "2vw" }}>
                     <p style={{ fontSize: "3vw" }}>Chamado aberto em:</p>
-                    <p style={{ fontSize: "3vw" }}>12/05/2024</p>
+                    <p style={{ fontSize: "3vw" }}>
+                        {call?.open &&
+                            new Date(call.open).toLocaleDateString("pt-BR", {
+                                day: "2-digit",
+                                month: "2-digit",
+                                year: "numeric",
+                            })}
+                    </p>
                 </Box>
             </Box>
         </Box>
