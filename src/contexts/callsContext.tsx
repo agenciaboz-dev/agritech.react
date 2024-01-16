@@ -9,6 +9,7 @@ interface CallContextValue {
     listCalls: Call[]
     setCalls: (value: Call[]) => void
     addCallPending: (newCall: Call) => void
+    addCallApprove: (newCall: Call) => void
     removeCallApprove: (call: Call) => void
 }
 
@@ -27,6 +28,9 @@ export const CallProvider: React.FC<CallProviderProps> = ({ children }) => {
 
     const addCallPending = (newCall: Call) => {
         setCallsPending((calls) => [...calls, newCall])
+    }
+    const addCallApprove = (newCall: Call) => {
+        setCalls((calls) => [...calls, newCall])
     }
 
     //atualiza a lista de pendentes após aprovação
@@ -60,7 +64,15 @@ export const CallProvider: React.FC<CallProviderProps> = ({ children }) => {
 
     return (
         <CallContext.Provider
-            value={{ listCallsPending, setCallsPending, listCalls, setCalls, addCallPending, removeCallApprove }}
+            value={{
+                listCallsPending,
+                setCallsPending,
+                listCalls,
+                setCalls,
+                addCallPending,
+                addCallApprove,
+                removeCallApprove,
+            }}
         >
             {children}
         </CallContext.Provider>

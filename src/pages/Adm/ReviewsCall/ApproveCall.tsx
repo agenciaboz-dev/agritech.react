@@ -18,6 +18,7 @@ import { Form, Formik } from "formik"
 import { NewObject } from "../../../definitions/object"
 import { useIo } from "../../../hooks/useIo"
 import { useSnackbar } from "burgos-snackbar"
+import { useUsers } from "../../../hooks/useUsers"
 
 interface ApproveCallProps {}
 
@@ -36,8 +37,9 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
     const io = useIo()
     const navigate = useNavigate()
     const { callid } = useParams()
-    const { listCallsPending, removeCallApprove } = useCall()
+    const { listCallsPending, removeCallApprove, addCallApprove } = useCall()
     const { listKits } = useKits()
+    const { listUsers } = useUsers()
 
     const { snackbar } = useSnackbar()
 
@@ -49,6 +51,9 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
     }
 
     const findCall = listCallsPending?.find((call) => String(call.id) === callid)
+
+    const producerSelected = listUsers?.find((item) => item.producer?.id === findCall?.producerId)
+    const tillageSelected = producerSelected?.producer?.tillage?.find((item) => item.id === findCall?.tillageId)
 
     const initialValues: ApprovedCall = {
         id: Number(callid),
@@ -64,6 +69,7 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
         io.on("call:approve:success", (data: Call) => {
             console.log({ chamado_aprovado: data })
             removeCallApprove(data)
+            addCallApprove(data)
             snackbar({ severity: "success", text: "Chamado aprovado!" })
             setLoading(false)
             navigate("/adm/calls")
@@ -132,15 +138,19 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
                         <Box sx={{ flexDirection: "column", gap: "2vw", width: "65%" }}>
                             <Box>
                                 <p style={p_style}>Nome da Lavoura</p>
-                                <p>Fazenda {findCall?.approved}</p>
+                                <p>{tillageSelected?.name}</p>
                             </Box>
                             <Box>
                                 <p style={p_style}>Endereço </p>
-                                <p>4MF8+CV, São Francisco de Goiás - GO, 76330-000</p>
+                                <p>
+                                    {/* {tillageSelected?.address?.city}, {tillageSelected?.address?.uf} - UF
+                                    {tillageSelected?.address?.cep} */}
+                                    Rua do amor, Seabra, Bahia - 80230.085
+                                </p>
                             </Box>
                             <Box>
                                 <p style={p_style}>Área</p>
-                                <p>5 Hc</p>
+                                <p>{tillageSelected?.area}</p>
                             </Box>
                         </Box>
                     </Box>

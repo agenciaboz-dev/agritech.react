@@ -23,8 +23,10 @@ export const LogsCard: React.FC<LogsCardProps> = ({ review, call }) => {
     const account = useUser()
     const { listKits } = useKits()
     const { listUsers } = useUsers()
-    const kitSelected = listKits.find((item) => item.id === call.kitId)
     const producerSelected = listUsers?.find((item) => item.producer?.id === call.producerId)
+    const kitSelected = listKits.find((item) => item.id === call.kitId)
+
+    const tillageSelected = producerSelected?.producer?.tillage?.find((item) => item.id === call.tillageId)
 
     return (
         <Box sx={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
@@ -33,7 +35,9 @@ export const LogsCard: React.FC<LogsCardProps> = ({ review, call }) => {
                     <p style={{ fontSize: "3vw", color: "gray" }}>11:00 - 13:00</p>
                 </Box>
                 <p style={{ fontSize: "3.5vw", fontWeight: "600" }}>Chamado aberto para {producerSelected?.name}</p>
-                <p style={{ fontSize: "3vw", color: "gray" }}>Utilizando #Kit {kitSelected?.name}</p>
+                <p style={{ fontSize: "3vw", color: "gray" }}>
+                    {call.approved ? `Utilizando #Kit ${kitSelected?.name}` : "Selecione um kit"}
+                </p>
             </Box>
             {!review ? (
                 <Group gap={0} justify="flex-end">
