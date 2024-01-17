@@ -1,4 +1,4 @@
-import { Box, IconButton } from "@mui/material"
+import { Box, Button, IconButton } from "@mui/material"
 import React, { useEffect } from "react"
 import { colors } from "../../../style/colors"
 import drone from "../../../assets/logo/droneIcon.png"
@@ -11,6 +11,9 @@ import { useSnackbar } from "burgos-snackbar"
 import { useMenuDrawer } from "../../../hooks/useMenuDrawer"
 import { useNavigate } from "react-router-dom"
 import PostAddIcon from "@mui/icons-material/PostAdd"
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos"
+import { CardUser } from "../../../components/CardUser"
+import findProducer from "../../../hooks/filterProducer"
 
 interface PanelUserProps {
     user: User
@@ -21,8 +24,11 @@ export const PanelUser: React.FC<PanelUserProps> = ({ user }) => {
     const { setUser } = useUser()
     const { snackbar } = useSnackbar()
     const navigate = useNavigate()
-
     const menu = useMenuDrawer()
+
+    const team = user.employee?.producers?.map((item) => {
+        return findProducer(String(item.id))
+    })
 
     useEffect(() => {
         io.on("user:disconnect", () => {
@@ -94,8 +100,9 @@ export const PanelUser: React.FC<PanelUserProps> = ({ user }) => {
                     <p style={{ color: colors.text.white, fontSize: "5vw", fontFamily: "MalgunGothic2" }}>Início</p>
                 </Box>
                 <Box
-                    style={{
+                    sx={{
                         padding: "4vw",
+                        paddingTop: "6vw",
                         width: "100%",
                         height: "100%",
                         backgroundColor: "#fff",
@@ -104,21 +111,155 @@ export const PanelUser: React.FC<PanelUserProps> = ({ user }) => {
                         gap: "10vw",
                     }}
                 >
-                    <IconButton
-                        sx={{
-                            bgcolor: colors.button,
-                            width: "12vw",
-                            height: "12vw",
-                            borderRadius: "10vw",
-                            position: "absolute",
-                            bottom: "26vw",
-                            right: "7vw",
-                        }}
-                        onClick={() => navigate("/call/new")}
-                    >
-                        <PostAddIcon fontSize="medium" sx={{ color: "#fff" }} />
-                    </IconButton>
+                    <Box sx={{ gap: "2vw" }}>
+                        <p
+                            style={{
+                                color: colors.text.black,
+                                fontSize: "4.5vw",
+                                fontFamily: "MalgunGothic2",
+                                textAlign: "left",
+                            }}
+                        >
+                            Produtores Fixados
+                        </p>
+                        <Box style={{ width: "100%" }}>
+                            {team?.length !== 0 &&
+                                team
+                                    ?.slice(0, 3)
+                                    .map((user) => (
+                                        <CardUser user={user} key={user.id} location={`/employee/profile/${user.id}`} />
+                                    ))}
+                        </Box>
+                        <Box
+                            style={{
+                                width: "100%",
+                                flexDirection: "row",
+                                alignItems: "center",
+                                justifyContent: "space-between",
+                                gap: 20,
+                            }}
+                        >
+                            <Box
+                                style={{
+                                    width: "100%",
+                                    flexDirection: "row",
+                                    alignItems: "center",
+                                    justifyContent: "space-between",
+                                    paddingTop: "2vw",
+                                }}
+                            >
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    sx={{
+                                        width: "50%",
+                                        padding: "2.5vw",
+                                        color: colors.text.white,
+                                        fontWeight: "500",
+                                        fontSize: "3vw",
+                                        textTransform: "none",
+                                        borderRadius: "10vw",
+                                        height: "10vw",
+                                    }}
+                                    onClick={() => navigate("/employee/new_producer")}
+                                >
+                                    Cadastrar novo produtor
+                                </Button>
+                                <Box
+                                    sx={{
+                                        flexDirection: "row",
+                                        width: "30%",
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                        gap: "1vw",
+                                    }}
+                                >
+                                    <p
+                                        style={{
+                                            color: colors.primary,
+                                            fontSize: "3.5vw",
+                                            fontFamily: "MalgunGothic2",
+                                            fontWeight: "500",
+                                        }}
+                                        onClick={() => {
+                                            navigate("/employee/producers")
+                                        }}
+                                    >
+                                        Ver todos
+                                    </p>
+                                    <ArrowForwardIosIcon color="primary" sx={{ width: "2vw" }} />
+                                </Box>
+                            </Box>
+                        </Box>
+                    </Box>
+                    <Box sx={{ gap: "2vw" }}>
+                        <Box
+                            sx={{
+                                width: "100%",
+                                alignItems: "center",
+                                flexDirection: "row",
+                                justifyContent: "space-between",
+                                paddingRight: "2vw",
+                            }}
+                        >
+                            <p
+                                style={{
+                                    color: colors.text.black,
+                                    fontSize: "4.5vw",
+                                    fontFamily: "MalgunGothic2",
+                                    textAlign: "left",
+                                }}
+                            >
+                                Equipes
+                            </p>
+                            <Box
+                                sx={{
+                                    flexDirection: "row",
+                                    alignItems: "center",
+                                    justifyContent: "justify-content",
+                                    gap: "1vw",
+                                }}
+                            >
+                                <p
+                                    style={{
+                                        color: colors.text.black,
+                                        fontSize: "3.5vw",
+                                        fontFamily: "MalgunGothic2",
+                                        fontWeight: "500",
+                                    }}
+                                    onClick={() => {
+                                        navigate("/employee/settings-kit")
+                                    }}
+                                >
+                                    Ver todas
+                                </p>
+                                <ArrowForwardIosIcon color="primary" sx={{ width: "2vw" }} />
+                            </Box>
+                        </Box>
+                        {/* <Box style={{ width: "100%" }}>
+                            {listProducer?.length !== 0 &&
+                                listProducer
+                                    ?.slice(0, 3)
+                                    .map((user) => (
+                                        <CardUser user={user} key={user.id} location={`/adm/profile/${user.id}`} />
+                                    ))}
+                        </Box> */}
+                    </Box>
                 </Box>
+                <IconButton
+                    sx={{
+                        bgcolor: colors.button,
+                        width: "12vw",
+                        height: "12vw",
+                        borderRadius: "10vw",
+                        position: "absolute",
+                        bottom: "26vw",
+                        right: "7vw",
+                    }}
+                    onClick={() => navigate("/call/new")}
+                >
+                    <PostAddIcon fontSize="medium" sx={{ color: "#fff" }} />
+                </IconButton>
             </Box>
         </Box>
     )

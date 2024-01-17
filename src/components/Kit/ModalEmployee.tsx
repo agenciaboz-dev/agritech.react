@@ -56,10 +56,21 @@ export const ModalEmployee: React.FC<ModalEmployeeProps> = ({ opened, close, set
             <Table.Td>
                 {element?.isAdmin ? (
                     <>
-                        <span style={{ color: colors.primary }}> {element.cpf}</span>
+                        <span style={{ color: colors.primary }}>
+                            {" "}
+                            {element.office === "agronomist"
+                                ? "Agronômo"
+                                : element.office === "technician"
+                                ? "Técnico"
+                                : "Piloto"}
+                        </span>
                     </>
+                ) : element.office === "agronomist" ? (
+                    "Agronômo"
+                ) : element.office === "technician" ? (
+                    "Técnico"
                 ) : (
-                    element.cpf
+                    "Piloto"
                 )}
             </Table.Td>
         </Table.Tr>
@@ -94,7 +105,7 @@ export const ModalEmployee: React.FC<ModalEmployeeProps> = ({ opened, close, set
                         <Table.Th />
                         <Table.Th>ID</Table.Th>
                         <Table.Th>Nome</Table.Th>
-                        <Table.Th>CPF</Table.Th>
+                        <Table.Th>Cargo</Table.Th>
                     </Table.Tr>
                 </Table.Thead>
                 <Table.Tbody>{rows}</Table.Tbody>

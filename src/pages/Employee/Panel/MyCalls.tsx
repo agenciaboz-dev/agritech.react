@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react"
-import { useHeader } from "../../hooks/useHeader"
-import { useIo } from "../../hooks/useIo"
-import { useUsers } from "../../hooks/useUsers"
-import { Box, Button, Tab, Tabs } from "@mui/material"
-import { Header } from "../../components/Header"
-import { colors } from "../../style/colors"
-import { tabStyle } from "../../style/tabStyle"
-import { LogsCard } from "../Calls/LogsCard"
-import { useUser } from "../../hooks/useUser"
-import { useKits } from "../../hooks/useKits"
+import { useHeader } from "../../../hooks/useHeader"
+import { useIo } from "../../../hooks/useIo"
+import { Box, Tab, Tabs } from "@mui/material"
+import { Header } from "../../../components/Header"
+import { colors } from "../../../style/colors"
+import { tabStyle } from "../../../style/tabStyle"
+import { LogsCard } from "../../Calls/LogsCard"
+import { useUser } from "../../../hooks/useUser"
+import { useKits } from "../../../hooks/useKits"
 
 interface MyCallsProps {}
 
@@ -22,7 +21,6 @@ export const MyCalls: React.FC<MyCallsProps> = ({}) => {
     const changeTab = (event: React.SyntheticEvent, newValue: string) => {
         setTab(newValue)
     }
-    const { listUsers } = useUsers()
     const kitsEmployee = listKits
         .filter((kit) => kit.employees?.some((employee) => employee.id === user?.employee?.id))
         .map((kit) => kit.calls)

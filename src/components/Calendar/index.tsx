@@ -10,6 +10,7 @@ import { Indicator } from "@mantine/core"
 import useDateISO from "../../hooks/useDateISO"
 import { LogsCard } from "../../pages/Calls/LogsCard"
 import { IconUser } from "@tabler/icons-react"
+import { useCall } from "../../hooks/useCall"
 
 interface CalendarProps {}
 const dayRenderer: DatePickerProps["renderDay"] = (date) => {
@@ -23,6 +24,7 @@ const dayRenderer: DatePickerProps["renderDay"] = (date) => {
 export const Calendar: React.FC<CalendarProps> = ({}) => {
     const header = useHeader()
     const navigate = useNavigate()
+    const { listCalls } = useCall()
 
     //Users
     const { userid } = useParams()
@@ -132,16 +134,10 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
                         gap: "3vw",
                     }}
                 >
-                    {value?.getDate() === 22 && (
-                        <>
-                            <LogsCard review user={findUser} />
-                            <LogsCard review user={findUser} />
-                            <LogsCard review user={findUser} />
-                            <LogsCard review user={findUser} />
-                            <LogsCard review user={findUser} />
-                            <LogsCard review user={findUser} />
-                        </>
-                    )}
+                    {value?.getDate() === 22 &&
+                        (listCalls.length !== 0
+                            ? listCalls.map((call, index) => <LogsCard key={index} review={false} call={call} />)
+                            : "Nenhum chamado aberto para esse dia")}
                 </Box>
             </Box>
         </Box>

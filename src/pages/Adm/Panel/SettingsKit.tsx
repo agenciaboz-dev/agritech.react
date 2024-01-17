@@ -7,6 +7,7 @@ import { CardKit } from "../../../components/Kit/CardKit"
 import addIcon from "../../../assets/icons/square_plus.svg"
 import { useNavigate } from "react-router-dom"
 import { useKits } from "../../../hooks/useKits"
+import { useUser } from "../../../hooks/useUser"
 
 interface SettingsKitProps {}
 
@@ -14,10 +15,14 @@ export const SettingsKit: React.FC<SettingsKitProps> = ({}) => {
     const header = useHeader()
     const navigate = useNavigate()
     const { listKits } = useKits()
+    const { user } = useUser()
+
+    const kitsEmployee = listKits.filter((kit) => kit.employees?.some((employee) => employee.id === user?.employee?.id))
 
     useEffect(() => {
         header.setTitle("Painel")
         console.log(listKits)
+        console.log({ kits_emp: kitsEmployee })
     }, [])
     return (
         <Box
@@ -66,22 +71,24 @@ export const SettingsKit: React.FC<SettingsKitProps> = ({}) => {
                     <p style={{ color: colors.text.white, fontSize: "5vw", fontFamily: "MalgunGothic2" }}>
                         Configuração de Kits
                     </p>
-                    <Button
-                        variant="contained"
-                        sx={{
-                            alignItems: "center",
-                            gap: "1vw",
-                            backgroundColor: "#fff",
-                            textTransform: "none",
-                            borderRadius: "5vw",
-                            width: "40%",
-                            color: colors.text.black,
-                        }}
-                        onClick={() => navigate("/adm/settings-kit/addkit")}
-                    >
-                        <img src={addIcon} style={{ width: "5vw" }} />
-                        Adicionar kit
-                    </Button>
+                    {user?.isAdmin && (
+                        <Button
+                            variant="contained"
+                            sx={{
+                                alignItems: "center",
+                                gap: "1vw",
+                                backgroundColor: "#fff",
+                                textTransform: "none",
+                                borderRadius: "5vw",
+                                width: "40%",
+                                color: colors.text.black,
+                            }}
+                            onClick={() => navigate("/adm/settings-kit/addkit")}
+                        >
+                            <img src={addIcon} style={{ width: "5vw" }} />
+                            Adicionar kit
+                        </Button>
+                    )}
                 </Box>
                 <Box
                     style={{
@@ -95,9 +102,13 @@ export const SettingsKit: React.FC<SettingsKitProps> = ({}) => {
                     }}
                 >
                     <Box sx={{ overflowY: "auto", maxHeight: "90%", p: "0 2vw" }}>
-                        {listKits.length !== 0
-                            ? listKits.map((kit, index) => <CardKit key={index} kit={kit} />)
-                            : "Nenhum Kit cadastrado"}
+                        {user?.isAdmin
+                            ? listKits.length !== 0
+                                ? listKits.map((kit, index) => <CardKit key={index} kit={kit} />)
+                                : "Nenhum kit encontrado."
+                            : kitsEmployee.length !== 0
+                            ? kitsEmployee.map((kit, index) => <CardKit key={index} kit={kit} />)
+                            : "Nenhum kit encontrado."}
                     </Box>
                 </Box>
             </Box>

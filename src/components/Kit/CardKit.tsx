@@ -4,6 +4,7 @@ import Switch, { SwitchProps } from "@mui/material/Switch"
 import { colors } from "../../style/colors"
 import ArrowRightIcon from "@mui/icons-material/ArrowRight"
 import { useNavigate } from "react-router-dom"
+import { useUser } from "../../hooks/useUser"
 
 const Android12Switch = styled(Switch)(({ theme }) => ({
     padding: 8,
@@ -37,6 +38,7 @@ interface CardKitProps {
 }
 export const CardKit: React.FC<CardKitProps> = ({ kit }) => {
     const navigate = useNavigate()
+    const { user } = useUser()
     return (
         <Box sx={{ padding: "3vw 1vw", flexDirection: "row", alignItems: "center", borderBottom: "1px solid #88A486" }}>
             <FormGroup sx={{ width: "90%" }}>
@@ -61,7 +63,9 @@ export const CardKit: React.FC<CardKitProps> = ({ kit }) => {
                     }
                 />
             </FormGroup>
-            <ArrowRightIcon onClick={() => navigate(`/adm/settings-kit/${kit.id}`)} />
+            <ArrowRightIcon
+                onClick={() => navigate(user?.isAdmin ? `/adm/settings-kit/${kit.id}` : `/employee/settings-kit/${kit.id}`)}
+            />
         </Box>
     )
 }

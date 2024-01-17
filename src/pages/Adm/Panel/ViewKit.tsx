@@ -15,8 +15,8 @@ import { UpdateContentKit } from "./UpdateContentKit"
 import { FiEdit2 } from "react-icons/fi"
 import { AiOutlineSave } from "react-icons/ai"
 import findEmployee from "../../../hooks/filterEmployee"
-import { useUsers } from "../../../hooks/useUsers"
 import listEmployees from "../../../hooks/listEmployees"
+import { useUser } from "../../../hooks/useUser"
 
 interface ViewKitProps {}
 
@@ -27,6 +27,7 @@ export const ViewKit: React.FC<ViewKitProps> = ({}) => {
     const { kitid } = useParams()
     const { listKits, updateKit } = useKits()
     const { list } = listEmployees()
+    const { user } = useUser()
 
     const kit = listKits.filter((item) => item.id === Number(kitid))
 
@@ -164,7 +165,7 @@ export const ViewKit: React.FC<ViewKitProps> = ({}) => {
                                 flexDirection: "row",
                             }}
                         >
-                            <Header back location="../" />
+                            <Header back location={user?.isAdmin ? "/adm/settings-kit" : "/employee/settings-kit"} />
                         </Box>
                         <Box
                             style={{
