@@ -48,7 +48,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
     const navigate = useNavigate()
     const { snackbar } = useSnackbar()
     const { user } = useUser()
-    const { addCallPending, listCalls } = useCall()
+    const { addCallPending, allCalls } = useCall()
 
     const images = useArray().newArray(5)
     const [open, setOpen] = useState(false)
@@ -71,12 +71,11 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
     }
 
     useEffect(() => {
-        const callTillage = listCalls.filter((item) => item.tillageId === Number(tillageid))
+        const callTillage = allCalls.filter((item) => item.tillageId === Number(tillageid))
         callTillage.length === 0 ? setCallStatus(false) : setCallStatus(true)
         setCall(callTillage[0])
-    }, [listCalls, callStatus])
+    }, [allCalls, callStatus])
 
-    console.log(call)
     const handleClickOpen = () => {
         setOpen(true)
     }
@@ -181,7 +180,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                     >
                         {!user?.producer ? tillageUpdate && listTillages[0].name : tillageSelectProd?.name}
                     </p>
-                    {callStatus && (
+                    {call?.approved && (
                         <IoIosArrowForward
                             color="white"
                             size={"6vw"}
@@ -236,7 +235,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                         <Tab sx={{ ...tabStyle, width: "50%" }} value="history" label="Histórico" />
                         <Tab sx={{ ...tabStyle, width: "50%" }} value="call" label="Chamado" />
                     </Tabs>
-                    {tab === "call" && !callStatus ? (
+                    {tab === "call" && (!call?.approved || !callStatus) ? (
                         <OpenCallBox click={handleClickOpen} data={content} callStatus={callStatus} call={call} />
                     ) : (
                         tab === "call" && (

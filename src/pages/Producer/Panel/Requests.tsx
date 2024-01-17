@@ -7,13 +7,17 @@ import { tabStyle } from "../../../style/tabStyle"
 import { LogsCard } from "../../Calls/LogsCard"
 import { useCall } from "../../../hooks/useCall"
 import { useIo } from "../../../hooks/useIo"
+import { useUser } from "../../../hooks/useUser"
 
 interface RequestsProps {}
 
 export const Requests: React.FC<RequestsProps> = ({}) => {
     const header = useHeader()
     const io = useIo()
+    const { user } = useUser()
     const { listCallsPending, listCalls } = useCall()
+    const callsPending = listCallsPending.filter((item) => item.producerId === user?.producer?.id)
+    const callsApprove = listCalls.filter((item) => item.producerId === user?.producer?.id)
 
     const [tab, setTab] = useState("pending")
     const changeTab = (event: React.SyntheticEvent, newValue: string) => {
@@ -96,10 +100,10 @@ export const Requests: React.FC<RequestsProps> = ({}) => {
                 </Tabs>
                 <Box sx={{ width: "100%", height: "78%", overflow: "auto", gap: "1vw" }}>
                     {tab === "pending" && listCallsPending.length !== 0
-                        ? listCallsPending?.map((call, index) => <LogsCard key={index} call={call} variant />)
+                        ? callsPending?.map((call, index) => <LogsCard key={index} call={call} variant />)
                         : tab === "pending" && "Nenhum chamado pendente"}
                     {tab === "calls" && listCalls.length !== 0
-                        ? listCalls?.map((call, index) => <LogsCard key={index} call={call} variant />)
+                        ? callsApprove?.map((call, index) => <LogsCard key={index} call={call} variant />)
                         : tab === "calls" && "Nenhum chamado aberto"}
                 </Box>
             </Box>

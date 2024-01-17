@@ -29,7 +29,7 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
     const { snackbar } = useSnackbar()
     const { listKits } = useKits()
     const { listTillages } = useProducer()
-    const { addCallPending, addCallApprove } = useCall()
+    const { addCall, addCallPending, addCallApprove } = useCall()
 
     const [loading, setLoading] = useState(false)
     const [producerId, setProducerId] = useState<number | null>(null)
@@ -113,6 +113,7 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
     useEffect(() => {
         io.on("call:creation:success", (data: Call) => {
             console.log({ chamadoAberto: data })
+            addCall(data)
             {
                 !data.approved ? addCallPending(data) : addCallApprove(data)
             }
