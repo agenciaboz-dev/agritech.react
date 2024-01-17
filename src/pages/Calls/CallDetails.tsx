@@ -36,7 +36,7 @@ export const CallDetails: React.FC<CallDetailsProps> = ({}) => {
 
     const [open, setOpen] = useState(false)
 
-    const { callid } = useParams()
+    const { callid, producerid } = useParams()
 
     // const producerSelect = findProducer(String(user?.producer?.id))
     const callSelect = listCalls.find((item) => item.id === Number(callid))
@@ -73,7 +73,11 @@ export const CallDetails: React.FC<CallDetailsProps> = ({}) => {
             >
                 <Header
                     back
-                    location={user?.producer ? `/producer/tillage/${callSelect?.tillageId}` : "/adm/producer/1/2"}
+                    location={
+                        user?.producer
+                            ? `/producer/tillage/${callSelect?.tillageId}`
+                            : `/adm/producer/${callSelect?.producerId}/${callSelect?.tillageId}`
+                    }
                 />
             </Box>
             <Box

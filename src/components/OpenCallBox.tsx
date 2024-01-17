@@ -9,7 +9,7 @@ import { useUser } from "../hooks/useUser"
 interface OpenCallBoxProps {
     data: {
         title: string
-        content: string
+        content?: string
         buttonTitle?: string
         hour?: string
     }
@@ -49,7 +49,8 @@ export const OpenCallBox: React.FC<OpenCallBoxProps> = ({ data, click, callStatu
                             style={{ fontSize: "3.2vw", textAlign: "end", width: "100%", color: colors.primary }}
                             onClick={click}
                         >
-                            {data.buttonTitle}
+                            {" "}
+                            {user?.isAdmin ? "Aprovar Chamado" : data.buttonTitle}
                         </p>
                     </>
                 ) : (

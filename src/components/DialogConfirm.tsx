@@ -23,6 +23,7 @@ interface DialogConfirmProps {
     }
 
     click?: React.MouseEventHandler<HTMLButtonElement> | undefined
+    clickCancel?: React.MouseEventHandler<HTMLButtonElement> | undefined
     children?: React.ReactNode
     loading?: boolean
 }
@@ -31,7 +32,6 @@ export const DialogConfirm: React.FC<DialogConfirmProps> = ({ user, open, setOpe
     const navigate = useNavigate()
     const handleClose = () => {
         setOpen(false)
-        navigate(user?.producer ? "/producer" : user?.isAdmin ? "/adm" : "/employee")
     }
     return (
         <Dialog

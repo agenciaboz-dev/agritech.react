@@ -19,38 +19,15 @@ import { useIo } from "../../hooks/useIo"
 import { useSnackbar } from "burgos-snackbar"
 import { useCall } from "../../hooks/useCall"
 import { Call, CreateCall } from "../../definitions/call"
+import { approveCall, content, openCall, progress } from "../../tools/contenModals"
 
 interface TillageDetailsProps {}
-
-const openCall = {
-    title: "Deseja abrir um novo chamado?",
-    content:
-        "Tem certeza que deseja iniciar um chamado para esse produtor? Uma vez que iniciado, esse chamado ficará registrado no histórico de todos os envolvidos.",
-    submitTitle: "Sim, iniciar",
-    cancelTitle: "Não, cancelar",
-}
-const content = {
-    title: "Abrir um chamado de pulverização",
-    content:
-        "Abra um chamada para que nossa equipe encaminhe-se até o local Lavoura 1#, o prazo minino do chamado é de XX Horas segundo o contrato vigente.",
-    buttonTitle: "Abrir Chamado",
-}
-const progress = {
-    title: "Chamado em Aberto",
-    content:
-        "Abra um chamada para que nossa equipe encaminhe-se até o local Lavoura 1#, o prazo minino do chamado é de XX Horas segundo o contrato vigente.",
-    hour: "20:00",
-}
-const approveCall = {
-    title: "Deseja aprovar o chamado?",
-    submitTitle: "Sim, continuar",
-    cancelTitle: "Não, cancelar",
-}
 
 export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
     const io = useIo()
     const header = useHeader()
     const navigate = useNavigate()
+
     const { snackbar } = useSnackbar()
     const { user } = useUser()
     const { addCallPending, allCalls } = useCall()
@@ -98,8 +75,11 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
     const handleClickOpen = () => {
         setOpen(true)
     }
+    const handleOpenApprove = () => {
+        setOpenApproved(true)
+    }
     const initialValues: CreateCall = {
-        approved: user?.isAdmin ? true : false,
+        approved: false,
         open: new Date().toLocaleDateString("pt-br"),
         comments: "",
         producerId: user?.producer ? user.producer.id || 0 : Number(producerid),
@@ -262,7 +242,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                     </Tabs>
                     {tab === "call" && (!call?.approved || !callStatus) ? (
                         <OpenCallBox
-                            click={handleClickOpen}
+                            click={user?.isAdmin && callStatus ? handleOpenApprove : handleClickOpen}
                             data={content}
                             callStatus={callStatus}
                             call={call}
@@ -302,8 +282,8 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                             data={approveCall}
                             click={() => {
                                 setVariant(true)
-                                setOpen(false)
-                                handleSubmit(initialValues)
+                                setOpenApproved(false)
+                                navigate(`/adm/calls/${call?.id}`)
                             }}
                         />
                     )}
