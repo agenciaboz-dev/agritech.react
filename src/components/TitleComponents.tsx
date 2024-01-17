@@ -11,6 +11,7 @@ interface TitleComponentsProps {
     variant?: boolean
     click?: React.MouseEventHandler<HTMLButtonElement> | undefined
     submit?: boolean
+    disabled?: boolean
 }
 
 export const TitleComponents: React.FC<TitleComponentsProps> = ({
@@ -21,6 +22,7 @@ export const TitleComponents: React.FC<TitleComponentsProps> = ({
     click,
     style,
     variant,
+    disabled,
 }) => {
     return (
         <Box sx={{ gap: "2vw" }}>
@@ -33,6 +35,7 @@ export const TitleComponents: React.FC<TitleComponentsProps> = ({
                         sx={{ bgcolor: colors.button, textTransform: "none", borderRadius: "5vw" }}
                         onClick={click}
                         type={submit ? "submit" : "button"}
+                        disabled={disabled}
                     >
                         {textButton ? textButton : "Adicionar"}
                     </Button>

@@ -165,6 +165,7 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
                                         button
                                         textButton="Salvar Kit"
                                         submit
+                                        disabled={!values.kitId}
                                     />
                                     <Box sx={{ height: "100%", overflowY: "auto" }}>
                                         {kitsActived.map((kit, index) => (
