@@ -5,7 +5,7 @@ import { textField } from "../../../style/input"
 import { useEstadosBrasil } from "../../../hooks/useEstadosBrasil"
 
 interface AddressProps {
-    values: SignupValues
+    values: User
     handleChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
 }
 
@@ -21,7 +21,7 @@ export const Address: React.FC<AddressProps> = ({ values, handleChange }) => {
                     label={"CEP"}
                     name={"address.cep"}
                     sx={textField}
-                    value={values.address.cep}
+                    value={values.address?.cep}
                     onChange={handleChange}
                     InputProps={{
                         inputComponent: MaskedInput,
@@ -37,7 +37,7 @@ export const Address: React.FC<AddressProps> = ({ values, handleChange }) => {
                         ...textField,
                         width: "48%",
                     }}
-                    value={values.address.uf}
+                    value={values.address?.uf}
                     InputProps={{
                         sx: { ...textField, height: "12vw" },
                     }}
@@ -65,20 +65,20 @@ export const Address: React.FC<AddressProps> = ({ values, handleChange }) => {
                         </MenuItem>
                     ))}
                 </TextField>
-                {/* <TextField label={"Estado"} name={"uf"} sx={textField} value={values.address.uf} onChange={handleChange} /> */}
+                {/* <TextField label={"Estado"} name={"uf"} sx={textField} value={values.address?.uf} onChange={handleChange} /> */}
             </Box>
             <TextField
                 label={"Cidade"}
                 name={"address.city"}
                 sx={textField}
-                value={values.address.city}
+                value={values.address?.city}
                 onChange={handleChange}
             />
             <TextField
                 label={"Bairro"}
                 name={"address.district"}
                 sx={textField}
-                value={values.address.district}
+                value={values.address?.district}
                 onChange={handleChange}
             />
             <Box sx={{ flexDirection: "row", gap: "3vw" }}>
@@ -86,14 +86,14 @@ export const Address: React.FC<AddressProps> = ({ values, handleChange }) => {
                     label={"Logradouro, Rua, Avenida..."}
                     name={"address.street"}
                     sx={{ ...textField, width: "90%" }}
-                    value={values.address.street}
+                    value={values.address?.street}
                     onChange={handleChange}
                 />
                 <TextField
                     label={"Nº"}
                     name={"address.number"}
                     sx={textField}
-                    value={values.address.number}
+                    value={values.address?.number}
                     onChange={handleChange}
                 />
             </Box>
@@ -101,7 +101,7 @@ export const Address: React.FC<AddressProps> = ({ values, handleChange }) => {
                 label={"Complemento"}
                 name={"address.adjunct"}
                 sx={textField}
-                value={values.address.adjunct}
+                value={values.address?.adjunct}
                 onChange={handleChange}
             />
         </Box>

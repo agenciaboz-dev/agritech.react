@@ -7,7 +7,7 @@ import { colors } from "../../style/colors"
 import avatar from "../../assets/logo/Avatar.png"
 
 interface HeaderProfileProps {
-    values: SignupValues
+    values: User
     handleChange?: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
     style?: SxProps
     view?: boolean

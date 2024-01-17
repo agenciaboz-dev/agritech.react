@@ -34,7 +34,7 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
 
     const [loading, setLoading] = useState(false)
 
-    const initialValues: SignupValues = {
+    const initialValues: User = {
         name: user.name || "",
         cpf: user.cpf || "",
         phone: user.phone || "",
@@ -56,30 +56,38 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
         isAdmin: user.isAdmin,
         approved: user.approved,
         rejected: user.rejected,
+        id: user.id,
 
-        employee: {
-            id: user.employee?.id,
-            rg: user.employee?.rg || "",
-            gender: user.employee?.gender || "",
-            military: user.employee?.military || "",
-            nationality: user.employee?.nationality || "",
-            relationship: user.employee?.relationship || "",
-            voter_card: user.employee?.voter_card || "",
-            work_card: user.employee?.work_card || "",
-            residence: user.employee?.residence || "",
-            bank: {
-                account: user.employee?.bank?.account || "",
-                name: user.employee?.bank?.name || "",
-                agency: user?.employee?.bank?.agency || "",
-                type: user?.employee?.bank?.type || "",
-            },
-        },
-        producer: {
-            cnpj: user.producer?.cnpj || "",
-        },
+        employee: user.employee
+            ? {
+                  id: user.employee?.id,
+                  rg: user.employee?.rg || "",
+                  gender: user.employee?.gender || "",
+                  military: user.employee?.military || "",
+                  nationality: user.employee?.nationality || "",
+                  relationship: user.employee?.relationship || "",
+                  voter_card: user.employee?.voter_card || "",
+                  work_card: user.employee?.work_card || "",
+                  residence: user.employee?.residence || "",
+                  //   bank: {
+                  //       account: user.employee?.bank?.account || "",
+                  //       name: user.employee?.bank?.name || "",
+                  //       agency: user?.employee?.bank?.agency || "",
+                  //       type: user?.employee?.bank?.type || "",
+                  //   },
+              }
+            : undefined,
+        producer: user.producer
+            ? {
+                  cnpj: user.producer?.cnpj || "",
+                  contract: user.producer?.contract,
+                  id: user.producer?.id,
+              }
+            : undefined,
     }
 
-    const handleSubmit = async (values: SignupValues) => {
+    const handleSubmit = async (values: User) => {
+        console.log({ approved: values.approved })
         try {
             const data = {
                 ...values,
@@ -90,13 +98,13 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
                 approved: values.approved,
                 rejected: values.rejected,
                 address: {
-                    cep: unmask(values.address.cep),
-                    city: values.address.city,
-                    adjunct: values.address.adjunct,
-                    district: values.address.district,
-                    number: values.address.number,
-                    street: values.address.street,
-                    uf: estados.find((estado) => estado.value == values.address.uf)!.value,
+                    cep: unmask(values.address?.cep || ""),
+                    city: values.address?.city,
+                    adjunct: values.address?.adjunct,
+                    district: values.address?.district,
+                    number: values.address?.number,
+                    street: values.address?.street,
+                    uf: estados.find((estado) => estado.value == values.address?.uf)!.value,
                     userId: user.id,
                 },
             }
@@ -117,16 +125,17 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
                         residence: data.employee?.residence,
                         userid: user.id,
 
-                        bank: {
-                            account: data.employee?.bank?.account,
-                            type: data.employee?.bank?.type,
-                            agency: data.employee?.bank?.agency,
-                            name: data.employee?.bank?.name,
-                            employeeId: user.employee?.id,
-                        },
+                        // bank: {
+                        //     account: data.employee?.bank?.account,
+                        //     type: data.employee?.bank?.type,
+                        //     agency: data.employee?.bank?.agency,
+                        //     name: data.employee?.bank?.name,
+                        //     employeeId: user.employee?.id,
+                        // },
                     },
+                    producer: null,
                 })
-                console.log("Dados:", data)
+                console.log({ dados_employee: data })
             } else if (data.producer) {
                 console.log(data)
                 io.emit("user:update", { ...data, producer: { cnpj: unmask(data.producer?.cnpj) } })
@@ -170,7 +179,7 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
             io.off("user:find:success")
             io.off("user:find:failed")
         }
-    }, [user])
+    }, [])
 
     return (
         <Box
@@ -227,7 +236,7 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
                                         }}
                                     />
                                     <InfoProfile values={values} handleChange={handleChange} review={false} />
-                                    <Button
+                                    {/* <Button
                                         variant="contained"
                                         type="submit"
                                         sx={{
@@ -247,7 +256,7 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
                                         ) : (
                                             "Salvar"
                                         )}
-                                    </Button>
+                                    </Button> */}
                                 </Box>
                             </Form>
                         )}

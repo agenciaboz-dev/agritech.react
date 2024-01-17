@@ -4,7 +4,7 @@ import { textField } from "../../../style/input"
 import MaskedInput from "../../../components/MaskedInput"
 
 interface ContactProps {
-    values: SignupValues
+    values: User
     handleChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
 }
 

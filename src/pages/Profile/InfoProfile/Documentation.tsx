@@ -5,7 +5,7 @@ import MaskedInput from "../../../components/MaskedInput"
 import { colors } from "../../../style/colors"
 
 interface DocumentationProps {
-    values: SignupValues
+    values: User
     handleChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
 }
 

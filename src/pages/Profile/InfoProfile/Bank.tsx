@@ -4,7 +4,7 @@ import { textField } from "../../../style/input"
 import { useBankAccount } from "../../../hooks/useBankAccount"
 
 interface BankProps {
-    values: SignupValues
+    values: User
     handleChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
 }
 

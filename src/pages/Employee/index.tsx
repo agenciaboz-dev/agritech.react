@@ -4,7 +4,7 @@ import { BottomNavigation } from "../../components/BottomNavigation"
 import { useNavigationList } from "../../hooks/useNavigationList"
 import { NewProducer } from "../../components/NewProducer"
 import { PanelUser } from "./Panel"
-import { MyCalls } from "../Calls/MyCalls"
+import { MyCalls } from "./MyCalls"
 import { TillageDetails } from "../TillageDetails"
 
 interface EmployeeProps {
@@ -22,7 +22,7 @@ export const Employee: React.FC<EmployeeProps> = ({ user }) => {
                 <Route path="/employee" element={<PanelUser user={user} />} />
                 <Route path="/new_producer" element={<NewProducer />} />
                 <Route path="/requests" element={<MyCalls />} />
-                <Route path="/:producerid/tillage" element={<TillageDetails />} />
+                <Route path="/producer/:producerid/:tillageid" element={<TillageDetails />} />
             </ReactRoutes>
         </>
     )

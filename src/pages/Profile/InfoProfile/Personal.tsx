@@ -7,7 +7,7 @@ import MaskedInput from "../../../components/MaskedInput"
 import { useUser } from "../../../hooks/useUser"
 
 interface PersonalProps {
-    values: SignupValues
+    values: User
     handleChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
 }
 

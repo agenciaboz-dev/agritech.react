@@ -211,7 +211,11 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
             addTillage(data.tillage)
             snackbar({ severity: "success", text: "Lavoura adicionada!" })
             setLoadingTillage(false)
-            navigate(`/adm/producer/${producer?.producer?.id}/${data.tillage.id}`)
+            navigate(
+                user?.isAdmin
+                    ? `/adm/producer/${producer?.producer?.id}/${data.tillage.id}`
+                    : `/employee/producer/${producer?.producer?.id}/${data.tillage.id}`
+            )
         })
         io.on("tillage:creation:failed", () => {
             snackbar({ severity: "error", text: "Algo deu errado!" })

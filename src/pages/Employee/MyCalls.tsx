@@ -6,13 +6,12 @@ import { Box, Button, Tab, Tabs } from "@mui/material"
 import { Header } from "../../components/Header"
 import { colors } from "../../style/colors"
 import { tabStyle } from "../../style/tabStyle"
-import { LogsCard } from "./LogsCard"
+import { LogsCard } from "../Calls/LogsCard"
 import { useUser } from "../../hooks/useUser"
 
 interface MyCallsProps {}
 
 export const MyCalls: React.FC<MyCallsProps> = ({}) => {
-    
     const header = useHeader()
     const io = useIo()
 
@@ -79,8 +78,8 @@ export const MyCalls: React.FC<MyCallsProps> = ({}) => {
                     <Tab sx={tabStyle} value="concluded" label="Concluídos" />
                 </Tabs>
                 <Box sx={{ width: "100%", height: "82%", overflow: "auto", gap: "1vw" }}>
-                    {tab === "late" && listUsers?.map((user, index) => <LogsCard key={index} user={user} review />)}
-                    {tab === "waiting" && listUsers?.map((user, index) => <LogsCard key={index} user={user} review />)}
+                    {/* {tab === "late" && listUsers?.map((user, index) => <LogsCard key={index} call={} review />)}
+                    { tab === "waiting" && listUsers?.map((user, index) => <LogsCard key={ index } call={ } review />)} */}
                     {tab === "concluded" && listUsers?.map((user, index) => <p key={index}>Nenhum chamado </p>)}
                 </Box>
             </Box>
