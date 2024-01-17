@@ -15,6 +15,9 @@ import { useProducer } from "../../hooks/useProducer"
 import { dateFrontend } from "../../hooks/useFormattedDate"
 import { CardTeam } from "../../components/Kit/CardTeam"
 import findEmployee from "../../hooks/filterEmployee"
+import { Call } from "../../definitions/call"
+import { useIo } from "../../hooks/useIo"
+import { useSnackbar } from "burgos-snackbar"
 
 interface CallDetailsProps {}
 
@@ -29,17 +32,19 @@ const p_style = {
 }
 
 export const CallDetails: React.FC<CallDetailsProps> = ({}) => {
+    const io = useIo()
     const header = useHeader()
     const navigate = useNavigate()
     const { user } = useUser()
+    const { snackbar } = useSnackbar()
     const { listKits } = useKits()
     const { listUsers } = useUsers()
     const { listTillages } = useProducer()
-    const { listCalls } = useCall()
+    const { listCalls, allCalls, setAllCalls, setCalls } = useCall()
 
     const [open, setOpen] = useState(false)
 
-    const { callid, producerid } = useParams()
+    const { callid } = useParams()
 
     // const producerSelect = findProducer(String(user?.producer?.id))
     const callSelect = listCalls.find((item) => item.id === Number(callid))
@@ -57,6 +62,28 @@ export const CallDetails: React.FC<CallDetailsProps> = ({}) => {
     useEffect(() => {
         header.setTitle(user?.producer ? tillageSelectProd?.name || user.name : tillageSelected?.name || "")
         console.log(kitSelected?.employees)
+    }, [])
+
+    const removeCall = (call: Call) => {
+        setAllCalls(allCalls.filter((item) => item.id !== call.id))
+        setCalls(listCalls.filter((item) => item.id !== call.id))
+    }
+    const cancelCall = (values?: Call) => {
+        io.emit("call:cancel", values)
+    }
+    useEffect(() => {
+        io.on("call:cancel:success", (data: any) => {
+            removeCall(data)
+            snackbar({ severity: "success", text: "Chamado cancelado com sucesso!" })
+        })
+        io.on("call:cancel:failed", () => {
+            snackbar({ severity: "error", text: "Algo deu errado" })
+        })
+
+        return () => {
+            io.off("call:cancel:success")
+            io.off("call:cancel:failed")
+        }
     }, [])
 
     return (
@@ -185,7 +212,14 @@ export const CallDetails: React.FC<CallDetailsProps> = ({}) => {
                         user={user}
                         open={open}
                         setOpen={setOpen}
-                        click={() => navigate("/adm/producer/2/1")}
+                        click={() => {
+                            navigate(
+                                user?.producer
+                                    ? `/producer/tillage/${callSelect?.tillageId}`
+                                    : `/adm/producer/${callSelect?.producerId}/${callSelect?.tillageId}`
+                            )
+                            cancelCall(callSelect)
+                        }}
                     />
                 </Box>
             </Box>

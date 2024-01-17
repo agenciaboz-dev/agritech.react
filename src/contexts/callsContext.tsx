@@ -44,6 +44,7 @@ export const CallProvider: React.FC<CallProviderProps> = ({ children }) => {
     const removeCallApprove = (call: Call) => {
         setCallsPending(listCallsPending.filter((item) => item.id !== call.id))
     }
+ 
     useEffect(() => {
         io.emit("call:list")
 
