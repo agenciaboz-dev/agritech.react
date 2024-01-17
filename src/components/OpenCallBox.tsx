@@ -4,8 +4,7 @@ import { colors } from "../style/colors"
 import { IoIosArrowForward } from "react-icons/io"
 import { Call } from "../definitions/call"
 import { useKits } from "../hooks/useKits"
-import { useUser } from "../hooks/useUser"
-
+import { dateFrontend } from "../hooks/useFormattedDate"
 interface OpenCallBoxProps {
     data: {
         title: string
@@ -111,14 +110,7 @@ export const ProgressCall: React.FC<OpenCallBoxProps> = ({ data, click, tillage,
                 </Box>
                 <Box sx={{ border: "1px solid gray", width: "50%", borderRadius: "2vw", height: "100%", p: "2vw" }}>
                     <p style={{ fontSize: "3vw" }}>Chamado aberto em:</p>
-                    <p style={{ fontSize: "3vw" }}>
-                        {call?.open &&
-                            new Date(call.open).toLocaleDateString("pt-BR", {
-                                day: "2-digit",
-                                month: "2-digit",
-                                year: "numeric",
-                            })}
-                    </p>
+                    <p style={{ fontSize: "3vw" }}>{call?.open && dateFrontend(call?.open)}</p>
                 </Box>
             </Box>
         </Box>

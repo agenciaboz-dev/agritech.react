@@ -12,6 +12,9 @@ import { useKits } from "../../hooks/useKits"
 import { useCall } from "../../hooks/useCall"
 import { useUsers } from "../../hooks/useUsers"
 import { useProducer } from "../../hooks/useProducer"
+import { dateFrontend } from "../../hooks/useFormattedDate"
+import { CardTeam } from "../../components/Kit/CardTeam"
+import findEmployee from "../../hooks/filterEmployee"
 
 interface CallDetailsProps {}
 
@@ -42,6 +45,10 @@ export const CallDetails: React.FC<CallDetailsProps> = ({}) => {
     const callSelect = listCalls.find((item) => item.id === Number(callid))
     const tillageSelectProd = user?.producer?.tillage?.find((item) => item.id === Number(callSelect?.tillageId))
     const tillageSelected = listTillages?.find((item) => item.id === callSelect?.tillageId)
+    const kitSelected = listKits?.find((item) => item.id === callSelect?.kitId)
+    const team = kitSelected?.employees?.map((item) => {
+        return findEmployee(String(item.id))
+    })
 
     const handleClickOpen = () => {
         setOpen(true)
@@ -49,6 +56,7 @@ export const CallDetails: React.FC<CallDetailsProps> = ({}) => {
 
     useEffect(() => {
         header.setTitle(user?.producer ? tillageSelectProd?.name || user.name : tillageSelected?.name || "")
+        console.log(kitSelected?.employees)
     }, [])
 
     return (
@@ -92,7 +100,7 @@ export const CallDetails: React.FC<CallDetailsProps> = ({}) => {
             >
                 <Box
                     style={{
-                        padding: "4vw",
+                        padding: "5vw",
                         width: "100%",
                         flex: 1,
                         backgroundColor: "#fff",
@@ -113,9 +121,9 @@ export const CallDetails: React.FC<CallDetailsProps> = ({}) => {
                         }}
                     >
                         <p>1/4</p>
-                        <Box sx={{ gap: "1vw" }}>
-                            <p style={{ fontSize: "4vw" }}>Chamado em andamento</p>
-                            <p style={{ fontSize: "3vw" }}>12/04/2023</p>
+                        <Box sx={{ gap: "vw" }}>
+                            <p style={{ fontSize: "4.1vw" }}>Chamado em andamento</p>
+                            <p style={{ fontSize: "2.9vw" }}>Aberto em: {dateFrontend(callSelect?.open || "")}</p>
                         </Box>
                         <Button
                             size="small"
@@ -132,13 +140,17 @@ export const CallDetails: React.FC<CallDetailsProps> = ({}) => {
                         </Button>
                     </Box>
                     <p style={{ fontSize: "3vw", textAlign: "justify" }}>
-                        Imperdiet in tempus senectus laoreet consectetur. Quam dui fermentum vulputate sit enim amet vitae
-                        hac massa. Tortor etiam adipiscing justo neque amet senectus. Cum turpis curabitur diam elementum et
-                        arcu. Ac ut ipsum eget viverra consectetur gravida scelerisque enim lectus.
+                        {user?.producer && tillageSelectProd?.comments
+                            ? tillageSelectProd?.comments
+                            : tillageSelected?.comments
+                            ? tillageSelected?.comments
+                            : "Nenhuma observação"}
                     </p>
                     <p style={{ fontSize: "11vw" }}>15:00</p>
-                    <Box sx={{ width: "100%" }}>
-                        <p style={{ fontSize: "3vw" }}>Kit #2</p>
+                    <Box sx={{ width: "100%", gap: "2vw" }}>
+                        <p style={{ fontSize: "3.8vw" }}>
+                            Kit: <span style={{ fontWeight: "bold" }}>{kitSelected?.name}</span>
+                        </p>
                         <p
                             style={{
                                 display: "flex",
@@ -149,20 +161,24 @@ export const CallDetails: React.FC<CallDetailsProps> = ({}) => {
                                 overflowX: "hidden",
                             }}
                         >
-                            aute irure dolor in reprehenderit in voluptate velit esse cillum dfhsgjhf sdhjk
+                            {kitSelected?.description}
                         </p>
-                        <Box sx={{ p: "1vw", marginLeft: "3vw" }}>
+                        <Box sx={{}}>
                             <p style={p_style}>Objetos</p>
-                            <p style={p_style}>1x Item</p>
-                            <p style={p_style}>2x Ipsum</p>
+                            {kitSelected?.objects?.map((item, index) => (
+                                <Box key={index}>
+                                    <p style={p_style}>
+                                        {item.quantity}x {item.name}
+                                    </p>
+                                </Box>
+                            ))}
                         </Box>
                     </Box>
                     <Box sx={{ gap: "2vw" }}>
                         <TitleComponents title="Responsáveis" />
-                        <Box sx={{ marginLeft: "3vw", gap: "1vw" }}>
-                            <p style={p_style}>List Item</p>
-                            <p style={p_style}>Supporting line text lorem ipsum dolor sit amet, consectetur.</p>
-                        </Box>
+                        {team?.map((item, index) => (
+                            <CardTeam key={index} employee={item} />
+                        ))}
                     </Box>
                     <DialogConfirm
                         data={modal}

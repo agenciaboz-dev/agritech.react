@@ -51,6 +51,7 @@ export const AddKit: React.FC<AddKitProps> = ({}) => {
         objects: [],
         employees: [],
         calls: [],
+        
     }
 
     const submitKit = async (values: Kit) => {

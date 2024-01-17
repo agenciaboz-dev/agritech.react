@@ -5,9 +5,6 @@ import { TitleComponents } from "../../../components/TitleComponents"
 import { textField } from "../../../style/input"
 import { useDisclosure } from "@mantine/hooks"
 import { ModalObject } from "../../../components/Kit/ModalObject"
-import { useIo } from "../../../hooks/useIo"
-import listEmployees from "../../../hooks/listEmployees"
-import { Form, Formik } from "formik"
 import { NewObject } from "../../../definitions/object"
 import { ModalEmployee } from "../../../components/Kit/ModalEmployee"
 import { CardTeam } from "../../../components/Kit/CardTeam"
@@ -30,7 +27,6 @@ interface ContentKitProps {
 export const ContentKit: React.FC<ContentKitProps> = ({ edit, values, handleChange, data }) => {
     const [image, setImage] = useState<File>()
     const header = useHeader()
-    const io = useIo()
 
     const [openedModalObjects, { open, close }] = useDisclosure(false)
     const [openedModalEmployees, { open: openEmployees, close: closeEmployees }] = useDisclosure(false)
