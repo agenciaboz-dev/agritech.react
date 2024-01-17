@@ -34,10 +34,35 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
     const [loading, setLoading] = useState(false)
     const [producerId, setProducerId] = useState<number | null>(null)
     const [tillageId, setTillageId] = useState<number | null>(null)
-    const [kitId, setKitId] = useState<number | null>(null)
     const [inputValue, setInputValue] = useState("")
-    const [tillageValue, setTillageValue] = useState("")
     const [kitValue, setKitValue] = useState("")
+
+    //Render options => user.producer
+    const producerTillagesList = listTillages.filter((item) => item.producerId === user.producer?.id)
+    const [tillagesProducer, setTillagesProducer] = useState<{ id: number; name: string }[]>(
+        user.producer?.tillage?.map((tillage) => ({
+            id: tillage.id,
+            name: tillage.name,
+            call: tillage.call,
+        })) || []
+    )
+
+    useEffect(() => {
+        setTillagesProducer(
+            producerTillagesList.map((tillage) => ({
+                id: tillage.id,
+                name: tillage.name,
+                call: tillage.call,
+            })) || []
+        )
+    }, [listTillages])
+
+    //Render options => user.employee and user.isAdmin
+    const kits =
+        listKits?.map((item) => ({
+            id: item.id || 0,
+            name: item.name,
+        })) || []
 
     const producers =
         listProducers()?.map((item) => ({
@@ -45,22 +70,9 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
             name: item.name,
         })) || []
 
-    const tillagesProducer =
-        user.producer?.tillage?.map((tillage) => ({
-            id: tillage.id,
-            name: tillage.name,
-            call: tillage.call,
-        })) || []
-
-    const kits =
-        listKits?.map((item) => ({
-            id: item.id || 0,
-            name: item.name,
-        })) || []
-
     const [tillages, setTillages] = useState<{ id: number; name: string }[]>([])
-
     const producerSelect = listProducers()?.find((item) => item.producer?.id === producerId)
+
     useEffect(() => {
         console.log(
             producerSelect?.producer?.tillage?.length !== 0
@@ -78,9 +90,10 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                 call: tillage.call,
             })) || []
         )
+        console.log(tillagesProducer)
     }, [producerId])
-    console.log(tillagesProducer)
 
+    //Open Call
     const initialValues: CreateCall = {
         approved: user.isAdmin ? true : false,
         open: new Date().toLocaleDateString("pt-br"),
@@ -215,9 +228,11 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                                             renderOption={(props, option) => (
                                                 <li
                                                     {...props}
-                                                    style={{
-                                                        // backgroundColor: option.approved ? "corDesejada" : "corPadrao",
-                                                    }}
+                                                    style={
+                                                        {
+                                                            // backgroundColor: option.approved ? "corDesejada" : "corPadrao",
+                                                        }
+                                                    }
                                                 >
                                                     {option.name}
                                                 </li>
