@@ -83,7 +83,9 @@ export const CallDetails: React.FC<CallDetailsProps> = ({}) => {
             navigate(
                 user?.producer
                     ? `/producer/tillage/${callSelect?.tillageId}`
-                    : `/adm/producer/${callSelect?.producerId}/${callSelect?.tillageId}`
+                    : user?.isAdmin
+                    ? `/adm/producer/${callSelect?.producerId}/${callSelect?.tillageId}`
+                    : `/employee/producer/${callSelect?.producerId}/${callSelect?.tillageId}`
             )
             close()
         })
@@ -156,7 +158,9 @@ export const CallDetails: React.FC<CallDetailsProps> = ({}) => {
                     location={
                         user?.producer
                             ? `/producer/tillage/${callSelect?.tillageId}`
-                            : `/adm/producer/${callSelect?.producerId}/${callSelect?.tillageId}`
+                            : user?.isAdmin
+                            ? `/adm/producer/${callSelect?.producerId}/${callSelect?.tillageId}`
+                            : `/employee/producer/${callSelect?.producerId}/${callSelect?.tillageId}`
                     }
                 />
             </Box>

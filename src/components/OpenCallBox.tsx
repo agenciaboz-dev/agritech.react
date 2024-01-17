@@ -78,7 +78,7 @@ export const OpenCallBox: React.FC<OpenCallBoxProps> = ({ data, click, callStatu
         </Box>
     )
 }
-export const ProgressCall: React.FC<OpenCallBoxProps> = ({ data, click, tillage, call }) => {
+export const ProgressCall: React.FC<OpenCallBoxProps> = ({ data, click, call }) => {
     const { listKits } = useKits()
 
     const callSelected = listKits.find((item) => item.id === call?.kitId)

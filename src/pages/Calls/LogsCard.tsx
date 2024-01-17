@@ -58,7 +58,13 @@ export const LogsCard: React.FC<LogsCardProps> = ({ review, call, variant }) => 
                 </Group>
             ) : (
                 <IconButton
-                    onClick={() => navigate(account.user?.isAdmin ? `/adm/calls/${call?.id}` : `/call/1`)}
+                    onClick={() =>
+                        navigate(
+                            account.user?.isAdmin
+                                ? `/adm/calls/${call?.id}`
+                                : `/employee/producer/${call?.producerId}/${call?.tillageId}`
+                        )
+                    }
                     // onClick={() => navigate(account.user?.isAdmin ? `/adm/call/${user?.id}/report` : `/call/1/report`)}
                 >
                     <IoIosArrowForward style={{ width: "5vw", height: "5vw" }} />

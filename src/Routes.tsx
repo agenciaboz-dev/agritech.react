@@ -45,7 +45,7 @@ export const Routes: React.FC<RoutesProps> = ({}) => {
                     {user.employee ? (
                         <>
                             <Route path="/employee/*" element={<Employee user={user} />} />
-                            <Route path="/producer/:producerid/:tillageid" element={<TillageDetails />} />
+                            {/* <Route path="/producer/:producerid/:tillageid" element={<TillageDetails />} /> */}
                         </>
                     ) : (
                         <>

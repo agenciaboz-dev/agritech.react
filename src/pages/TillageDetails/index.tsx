@@ -153,7 +153,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                             ? "/producer/tillages"
                             : user?.isAdmin
                             ? `/adm/producer/${producerid}`
-                            : `/employee/`
+                            : `/employee/producer/${producerid}`
                     }
                 />
             </Box>
@@ -254,7 +254,11 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                                 user={user}
                                 click={() =>
                                     navigate(
-                                        user?.producer !== null ? `/producer/call/${call?.id}` : `/adm/call/${call?.id}`
+                                        user?.producer !== null
+                                            ? `/producer/call/${call?.id}`
+                                            : user.isAdmin
+                                            ? `/adm/call/${call?.id} `
+                                            : `/employee/call/${call?.id} `
                                     )
                                 }
                                 data={progress}

@@ -93,7 +93,11 @@ export const ListTillages: React.FC<ListTillagesProps> = ({}) => {
                                 <CardTillage
                                     key={index}
                                     tillage={tillage}
-                                    location={`/adm/producer/${producerSelect.producer?.id}/${tillage.id}`}
+                                    location={
+                                        user?.isAdmin
+                                            ? `/adm/producer/${producerSelect.producer?.id}/${tillage.id}`
+                                            : `/employee/producer/${producerSelect.producer?.id}/${tillage.id}`
+                                    }
                                 />
                             ))
                         ) : (

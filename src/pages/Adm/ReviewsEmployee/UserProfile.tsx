@@ -42,7 +42,7 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
               setProfile(user)
           }, [listUsers, userId])
 
-    const valuesUser: SignupValues = {
+    const valuesUser: User = {
         name: profile?.name || "",
         cpf: profile?.cpf || "",
         phone: profile?.phone || "",
@@ -60,6 +60,7 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
             uf: profile?.address?.uf || "",
             adjunct: profile?.address?.adjunct || "",
         },
+        id: profile?.id || 0,
 
         isAdmin: false,
         approved: profile?.approved || false,
@@ -91,7 +92,7 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
         },
     }
 
-    const handleApprove = async (valuesUser: SignupValues) => {
+    const handleApprove = async (valuesUser: User) => {
         const data = {
             ...valuesUser,
             approved: true,
@@ -102,7 +103,7 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
 
         io.emit("user:approve", data.id)
     }
-    const handleReject = async (valuesUser: SignupValues) => {
+    const handleReject = async (valuesUser: User) => {
         const data = {
             ...valuesUser,
             approved: false,
@@ -187,9 +188,9 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
                             sx={{ bgcolor: colors.button, borderRadius: "5vw", textTransform: "none", fontSize: "3vw" }}
                             onClick={() =>
                                 navigate(
-                                    producerSelect !== null
+                                    producerSelect !== null && profile?.isAdmin
                                         ? `/adm/producer/${producerSelect[0].producer?.id}`
-                                        : `/adm/employee/`
+                                        : `/employee/producer/${producerSelect[0].producer?.id}`
                                 )
                             }
                         >

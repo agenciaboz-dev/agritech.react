@@ -8,6 +8,7 @@ import { useHeader } from "../../../hooks/useHeader"
 import { useUsers } from "../../../hooks/useUsers"
 import { CardUser } from "../../../components/CardUser"
 import findProducer from "../../../hooks/filterProducer"
+import { useUser } from "../../../hooks/useUser"
 
 interface ListProducerProps {
     user: User
@@ -16,6 +17,7 @@ interface ListProducerProps {
 export const ListProducer: React.FC<ListProducerProps> = ({ user }) => {
     const navigate = useNavigate()
     const header = useHeader()
+    const profile = useUser()
 
     const team = user.employee?.producers?.map((item) => {
         return findProducer(String(item.id))
@@ -74,7 +76,13 @@ export const ListProducer: React.FC<ListProducerProps> = ({ user }) => {
                                   <CardUser
                                       user={user}
                                       key={user.id}
-                                      location={user.employee ? `/adm/calendar/${user.id}` : `/adm/profile/${user.id}`}
+                                      location={
+                                          profile.user?.isAdmin
+                                              ? user.employee
+                                                  ? `/adm/calendar/${user.id}`
+                                                  : `/adm/profile/${user.id}`
+                                              : `/employee/profile/${user.id}`
+                                      }
                                   />
                               ))
                             : "Nenhum produtor encontrado"}
