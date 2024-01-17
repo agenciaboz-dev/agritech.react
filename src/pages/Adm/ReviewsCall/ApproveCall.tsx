@@ -54,6 +54,7 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
 
     const producerSelected = listUsers?.find((item) => item.producer?.id === findCall?.producerId)
     const tillageSelected = producerSelected?.producer?.tillage?.find((item) => item.id === findCall?.tillageId)
+    const kitsActived = listKits.filter((item) => item.active)
 
     const initialValues: ApprovedCall = {
         id: Number(callid),
@@ -166,12 +167,12 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
                                         submit
                                     />
                                     <Box sx={{ height: "100%", overflowY: "auto" }}>
-                                        {listKits.map((kit, index) => (
+                                        {kitsActived.map((kit, index) => (
                                             <Accordion
                                                 elevation={0}
                                                 key={index}
                                                 expanded={expanded === String(index)}
-                                                onChange={handleChange(String(index))}
+                                                onChange={expandendChange(String(index))}
                                             >
                                                 <AccordionSummary aria-controls="panel1d-content" id={String(index)}>
                                                     <Typography>{kit.name}</Typography>
@@ -181,7 +182,7 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
                                                         checked={values.kitId === kit.id}
                                                         onChange={() => {
                                                             setFieldValue("kitId", kit.id)
-                                                            expandendChange
+                                                            handleChange
                                                         }}
                                                     />
                                                 </AccordionSummary>

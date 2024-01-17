@@ -84,7 +84,7 @@ export const ReviewsCall: React.FC<ReviewsCallProps> = ({ user }) => {
                         Ações em massa
                     </Button>
                 </Box>
-                <Box sx={{ position: "relative", zIndex: 0, bottom: "11vw", gap: "3vw" }}>
+                <Box sx={{ position: "relative", zIndex: 0, bottom: "11vw", gap: "3vw", height: "90%" }}>
                     <Tabs
                         value={tab}
                         onChange={changeTab}
