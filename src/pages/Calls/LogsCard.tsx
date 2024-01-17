@@ -1,8 +1,5 @@
 import { Box, IconButton } from "@mui/material"
 import React, { useEffect } from "react"
-import green from "../../assets/icons/green.svg"
-import yellow from "../../assets/icons/yellow.svg"
-import blue from "../../assets/icons/blue.svg"
 import { ActionIcon, Group, Menu } from "@mantine/core"
 import { IconDots } from "@tabler/icons-react"
 import { IoIosArrowForward } from "react-icons/io"
@@ -69,7 +66,10 @@ export const LogsCard: React.FC<LogsCardProps> = ({ review, call, variant }) => 
             )}
         </Box>
     ) : (
-        <Box sx={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+        <Box
+            sx={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}
+            onClick={() => navigate(`/producer/tillage/${tillageSelected?.id}`)}
+        >
             <Box sx={{ flexDirection: "column" }}>
                 <Box sx={{ flexDirection: "row", alignItems: "center", gap: "2vw" }}>
                     <p style={{ fontSize: "3vw", color: "gray" }}>11:00 - 13:00</p>

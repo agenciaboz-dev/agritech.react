@@ -84,7 +84,7 @@ export const ReviewsCall: React.FC<ReviewsCallProps> = ({ user }) => {
                         Ações em massa
                     </Button>
                 </Box>
-                <Box sx={{ position: "relative", zIndex: 0, bottom: "11vw", gap: "3vw", height: "90%" }}>
+                <Box sx={{ position: "relative", zIndex: 0, bottom: "11vw", gap: "3vw", height: "92%" }}>
                     <Tabs
                         value={tab}
                         onChange={changeTab}
@@ -98,7 +98,7 @@ export const ReviewsCall: React.FC<ReviewsCallProps> = ({ user }) => {
                         <Tab sx={tabStyle} value="pending" label="Pendentes" />
                         <Tab sx={tabStyle} value="calls" label="Em andamento" />
                     </Tabs>
-                    <Box sx={{ width: "100%", height: "78%", overflow: "auto", gap: "1vw" }}>
+                    <Box sx={{ width: "100%", height: "100%", overflow: "auto", gap: "1vw" }}>
                         {tab === "pending" && listCallsPending.length !== 0
                             ? listCallsPending?.map((call, index) => <LogsCard key={index} call={call} review />)
                             : tab === "pending" && "Nenhum chamado pendente"}

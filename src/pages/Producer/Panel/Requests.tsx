@@ -85,26 +85,28 @@ export const Requests: React.FC<RequestsProps> = ({}) => {
                         Ações em massa
                     </Button>
                 </Box>
-                <Tabs
-                    value={tab}
-                    onChange={changeTab}
-                    textColor="primary"
-                    indicatorColor="primary"
-                    aria-label="tabs"
-                    variant="scrollable"
-                    scrollButtons="auto"
-                    allowScrollButtonsMobile
-                >
-                    <Tab sx={tabStyle} value="pending" label="Pendentes" />
-                    <Tab sx={tabStyle} value="calls" label="Em andamento" />
-                </Tabs>
-                <Box sx={{ width: "100%", height: "78%", overflow: "auto", gap: "1vw" }}>
-                    {tab === "pending" && listCallsPending.length !== 0
-                        ? callsPending?.map((call, index) => <LogsCard key={index} call={call} variant />)
-                        : tab === "pending" && "Nenhum chamado pendente"}
-                    {tab === "calls" && listCalls.length !== 0
-                        ? callsApprove?.map((call, index) => <LogsCard key={index} call={call} variant />)
-                        : tab === "calls" && "Nenhum chamado aberto"}
+                <Box sx={{ position: "relative", zIndex: 0, bottom: "11vw", gap: "3vw", height: "92%" }}>
+                    <Tabs
+                        value={tab}
+                        onChange={changeTab}
+                        textColor="primary"
+                        indicatorColor="primary"
+                        aria-label="tabs"
+                        variant="scrollable"
+                        scrollButtons="auto"
+                        allowScrollButtonsMobile
+                    >
+                        <Tab sx={tabStyle} value="pending" label="Pendentes" />
+                        <Tab sx={tabStyle} value="calls" label="Em andamento" />
+                    </Tabs>
+                    <Box sx={{ width: "100%", height: "78%", overflow: "auto", gap: "1vw" }}>
+                        {tab === "pending" && listCallsPending.length !== 0
+                            ? callsPending?.map((call, index) => <LogsCard key={index} call={call} variant />)
+                            : tab === "pending" && "Nenhum chamado pendente"}
+                        {tab === "calls" && listCalls.length !== 0
+                            ? callsApprove?.map((call, index) => <LogsCard key={index} call={call} variant />)
+                            : tab === "calls" && "Nenhum chamado aberto"}
+                    </Box>
                 </Box>
             </Box>
         </Box>

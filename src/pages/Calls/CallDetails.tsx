@@ -1,4 +1,4 @@
-import { Box, Button, IconButton } from "@mui/material"
+import { Box, Button, CircularProgress, IconButton } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { useHeader } from "../../hooks/useHeader"
 import { colors } from "../../style/colors"
@@ -18,6 +18,8 @@ import findEmployee from "../../hooks/filterEmployee"
 import { Call } from "../../definitions/call"
 import { useIo } from "../../hooks/useIo"
 import { useSnackbar } from "burgos-snackbar"
+import { Modal } from "@mantine/core"
+import { useDisclosure } from "@mantine/hooks"
 
 interface CallDetailsProps {}
 
@@ -43,6 +45,7 @@ export const CallDetails: React.FC<CallDetailsProps> = ({}) => {
     const { listCalls, allCalls, setAllCalls, setCalls } = useCall()
 
     const [open, setOpen] = useState(false)
+    const [opened, { open: openCancelModal, close }] = useDisclosure(false)
 
     const { callid } = useParams()
 
@@ -69,12 +72,20 @@ export const CallDetails: React.FC<CallDetailsProps> = ({}) => {
         setCalls(listCalls.filter((item) => item.id !== call.id))
     }
     const cancelCall = (values?: Call) => {
+        setOpen(false)
         io.emit("call:cancel", values)
+        openCancelModal()
     }
     useEffect(() => {
         io.on("call:cancel:success", (data: any) => {
             removeCall(data)
             snackbar({ severity: "success", text: "Chamado cancelado com sucesso!" })
+            navigate(
+                user?.producer
+                    ? `/producer/tillage/${callSelect?.tillageId}`
+                    : `/adm/producer/${callSelect?.producerId}/${callSelect?.tillageId}`
+            )
+            close()
         })
         io.on("call:cancel:failed", () => {
             snackbar({ severity: "error", text: "Algo deu errado" })
@@ -95,6 +106,40 @@ export const CallDetails: React.FC<CallDetailsProps> = ({}) => {
                 flexDirection: "column",
             }}
         >
+            <Modal
+                color="#000"
+                opened={opened}
+                onClose={close}
+                size={"sm"}
+                withCloseButton={false}
+                centered
+                style={{ backgroundColor: "transparent" }}
+                styles={{
+                    body: {
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "6vw",
+                        width: "100%",
+                        height: "100%",
+                        alignItems: "center",
+                        justifyContent: "center",
+                    },
+                    root: {
+                        width: "100%",
+
+                        height: "100%",
+                        maxHeight: "75%",
+                    },
+                    content: {
+                        width: "100%",
+                        height: "100%",
+                        backgroundColor: "transparent",
+                        boxShadow: "none",
+                    },
+                }}
+            >
+                <CircularProgress sx={{ color: colors.text.white, width: "15vw", height: "15vw" }} />
+            </Modal>
             <Box
                 sx={{
                     width: "100%",
@@ -213,11 +258,6 @@ export const CallDetails: React.FC<CallDetailsProps> = ({}) => {
                         open={open}
                         setOpen={setOpen}
                         click={() => {
-                            navigate(
-                                user?.producer
-                                    ? `/producer/tillage/${callSelect?.tillageId}`
-                                    : `/adm/producer/${callSelect?.producerId}/${callSelect?.tillageId}`
-                            )
                             cancelCall(callSelect)
                         }}
                     />
