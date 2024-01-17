@@ -27,7 +27,6 @@ export const ListTillages: React.FC<ListTillagesProps> = ({}) => {
         header.setTitle(user?.producer !== null ? "Minhas lavouras" : "Lavouras")
         user?.employee && setProducerid(Number(producerid))
     }, [])
-
     return (
         <Box
             sx={{
@@ -48,7 +47,16 @@ export const ListTillages: React.FC<ListTillagesProps> = ({}) => {
                     flexDirection: "row",
                 }}
             >
-                <Header back location="../" />
+                <Header
+                    back
+                    location={
+                        user?.producer
+                            ? "/producer/"
+                            : user?.isAdmin
+                            ? `/adm/profile/${producerSelect.id}`
+                            : `/employee/profile/${producerSelect.id}`
+                    }
+                />
             </Box>
             <Box
                 style={{

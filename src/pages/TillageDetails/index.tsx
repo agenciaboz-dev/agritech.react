@@ -205,7 +205,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                     >
                         {!user?.producer ? tillageSelect?.name : tillageSelectProd?.name}
                     </p>
-                    {call?.approved && (
+                    {/* {call?.approved && (
                         <IoIosArrowForward
                             color="white"
                             size={"6vw"}
@@ -215,7 +215,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                                 )
                             }
                         />
-                    )}
+                    )} */}
                 </Box>
                 <Box sx={{ flexDirection: "row", gap: "2vw", width: "100%", overflow: "auto", p: "3vw 4vw 8vw" }}>
                     {images.map((item, index) => (
@@ -272,7 +272,11 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                         tab === "call" && (
                             <ProgressCall
                                 user={user}
-                                click={() => navigate("/callDetail")}
+                                click={() =>
+                                    navigate(
+                                        user?.producer !== null ? `/producer/call/${call?.id}` : `/adm/call/${call?.id}`
+                                    )
+                                }
                                 data={progress}
                                 call={call}
                                 tillage={tillageSelectProd}

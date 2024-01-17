@@ -10,6 +10,8 @@ import { useUser } from "../../hooks/useUser"
 import findProducer from "../../hooks/filterProducer"
 import { useKits } from "../../hooks/useKits"
 import { useCall } from "../../hooks/useCall"
+import { useUsers } from "../../hooks/useUsers"
+import { useProducer } from "../../hooks/useProducer"
 
 interface CallDetailsProps {}
 
@@ -28,22 +30,25 @@ export const CallDetails: React.FC<CallDetailsProps> = ({}) => {
     const navigate = useNavigate()
     const { user } = useUser()
     const { listKits } = useKits()
+    const { listUsers } = useUsers()
+    const { listTillages } = useProducer()
     const { listCalls } = useCall()
 
     const [open, setOpen] = useState(false)
 
-    const { callid,producerId } = useParams()
+    const { callid } = useParams()
 
     // const producerSelect = findProducer(String(user?.producer?.id))
     const callSelect = listCalls.find((item) => item.id === Number(callid))
     const tillageSelectProd = user?.producer?.tillage?.find((item) => item.id === Number(callSelect?.tillageId))
+    const tillageSelected = listTillages?.find((item) => item.id === callSelect?.tillageId)
 
     const handleClickOpen = () => {
         setOpen(true)
     }
 
     useEffect(() => {
-        header.setTitle(user?.producer ? tillageSelectProd?.name || user.name : "Produtor Tal")
+        header.setTitle(user?.producer ? tillageSelectProd?.name || user.name : tillageSelected?.name || "")
     }, [])
 
     return (
