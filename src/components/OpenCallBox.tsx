@@ -4,6 +4,7 @@ import { colors } from "../style/colors"
 import { IoIosArrowForward } from "react-icons/io"
 import { Call } from "../definitions/call"
 import { useKits } from "../hooks/useKits"
+import { useUser } from "../hooks/useUser"
 
 interface OpenCallBoxProps {
     data: {
@@ -16,9 +17,10 @@ interface OpenCallBoxProps {
     callStatus?: boolean
     call?: Call
     tillage?: Tillage
+    user: User | null
 }
 
-export const OpenCallBox: React.FC<OpenCallBoxProps> = ({ data, click, callStatus, call }) => {
+export const OpenCallBox: React.FC<OpenCallBoxProps> = ({ data, click, callStatus, call, user }) => {
     return !call?.approved && callStatus ? (
         <Box
             sx={{
@@ -32,10 +34,27 @@ export const OpenCallBox: React.FC<OpenCallBoxProps> = ({ data, click, callStatu
         >
             <Box sx={{ gap: "3vw" }}>
                 <p style={{ fontSize: "4.5vw", fontWeight: "600" }}>Aguardando aprovação</p>
-                <p style={{ fontSize: "3.2vw", textAlign: "justify" }}>
-                    Agora seu chamado será analisado por nossa equipe e em breve te retornaremos um feedback de aprovado ou
-                    reprovado.
-                </p>
+                {user && user.producer ? (
+                    <p style={{ fontSize: "3.2vw", textAlign: "justify" }}>
+                        Agora seu chamado será analisado por nossa equipe e em breve te retornaremos um feedback de aprovado
+                        ou reprovado.
+                    </p>
+                ) : user && user.isAdmin ? (
+                    <>
+                        <p style={{ fontSize: "3.2vw", textAlign: "justify" }}>
+                            Este chamado está em análise nesse momento. Faça alguma ação para que o cliente possa ter
+                            feedback.
+                        </p>
+                        <p
+                            style={{ fontSize: "3.2vw", textAlign: "end", width: "100%", color: colors.primary }}
+                            onClick={click}
+                        >
+                            {data.buttonTitle}
+                        </p>
+                    </>
+                ) : (
+                    <p style={{ fontSize: "3.2vw", textAlign: "justify" }}>Este chamado está em análise nesse momento.</p>
+                )}
             </Box>
         </Box>
     ) : (

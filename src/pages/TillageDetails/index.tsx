@@ -41,6 +41,11 @@ const progress = {
         "Abra um chamada para que nossa equipe encaminhe-se até o local Lavoura 1#, o prazo minino do chamado é de XX Horas segundo o contrato vigente.",
     hour: "20:00",
 }
+const approveCall = {
+    title: "Deseja aprovar o chamado?",
+    submitTitle: "Sim, continuar",
+    cancelTitle: "Não, cancelar",
+}
 
 export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
     const io = useIo()
@@ -52,17 +57,20 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
 
     const images = useArray().newArray(5)
     const [open, setOpen] = useState(false)
+    const [openApproved, setOpenApproved] = useState(false)
     const [loading, setLoading] = useState(false)
     const [variant, setVariant] = useState(false)
     const { producerid, tillageid } = useParams()
 
     const [call, setCall] = useState<Call>()
     //only producer
-    const { listTillages, setProducerid, tillageUpdate } = useProducer()
+    const [tillageSelectProd, setTillageSelectProd] = useState<Tillage>()
+    const [tillageSelect, setTillageSelect] = useState<Tillage>()
+    const { listTillages, setProducerid } = useProducer()
 
     // //only employee and adm
     const producerSelect = findProducer(producerid || "")
-    const tillageSelectProd = user?.producer?.tillage?.find((item) => item.id === Number(tillageid))
+
     const [callStatus, setCallStatus] = useState(false)
 
     const [tab, setTab] = React.useState("call")
@@ -70,6 +78,17 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
         setTab(newValue)
     }
 
+    //retrieve name of newly created tillage
+    useEffect(() => {
+        const findTillage = listTillages.find((item) => item.id === Number(tillageid))
+        setTillageSelectProd(findTillage)
+    }, [listTillages, tillageid])
+    useEffect(() => {
+        const findTillage = listTillages.find((item) => item.id === Number(tillageid))
+        setTillageSelect(findTillage)
+    }, [listTillages, tillageid])
+
+    //
     useEffect(() => {
         const callTillage = allCalls.filter((item) => item.tillageId === Number(tillageid))
         callTillage.length === 0 ? setCallStatus(false) : setCallStatus(true)
@@ -83,7 +102,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
         approved: user?.isAdmin ? true : false,
         open: new Date().toLocaleDateString("pt-br"),
         comments: "",
-        producerId: user?.producer ? user.producer.id || 0 : 0,
+        producerId: user?.producer ? user.producer.id || 0 : Number(producerid),
         tillageId: tillageSelectProd?.id || 0,
         kitId: undefined,
         userId: Number(user?.id),
@@ -96,7 +115,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
     }
 
     useEffect(() => {
-        header.setTitle(!producerSelect ? `Informações` : "Lavoura")
+        header.setTitle(!producerSelect ? `Informações` : producerSelect.name)
         setProducerid(Number(producerid))
     }, [producerSelect])
 
@@ -149,7 +168,13 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
             >
                 <Header
                     back
-                    location={user?.producer !== null ? "/producer/tillages" : user?.isAdmin ? `/adm/` : `/employee/`}
+                    location={
+                        user?.producer !== null
+                            ? "/producer/tillages"
+                            : user?.isAdmin
+                            ? `/adm/producer/${producerid}`
+                            : `/employee/`
+                    }
                 />
             </Box>
             <Box
@@ -178,7 +203,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                             fontWeight: "bold",
                         }}
                     >
-                        {!user?.producer ? tillageUpdate && listTillages[0].name : tillageSelectProd?.name}
+                        {!user?.producer ? tillageSelect?.name : tillageSelectProd?.name}
                     </p>
                     {call?.approved && (
                         <IoIosArrowForward
@@ -236,10 +261,17 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                         <Tab sx={{ ...tabStyle, width: "50%" }} value="call" label="Chamado" />
                     </Tabs>
                     {tab === "call" && (!call?.approved || !callStatus) ? (
-                        <OpenCallBox click={handleClickOpen} data={content} callStatus={callStatus} call={call} />
+                        <OpenCallBox
+                            click={handleClickOpen}
+                            data={content}
+                            callStatus={callStatus}
+                            call={call}
+                            user={user}
+                        />
                     ) : (
                         tab === "call" && (
                             <ProgressCall
+                                user={user}
                                 click={() => navigate("/callDetail")}
                                 data={progress}
                                 call={call}
@@ -258,6 +290,19 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                             handleSubmit(initialValues)
                         }}
                     />
+                    {user?.isAdmin && (
+                        <DialogConfirm
+                            user={user}
+                            open={openApproved}
+                            setOpen={setOpenApproved}
+                            data={approveCall}
+                            click={() => {
+                                setVariant(true)
+                                setOpen(false)
+                                handleSubmit(initialValues)
+                            }}
+                        />
+                    )}
                 </Box>
             </Box>
         </Box>

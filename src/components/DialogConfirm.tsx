@@ -17,7 +17,7 @@ interface DialogConfirmProps {
     user?: User | null
     data: {
         title: string
-        content: string
+        content?: string
         submitTitle: string
         cancelTitle?: string
     }
