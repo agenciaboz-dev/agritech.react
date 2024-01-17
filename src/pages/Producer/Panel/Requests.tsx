@@ -8,6 +8,7 @@ import { LogsCard } from "../../Calls/LogsCard"
 import { useCall } from "../../../hooks/useCall"
 import { useIo } from "../../../hooks/useIo"
 import { useUser } from "../../../hooks/useUser"
+import { Call } from "../../../definitions/call"
 
 interface RequestsProps {}
 
@@ -16,10 +17,11 @@ export const Requests: React.FC<RequestsProps> = ({}) => {
     const io = useIo()
     const { user } = useUser()
     const { listCallsPending, listCalls } = useCall()
-    const callsPending = listCallsPending.filter((item) => item.producerId === user?.producer?.id)
+    const [callsPending, setCallsPending] = useState<Call[]>([])
+
     const callsApprove = listCalls.filter((item) => item.producerId === user?.producer?.id)
 
-    const [tab, setTab] = useState("pending")
+    const [tab, setTab] = useState("calls")
     const changeTab = (event: React.SyntheticEvent, newValue: string) => {
         setTab(newValue)
     }
@@ -27,6 +29,9 @@ export const Requests: React.FC<RequestsProps> = ({}) => {
     useEffect(() => {
         header.setTitle("Chamados")
     }, [])
+    useEffect(() => {
+        setCallsPending(listCallsPending.filter((item) => item.producerId === user?.producer?.id))
+    }, [listCallsPending])
 
     return (
         <Box
@@ -99,7 +104,7 @@ export const Requests: React.FC<RequestsProps> = ({}) => {
                         <Tab sx={tabStyle} value="pending" label="Pendentes" />
                         <Tab sx={tabStyle} value="calls" label="Em andamento" />
                     </Tabs>
-                    <Box sx={{ width: "100%", height: "78%", overflow: "auto", gap: "1vw" }}>
+                    <Box sx={{ width: "100%", height: "100%", overflow: "auto", gap: "1vw" }}>
                         {tab === "pending" && listCallsPending.length !== 0
                             ? callsPending?.map((call, index) => <LogsCard key={index} call={call} variant />)
                             : tab === "pending" && "Nenhum chamado pendente"}

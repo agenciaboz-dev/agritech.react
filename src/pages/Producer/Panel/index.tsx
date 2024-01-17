@@ -1,4 +1,4 @@
-import { Box, IconButton } from "@mui/material"
+import { Box, Button, IconButton } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { colors } from "../../../style/colors"
 import drone from "../../../assets/logo/droneIcon.png"
@@ -11,6 +11,8 @@ import { useSnackbar } from "burgos-snackbar"
 import { useMenuDrawer } from "../../../hooks/useMenuDrawer"
 import AddIcon from "@mui/icons-material/Add"
 import { useNavigate } from "react-router-dom"
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos"
+import { CardTillage } from "../../../components/CardTillage"
 
 interface PanelUserProps {
     user: User
@@ -103,6 +105,64 @@ export const PanelUser: React.FC<PanelUserProps> = ({ user }) => {
                         gap: "10vw",
                     }}
                 >
+                    <Box sx={{ gap: "2vw" }}>
+                        <p
+                            style={{
+                                color: colors.text.black,
+                                fontSize: "4.5vw",
+                                fontFamily: "MalgunGothic2",
+                                textAlign: "left",
+                            }}
+                        >
+                            Lavouras Recentes
+                        </p>
+                        <Box style={{ width: "100%" }}>
+                            {user.producer?.tillage?.length !== 0 &&
+                                user.producer?.tillage
+                                    ?.slice(0, 3)
+                                    .map((tillage, index) => (
+                                        <CardTillage
+                                            key={index}
+                                            tillage={tillage}
+                                            location={`/producer/tillage/${tillage.id}`}
+                                        />
+                                    ))}
+                        </Box>
+                        <Box
+                            style={{
+                                width: "100%",
+                                flexDirection: "row",
+                                alignItems: "center",
+                                justifyContent: "end",
+                                gap: 20,
+                            }}
+                        >
+                            <Box
+                                style={{
+                                    flexDirection: "row",
+                                    alignItems: "center",
+                                    justifyContent: "",
+                                    paddingTop: "2vw",
+                                    paddingRight: "2vw",
+                                }}
+                            >
+                                <p
+                                    style={{
+                                        color: colors.primary,
+                                        fontSize: "3.5vw",
+                                        fontFamily: "MalgunGothic2",
+                                        fontWeight: "500",
+                                    }}
+                                    onClick={() => {
+                                        navigate("/producer/tillages")
+                                    }}
+                                >
+                                    Ver todos
+                                </p>
+                                <ArrowForwardIosIcon color="primary" sx={{ width: "2vw" }} />
+                            </Box>
+                        </Box>
+                    </Box>
                     <IconButton
                         sx={{
                             bgcolor: colors.button,

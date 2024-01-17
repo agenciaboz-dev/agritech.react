@@ -10,6 +10,7 @@ import { useSnackbar } from "burgos-snackbar"
 import { HeaderProfile } from "../../Profile/HeaderProfile"
 import { InfoProfile } from "../../Profile/InfoProfile"
 import { useIo } from "../../../hooks/useIo"
+import { useUser } from "../../../hooks/useUser"
 
 interface UserprofileProps {
     view?: boolean
@@ -19,6 +20,7 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
     const header = useHeader()
     const navigate = useNavigate()
     const io = useIo()
+    const { user } = useUser()
     const { userId } = useParams()
     const { pendingUsers, setPendingUsers } = useUsers()
     const { listUsers, setListUsers } = useUsers()
@@ -186,13 +188,14 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
                             variant="contained"
                             size="small"
                             sx={{ bgcolor: colors.button, borderRadius: "5vw", textTransform: "none", fontSize: "3vw" }}
-                            onClick={() =>
-                                navigate(
-                                    producerSelect !== null && profile?.isAdmin
+                            onClick={() => {
+                                if (producerSelect !== null) {
+                                    const path = user?.isAdmin
                                         ? `/adm/producer/${producerSelect[0].producer?.id}`
                                         : `/employee/producer/${producerSelect[0].producer?.id}`
-                                )
-                            }
+                                    navigate(path)
+                                }
+                            }}
                         >
                             Acessar cadastro
                         </Button>
