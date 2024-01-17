@@ -18,17 +18,19 @@ export const MyCalls: React.FC<MyCallsProps> = ({}) => {
     const { user } = useUser()
     const { listKits } = useKits()
 
-    const [tab, setTab] = React.useState("late")
+    const [tab, setTab] = React.useState("waiting")
     const changeTab = (event: React.SyntheticEvent, newValue: string) => {
         setTab(newValue)
     }
     const { listUsers } = useUsers()
-    const kitsEmployee = listKits.map((item) => item.employees).map((item) => item)
-    const kitsWithEmployee = listKits.filter((kit) => kit.employees?.some((employee) => employee.id === user?.employee?.id))
+    const kitsEmployee = listKits
+        .filter((kit) => kit.employees?.some((employee) => employee.id === user?.employee?.id))
+        .map((kit) => kit.calls)
 
-    console.log(kitsWithEmployee)
+    const callsEmployee = kitsEmployee.flat()
 
     useEffect(() => {
+        console.log(callsEmployee)
         header.setTitle("Meus chamados")
     }, [])
 
@@ -83,9 +85,9 @@ export const MyCalls: React.FC<MyCallsProps> = ({}) => {
                     <Tab sx={tabStyle} value="concluded" label="Concluídos" />
                 </Tabs>
                 <Box sx={{ width: "100%", height: "82%", overflow: "auto", gap: "1vw" }}>
-                    {/* {tab === "late" && listUsers?.map((user, index) => <LogsCard key={index} call={} review />)}
-                    { tab === "waiting" && listUsers?.map((user, index) => <LogsCard key={ index } call={ } review />)} */}
-                    {tab === "concluded" && listUsers?.map((user, index) => <p key={index}>Nenhum chamado </p>)}
+                    {/* {tab === "late" && listUsers?.map((user, index) => <LogsCard key={index} call={} review />)} */}
+                    {tab === "waiting" && callsEmployee?.map((call, index) => <LogsCard key={index} call={call} review />)}
+                    {tab === "concluded" && kitsEmployee?.map((user, index) => <p key={index}>Nenhum chamado </p>)}
                 </Box>
             </Box>
         </Box>

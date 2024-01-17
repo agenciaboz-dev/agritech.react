@@ -37,7 +37,7 @@ export const PanelUser: React.FC<PanelUserProps> = ({ user }) => {
     }, [])
 
     return (
-        <Box style={{ flex: 1, backgroundColor: colors.button, paddingTop: "4vw" }}>
+        <Box style={{ flex: 1, backgroundColor: colors.button, paddingTop: "4vw", height: "100%" }}>
             <Box style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", padding: "0 4vw" }}>
                 <Box
                     sx={{
@@ -79,6 +79,7 @@ export const PanelUser: React.FC<PanelUserProps> = ({ user }) => {
                     borderTopLeftRadius: "5vw",
                     borderTopRightRadius: "5vw",
                     paddingTop: 10,
+                    height: "100%",
                 }}
             >
                 <Box

@@ -11,7 +11,7 @@ import { useUsers } from "../../hooks/useUsers"
 
 interface LogsCardProps {
     review?: boolean
-    call: Call
+    call?: Call
     variant?: boolean
 }
 
@@ -20,10 +20,10 @@ export const LogsCard: React.FC<LogsCardProps> = ({ review, call, variant }) => 
     const account = useUser()
     const { listKits } = useKits()
     const { listUsers } = useUsers()
-    const producerSelected = listUsers?.find((item) => item.producer?.id === call.producerId)
-    const kitSelected = listKits.find((item) => item.id === call.kitId)
+    const producerSelected = listUsers?.find((item) => item.producer?.id === call?.producerId)
+    const kitSelected = listKits.find((item) => item.id === call?.kitId)
 
-    const tillageSelected = producerSelected?.producer?.tillage?.find((item) => item.id === call.tillageId)
+    const tillageSelected = producerSelected?.producer?.tillage?.find((item) => item.id === call?.tillageId)
 
     return !variant ? (
         <Box sx={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
@@ -32,12 +32,12 @@ export const LogsCard: React.FC<LogsCardProps> = ({ review, call, variant }) => 
                     <p style={{ fontSize: "3vw", color: "gray" }}>11:00 - 13:00</p>
                 </Box>
                 <p style={{ fontSize: "3.5vw", fontWeight: "600" }}>
-                    {call.approved
+                    {call?.approved
                         ? `Chamado aberto para ${producerSelected?.name}`
                         : `Chamado pendente para ${producerSelected?.name}`}
                 </p>
                 <p style={{ fontSize: "3vw", color: "gray", flexDirection: "column" }}>
-                    {tillageSelected?.name} - {call.approved ? `Utilizando #Kit ${kitSelected?.name}` : "Selecione um kit"}
+                    {tillageSelected?.name} - {call?.approved ? `Utilizando #Kit ${kitSelected?.name}` : "Selecione um kit"}
                 </p>
             </Box>
             {!review ? (
@@ -76,7 +76,7 @@ export const LogsCard: React.FC<LogsCardProps> = ({ review, call, variant }) => 
                 </Box>
                 <p style={{ fontSize: "3.5vw", fontWeight: "600" }}>Chamado para {tillageSelected?.name}</p>
                 <p style={{ fontSize: "3vw", color: "gray" }}>
-                    {call.approved ? `Utilizando #Kit ${kitSelected?.name}` : "Aguardando aprovação"}
+                    {call?.approved ? `Utilizando #Kit ${kitSelected?.name}` : "Aguardando aprovação"}
                 </p>
             </Box>
 
