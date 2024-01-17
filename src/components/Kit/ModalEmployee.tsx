@@ -26,13 +26,13 @@ export const ModalEmployee: React.FC<ModalEmployeeProps> = ({ opened, close, set
                 <Checkbox
                     aria-label="Select row"
                     checked={selectedRows.includes(element.employee?.id || 0)}
-                    onChange={(event) =>
-                        setSelectedRows(
-                            event.currentTarget.checked
-                                ? [...selectedRows, element.id]
-                                : selectedRows.filter((id) => id !== element.employee?.id || 0)
-                        )
-                    }
+                    onChange={(event) => {
+                        const newSelectedRows = event.currentTarget.checked
+                            ? [...selectedRows, element.employee?.id].filter((id): id is number => id !== undefined)
+                            : selectedRows.filter((id) => id !== element.employee?.id)
+
+                        setSelectedRows(newSelectedRows)
+                    }}
                 />
             </Table.Td>
             <Table.Td>
@@ -59,7 +59,7 @@ export const ModalEmployee: React.FC<ModalEmployeeProps> = ({ opened, close, set
                         <span style={{ color: colors.primary }}> {element.cpf}</span>
                     </>
                 ) : (
-                    element.name
+                    element.cpf
                 )}
             </Table.Td>
         </Table.Tr>

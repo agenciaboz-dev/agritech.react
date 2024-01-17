@@ -8,6 +8,7 @@ declare interface Employee {
     work_card: string
     military: string
     residence: string
-
+    kits?: Kit[]
+    producers?: Producer[]
     bank?: Bank
 }

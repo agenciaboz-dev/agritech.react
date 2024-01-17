@@ -8,20 +8,25 @@ import { colors } from "../../style/colors"
 import { tabStyle } from "../../style/tabStyle"
 import { LogsCard } from "../Calls/LogsCard"
 import { useUser } from "../../hooks/useUser"
+import { useKits } from "../../hooks/useKits"
 
 interface MyCallsProps {}
 
 export const MyCalls: React.FC<MyCallsProps> = ({}) => {
     const header = useHeader()
     const io = useIo()
+    const { user } = useUser()
+    const { listKits } = useKits()
 
     const [tab, setTab] = React.useState("late")
     const changeTab = (event: React.SyntheticEvent, newValue: string) => {
         setTab(newValue)
     }
     const { listUsers } = useUsers()
-    const [listEmployee, setListEmployee] = useState<User[]>()
-    const [requests, setRequests] = useState<User[]>()
+    const kitsEmployee = listKits.map((item) => item.employees).map((item) => item)
+    const kitsWithEmployee = listKits.filter((kit) => kit.employees?.some((employee) => employee.id === user?.employee?.id))
+
+    console.log(kitsWithEmployee)
 
     useEffect(() => {
         header.setTitle("Meus chamados")
