@@ -128,40 +128,42 @@ export const PanelUser: React.FC<PanelUserProps> = ({ user }) => {
                                         />
                                     ))}
                         </Box>
-                        <Box
-                            style={{
-                                width: "100%",
-                                flexDirection: "row",
-                                alignItems: "center",
-                                justifyContent: "end",
-                                gap: 20,
-                            }}
-                        >
+                        {user.producer?.tillage?.length !== 0 && (
                             <Box
                                 style={{
+                                    width: "100%",
                                     flexDirection: "row",
                                     alignItems: "center",
-                                    justifyContent: "",
-                                    paddingTop: "2vw",
-                                    paddingRight: "2vw",
+                                    justifyContent: "end",
+                                    gap: 20,
                                 }}
                             >
-                                <p
+                                <Box
                                     style={{
-                                        color: colors.primary,
-                                        fontSize: "3.5vw",
-                                        fontFamily: "MalgunGothic2",
-                                        fontWeight: "500",
-                                    }}
-                                    onClick={() => {
-                                        navigate("/producer/tillages")
+                                        flexDirection: "row",
+                                        alignItems: "center",
+                                        justifyContent: "",
+                                        paddingTop: "2vw",
+                                        paddingRight: "2vw",
                                     }}
                                 >
-                                    Ver todos
-                                </p>
-                                <ArrowForwardIosIcon color="primary" sx={{ width: "2vw" }} />
+                                    <p
+                                        style={{
+                                            color: colors.primary,
+                                            fontSize: "3.5vw",
+                                            fontFamily: "MalgunGothic2",
+                                            fontWeight: "500",
+                                        }}
+                                        onClick={() => {
+                                            navigate("/producer/tillages")
+                                        }}
+                                    >
+                                        Ver todos
+                                    </p>
+                                    <ArrowForwardIosIcon color="primary" sx={{ width: "2vw" }} />
+                                </Box>
                             </Box>
-                        </Box>
+                        )}
                     </Box>
                     <IconButton
                         sx={{

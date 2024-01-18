@@ -19,6 +19,7 @@ import { useSnackbar } from "burgos-snackbar"
 import { FormTillage } from "../../pages/Producer/Panel/NewTillage/FormTillage.tsx"
 import { useProducer } from "../../hooks/useProducer.ts"
 import { Geolocal } from "./Geolocal.tsx"
+import { useUsers } from "../../hooks/useUsers.ts"
 
 interface NewProducerProps {}
 
@@ -37,6 +38,7 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
     const { addTillage } = useProducer()
     const { unmask } = useDataHandler()
     const { snackbar } = useSnackbar()
+    const { addUser } = useUsers()
 
     const [currentStep, setCurrentStep] = useState(0)
     const [open, setOpen] = useState(true)
@@ -135,6 +137,7 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
                     text: "Produtor cadastrado!",
                 })
                 setProducer(user)
+                addUser(user)
                 setCurrentStep(1)
             }
         })

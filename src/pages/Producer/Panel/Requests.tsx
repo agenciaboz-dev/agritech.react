@@ -21,7 +21,7 @@ export const Requests: React.FC<RequestsProps> = ({}) => {
 
     const callsApprove = listCalls.filter((item) => item.producerId === user?.producer?.id)
 
-    const [tab, setTab] = useState("calls")
+    const [tab, setTab] = useState("pending")
     const changeTab = (event: React.SyntheticEvent, newValue: string) => {
         setTab(newValue)
     }

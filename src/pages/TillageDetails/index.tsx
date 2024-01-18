@@ -267,6 +267,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                             />
                         )
                     )}
+                    {tab === "history" && <p>Nenhum Registro</p>}
                     <DialogConfirm
                         user={user}
                         open={open}

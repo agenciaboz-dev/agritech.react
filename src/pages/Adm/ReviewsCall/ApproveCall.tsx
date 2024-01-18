@@ -146,7 +146,7 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
                                 <p>
                                     {/* {tillageSelected?.address?.city}, {tillageSelected?.address?.uf} - UF
                                     {tillageSelected?.address?.cep} */}
-                                    Rua do amor, Seabra, Bahia - 80230.085
+                                    Rua José Lourenço Pinto, Seabra, Bahia - 80230.085
                                 </p>
                             </Box>
                             <Box>

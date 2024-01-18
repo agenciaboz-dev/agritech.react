@@ -4,8 +4,9 @@ import { useIo } from "../hooks/useIo"
 interface UsersContextType {
     listUsers: User[] | undefined
     pendingUsers: User[]
+    addUser: (value: User) => void
     setPendingUsers: React.Dispatch<React.SetStateAction<User[]>>
-    setListUsers: React.Dispatch<React.SetStateAction<User[] | undefined>>
+    setListUsers: (value: User[]) => void
 }
 
 const UsersContext = createContext<UsersContextType>(null!)
@@ -15,7 +16,10 @@ export const UsersProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     const io = useIo()
     const [pendingUsers, setPendingUsers] = useState<User[]>([])
 
-    const [listUsers, setListUsers] = useState<User[]>()
+    const [listUsers, setListUsers] = useState<User[]>([])
+    const addUser = (newUser: User) => {
+        setListUsers((user) => [...user, newUser])
+    }
 
     useEffect(() => {
         io.emit("users:list")
@@ -28,7 +32,6 @@ export const UsersProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         return () => {
             io.off("users:list:success", updateListUsers)
         }
-    
     }, [listUsers])
 
     useEffect(() => {
@@ -59,7 +62,7 @@ export const UsersProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         }
     }, [])
     return (
-        <UsersContext.Provider value={{ listUsers, setListUsers, pendingUsers, setPendingUsers }}>
+        <UsersContext.Provider value={{ listUsers, addUser, setListUsers, pendingUsers, setPendingUsers }}>
             {children}
         </UsersContext.Provider>
     )

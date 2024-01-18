@@ -183,7 +183,11 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                 <TitleComponents
                     title="Novo Chamado"
                     style={{ fontSize: "5vw" }}
-                    button={user?.employee ? true : false}
+                    button={user?.employee && producerId ? true : false}
+                    click={() =>
+                        producerId &&
+                        navigate(user.isAdmin ? `/adm/producer/${producerId}` : `/employee/producer/${producerId}`)
+                    }
                     textButton="Acessar Produtor"
                     variant
                 />
@@ -303,20 +307,38 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                                         },
                                     }}
                                 />
-                                <Button
-                                    variant="contained"
-                                    type="submit"
-                                    sx={{
-                                        fontSize: 17,
-                                        color: colors.text.white,
-                                        width: "100%",
-                                        backgroundColor: colors.button,
-                                        borderRadius: "5vw",
-                                        textTransform: "none",
-                                    }}
-                                >
-                                    {loading ? <CircularProgress sx={{ color: "#fff" }} /> : "Abrir Chamado"}
-                                </Button>
+                                {user.producer && tillagesProducer.length !== 0 && (
+                                    <Button
+                                        variant="contained"
+                                        type="submit"
+                                        sx={{
+                                            fontSize: 17,
+                                            color: colors.text.white,
+                                            width: "100%",
+                                            backgroundColor: colors.button,
+                                            borderRadius: "5vw",
+                                            textTransform: "none",
+                                        }}
+                                    >
+                                        {loading ? <CircularProgress sx={{ color: "#fff" }} /> : "Abrir Chamado"}
+                                    </Button>
+                                )}
+                                {user.employee && tillages.length !== 0 && (
+                                    <Button
+                                        variant="contained"
+                                        type="submit"
+                                        sx={{
+                                            fontSize: 17,
+                                            color: colors.text.white,
+                                            width: "100%",
+                                            backgroundColor: colors.button,
+                                            borderRadius: "5vw",
+                                            textTransform: "none",
+                                        }}
+                                    >
+                                        {loading ? <CircularProgress sx={{ color: "#fff" }} /> : "Abrir Chamado"}
+                                    </Button>
+                                )}
                             </Form>
                         </Box>
                     )}
