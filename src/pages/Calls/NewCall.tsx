@@ -1,4 +1,4 @@
-import { Autocomplete, Box, Button, CircularProgress, TextField } from "@mui/material"
+import { Autocomplete, Box, Button, CircularProgress, TextField, listClasses } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { colors } from "../../style/colors"
 import { Header } from "../../components/Header"
@@ -28,6 +28,7 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
     const navigate = useNavigate()
     const { snackbar } = useSnackbar()
     const { listKits } = useKits()
+    const { allCalls } = useCall()
     const { listTillages } = useProducer()
     const { addCall, addCallPending, addCallApprove } = useCall()
 
@@ -45,6 +46,12 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
             name: tillage.name,
             call: tillage.call,
         })) || []
+    )
+
+    const callTillage = allCalls.find((item) =>
+        account.user?.producer
+            ? item.producerId === user?.producer?.id && item.tillageId === tillageId
+            : item.producerId === producerId && item.tillageId === tillageId
     )
 
     useEffect(() => {
@@ -230,18 +237,37 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                                                     setTillageId(selected.id)
                                                 }
                                             }}
-                                            renderOption={(props, option) => (
-                                                <li
-                                                    {...props}
-                                                    style={
-                                                        {
-                                                            // backgroundColor: option.approved ? "corDesejada" : "corPadrao",
-                                                        }
-                                                    }
-                                                >
-                                                    {option.name}
-                                                </li>
-                                            )}
+                                            renderOption={(props, option) => {
+                                                // Verifique se a opção atual tem uma 'call' associada
+                                                const isOptionDisabled = allCalls.some((call) =>
+                                                    account.user?.producer
+                                                        ? call.producerId === user?.producer?.id &&
+                                                          call.tillageId === option.id
+                                                        : call.producerId === producerId && call.tillageId === option.id
+                                                )
+
+                                                return (
+                                                    <li
+                                                        {...props}
+                                                        style={{
+                                                            color: isOptionDisabled ? "black" : "black",
+                                                            // Desabilitar a opção se necessário
+                                                            pointerEvents: isOptionDisabled ? "none" : "auto",
+                                                            opacity: isOptionDisabled ? 0.7 : 1,
+                                                            flexDirection: "column",
+
+                                                            alignItems: "start",
+                                                        }}
+                                                    >
+                                                        {option.name}{" "}
+                                                        {isOptionDisabled && (
+                                                            <span style={{ color: colors.delete, fontSize: "3vw" }}>
+                                                                Já existe chamado
+                                                            </span>
+                                                        )}
+                                                    </li>
+                                                )
+                                            }}
                                             renderInput={(params) => (
                                                 <TextField {...params} sx={{ ...textField }} label="Lavoura" required />
                                             )}
@@ -258,6 +284,36 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                                                 setFieldValue("tillageId", selected.id)
                                                 setTillageId(selected.id)
                                             }
+                                        }}
+                                        renderOption={(props, option) => {
+                                            // Verifique se a opção atual tem uma 'call' associada
+                                            const isOptionDisabled = allCalls.some((call) =>
+                                                account.user?.producer
+                                                    ? call.producerId === user?.producer?.id && call.tillageId === option.id
+                                                    : call.producerId === producerId && call.tillageId === option.id
+                                            )
+
+                                            return (
+                                                <li
+                                                    {...props}
+                                                    style={{
+                                                        color: isOptionDisabled ? "black" : "black",
+                                                        // Desabilitar a opção se necessário
+                                                        pointerEvents: isOptionDisabled ? "none" : "auto",
+                                                        opacity: isOptionDisabled ? 0.7 : 1,
+                                                        flexDirection: "column",
+
+                                                        alignItems: "start",
+                                                    }}
+                                                >
+                                                    {option.name}{" "}
+                                                    {isOptionDisabled && (
+                                                        <span style={{ color: colors.delete, fontSize: "3vw" }}>
+                                                            Já existe chamado
+                                                        </span>
+                                                    )}
+                                                </li>
+                                            )
                                         }}
                                         renderInput={(params) => (
                                             <TextField {...params} sx={{ ...textField }} label="Lavoura" required />
