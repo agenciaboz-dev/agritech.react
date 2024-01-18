@@ -80,12 +80,16 @@ export const MyCalls: React.FC<MyCallsProps> = ({}) => {
                 >
                     <Tab sx={tabStyle} value="late" label="Atrasados" />
                     <Tab sx={tabStyle} value="waiting" label="Aguardando" />
-                    <Tab sx={tabStyle} value="concluded" label="Concluídos" />
+                    {/* <Tab sx={tabStyle} value="concluded" label="Concluídos" /> */}
                 </Tabs>
                 <Box sx={{ width: "100%", height: "82%", overflow: "auto", gap: "1vw" }}>
-                    {/* {tab === "late" && listUsers?.map((user, index) => <LogsCard key={index} call={} review />)} */}
-                    {tab === "waiting" && callsEmployee?.map((call, index) => <LogsCard key={index} call={call} review />)}
-                    {tab === "concluded" && kitsEmployee?.map((user, index) => <p key={index}>Nenhum chamado </p>)}
+                    {tab === "late" && <p>Nenhum chamado atrasado</p>}
+                    {tab === "waiting" && callsEmployee.length !== 0
+                        ? callsEmployee?.map((call, index) => <LogsCard key={index} call={call} review />)
+                        : tab === "waiting" && <p>Nenhum chamado </p>}
+                    {/* {tab === "concluded" && kitsEmployee.length !== 0
+                        ? kitsEmployee?.map((user, index) => <></>)
+                        : tab === "concluded" && <p>Nenhum chamado </p>} */}
                 </Box>
             </Box>
         </Box>
