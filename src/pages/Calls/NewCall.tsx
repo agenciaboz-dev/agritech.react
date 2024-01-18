@@ -255,7 +255,7 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                                                             pointerEvents: isOptionDisabled ? "none" : "auto",
                                                             opacity: isOptionDisabled ? 0.7 : 1,
                                                             flexDirection: "column",
-
+                                                            borderBottom: "0.8px solid gray",
                                                             alignItems: "start",
                                                         }}
                                                     >
