@@ -89,7 +89,7 @@ export const ListTillages: React.FC<ListTillagesProps> = ({}) => {
                                 listTillages.length === 0 && <p>Nenhuma lavoura encontrada.</p>
                             )
                         ) : producerEncontrado[0].producer?.tillage?.length !== 0 ? (
-                            producerSelect.producer?.tillage?.map((tillage, index) => (
+                            producerEncontrado[0].producer?.tillage?.map((tillage, index) => (
                                 <CardTillage
                                     key={index}
                                     tillage={tillage}
