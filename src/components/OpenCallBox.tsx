@@ -105,13 +105,13 @@ export const ProgressCall: React.FC<OpenCallBoxProps> = ({ data, click, call, us
                 <Box sx={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
                     <p style={{ fontSize: "4.5vw", fontWeight: "600" }}>Chamado Aberto</p>
 
-                    {user?.producer && <IoIosArrowForward sx={{ color: colors.button }} onClick={click} />}
+                    <IoIosArrowForward sx={{ color: colors.button }} onClick={click} />
                 </Box>
                 <p style={{ fontSize: "3.2vw", textAlign: "justify" }}>
                     {" "}
                     {user?.producer
                         ? `Seu chamado foi aprovado. Para que nossa equipe encaminhe-se até o local Lavoura ${call?.tillageId}#, o prazo mínimo do chamado é de 48 horas, segundo o contrato vigente.`
-                        : "A equipe pode iniciar o chamado a qualquer momento. Basta clicar em iniciar, que o chamado será aberto."}
+                        : "A equipe pode iniciar o chamado a qualquer momento. Siga as etapas."}
                 </p>
             </Box>
             <Box sx={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>

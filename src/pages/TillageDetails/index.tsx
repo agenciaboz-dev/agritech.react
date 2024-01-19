@@ -257,7 +257,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                                         user?.producer !== null
                                             ? `/producer/call/${call?.id}`
                                             : user.isAdmin
-                                            ? `/adm/call/${call?.id} `
+                                            ? `/adm/call/${call?.id}/report `
                                             : `/employee/call/${call?.id} `
                                     )
                                 }

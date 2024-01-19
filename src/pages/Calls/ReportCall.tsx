@@ -19,14 +19,14 @@ export const ReportCall: React.FC<ReportCallProps> = ({ user }) => {
 
     const initialValues: Call = {
         approved: false,
-        openCall: "2023-12-26",
+        open: "2023-12-26",
         init: "2023-12-26",
         finish: "",
-        caller: user,
+        userId: user.id,
         comments: "",
-        tillage: "select com as lavouras do produtor",
-        producer: user?.producer ? user?.name : "Aqui é um select",
-        kit: user.isAdmin ? "Kit #Vuitton" : "",
+        tillageId: 224,
+        producerId: user?.producer?.id || 0,
+        id: 148,
         stages: [
             {
                 name: "Indo para a localização",
@@ -35,6 +35,7 @@ export const ReportCall: React.FC<ReportCallProps> = ({ user }) => {
                 duration: "02:00:30",
                 finish: "02:00:30",
                 start: "02:00:30",
+                callId: 148,
             },
             {
                 name: "Chegada na Localização",
@@ -43,6 +44,7 @@ export const ReportCall: React.FC<ReportCallProps> = ({ user }) => {
                 duration: "02:00:30",
                 finish: "02:00:30",
                 start: "02:00:30",
+                callId: 148,
             },
             {
                 name: "Pulverização",
@@ -51,6 +53,7 @@ export const ReportCall: React.FC<ReportCallProps> = ({ user }) => {
                 duration: "02:00:30",
                 finish: "02:00:30",
                 start: "02:00:30",
+                callId: 148,
             },
             {
                 name: "Volta da Localização",
@@ -59,6 +62,7 @@ export const ReportCall: React.FC<ReportCallProps> = ({ user }) => {
                 duration: "02:00:30",
                 finish: "02:00:30",
                 start: "02:00:30",
+                callId: 148,
             },
         ],
     }
@@ -122,7 +126,7 @@ export const ReportCall: React.FC<ReportCallProps> = ({ user }) => {
                                         label="Aberto em"
                                         name="init"
                                         type="date"
-                                        value={values.openCall}
+                                        value={values.open}
                                         sx={{ ...textField }}
                                         inputProps={{ "aria-readonly": true }}
                                         disabled={!user?.producer ? false : true}
@@ -130,14 +134,14 @@ export const ReportCall: React.FC<ReportCallProps> = ({ user }) => {
                                     <TextField
                                         label="Produtor"
                                         name="producer"
-                                        value={values.producer}
+                                        value={values.producerId}
                                         sx={{ ...textField }}
                                         disabled={!user?.producer ? false : true}
                                     />
                                     <TextField
                                         label="Lavoura"
                                         name="tillage"
-                                        value={values.tillage}
+                                        value={values.approved}
                                         sx={{ ...textField }}
                                         disabled={!user?.producer ? false : true}
                                     />
