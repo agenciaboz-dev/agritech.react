@@ -253,10 +253,11 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                                                             color: isOptionDisabled ? "black" : "black",
                                                             // Desabilitar a opção se necessário
                                                             pointerEvents: isOptionDisabled ? "none" : "auto",
-                                                            opacity: isOptionDisabled ? 0.7 : 1,
+                                                            opacity: isOptionDisabled ? 0.51 : 1,
                                                             flexDirection: "column",
-                                                            borderBottom: "0.8px solid gray",
+                                                            borderBottom: "0.5px solid #B2B4B1",
                                                             alignItems: "start",
+                                                            padding: "1vw",
                                                         }}
                                                     >
                                                         {option.name}{" "}
