@@ -9,6 +9,7 @@ interface KitContextValue {
     setListKits: (value: Kit[]) => void
     addKit: (newKit: Kit) => void
     updateKit: (kitUpdate: Kit) => void
+    toggleKit: (id: number) => void
 }
 
 interface KitProviderProps {
@@ -46,18 +47,36 @@ export const KitProvider: React.FC<KitProviderProps> = ({ children }) => {
         setListKits((kits) => [...kits, newKit])
     }
 
-    const updateKit = (kitUpdate: Kit) => {
+    const toggleKit = (id: number) => {
+        io.emit("kit:toggle", { id: id })
+    }
+
+    useEffect(() => {
+        io.on("kit:toggle:success", (data: Kit) => {
+            console.log({ veio: data })
+        })
+        io.on("kit:toggle:failed", () => {})
+
+        return () => {
+            io.off("kit:toggle:success")
+            io.off("kit:toggle:failed")
+        }
+    }, [toggleKit])
+
+    const updateKit = (kit: Kit) => {
         setListKits((kits) => {
-            const findKit = kits.findIndex((kitId) => kitId.id === kitUpdate.id)
+            const findKit = kits.findIndex((kitId) => kitId.id === kit.id)
             if (findKit === -1) {
                 return kits
             }
             const updatedKits = [...kits]
-            updatedKits[findKit] = kitUpdate
+            updatedKits[findKit] = kit
 
             return updatedKits
         })
     }
 
-    return <KitContext.Provider value={{ listKits, setListKits, addKit, updateKit }}>{children}</KitContext.Provider>
+    return (
+        <KitContext.Provider value={{ listKits, setListKits, toggleKit, addKit, updateKit }}>{children}</KitContext.Provider>
+    )
 }

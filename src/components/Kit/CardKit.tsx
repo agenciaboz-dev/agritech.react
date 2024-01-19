@@ -1,10 +1,12 @@
 import { Box, FormControl, FormControlLabel, FormGroup, Stack, styled } from "@mui/material"
-import React from "react"
+import React, { useState } from "react"
 import Switch, { SwitchProps } from "@mui/material/Switch"
 import { colors } from "../../style/colors"
 import ArrowRightIcon from "@mui/icons-material/ArrowRight"
 import { useNavigate } from "react-router-dom"
 import { useUser } from "../../hooks/useUser"
+import { useKits } from "../../hooks/useKits"
+import { useSetState } from "@mantine/hooks"
 
 const Android12Switch = styled(Switch)(({ theme }) => ({
     padding: 8,
@@ -39,12 +41,22 @@ interface CardKitProps {
 export const CardKit: React.FC<CardKitProps> = ({ kit }) => {
     const navigate = useNavigate()
     const { user } = useUser()
+    const { toggleKit } = useKits()
+
+    const handleChange = (event: any, checked: boolean) => {
+        console.log(kit.id)
+        console.log(event.target.checked)
+        kit.id && toggleKit(kit.id)
+        
+    }
+
     return (
         <Box sx={{ padding: "3vw 1vw", flexDirection: "row", alignItems: "center", borderBottom: "1px solid #88A486" }}>
             <FormGroup sx={{ width: "90%" }}>
                 <FormControlLabel
                     checked={kit.active}
                     control={<Android12Switch />}
+                    onChange={handleChange}
                     label={
                         <Box sx={{ width: "100%" }}>
                             <p style={{ fontSize: "4vw", width: "100%" }}>{kit.name}</p>

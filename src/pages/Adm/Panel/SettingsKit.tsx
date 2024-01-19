@@ -14,10 +14,12 @@ interface SettingsKitProps {}
 export const SettingsKit: React.FC<SettingsKitProps> = ({}) => {
     const header = useHeader()
     const navigate = useNavigate()
-    const { listKits } = useKits()
+    const { listKits, updateKit } = useKits()
     const { user } = useUser()
 
     const kitsEmployee = listKits.filter((kit) => kit.employees?.some((employee) => employee.id === user?.employee?.id))
+
+
 
     useEffect(() => {
         header.setTitle("Painel")
