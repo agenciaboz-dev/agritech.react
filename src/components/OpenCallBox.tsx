@@ -114,6 +114,11 @@ export const ProgressCall: React.FC<OpenCallBoxProps> = ({ data, click, call, us
                         : "A equipe pode iniciar o chamado a qualquer momento. Basta clicar em iniciar, que o chamado será aberto."}
                 </p>
             </Box>
+            <Box sx={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
+                <p style={{ fontSize: "8vw" }}>
+                    {new Date().getHours()}:{new Date().getMinutes()}
+                </p>
+            </Box>
             <Box sx={{ flexDirection: "row", height: "25%", gap: "2vw" }}>
                 <Box sx={{ border: "1px solid gray", width: "50%", borderRadius: "2vw", height: "100%", p: "2vw" }}>
                     <p style={{ fontSize: "3vw" }}>Kit selecionado:</p>
@@ -123,16 +128,6 @@ export const ProgressCall: React.FC<OpenCallBoxProps> = ({ data, click, call, us
                     <p style={{ fontSize: "3vw" }}>Chamado aberto em:</p>
                     <p style={{ fontSize: "3vw" }}>{call?.open && dateFrontend(call?.open)}</p>
                 </Box>
-            </Box>
-            <Box sx={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
-                <p style={{ fontSize: "8vw" }}>
-                    {new Date().getHours()}:{new Date().getMinutes()}
-                </p>
-                {user?.employee && (
-                    <ButtonAgritech variant="contained" sx={{ width: "30%" }}>
-                        Iniciar
-                    </ButtonAgritech>
-                )}
             </Box>
         </Box>
     )
