@@ -201,19 +201,21 @@ export const CallDetails: React.FC<CallDetailsProps> = ({}) => {
                             <p style={{ fontSize: "4.1vw" }}>Chamado em andamento</p>
                             <p style={{ fontSize: "2.9vw" }}>Aberto em: {dateFrontend(callSelect?.open || "")}</p>
                         </Box>
-                        <Button
-                            size="small"
-                            variant="contained"
-                            sx={{
-                                bgcolor: colors.delete,
-                                textTransform: "none",
-                                borderRadius: "5vw",
-                                width: "fit-content",
-                            }}
-                            onClick={handleClickOpen}
-                        >
-                            Cancelar Chamado
-                        </Button>
+                        {!callSelect?.init && (
+                            <Button
+                                size="small"
+                                variant="contained"
+                                sx={{
+                                    bgcolor: colors.delete,
+                                    textTransform: "none",
+                                    borderRadius: "5vw",
+                                    width: "fit-content",
+                                }}
+                                onClick={handleClickOpen}
+                            >
+                                Cancelar Chamado
+                            </Button>
+                        )}
                     </Box>
                     <p style={{ fontSize: "3vw", textAlign: "justify" }}>
                         {user?.producer && tillageSelectProd?.comments

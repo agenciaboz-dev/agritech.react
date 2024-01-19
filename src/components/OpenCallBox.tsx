@@ -103,20 +103,20 @@ export const ProgressCall: React.FC<OpenCallBoxProps> = ({ data, click, call, us
         >
             <Box sx={{ gap: "1vw" }}>
                 <Box sx={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-                    <p style={{ fontSize: "4.5vw", fontWeight: "600" }}>Chamado aprovado</p>
+                    <p style={{ fontSize: "4.5vw", fontWeight: "600" }}>Chamado Aberto</p>
 
-                    {call?.init && <IoIosArrowForward sx={{ color: colors.button }} onClick={click} />}
+                    {user?.producer && <IoIosArrowForward sx={{ color: colors.button }} onClick={click} />}
                 </Box>
                 <p style={{ fontSize: "3.2vw", textAlign: "justify" }}>
                     {" "}
                     {user?.producer
-                        ? "Seu chamado foi aprovado. Para que nossa equipe encaminhe-se até o local Lavoura {call?.tillageId}#, o prazo mínimo do chamado é de 48 Horas segundo o contrato vigente."
+                        ? `Seu chamado foi aprovado. Para que nossa equipe encaminhe-se até o local Lavoura ${call?.tillageId}#, o prazo mínimo do chamado é de 48 horas, segundo o contrato vigente.`
                         : "A equipe pode iniciar o chamado a qualquer momento. Basta clicar em iniciar, que o chamado será aberto."}
                 </p>
             </Box>
             <Box sx={{ flexDirection: "row", height: "25%", gap: "2vw" }}>
                 <Box sx={{ border: "1px solid gray", width: "50%", borderRadius: "2vw", height: "100%", p: "2vw" }}>
-                    <p style={{ fontSize: "3vw" }}>Kit selecionado</p>
+                    <p style={{ fontSize: "3vw" }}>Kit selecionado:</p>
                     <p style={{ fontSize: "3vw" }}>{kitSelected?.name}</p>
                 </Box>
                 <Box sx={{ border: "1px solid gray", width: "50%", borderRadius: "2vw", height: "100%", p: "2vw" }}>
