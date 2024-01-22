@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { useHeader } from "../../hooks/useHeader"
 import { Call, CallStatus } from "../../definitions/call"
 import { Box, TextField } from "@mui/material"
@@ -9,6 +9,14 @@ import { Header } from "../../components/Header"
 import { colors } from "../../style/colors"
 import { textField } from "../../style/input"
 import { StageDescription } from "../../components/StageDescription"
+import { Stepper } from "@mantine/core"
+import { useNavigate, useParams } from "react-router-dom"
+import findProducer from "../../hooks/filterProducer"
+import { useKits } from "../../hooks/useKits"
+import { useUsers } from "../../hooks/useUsers"
+import { useCall } from "../../hooks/useCall"
+import { useProducer } from "../../hooks/useProducer"
+import { ButtonAgritech } from "../../components/ButtonAgritech"
 
 interface ReportCallProps {
     user: User
@@ -16,6 +24,13 @@ interface ReportCallProps {
 
 export const ReportCall: React.FC<ReportCallProps> = ({ user }) => {
     const header = useHeader()
+    const navigate = useNavigate()
+    const { callid } = useParams()
+    const { listUsers } = useUsers()
+    const { listCalls } = useCall()
+    const { listTillages } = useProducer()
+
+    const [stage, setstage] = useState(0)
 
     const initialValues: Call = {
         approved: false,
@@ -69,12 +84,25 @@ export const ReportCall: React.FC<ReportCallProps> = ({ user }) => {
     }
 
     const handleSubmit = (values: Call) => {
-        console.log(values)
+        console.log(values.stages[0])
     }
+    const [call, setCall] = useState<Call | null>()
+    const [producerSelect, setProducerSelect] = useState<User | null>()
+    const [tillage, setTillage] = useState<Tillage | null>()
 
     useEffect(() => {
         header.setTitle("Painel")
     }, [])
+
+    useEffect(() => {
+        setCall(listCalls.find((item) => String(item.id) === callid))
+        setProducerSelect(listUsers?.find((item) => item.producer?.id === call?.producerId) || null)
+        setTillage(listTillages?.find((item) => item.id === call?.tillageId && item.producerId === call.producerId))
+    }, [call])
+
+    useEffect(() => {
+        console.log(stage)
+    }, [stage])
     return (
         <Box
             sx={{
@@ -95,7 +123,14 @@ export const ReportCall: React.FC<ReportCallProps> = ({ user }) => {
                     flexDirection: "row",
                 }}
             >
-                <Header back location={user?.isAdmin ? "/" : user?.producer ? "/producer/" : "/employee/"} />
+                <Header
+                    back
+                    location={
+                        user?.isAdmin
+                            ? `/adm/producer/${producerSelect?.id}/${tillage?.id}`
+                            : `/employee/producer/${producerSelect?.id}/${tillage?.id}`
+                    }
+                />
             </Box>
 
             <Box
@@ -116,42 +151,113 @@ export const ReportCall: React.FC<ReportCallProps> = ({ user }) => {
                     style={{ fontSize: "5vw" }}
                     button={user?.employee ? true : false}
                     textButton="Acessar Produtor"
+                    click={() =>
+                        navigate(
+                            user.isAdmin ? `/adm/profile/${producerSelect?.id}` : `/employee/profilw/${producerSelect?.id}`
+                        )
+                    }
                     variant
                 />
                 <Formik initialValues={initialValues} onSubmit={handleSubmit}>
                     {({ values, handleChange }) => (
-                        <Box sx={{ gap: "3vw", height: "83%", overflowY: "auto", p: "2vw 0" }}>
+                        <Box sx={{ gap: "3vw", height: "85%", overflowY: "auto", p: "2vw 0" }}>
                             <Form>
-                                <Box sx={{ gap: "4vw" }}>
-                                    <TextField
-                                        label="Aberto em"
-                                        name="init"
-                                        type="date"
-                                        value={values.open}
-                                        sx={{ ...textField }}
-                                        inputProps={{ "aria-readonly": true }}
-                                        disabled={!user?.producer ? false : true}
-                                    />
-                                    <TextField
-                                        label="Produtor"
-                                        name="producer"
-                                        value={values.producerId}
-                                        sx={{ ...textField }}
-                                        disabled={!user?.producer ? false : true}
-                                    />
-                                    <TextField
-                                        label="Lavoura"
-                                        name="tillage"
-                                        value={values.approved}
-                                        sx={{ ...textField }}
-                                        disabled={!user?.producer ? false : true}
-                                    />
+                                <Box sx={{ justifyContent: "space-between", height: "100%" }}>
+                                    <Box sx={{ gap: "4vw" }}>
+                                        <TextField
+                                            label="Aberto em"
+                                            name="init"
+                                            type="date"
+                                            value={values.open}
+                                            sx={{ ...textField }}
+                                            inputProps={{ "aria-readonly": true }}
+                                            disabled={!user?.producer ? false : true}
+                                        />
+                                        <TextField
+                                            label="Produtor"
+                                            name="producer"
+                                            value={producerSelect ? producerSelect?.name : ""}
+                                            sx={{ ...textField }}
+                                            disabled={!user?.producer ? false : true}
+                                        />
+                                        <TextField
+                                            label="Lavoura"
+                                            name="tillage"
+                                            value={tillage ? tillage?.name : " "}
+                                            sx={{ ...textField }}
+                                            disabled={!user?.producer ? false : true}
+                                        />
+                                    </Box>
+                                    <Stepper
+                                        active={stage}
+                                        size="xs"
+                                        // onStepClick={setstage}
+                                        styles={{
+                                            step: { flexDirection: "column", alignItems: "center", gap: "4vw" },
+                                            content: { margin: 0 },
+                                            stepIcon: { margin: 0 },
+                                        }}
+                                    >
+                                        <Stepper.Step label="Chegada" step={2} />
+                                        <Stepper.Step label="Pulverização" />
+                                        <Stepper.Step label="Finalização" />
+                                    </Stepper>
+                                    {stage === 0 && (
+                                        <>
+                                            <StageDescription
+                                                title={values.stages[1].name}
+                                                values={values}
+                                                change={handleChange}
+                                            />
+                                            <ButtonAgritech
+                                                variant="contained"
+                                                sx={{ bgcolor: colors.button }}
+                                                onClick={() => {
+                                                    setstage(1)
+                                                    handleSubmit(values)
+                                                }}
+                                            >
+                                                Próximo
+                                            </ButtonAgritech>
+                                        </>
+                                    )}
+                                    {stage === 1 && (
+                                        <>
+                                            <StageDescription
+                                                title={values.stages[2].name}
+                                                values={values}
+                                                change={handleChange}
+                                            />
+                                            <ButtonAgritech
+                                                variant="contained"
+                                                sx={{ bgcolor: colors.button }}
+                                                onClick={() => setstage(2)}
+                                            >
+                                                Próximo
+                                            </ButtonAgritech>
+                                        </>
+                                    )}
+                                    {stage === 2 && (
+                                        <>
+                                            <StageDescription
+                                                title={values.stages[3].name}
+                                                values={values}
+                                                change={handleChange}
+                                            />
+                                            <ButtonAgritech
+                                                variant="contained"
+                                                sx={{ bgcolor: colors.button }}
+                                                onClick={() => {
+                                                    console.log("Finalizado")
+                                                }}
+                                            >
+                                                Reportar
+                                            </ButtonAgritech>
+                                        </>
+                                    )}
+                                    {/* {!user?.producer && <ButtonComponent title="Reportar" location="" />} */}
                                 </Box>
-                                <StageDescription title={values.stages[1].name} values={values} change={handleChange} />
-                                <StageDescription title={values.stages[2].name} values={values} change={handleChange} />
-                                <StageDescription title={values.stages[3].name} values={values} change={handleChange} />
                             </Form>
-                            {!user?.producer && <ButtonComponent title="Reportar" location="" />}
                         </Box>
                     )}
                 </Formik>

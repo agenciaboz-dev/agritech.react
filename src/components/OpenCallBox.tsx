@@ -111,7 +111,7 @@ export const ProgressCall: React.FC<OpenCallBoxProps> = ({ data, click, call, us
                     {" "}
                     {user?.producer
                         ? `Seu chamado foi aprovado. Para que nossa equipe encaminhe-se até o local Lavoura ${call?.tillageId}#, o prazo mínimo do chamado é de 48 horas, segundo o contrato vigente.`
-                        : "A equipe pode iniciar o chamado a qualquer momento. Siga as etapas."}
+                        : "Seu chamado foi aprovado. Para que nossa equipe encaminhe-se até o local Lavoura ${call?.tillageId}#, o prazo mínimo do chamado é de 48 horas, segundo o contrato vigente."}
                 </p>
             </Box>
             <Box sx={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
