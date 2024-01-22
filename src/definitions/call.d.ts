@@ -1,3 +1,9 @@
+export enum CallStatus {
+    OPEN,
+    INPROGRESS,
+    CLOSED,
+    CANCELED,
+}
 export declare interface CreateCall {
     approved?: boolean
     open: string
@@ -17,6 +23,7 @@ export declare interface Call extends CreateCall {
     init: string
     finish: string
 
+    // status: CallStatus
     stages: Stage[]
     tillageId: number
 }

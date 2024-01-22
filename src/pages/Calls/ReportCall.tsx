@@ -1,6 +1,6 @@
 import React, { useEffect } from "react"
 import { useHeader } from "../../hooks/useHeader"
-import { Call } from "../../definitions/call"
+import { Call, CallStatus } from "../../definitions/call"
 import { Box, TextField } from "@mui/material"
 import { ButtonComponent } from "../../components/ButtonComponent"
 import { Form, Formik } from "formik"
@@ -27,6 +27,7 @@ export const ReportCall: React.FC<ReportCallProps> = ({ user }) => {
         tillageId: 224,
         producerId: user?.producer?.id || 0,
         id: 148,
+        // status: CallStatus.INPROGRESS,
         stages: [
             {
                 name: "Indo para a localização",
