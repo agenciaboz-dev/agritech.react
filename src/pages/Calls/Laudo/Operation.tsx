@@ -7,7 +7,7 @@ import { useUser } from "../../../hooks/useUser"
 
 interface OperationProps {
     user: User
-    values: Call
+    values: any
     change: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
 }
 // service         String

@@ -18,6 +18,11 @@ import { useCall } from "../../../hooks/useCall"
 import { useProducer } from "../../../hooks/useProducer"
 import { ButtonAgritech } from "../../../components/ButtonAgritech"
 import { Operation } from "./Operation"
+import { Treatment } from "./Treatment"
+import { useDisclosure } from "@mantine/hooks"
+import { ModalProduct } from "./ModalProduct"
+import { TechReport } from "./TechReport"
+import { ModalFlight } from "./ModalFlight"
 
 interface LaudoCallProps {
     user: User
@@ -32,59 +37,14 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
     const { listTillages } = useProducer()
 
     const [stage, setstage] = useState(0)
+    const [opened, { open, close }] = useDisclosure(false)
+    const [openedFlight, { open: openFlight, close: closeFlight }] = useDisclosure(false)
+    const [listProducts, setListProducts] = useState<Product[]>([])
+    const [listFlight, setListFlight] = useState<Flight[]>([])
 
-    const initialValues: Call = {
-        approved: false,
-        open: "2023-12-26",
-        init: "2023-12-26",
-        finish: "",
-        userId: user.id,
-        comments: "",
-        tillageId: 224,
-        producerId: user?.producer?.id || 0,
-        id: 148,
-        // status: CallStatus.INPROGRESS,
-        stages: [
-            {
-                name: "Indo para a localização",
-                comments: "",
-                date: "2023-12-26",
-                duration: "02:00:30",
-                finish: "02:00:30",
-                start: "02:00:30",
-                callId: 148,
-            },
-            {
-                name: "Chegada na Localização",
-                comments: "",
-                date: "2023-12-26",
-                duration: "02:00:30",
-                finish: "02:00:30",
-                start: "02:00:30",
-                callId: 148,
-            },
-            {
-                name: "Pulverização",
-                comments: "",
-                date: "2023-12-26",
-                duration: "02:00:30",
-                finish: "02:00:30",
-                start: "02:00:30",
-                callId: 148,
-            },
-            {
-                name: "Volta da Localização",
-                comments: "",
-                date: "2023-12-26",
-                duration: "02:00:30",
-                finish: "02:00:30",
-                start: "02:00:30",
-                callId: 148,
-            },
-        ],
-    }
+    const initialValues = { name: "" }
 
-    const handleSubmit = (values: Call) => {
+    const handleSubmit = (values: any) => {
         console.log(values.stages[0])
     }
     const [call, setCall] = useState<Call | null>()
@@ -113,6 +73,8 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                 flexDirection: "column",
             }}
         >
+            <ModalProduct opened={opened} close={close} product={listProducts} setproduct={setListProducts} />
+            <ModalFlight opened={openedFlight} close={closeFlight} flight={listFlight} setFlight={setListFlight} />
             <Box
                 sx={{
                     width: "100%",
@@ -184,7 +146,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                                         <Stepper
                                             active={stage}
                                             size="xs"
-                                            // onStepClick={setstage}
+                                            onStepClick={setstage}
                                             styles={{
                                                 step: {
                                                     flexDirection: "column",
@@ -220,27 +182,31 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                                         </Box>
                                     )}
                                     {stage === 1 && (
-                                        <Box sx={{ height: "100%" }}>
-                                            <StageDescription
-                                                title={values.stages[2].name}
+                                        <Box sx={{ height: "100%", justifyContent: "space-between", pt: "6vw" }}>
+                                            <Treatment
+                                                listProducts={listProducts}
+                                                user={user}
                                                 values={values}
                                                 change={handleChange}
+                                                open={open}
                                             />
                                             <ButtonAgritech
                                                 variant="contained"
                                                 sx={{ bgcolor: colors.button }}
                                                 onClick={() => setstage(2)}
                                             >
-                                                Finalizar Pulverização
+                                                Laudo Técnico {">"}
                                             </ButtonAgritech>
                                         </Box>
                                     )}
                                     {stage === 2 && (
-                                        <>
-                                            <StageDescription
-                                                title={values.stages[3].name}
+                                        <Box sx={{ height: "100%", justifyContent: "space-between", pt: "6vw" }}>
+                                            <TechReport
+                                                listFlights={listFlight}
+                                                user={user}
                                                 values={values}
                                                 change={handleChange}
+                                                open={openFlight}
                                             />
                                             <ButtonAgritech
                                                 variant="contained"
@@ -251,9 +217,24 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                                                     navigate(`/adm/call/${callid}/laudo`)
                                                 }}
                                             >
-                                                Finalizar
+                                                Insumos {">"}
                                             </ButtonAgritech>
-                                        </>
+                                        </Box>
+                                    )}
+                                    {stage === 3 && (
+                                        <Box sx={{ height: "100%", justifyContent: "space-between", pt: "6vw" }}>
+                                            <ButtonAgritech
+                                                variant="contained"
+                                                sx={{ bgcolor: colors.button }}
+                                                onClick={() => {
+                                                    setstage(3)
+                                                    console.log("Finalizado")
+                                                    navigate(`/`)
+                                                }}
+                                            >
+                                                Enviar Relatório {">"}
+                                            </ButtonAgritech>
+                                        </Box>
                                     )}
                                     {/* {!user?.producer && <ButtonComponent title="Reportar" location="" />} */}
                                 </Box>

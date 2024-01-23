@@ -20,6 +20,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"],
+  "include": ["src", "src/pages/Calls/Laudo/ModalProduct.tsx"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
