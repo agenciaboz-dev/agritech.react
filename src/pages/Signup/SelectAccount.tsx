@@ -90,6 +90,26 @@ export const SelectAccount: React.FC<SelectAccountProps> = ({
                             onChange={change}
                             sx={{ width: "100%" }}
                         >
+                            {/* <FormControlLabel
+                                value="admin"
+                                sx={{
+                                    fontWeight: typeOffice == "admin" ? "800" : "400",
+                                    fontSize: "4vw",
+                                    fontFamily: "MalgunGothic2",
+                                }}
+                                control={<Radio />}
+                                label="Administrador"
+                            />
+                            <FormControlLabel
+                                value="manager"
+                                sx={{
+                                    fontWeight: typeOffice == "manager" ? "800" : "400",
+                                    fontSize: "4vw",
+                                    fontFamily: "MalgunGothic2",
+                                }}
+                                control={<Radio />}
+                                label="Gerente"
+                            /> */}
                             <FormControlLabel
                                 value="agronomist"
                                 sx={{
@@ -111,6 +131,16 @@ export const SelectAccount: React.FC<SelectAccountProps> = ({
                                 label="Piloto de drone"
                             />
                             <FormControlLabel
+                                value="copilot"
+                                sx={{
+                                    fontWeight: typeOffice == "copilot" ? "800" : "400",
+                                    fontSize: "4vw",
+                                    fontFamily: "MalgunGothic2",
+                                }}
+                                control={<Radio />}
+                                label="Copiloto de drone"
+                            />
+                            <FormControlLabel
                                 value="technician"
                                 sx={{
                                     fontWeight: typeOffice == "technician" ? "800" : "400",
@@ -119,6 +149,16 @@ export const SelectAccount: React.FC<SelectAccountProps> = ({
                                 }}
                                 control={<Radio />}
                                 label="Técnico"
+                            />
+                            <FormControlLabel
+                                value="seller"
+                                sx={{
+                                    fontWeight: typeOffice == "seller" ? "800" : "400",
+                                    fontSize: "4vw",
+                                    fontFamily: "MalgunGothic2",
+                                }}
+                                control={<Radio />}
+                                label="Vendedor"
                             />
                         </RadioGroup>
                     </FormControl>
