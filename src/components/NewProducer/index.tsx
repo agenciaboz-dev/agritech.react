@@ -55,7 +55,7 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
     const [tillage, setTilllage] = useState<Tillage>()
 
     useEffect(() => {
-        header.setTitle(producer ? `${producer?.name}` : "Novo Produtor")
+        header.setTitle(producer ? `${producer?.name}` : "Novo Cliente")
     }, [producer?.name])
 
     const valuesProducer: NewProducer = {
@@ -125,7 +125,7 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
     }
 
     useEffect(() => {
-        console.log("Produtor recuperado", producer)
+        console.log("Cliente recuperado", producer)
     }, [producer])
 
     useEffect(() => {
@@ -134,7 +134,7 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
             if (user) {
                 snackbar({
                     severity: "success",
-                    text: "Produtor cadastrado!",
+                    text: "Cliente cadastrado!",
                 })
                 setProducer(user)
                 addUser(user)
@@ -158,7 +158,7 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
         name: "",
         area: "",
         ceo: "",
-        owner: producer?.name || " ", //corrigir para o nome do produtor
+        owner: producer?.name || " ", //corrigir para o nome do Cliente
         manager: "",
         agronomist: "",
         technician: "",

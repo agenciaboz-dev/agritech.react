@@ -24,7 +24,7 @@ export const ListProducer: React.FC<ListProducerProps> = ({ user }) => {
     })
 
     useEffect(() => {
-        header.setTitle("Produtores")
+        header.setTitle("Clientes")
     })
 
     return (
@@ -85,7 +85,7 @@ export const ListProducer: React.FC<ListProducerProps> = ({ user }) => {
                                       }
                                   />
                               ))
-                            : "Nenhum produtor encontrado"}
+                            : "Nenhum cliente encontrado"}
 
                         <Box style={{ width: "100%", height: "80%", overflow: "auto" }}></Box>
                     </Box>

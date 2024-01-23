@@ -46,13 +46,13 @@ export const useNavigationList = () => {
             },
             {
                 id: 2,
-                title: "Cadastrar Funcionário",
+                title: "Cadastrar Colaborador",
                 location: "/adm/new_employee",
                 icon: <img src={AddEmployee} style={{ width: "6vw" }} />,
             },
             {
                 id: 3,
-                title: "Cadastrar Produtor",
+                title: "Cadastrar Cliente",
                 location: "/adm/new_producer",
                 icon: <img src={AddUser} style={{ width: "6vw" }} />,
             },
@@ -106,7 +106,7 @@ export const useNavigationList = () => {
 
     const producer: NavigationMenu = {
         id: 2,
-        title: "Produtor",
+        title: "Cliente",
         location: "/producer",
         icon: <img src={GridPanel} alt="Logotipo do App" />,
         drawer: [
@@ -166,7 +166,7 @@ export const useNavigationList = () => {
 
     const employee: NavigationMenu = {
         id: 3,
-        title: "Funcionário",
+        title: "Colaborador",
         location: "/employee",
         drawer: [
             {
@@ -177,7 +177,7 @@ export const useNavigationList = () => {
             },
             {
                 id: 2,
-                title: "Cadastrar produtor",
+                title: "Cadastrar Cliente",
                 location: "/employee/new_producer",
                 icon: <img src={AddEmployee} style={{ width: "6vw" }} />,
             },

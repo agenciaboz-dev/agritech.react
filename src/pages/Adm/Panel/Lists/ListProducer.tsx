@@ -19,7 +19,7 @@ export const ListProducer: React.FC<ListProducerProps> = ({}) => {
     const [listProducer, setListProducer] = useState<User[]>()
 
     useEffect(() => {
-        header.setTitle("Produtores")
+        header.setTitle("Clientes")
     })
 
     useEffect(() => {
@@ -78,7 +78,7 @@ export const ListProducer: React.FC<ListProducerProps> = ({}) => {
                                       location={user.employee ? `/adm/calendar/${user.id}` : `/adm/profile/${user.id}`}
                                   />
                               ))
-                            : "Nenhum produtor encontrado"}
+                            : "Nenhum cliente encontrado"}
 
                         <Box style={{ width: "100%", height: "80%", overflow: "auto" }}></Box>
                     </Box>

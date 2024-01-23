@@ -21,7 +21,7 @@ export const Analysis: React.FC<AnalysisProps> = ({ user }) => {
     console.log({ rejectedUser: user })
     useEffect(() => {
         {
-            user.isAdmin && header.setTitle("Novo Funcionário")
+            user.isAdmin && header.setTitle("Novo Colaborador")
         }
     }, [])
 

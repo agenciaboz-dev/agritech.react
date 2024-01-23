@@ -40,7 +40,7 @@ export const ProducerProvider: React.FC<ProducerProviderProps> = ({ children }) 
 
         io.on("tillage:list:success", (data: Tillage[]) => {
             if (user?.producer) {
-                const listId = data.filter((item) => item.producerId === user?.producer?.id) //lista de lavoura do respectivo usuário produtor
+                const listId = data.filter((item) => item.producerId === user?.producer?.id) //lista de lavoura do respectivo usuário Cliente
                 setListTillages(listId)
                 setTillageUpdate(true)
                 // snackbar({ severity: "success", text: "Lista atualizada" })

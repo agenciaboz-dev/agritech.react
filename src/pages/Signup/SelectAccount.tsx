@@ -55,7 +55,7 @@ export const SelectAccount: React.FC<SelectAccountProps> = ({
                                 fontFamily: "MalgunGothic2",
                             }}
                             control={<Radio />}
-                            label="Produtor"
+                            label="Cliente"
                         />
                         <FormControlLabel
                             value="employee"
@@ -65,7 +65,7 @@ export const SelectAccount: React.FC<SelectAccountProps> = ({
                                 fontFamily: "MalgunGothic2",
                             }}
                             control={<Radio />}
-                            label="Funcionário"
+                            label="Colaborador"
                         />
                     </RadioGroup>
                 </FormControl>

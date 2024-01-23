@@ -20,7 +20,7 @@ export const ListEmployee: React.FC<ListEmployeeProps> = ({}) => {
 
     useEffect(() => {
         // header.setTitle(`${title}`)
-        header.setTitle("Funcionários")
+        header.setTitle("Colaboradores")
     })
 
     useEffect(() => {
@@ -79,7 +79,7 @@ export const ListEmployee: React.FC<ListEmployeeProps> = ({}) => {
                                       location={user.employee ? `/adm/calendar/${user.id}` : `/adm/profile/${user.id}`}
                                   />
                               ))
-                            : "Nenhum funcionário encontrado"}
+                            : "Nenhum colaborador encontrado"}
 
                         <Box style={{ width: "100%", height: "80%", overflow: "auto" }}></Box>
                     </Box>

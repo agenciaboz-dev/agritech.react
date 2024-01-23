@@ -50,7 +50,7 @@ export const LogsCard: React.FC<LogsCardProps> = ({ review, call, variant }) => 
                         </Menu.Target>
                         <Menu.Dropdown>
                             <Menu.Item>Ver responsável</Menu.Item>
-                            <Menu.Item>Ver Produtor</Menu.Item>
+                            <Menu.Item>Ver Cliente</Menu.Item>
                             <Menu.Item>Editar</Menu.Item>
                             <Menu.Item color="red">Excluir</Menu.Item>
                         </Menu.Dropdown>

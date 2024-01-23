@@ -113,7 +113,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                     title="Preencher dados"
                     style={{ fontSize: "5vw" }}
                     button={user?.employee ? true : false}
-                    textButton="Acessar Produtor"
+                    textButton="Acessar Cliente"
                     click={() =>
                         navigate(
                             user.isAdmin ? `/adm/profile/${producerSelect?.id}` : `/employee/profile/${producerSelect?.id}`
@@ -214,7 +214,6 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                                                 onClick={() => {
                                                     setstage(3)
                                                     console.log("Finalizado")
-                                                    navigate(`/adm/call/${callid}/laudo`)
                                                 }}
                                             >
                                                 Insumos {">"}
@@ -229,7 +228,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                                                 onClick={() => {
                                                     setstage(3)
                                                     console.log("Finalizado")
-                                                    navigate(`/`)
+                                                    navigate(user.isAdmin ? `/` : `/employee`)
                                                 }}
                                             >
                                                 Enviar Relatório {">"}

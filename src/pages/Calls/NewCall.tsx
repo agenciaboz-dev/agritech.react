@@ -195,7 +195,7 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                         producerId &&
                         navigate(user.isAdmin ? `/adm/producer/${producerId}` : `/employee/producer/${producerId}`)
                     }
-                    textButton="Acessar Produtor"
+                    textButton="Acessar Cliente"
                     variant
                 />
                 <Formik initialValues={initialValues} onSubmit={handleSubmit}>
@@ -224,7 +224,7 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                                                 }
                                             }}
                                             renderInput={(params) => (
-                                                <TextField {...params} sx={{ ...textField }} label="Produtor" required />
+                                                <TextField {...params} sx={{ ...textField }} label="Cliente" required />
                                             )}
                                         />
                                         <Autocomplete

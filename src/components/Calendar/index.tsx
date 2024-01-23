@@ -100,7 +100,7 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
                     onClick={() => navigate(`/adm/profile/${userid}`)}
                 >
                     <IconUser fontSize="xs" color="#fff" />
-                    Acessar cadastro funcionário
+                    Acessar cadastro colaborador
                 </Button>
                 <DatePicker
                     locale="pt-br"

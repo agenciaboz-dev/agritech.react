@@ -144,7 +144,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                                     textAlign: "left",
                                 }}
                             >
-                                Funcionários Fixados
+                                Colaboradores Fixados
                             </p>
                             <Box style={{ width: "100%" }}>
                                 {listEmployee?.length !== 0 &&
@@ -179,7 +179,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                                     }}
                                     onClick={() => navigate("/adm/new_employee")}
                                 >
-                                    Cadastrar novo funcionário
+                                    Cadastrar novo colaborador
                                 </Button>
                                 <Box
                                     sx={{
@@ -216,7 +216,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                                     textAlign: "left",
                                 }}
                             >
-                                Produtores Fixados
+                                Clientes Fixados
                             </p>
                             <Box style={{ width: "100%" }}>
                                 {listProducer?.length !== 0 &&
@@ -259,7 +259,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                                         }}
                                         onClick={() => navigate("/adm/new_producer")}
                                     >
-                                        Cadastrar novo produtor
+                                        Cadastrar novo cliente
                                     </Button>
                                     <Box
                                         sx={{

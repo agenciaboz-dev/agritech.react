@@ -150,7 +150,7 @@ export const ReportCall: React.FC<ReportCallProps> = ({ user }) => {
                     title="Chamado"
                     style={{ fontSize: "5vw" }}
                     button={user?.employee ? true : false}
-                    textButton="Acessar Produtor"
+                    textButton="Acessar Cliente"
                     click={() =>
                         navigate(
                             user.isAdmin ? `/adm/profile/${producerSelect?.id}` : `/employee/profilw/${producerSelect?.id}`
@@ -174,7 +174,7 @@ export const ReportCall: React.FC<ReportCallProps> = ({ user }) => {
                                             disabled={!user?.producer ? false : true}
                                         />
                                         <TextField
-                                            label="Produtor"
+                                            label="Cliente"
                                             name="producer"
                                             value={producerSelect ? producerSelect?.name : ""}
                                             sx={{ ...textField }}
@@ -251,7 +251,11 @@ export const ReportCall: React.FC<ReportCallProps> = ({ user }) => {
                                                 onClick={() => {
                                                     setstage(3)
                                                     console.log("Finalizado")
-                                                    navigate(`/adm/call/${callid}/laudo`)
+                                                    navigate(
+                                                        user.isAdmin
+                                                            ? `/adm/call/${callid}/laudo`
+                                                            : `/employee/call/${callid}/laudo`
+                                                    )
                                                 }}
                                             >
                                                 Finalizar

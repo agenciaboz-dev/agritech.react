@@ -102,14 +102,14 @@ export const ReviewsEmployee: React.FC<ReviewsEmployeeProps> = ({ user }) => {
                     scrollButtons="auto"
                     allowScrollButtonsMobile
                 >
-                    <Tab sx={tabStyle} value="requestsEmployee" label="Cadastro de Funcionários" />
+                    <Tab sx={tabStyle} value="requestsEmployee" label="Cadastro de Colaboradores" />
                 </Tabs>
                 <Box sx={{ width: "100%", height: "82%", overflow: "auto", gap: "1vw" }}>
                     {tab === "requestsEmployee" && listEmployee?.length !== 0
                         ? listEmployee?.map((user) => (
                               <CardUser review user={user} key={user.id} location={`/adm/review/profile/${user.id}`} />
                           ))
-                        : tab === "requestsEmployee" && "Nenhum cadastro de funcionário"}
+                        : tab === "requestsEmployee" && "Nenhum cadastro de colaborador"}
                 </Box>
             </Box>
         </Box>

@@ -94,7 +94,7 @@ export const NotificationDrawer: React.FC<NotificationDrawerProps> = ({}) => {
                         }}
                     >
                         <p style={{ fontWeight: "800", color: colors.text.white, fontFamily: "MalgunGothicBold" }}>
-                            Funcionários Fixados
+                            Colaboradores Fixados
                         </p>
                         <IoIosArrowDown color={colors.text.white} style={{ width: "6vw", height: "6vw" }} />
                     </Box>
@@ -124,7 +124,7 @@ export const NotificationDrawer: React.FC<NotificationDrawerProps> = ({}) => {
                         }}
                     >
                         <p style={{ fontWeight: "800", color: colors.text.white, fontFamily: "MalgunGothicBold" }}>
-                            Produtores Fixados
+                            Clientes Fixados
                         </p>
                         <IoIosArrowDown color={colors.text.white} style={{ width: "6vw", height: "6vw" }} />
                     </Box>

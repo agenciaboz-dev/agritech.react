@@ -12,6 +12,8 @@ import { ListProducer } from "./Panel/ListProducer"
 import { CallDetails } from "../Calls/CallDetails"
 import { Userprofile } from "../Adm/ReviewsEmployee/UserProfile"
 import { ListTillages } from "../TillageDetails/ListTillages"
+import { ReportCall } from "../Calls/ReportCall"
+import { LaudoCall } from "../Calls/Laudo"
 
 interface EmployeeProps {
     user: User
@@ -35,6 +37,8 @@ export const Employee: React.FC<EmployeeProps> = ({ user }) => {
                 <Route path="/profile/:userId" element={<Userprofile view />} />
                 <Route path="/producer/:producerid" element={<ListTillages />} />
                 <Route path="/call/:callid" element={<CallDetails />} />
+                <Route path="/call/:callid/report" element={<ReportCall user={user} />} />
+                <Route path="/call/:callid/laudo" element={<LaudoCall user={user} />} />
             </ReactRoutes>
         </>
     )

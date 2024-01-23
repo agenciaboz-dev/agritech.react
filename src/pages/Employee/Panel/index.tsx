@@ -120,7 +120,7 @@ export const PanelUser: React.FC<PanelUserProps> = ({ user }) => {
                                 textAlign: "left",
                             }}
                         >
-                            Produtores Fixados
+                            Clientes Fixados
                         </p>
                         <Box style={{ width: "100%" }}>
                             {team?.length !== 0 &&
@@ -163,7 +163,7 @@ export const PanelUser: React.FC<PanelUserProps> = ({ user }) => {
                                     }}
                                     onClick={() => navigate("/employee/new_producer")}
                                 >
-                                    Cadastrar novo produtor
+                                    Cadastrar novo cliente
                                 </Button>
                                 <Box
                                     sx={{

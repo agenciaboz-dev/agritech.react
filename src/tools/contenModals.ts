@@ -1,7 +1,7 @@
 const openCall = {
     title: "Deseja abrir um novo chamado?",
     content:
-        "Tem certeza que deseja iniciar um chamado para esse produtor? Uma vez que iniciado, esse chamado ficará registrado no histórico de todos os envolvidos.",
+        "Tem certeza que deseja iniciar um chamado para esse cliente? Uma vez que iniciado, esse chamado ficará registrado no histórico de todos os envolvidos.",
     submitTitle: "Sim, iniciar",
     cancelTitle: "Não, cancelar",
 }
