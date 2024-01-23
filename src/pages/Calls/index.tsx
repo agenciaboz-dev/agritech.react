@@ -4,6 +4,7 @@ import { NewCall } from "./NewCall"
 import { ApproveCall } from "../Adm/ReviewsCall/ApproveCall"
 import { ReportCall } from "./ReportCall"
 import { CallDetails } from "./CallDetails"
+import { LaudoCall } from "./Laudo"
 
 interface CallsProps {
     user: User
@@ -16,6 +17,7 @@ export const Calls: React.FC<CallsProps> = ({ user }) => {
             <Route path="/:callid" element={<CallDetails />} />
             <Route path="/calls/:callid" element={<ApproveCall />} />
             <Route path="/:callid/report" element={<ReportCall user={user} />} />
+            <Route path="/:callid/laudo" element={<LaudoCall user={user} />} />
         </ReactRoutes>
     )
 }

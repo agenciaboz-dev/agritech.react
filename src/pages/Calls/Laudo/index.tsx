@@ -1,28 +1,28 @@
 import React, { useEffect, useState } from "react"
-import { useHeader } from "../../hooks/useHeader"
-import { Call, CallStatus } from "../../definitions/call"
+import { useHeader } from "../../../hooks/useHeader"
+import { Call, CallStatus } from "../../../definitions/call"
 import { Box, TextField } from "@mui/material"
-import { ButtonComponent } from "../../components/ButtonComponent"
+import { ButtonComponent } from "../../../components/ButtonComponent"
 import { Form, Formik } from "formik"
-import { TitleComponents } from "../../components/TitleComponents"
-import { Header } from "../../components/Header"
-import { colors } from "../../style/colors"
-import { textField } from "../../style/input"
-import { StageDescription } from "../../components/StageDescription"
+import { TitleComponents } from "../../../components/TitleComponents"
+import { Header } from "../../../components/Header"
+import { colors } from "../../../style/colors"
+import { textField } from "../../../style/input"
+import { StageDescription } from "../../../components/StageDescription"
 import { Stepper } from "@mantine/core"
 import { useNavigate, useParams } from "react-router-dom"
-import findProducer from "../../hooks/filterProducer"
-import { useKits } from "../../hooks/useKits"
-import { useUsers } from "../../hooks/useUsers"
-import { useCall } from "../../hooks/useCall"
-import { useProducer } from "../../hooks/useProducer"
-import { ButtonAgritech } from "../../components/ButtonAgritech"
+import findProducer from "../../../hooks/filterProducer"
+import { useKits } from "../../../hooks/useKits"
+import { useUsers } from "../../../hooks/useUsers"
+import { useCall } from "../../../hooks/useCall"
+import { useProducer } from "../../../hooks/useProducer"
+import { ButtonAgritech } from "../../../components/ButtonAgritech"
 
-interface ReportCallProps {
+interface LaudoCallProps {
     user: User
 }
 
-export const ReportCall: React.FC<ReportCallProps> = ({ user }) => {
+export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
     const header = useHeader()
     const navigate = useNavigate()
     const { callid } = useParams()
@@ -91,7 +91,7 @@ export const ReportCall: React.FC<ReportCallProps> = ({ user }) => {
     const [tillage, setTillage] = useState<Tillage | null>()
 
     useEffect(() => {
-        header.setTitle("Painel")
+        header.setTitle("Relatório")
     }, [])
 
     useEffect(() => {
@@ -147,13 +147,13 @@ export const ReportCall: React.FC<ReportCallProps> = ({ user }) => {
                 }}
             >
                 <TitleComponents
-                    title="Chamado"
+                    title="Preencher dados"
                     style={{ fontSize: "5vw" }}
                     button={user?.employee ? true : false}
                     textButton="Acessar Produtor"
                     click={() =>
                         navigate(
-                            user.isAdmin ? `/adm/profile/${producerSelect?.id}` : `/employee/profilw/${producerSelect?.id}`
+                            user.isAdmin ? `/adm/profile/${producerSelect?.id}` : `/employee/profile/${producerSelect?.id}`
                         )
                     }
                     variant

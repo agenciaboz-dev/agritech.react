@@ -101,7 +101,7 @@ export const SettingsKit: React.FC<SettingsKitProps> = ({}) => {
                         gap: "1vw",
                     }}
                 >
-                    <Box sx={{ overflowY: "auto", height: "72%", p: "0 2vw" }}>
+                    <Box sx={{ overflowY: "auto", height: "72%" }}>
                         {user?.isAdmin
                             ? listKits.length !== 0
                                 ? listKits.map((kit, index) => <CardKit key={index} kit={kit} />)
