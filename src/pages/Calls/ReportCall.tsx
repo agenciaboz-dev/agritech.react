@@ -196,6 +196,7 @@ export const ReportCall: React.FC<ReportCallProps> = ({ user }) => {
                                             step: { flexDirection: "column", alignItems: "center", gap: "4vw" },
                                             content: { margin: 0 },
                                             stepIcon: { margin: 0 },
+                                            stepBody: { margin: 0 },
                                         }}
                                     >
                                         <Stepper.Step label="Chegada" step={2} />

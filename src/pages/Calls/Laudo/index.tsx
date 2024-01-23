@@ -17,6 +17,7 @@ import { useUsers } from "../../../hooks/useUsers"
 import { useCall } from "../../../hooks/useCall"
 import { useProducer } from "../../../hooks/useProducer"
 import { ButtonAgritech } from "../../../components/ButtonAgritech"
+import { Operation } from "./Operation"
 
 interface LaudoCallProps {
     user: User
@@ -91,7 +92,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
     const [tillage, setTillage] = useState<Tillage | null>()
 
     useEffect(() => {
-        header.setTitle("Relatório")
+        header.setTitle("Relatório Operacional")
     }, [])
 
     useEffect(() => {
@@ -141,7 +142,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                     backgroundColor: "#fff",
                     borderTopLeftRadius: "7vw",
                     borderTopRightRadius: "7vw",
-                    gap: "5vw",
+                    gap: "3vw",
                     overflow: "hidden",
                     flexDirection: "column",
                 }}
@@ -163,52 +164,49 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                         <Box sx={{ gap: "3vw", height: "85%", overflowY: "auto", p: "2vw 0" }}>
                             <Form>
                                 <Box sx={{ justifyContent: "space-between", height: "100%" }}>
-                                    <Box sx={{ gap: "4vw" }}>
-                                        <TextField
-                                            label="Aberto em"
-                                            name="init"
-                                            type="date"
-                                            value={values.open}
-                                            sx={{ ...textField }}
-                                            inputProps={{ "aria-readonly": true }}
-                                            disabled={!user?.producer ? false : true}
-                                        />
-                                        <TextField
-                                            label="Produtor"
-                                            name="producer"
-                                            value={producerSelect ? producerSelect?.name : ""}
-                                            sx={{ ...textField }}
-                                            disabled={!user?.producer ? false : true}
-                                        />
-                                        <TextField
-                                            label="Lavoura"
-                                            name="tillage"
-                                            value={tillage ? tillage?.name : " "}
-                                            sx={{ ...textField }}
-                                            disabled={!user?.producer ? false : true}
-                                        />
-                                    </Box>
-                                    <Stepper
-                                        active={stage}
-                                        size="xs"
-                                        // onStepClick={setstage}
-                                        styles={{
-                                            step: { flexDirection: "column", alignItems: "center", gap: "4vw" },
-                                            content: { margin: 0 },
-                                            stepIcon: { margin: 0 },
-                                        }}
-                                    >
-                                        <Stepper.Step label="Chegada" step={2} />
-                                        <Stepper.Step label="Pulverização" />
-                                        <Stepper.Step label="Finalização" />
-                                    </Stepper>
-                                    {stage === 0 && (
-                                        <>
-                                            <StageDescription
-                                                title={values.stages[1].name}
-                                                values={values}
-                                                change={handleChange}
+                                    <Box sx={{ gap: "5vw" }}>
+                                        <Box gap={"3vw"}>
+                                            <TextField
+                                                label="Contratante"
+                                                name="producer"
+                                                value={producerSelect ? producerSelect?.name : ""}
+                                                sx={{ ...textField }}
+                                                disabled={!user?.producer ? false : true}
                                             />
+                                            <TextField
+                                                label="Propriedade"
+                                                name="tillage"
+                                                value={tillage ? tillage?.name : " "}
+                                                sx={{ ...textField }}
+                                                disabled={!user?.producer ? false : true}
+                                            />
+                                        </Box>
+                                        <Stepper
+                                            active={stage}
+                                            size="xs"
+                                            // onStepClick={setstage}
+                                            styles={{
+                                                step: {
+                                                    flexDirection: "column",
+                                                    alignItems: "center",
+                                                    gap: "2vw",
+                                                    justifyContent: "center",
+                                                    marginLeft: 0,
+                                                },
+                                                content: { margin: 0 },
+                                                stepIcon: { margin: 0 },
+                                                stepBody: { margin: 0 },
+                                            }}
+                                        >
+                                            <Stepper.Step label="Operação" step={2} />
+                                            <Stepper.Step label="Tratamento" />
+                                            <Stepper.Step label="Laudo Técnico" />
+                                            <Stepper.Step label="Insumos" />
+                                        </Stepper>
+                                    </Box>
+                                    {stage === 0 && (
+                                        <Box sx={{ height: "100%", justifyContent: "space-between", pt: "6vw" }}>
+                                            <Operation user={user} values={values} change={handleChange} />
                                             <ButtonAgritech
                                                 variant="contained"
                                                 sx={{ bgcolor: colors.button }}
@@ -217,12 +215,12 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                                                     handleSubmit(values)
                                                 }}
                                             >
-                                                Chegou na Localização
+                                                Tratamento {">"}
                                             </ButtonAgritech>
-                                        </>
+                                        </Box>
                                     )}
                                     {stage === 1 && (
-                                        <>
+                                        <Box sx={{ height: "100%" }}>
                                             <StageDescription
                                                 title={values.stages[2].name}
                                                 values={values}
@@ -235,7 +233,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                                             >
                                                 Finalizar Pulverização
                                             </ButtonAgritech>
-                                        </>
+                                        </Box>
                                     )}
                                     {stage === 2 && (
                                         <>
