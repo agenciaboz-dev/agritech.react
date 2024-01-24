@@ -117,7 +117,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
         })
         io.on("call:update:failed", (error) => {
             console.log({ chamadoAberto: error })
-            snackbar({ severity: "error", text: "Já existe chamado ativo pra essa lavoura!" })
+            snackbar({ severity: "error", text: "Já existe chamado ativo pra esse talhão!" })
             setLoading(false)
         })
         return () => {

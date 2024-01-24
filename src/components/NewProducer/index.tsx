@@ -25,7 +25,7 @@ interface NewProducerProps {}
 
 const openCall = {
     title: "Adicione um CEP",
-    content: "Insira o cep da sua lavoura. Caso não tenha, insira o cep mais próximo.",
+    content: "Insira o cep do Talhão. Caso não tenha, insira o cep mais próximo.",
     submitTitle: "Continuar",
     cancelTitle: "Cancelar",
 }
@@ -264,7 +264,7 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
             >
                 {currentStep === 1 && (
                     <p style={{ color: colors.text.white, width: "100%", fontSize: "5vw", padding: "2vw 4vw" }}>
-                        Localização da lavoura
+                        Localização do Talhão
                     </p>
                 )}
                 <Box

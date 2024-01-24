@@ -267,7 +267,7 @@ export const ReportCall: React.FC<ReportCallProps> = ({ user }) => {
                                 disabled={!user?.producer ? false : true}
                             />
                             <TextField
-                                label="Lavoura"
+                                label="Talhão"
                                 name="tillage"
                                 value={tillage ? tillage?.name : " "}
                                 sx={{ ...textField }}

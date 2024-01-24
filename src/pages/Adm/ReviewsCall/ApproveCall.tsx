@@ -138,7 +138,7 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
                         />
                         <Box sx={{ flexDirection: "column", gap: "2vw", width: "65%" }}>
                             <Box>
-                                <p style={p_style}>Nome da Lavoura</p>
+                                <p style={p_style}>Nome da Fazenda</p>
                                 <p>{tillageSelected?.name}</p>
                             </Box>
                             <Box>

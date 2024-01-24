@@ -119,13 +119,13 @@ export const useNavigationList = () => {
 
             {
                 id: 2,
-                title: "Minhas Lavouras",
+                title: "Minhas Fazendas",
                 location: "/producer/tillages",
                 icon: <PiPlantLight style={{ width: "7vw", height: "6vw", paddingLeft: 0, paddingRight: 0 }} />,
             },
             {
                 id: 3,
-                title: "Cadastrar Lavoura",
+                title: "Cadastrar Fazenda",
                 location: "/producer/new",
                 icon: <img src={AddEmployee} style={{ width: "6vw" }} />,
             },

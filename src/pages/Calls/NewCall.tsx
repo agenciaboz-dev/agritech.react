@@ -138,7 +138,7 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
         })
         io.on("call:update:failed", (error) => {
             console.log({ chamadoAberto: error })
-            snackbar({ severity: "error", text: "Já existe chamado ativo pra essa lavoura!" })
+            snackbar({ severity: "error", text: "Já existe chamado ativo pra esse Talhão!" })
             setLoading(false)
         })
         return () => {
@@ -270,7 +270,7 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                                                 )
                                             }}
                                             renderInput={(params) => (
-                                                <TextField {...params} sx={{ ...textField }} label="Lavoura" required />
+                                                <TextField {...params} sx={{ ...textField }} label="Talhão" required />
                                             )}
                                         />
                                     </>
