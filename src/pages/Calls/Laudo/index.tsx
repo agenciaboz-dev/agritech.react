@@ -142,6 +142,16 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                                                 sx={{ ...textField }}
                                                 disabled={!user?.producer ? false : true}
                                             />
+                                            <TextField
+                                                label="Área Trabalhada"
+                                                InputProps={{ endAdornment: "ha" }}
+                                                name="tillage"
+                                                value={1000}
+                                                sx={{ ...textField }}
+                                                disabled={!user?.producer ? false : true}
+                                                onChange={() => {}}
+                                                required
+                                            />
                                         </Box>
                                         <Stepper
                                             active={stage}

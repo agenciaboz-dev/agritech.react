@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { Accordion, Box, Button, Radio } from "@mui/material"
+import { Accordion, Box, Button, Radio, TextField } from "@mui/material"
 import { Avatar } from "@files-ui/react"
 import GeoImage from "../../../assets/geo.svg"
 import { Header } from "../../../components/Header"
@@ -19,6 +19,7 @@ import { NewObject } from "../../../definitions/object"
 import { useIo } from "../../../hooks/useIo"
 import { useSnackbar } from "burgos-snackbar"
 import { useUsers } from "../../../hooks/useUsers"
+import { textField } from "../../../style/input"
 
 interface ApproveCallProps {}
 
@@ -160,43 +161,54 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
                         <Formik initialValues={initialValues} onSubmit={approveCall}>
                             {({ values, handleChange, setFieldValue }) => (
                                 <Form>
-                                    <TitleComponents
-                                        title="Escolha o kit para enviar"
-                                        button
-                                        textButton="Salvar Kit"
-                                        submit
-                                        disabled={!values.kitId}
-                                    />
-                                    <Box sx={{ height: "100%", overflowY: "auto" }}>
-                                        {kitsActived.map((kit, index) => (
-                                            <Accordion
-                                                elevation={0}
-                                                key={index}
-                                                expanded={expanded === String(index)}
-                                                onChange={expandendChange(String(index))}
-                                            >
-                                                <AccordionSummary aria-controls="panel1d-content" id={String(index)}>
-                                                    <Typography>{kit.name}</Typography>
-                                                    <Radio
-                                                        name="kitId"
-                                                        value={kit.id}
-                                                        checked={values.kitId === kit.id}
-                                                        onChange={() => {
-                                                            setFieldValue("kitId", kit.id)
-                                                            handleChange
-                                                        }}
-                                                    />
-                                                </AccordionSummary>
-                                                <AccordionDetails>
-                                                    <p>Objetos</p>
-                                                    {kit.objects?.map((obj: NewObject, index) => (
-                                                        <p key={index}>
-                                                            {obj.quantity}x {obj.name}
-                                                        </p>
-                                                    ))}
-                                                </AccordionDetails>
-                                            </Accordion>
-                                        ))}
+                                    <Box sx={{ gap: "5vw" }}>
+                                        <TextField
+                                            label={"Custo por hectare"}
+                                            name="partialPrice"
+                                            value={"1000"}
+                                            sx={textField}
+                                            onChange={handleChange}
+                                            InputProps={{ startAdornment: "R$" }}
+                                            required
+                                        />
+                                        <TitleComponents
+                                            title="Escolha o kit para enviar"
+                                            button
+                                            textButton="Salvar Kit"
+                                            submit
+                                            disabled={!values.kitId}
+                                        />
+                                        <Box sx={{ height: "100%", overflowY: "auto" }}>
+                                            {kitsActived.map((kit, index) => (
+                                                <Accordion
+                                                    elevation={0}
+                                                    key={index}
+                                                    expanded={expanded === String(index)}
+                                                    onChange={expandendChange(String(index))}
+                                                >
+                                                    <AccordionSummary aria-controls="panel1d-content" id={String(index)}>
+                                                        <Typography>{kit.name}</Typography>
+                                                        <Radio
+                                                            name="kitId"
+                                                            value={kit.id}
+                                                            checked={values.kitId === kit.id}
+                                                            onChange={() => {
+                                                                setFieldValue("kitId", kit.id)
+                                                                handleChange
+                                                            }}
+                                                        />
+                                                    </AccordionSummary>
+                                                    <AccordionDetails>
+                                                        <p>Objetos</p>
+                                                        {kit.objects?.map((obj: NewObject, index) => (
+                                                            <p key={index}>
+                                                                {obj.quantity}x {obj.name}
+                                                            </p>
+                                                        ))}
+                                                    </AccordionDetails>
+                                                </Accordion>
+                                            ))}
+                                        </Box>
                                     </Box>
                                 </Form>
                             )}

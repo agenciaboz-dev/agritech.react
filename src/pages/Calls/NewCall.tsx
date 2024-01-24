@@ -36,6 +36,7 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
     const [producerId, setProducerId] = useState<number | null>(null)
     const [tillageId, setTillageId] = useState<number | null>(null)
     const [inputValue, setInputValue] = useState("")
+    const [tillageValue, setTillageValue] = useState("")
     const [kitValue, setKitValue] = useState("")
 
     //Render options => user.producer
@@ -215,10 +216,9 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                                             value={producers.find((prod) => prod.id === values.producerId) || null}
                                             options={producers || []}
                                             getOptionLabel={(option: { id: number; name: string }) => option.name}
-                                            inputValue={inputValue}
+                                            // inputValue={inputValue}
                                             onChange={(event, selected) => {
                                                 if (selected) {
-                                                    setInputValue(selected.name)
                                                     setFieldValue("producerId", selected.id)
                                                     setProducerId(selected.id)
                                                 }
@@ -278,6 +278,7 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                                 {user.producer && (
                                     <Autocomplete
                                         value={tillagesProducer.find((tillage) => tillage.id === values.tillageId) || null}
+                                        inputValue={inputValue}
                                         options={tillagesProducer || []}
                                         getOptionLabel={(option: { id: number; name: string }) => option.name}
                                         onChange={(event, selected) => {
@@ -323,21 +324,31 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                                 )}
 
                                 {user.isAdmin && (
-                                    <Autocomplete
-                                        value={kits.find((kit) => kit.id === values.kitId) || null}
-                                        inputValue={kitValue}
-                                        getOptionLabel={(option: { id: number; name: string }) => option.name}
-                                        options={kits || []}
-                                        onChange={(event, selected) => {
-                                            if (selected) {
-                                                setFieldValue("kitId", selected.id)
-                                                setKitValue(selected.name)
-                                            }
-                                        }}
-                                        renderInput={(params) => (
-                                            <TextField {...params} sx={{ ...textField }} label="Kit" required />
-                                        )}
-                                    />
+                                    <Box gap="4vw">
+                                        <Autocomplete
+                                            value={kits.find((kit) => kit.id === values.kitId) || null}
+                                            getOptionLabel={(option: { id: number; name: string }) => option.name}
+                                            options={kits || []}
+                                            onChange={(event, selected) => {
+                                                if (selected) {
+                                                    setFieldValue("kitId", selected.id)
+                                                    setKitValue(selected.name)
+                                                }
+                                            }}
+                                            renderInput={(params) => (
+                                                <TextField {...params} sx={{ ...textField }} label="Kit" required />
+                                            )}
+                                        />
+                                        <TextField
+                                            label={"Custo por hectare"}
+                                            name="partialPrice"
+                                            value={"1000"}
+                                            sx={textField}
+                                            onChange={handleChange}
+                                            required
+                                            InputProps={{ startAdornment: "R$" }}
+                                        />
+                                    </Box>
                                 )}
 
                                 <TextField
