@@ -256,9 +256,13 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                                     navigate(
                                         user?.producer !== null
                                             ? `/producer/call/${call?.id}`
+                                            : call?.stages.length === 3
+                                            ? user.isAdmin
+                                                ? `/adm/call/${call?.id}/laudo`
+                                                : `/employee/call/${call?.id}/laudo`
                                             : user.isAdmin
-                                            ? `/adm/call/${call?.id}/report `
-                                            : `/employee/call/${call?.id}/report `
+                                            ? `/adm/call/${call?.id}/report`
+                                            : `/employee/call/${call?.id}/report`
                                     )
                                 }
                                 data={progress}

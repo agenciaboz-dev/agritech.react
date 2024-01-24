@@ -29,6 +29,7 @@ export declare interface Call extends CreateCall {
 }
 
 export declare interface Stage {
+    id?: number
     name: string
     date: string
     start: string

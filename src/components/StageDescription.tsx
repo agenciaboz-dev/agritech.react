@@ -2,12 +2,13 @@ import { Box, TextField } from "@mui/material"
 import React, { ChangeEventHandler } from "react"
 import { textField } from "../style/input"
 import { colors } from "../style/colors"
-import { Call } from "../definitions/call"
+import { Call, Stage } from "../definitions/call"
 import { useUser } from "../hooks/useUser"
+import { dateFrontend } from "../hooks/useFormattedDate"
 
 interface StageDescriptionProps {
     title: string
-    values: Call
+    values: Stage
     change: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
 }
 
@@ -19,9 +20,8 @@ export const StageDescription: React.FC<StageDescriptionProps> = ({ title, value
                 <p style={{ fontSize: "3.5vw", fontWeight: "bold" }}>{title}</p>
                 <TextField
                     label="Data"
-                    name="stages.date"
-                    type="date"
-                    value={values.stages[1].date}
+                    type="text"
+                    value={dateFrontend(values.date)}
                     sx={{ ...textField }}
                     inputProps={{ "aria-readonly": true }}
                     disabled={!user?.producer ? false : true}
@@ -29,29 +29,32 @@ export const StageDescription: React.FC<StageDescriptionProps> = ({ title, value
                 <Box sx={{ flexDirection: "row", gap: "2vw" }}>
                     <TextField
                         label="Início"
-                        name="stages.start"
+                        name="start"
                         type="time"
-                        value={values.stages[1].start}
+                        value={values.start}
                         sx={{ ...textField }}
                         onChange={!user?.producer ? change : () => {}}
                         disabled={!user?.producer ? false : true}
+                        InputLabelProps={{
+                            shrink: true, // Encolher o rótulo quando houver valor
+                        }}
                     />
                     <TextField
                         label="Finalização"
-                        name="stages.finish"
+                        name="finish"
                         type="time"
-                        value={values.stages[1].finish}
+                        value={values.finish}
                         sx={{ ...textField }}
                         onChange={!user?.producer ? change : () => {}}
                         disabled={!user?.producer ? false : true}
                     />
                     <TextField
                         label="Duração"
-                        name="stages.duration"
+                        name="duration"
                         type="time"
-                        value={values.stages[1].duration}
+                        value={values.duration}
                         sx={{ ...textField }}
-                        onChange={!user?.producer ? change : () => {}}
+                        // onChange={!user?.producer ? change : () => {}}
                         disabled={!user?.producer ? false : true}
                     />
                 </Box>
