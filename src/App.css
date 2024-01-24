@@ -12,8 +12,6 @@
     box-sizing: border-box;
     font-family: MalgunGothic2;
     /* user-select: none; */
-    transition-timing-function: ease-in-out;
-    transition: 0.5s;
 }
 
 .logo {
@@ -77,8 +75,6 @@ form {
 html {
     scroll-behavior: smooth;
     height: 100%;
-    transition-timing-function: ease-in-out;
-    transition: 0.5s;
 }
 
 body {
@@ -110,8 +106,6 @@ img {
 
 .MuiBox-root {
     flex-direction: column;
-    transition-timing-function: ease-in-out;
-    transition: 0.5s;
 }
 @media (min-width: 1024px) {
     body {
