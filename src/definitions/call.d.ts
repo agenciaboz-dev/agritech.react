@@ -10,6 +10,7 @@ export declare interface CreateCall {
     comments: string
 
     tillageId: number
+    kit?: Kit
     kitId?: number
     producerId: number
     userId: number

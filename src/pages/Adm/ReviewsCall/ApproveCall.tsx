@@ -44,8 +44,8 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
 
     const { snackbar } = useSnackbar()
 
-    const [expanded, setExpanded] = React.useState<string | false>("")
     const [loading, setLoading] = useState(false)
+    const [expanded, setExpanded] = React.useState<string | false>("")
 
     const expandendChange = (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
         setExpanded(newExpanded ? panel : false)

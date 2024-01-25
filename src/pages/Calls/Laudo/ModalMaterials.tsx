@@ -1,23 +1,17 @@
-import { Modal, ModalContent, TextInput } from "@mantine/core"
-import { useDisclosure } from "@mantine/hooks"
-import React, { ChangeEvent, ChangeEventHandler, useState } from "react"
+import { Modal, TextInput } from "@mantine/core"
+import React, { ChangeEvent } from "react"
 import { ButtonAgritech } from "../../../components/ButtonAgritech"
-import { LiaObjectGroupSolid } from "react-icons/lia"
-import { MdHeight, MdNumbers, MdOutlineAdd } from "react-icons/md"
-import { TbFileDescription } from "react-icons/tb"
+import { MdOutlineAdd } from "react-icons/md"
 import { Accordion, Box, IconButton, Typography } from "@mui/material"
 import { AiOutlineDelete } from "react-icons/ai"
 import { colors } from "../../../style/colors"
-import { LiaTemperatureLowSolid } from "react-icons/lia"
-import { WiHumidity } from "react-icons/wi"
-import { FaWind } from "react-icons/fa"
 import MuiAccordionDetails from "@mui/material/AccordionDetails"
 import { styled } from "@mui/material/styles"
 import { AccordionSummary } from "../../../components/Accordion"
 
-interface ModalFlightProps {
-    flight: Flight[]
-    setFlight: (values: Flight[]) => void
+interface ModalMaterialProps {
+    material: Material[]
+    setMaterial: (values: Material[]) => void
     opened: boolean
     close: () => void
 }
@@ -27,7 +21,7 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
     borderTop: "1px solid rgba(0, 0, 0, .125)",
 }))
 
-export const ModalFlight: React.FC<ModalFlightProps> = ({ opened, close, flight, setFlight }) => {
+export const ModalMaterial: React.FC<ModalMaterialProps> = ({ opened, close, material, setMaterial }) => {
     const [expanded, setExpanded] = React.useState<string | false>("")
 
     const expandendChange = (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
@@ -35,32 +29,33 @@ export const ModalFlight: React.FC<ModalFlightProps> = ({ opened, close, flight,
     }
 
     const addObject = () => {
-        setFlight([
-            ...flight,
+        setMaterial([
+            ...material,
             {
-                temperature: 0,
-                faixa: 0,
-                flight_velocity: 0,
-                height: 0,
-                humidity: 0,
-                performance: 0,
-                rate: 0,
-                tank_volume: 0,
-                wind_velocity: 0,
+                talhao: "",
+                area: 0,
+                product: "",
+                dosage: 0,
+                classification: "",
+                total: 0,
+                removed: 0,
+                applied: 0,
+                returned: 0,
+                comments: "",
             },
         ])
     }
     const deleteObject = (id: number) => {
-        const newObj = flight.filter((_, index) => index !== id)
-        setFlight(newObj)
+        const newObj = material.filter((_, index) => index !== id)
+        setMaterial(newObj)
     }
     const handleChange = (index: number, event: ChangeEvent<HTMLInputElement>) => {
-        const newObj = [...flight]
+        const newObj = [...material]
         newObj[index] = {
             ...newObj[index],
             [event.target.name]: event.target.value,
         }
-        setFlight(newObj)
+        setMaterial(newObj)
     }
 
     const saveObject = () => {
@@ -74,14 +69,14 @@ export const ModalFlight: React.FC<ModalFlightProps> = ({ opened, close, flight,
             withCloseButton
             centered
             style={{}}
-            title="Inserir Voos"
+            title="Inserir Insumos"
             styles={{
                 body: { display: "flex", flexDirection: "column", gap: "6vw", borderRadius: "10vw" },
                 root: { maxHeight: "75%", minHeight: "fit-content" },
                 content: { borderRadius: "6vw" },
             }}
         >
-            {flight.map((item, index) => (
+            {material.map((item, index) => (
                 <Accordion
                     elevation={0}
                     key={index}
@@ -89,12 +84,12 @@ export const ModalFlight: React.FC<ModalFlightProps> = ({ opened, close, flight,
                     onChange={expandendChange(String(index))}
                 >
                     <AccordionSummary aria-controls="panel1-content" id="panel1-header">
-                        <Typography>Voo {index + 1}</Typography>
+                        <Typography>Insumo {index + 1}</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
                         <Box sx={{ gap: "0.5vw" }} key={index}>
                             <Box sx={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-                                <h4>Voo {index + 1}</h4>
+                                <h4>Insumo {index + 1}</h4>
                                 <IconButton onClick={() => deleteObject(index)}>
                                     <AiOutlineDelete color={colors.delete} />
                                 </IconButton>
@@ -102,98 +97,77 @@ export const ModalFlight: React.FC<ModalFlightProps> = ({ opened, close, flight,
 
                             <Box sx={{ flexDirection: "row", gap: "2vw" }}>
                                 <TextInput
-                                    label="Temperatura "
-                                    name="temperature"
-                                    value={item.temperature}
+                                    label="Talhão "
+                                    name="talhao"
+                                    value={item.talhao}
                                     data-autofocus
-                                    type="number"
-                                    withAsterisk
                                     styles={{ input: { border: "1px solid black" } }}
-                                    rightSection={<p>ºC</p>}
                                     onChange={(e) => handleChange(index, e)}
+                                    rightSection={<p></p>}
+                                    withAsterisk
                                 />
 
                                 <TextInput
-                                    label="Umidade Relativa"
-                                    name="humidity"
-                                    value={item.humidity}
+                                    label="Área"
+                                    name="area"
+                                    value={item.area}
                                     data-autofocus
                                     type="number"
-                                    withAsterisk
                                     styles={{ input: { border: "1px solid black" } }}
-                                    rightSection={<p>%</p>}
+                                    rightSection={<p>ha</p>}
                                     onChange={(e) => handleChange(index, e)}
-                                />
-                            </Box>
-                            <Box sx={{ flexDirection: "row", gap: "2vw" }}>
-                                <TextInput
-                                    label="Veloc. Vento"
-                                    name="wind_velocity"
-                                    value={item.wind_velocity}
-                                    data-autofocus
-                                    type="number"
                                     withAsterisk
-                                    styles={{ input: { border: "1px solid black" } }}
-                                    rightSection={<p style={{ fontSize: "2.9vw" }}>km/h</p>}
-                                    onChange={(e) => handleChange(index, e)}
-                                />
-
-                                <TextInput
-                                    label="Altura de voo "
-                                    name="height"
-                                    value={item.height}
-                                    data-autofocus
-                                    type="number"
-                                    withAsterisk
-                                    styles={{ input: { border: "1px solid black" } }}
-                                    rightSection={<p>m</p>}
-                                    onChange={(e) => handleChange(index, e)}
                                 />
                             </Box>
 
-                            <Box sx={{ flexDirection: "row", gap: "2vw" }}>
+                            <TextInput
+                                label="Produto"
+                                name="product"
+                                value={item.product}
+                                styles={{ input: { border: "1px solid black", width: "100%" } }}
+                                onChange={(e) => handleChange(index, e)}
+                                data-autofocus
+                                withAsterisk
+                            />
+
+                            <Box sx={{ flexDirection: "row", gap: "2vw", width: "100%" }}>
                                 <TextInput
-                                    label="Faixa de aplicação"
-                                    name="faixa"
-                                    value={item.faixa}
+                                    label="Dose/ha"
+                                    name="dosage"
+                                    value={item.dosage}
                                     data-autofocus
                                     type="number"
                                     withAsterisk
                                     styles={{ input: { border: "1px solid black" } }}
-                                    rightSection={<p>m</p>}
                                     onChange={(e) => handleChange(index, e)}
                                 />
-
                                 <TextInput
-                                    label="Veloc. de voo"
-                                    name="flight_velocity"
-                                    value={item.flight_velocity}
+                                    label="Classificação"
+                                    name="classification"
+                                    value={item.classification}
                                     data-autofocus
-                                    type="number"
                                     withAsterisk
                                     styles={{ input: { border: "1px solid black" } }}
-                                    rightSection={<p style={{ fontSize: "2.9vw" }}>km/h</p>}
                                     onChange={(e) => handleChange(index, e)}
                                 />
                             </Box>
 
                             <Box sx={{ flexDirection: "row", gap: "3vw" }}>
                                 <TextInput
-                                    label="Volume de tanque"
-                                    name="tank_volume"
-                                    value={item.tank_volume}
+                                    label="Total"
+                                    name="total"
+                                    value={item.total}
                                     data-autofocus
                                     type="number"
                                     withAsterisk
                                     styles={{ input: { border: "1px solid black" } }}
-                                    rightSection={<p>L</p>}
                                     onChange={(e) => handleChange(index, e)}
+                                    rightSection={<p>L</p>}
                                 />
-
                                 <TextInput
-                                    label="Taxa de aplicação"
-                                    name="rate"
-                                    value={item.rate}
+                                    label="Retirado"
+                                    name="removed"
+                                    value={item.removed}
                                     data-autofocus
                                     type="number"
                                     withAsterisk
@@ -202,17 +176,29 @@ export const ModalFlight: React.FC<ModalFlightProps> = ({ opened, close, flight,
                                     onChange={(e) => handleChange(index, e)}
                                 />
                             </Box>
-                            <Box sx={{ flexDirection: "row", gap: "2vw", width: "48%" }}>
+                            <Box sx={{ flexDirection: "row", gap: "2vw" }}>
                                 <TextInput
-                                    label="performance"
-                                    name="performance"
-                                    value={item.performance}
+                                    label="Aplicado "
+                                    name="applied"
+                                    value={item.applied}
                                     data-autofocus
                                     type="number"
-                                    withAsterisk
                                     styles={{ input: { border: "1px solid black" } }}
-                                    rightSection={<p>ha</p>}
                                     onChange={(e) => handleChange(index, e)}
+                                    rightSection={<p>L</p>}
+                                    withAsterisk
+                                />
+
+                                <TextInput
+                                    label="Devolvido"
+                                    name="returned"
+                                    value={item.returned}
+                                    data-autofocus
+                                    type="number"
+                                    styles={{ input: { border: "1px solid black" } }}
+                                    rightSection={<p>L</p>}
+                                    onChange={(e) => handleChange(index, e)}
+                                    withAsterisk
                                 />
                             </Box>
                         </Box>
@@ -233,7 +219,7 @@ export const ModalFlight: React.FC<ModalFlightProps> = ({ opened, close, flight,
                     onClick={addObject}
                 >
                     <MdOutlineAdd color="#000" />
-                    Voo
+                    Insumo
                 </ButtonAgritech>
                 <ButtonAgritech
                     variant="contained"

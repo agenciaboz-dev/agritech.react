@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { useHeader } from "../../../hooks/useHeader"
 import { Call, CallStatus } from "../../../definitions/call"
-import { Box, TextField } from "@mui/material"
+import { Box, CircularProgress, TextField } from "@mui/material"
 import { ButtonComponent } from "../../../components/ButtonComponent"
 import { Form, Formik } from "formik"
 import { TitleComponents } from "../../../components/TitleComponents"
@@ -9,7 +9,7 @@ import { Header } from "../../../components/Header"
 import { colors } from "../../../style/colors"
 import { textField } from "../../../style/input"
 import { StageDescription } from "../../../components/StageDescription"
-import { Stepper } from "@mantine/core"
+import { Modal, Stepper } from "@mantine/core"
 import { useNavigate, useParams } from "react-router-dom"
 import findProducer from "../../../hooks/filterProducer"
 import { useKits } from "../../../hooks/useKits"
@@ -18,29 +18,39 @@ import { useCall } from "../../../hooks/useCall"
 import { useProducer } from "../../../hooks/useProducer"
 import { ButtonAgritech } from "../../../components/ButtonAgritech"
 import { Operation } from "./Operation"
-import { Treatment } from "./Treatment"
+
 import { useDisclosure } from "@mantine/hooks"
 import { ModalProduct } from "./ModalProduct"
 import { TechReport } from "./TechReport"
 import { ModalFlight } from "./ModalFlight"
 import { useCallInfo } from "../../../hooks/useCallSelect"
+import { Material } from "./Material"
+import { ModalMaterial } from "./ModalMaterials"
+import { useIo } from "../../../hooks/useIo"
+import { Treatment } from "./Treatment"
 
 interface LaudoCallProps {
     user: User
 }
 
 export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
+    const io = useIo()
     const header = useHeader()
     const navigate = useNavigate()
     const { callid } = useParams()
     const call = useCallInfo(callid)
 
     const [stage, setstage] = useState(0)
+    const [loading, setLoading] = useState(true)
 
     const [opened, { open, close }] = useDisclosure(false)
+    const [openedProducts, { open: openProducts, close: closeProducts }] = useDisclosure(false)
     const [openedFlight, { open: openFlight, close: closeFlight }] = useDisclosure(false)
+    const [openedMaterials, { open: openMaterials, close: closeMaterials }] = useDisclosure(false)
+
     const [listProducts, setListProducts] = useState<Product[]>([])
-    const [listFlight, setListFlight] = useState<Flight[]>([])
+    const [listFlights, setListFlights] = useState<Flight[]>([])
+    const [listMaterials, setListMaterials] = useState<Material[]>([])
 
     const initialValues: NewReport = {
         operation: {
@@ -59,7 +69,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
             init: "",
             finish: "",
             comments: "",
-            flight: [],
+            flights: [],
         },
     }
 
@@ -69,14 +79,27 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
             call: call,
             producer: call.producerSelect?.producer,
             treatment: { products: listProducts },
+            techReport: { flights: listFlights },
+            material: listMaterials,
         }
-        if (call !== null) {
-            console.log(data)
-        } else {
-            console.error("call é null")
+        console.log({ Relatório: data })
+        if (data) {
+            io.emit("", data)
+            setLoading(true)
+            open()
         }
     }
 
+    useEffect(() => {
+        io.on("", (data) => {
+            console.log(data.report)
+            close()
+        })
+
+        return () => {
+            io.off("")
+        }
+    }, [])
     useEffect(() => {
         header.setTitle("Relatório Operacional")
     }, [])
@@ -89,8 +112,53 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                 flexDirection: "column",
             }}
         >
-            <ModalProduct opened={opened} close={close} product={listProducts} setproduct={setListProducts} />
-            <ModalFlight opened={openedFlight} close={closeFlight} flight={listFlight} setFlight={setListFlight} />
+            <Modal
+                color="#000"
+                opened={opened}
+                onClose={close}
+                size={"sm"}
+                withCloseButton={false}
+                centered
+                style={{ backgroundColor: "transparent" }}
+                styles={{
+                    body: {
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "6vw",
+                        width: "100%",
+                        height: "100%",
+                        alignItems: "center",
+                        justifyContent: "center",
+                    },
+                    root: {
+                        width: "100%",
+
+                        height: "100%",
+                        maxHeight: "75%",
+                    },
+                    content: {
+                        width: "100%",
+                        height: "100%",
+                        backgroundColor: "transparent",
+                        boxShadow: "none",
+                    },
+                }}
+            >
+                <CircularProgress sx={{ color: colors.text.white, width: "15vw", height: "15vw" }} />
+            </Modal>
+            <ModalProduct
+                opened={openedProducts}
+                close={closeProducts}
+                product={listProducts}
+                setproduct={setListProducts}
+            />
+            <ModalFlight opened={openedFlight} close={closeFlight} flight={listFlights} setFlight={setListFlights} />
+            <ModalMaterial
+                opened={openedMaterials}
+                close={closeMaterials}
+                material={listMaterials}
+                setMaterial={setListMaterials}
+            />
             <Box
                 sx={{
                     width: "100%",
@@ -196,7 +264,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                                     </Box>
                                     {stage === 0 && (
                                         <Box sx={{ height: "100%", justifyContent: "space-between", pt: "6vw" }}>
-                                            <Operation user={user} values={values} change={handleChange} />
+                                            <Operation user={user} values={values} change={handleChange} call={call.call} />
                                             <ButtonAgritech
                                                 variant="contained"
                                                 sx={{ bgcolor: colors.button }}
@@ -215,15 +283,13 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                                                 user={user}
                                                 values={values}
                                                 change={handleChange}
-                                                open={open}
+                                                open={openProducts}
                                             />
                                             <ButtonAgritech
-                                                type="submit"
                                                 variant="contained"
                                                 sx={{ bgcolor: colors.button }}
                                                 onClick={() => {
                                                     setstage(2)
-                                                    handleSubmit(values)
                                                 }}
                                             >
                                                 Laudo Técnico {">"}
@@ -233,7 +299,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                                     {stage === 2 && (
                                         <Box sx={{ height: "100%", justifyContent: "space-between", pt: "6vw" }}>
                                             <TechReport
-                                                listFlights={listFlight}
+                                                listFlights={listFlights}
                                                 user={user}
                                                 values={values}
                                                 change={handleChange}
@@ -244,7 +310,6 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                                                 sx={{ bgcolor: colors.button }}
                                                 onClick={() => {
                                                     setstage(3)
-                                                    console.log("Finalizado")
                                                 }}
                                             >
                                                 Insumos {">"}
@@ -253,13 +318,21 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                                     )}
                                     {stage === 3 && (
                                         <Box sx={{ height: "100%", justifyContent: "space-between", pt: "6vw" }}>
+                                            <Material
+                                                values={values}
+                                                change={handleChange}
+                                                listMaterials={listMaterials}
+                                                open={openMaterials}
+                                            />
                                             <ButtonAgritech
+                                                type="submit"
                                                 variant="contained"
                                                 sx={{ bgcolor: colors.button }}
                                                 onClick={() => {
-                                                    setstage(3)
+                                                    setstage(4)
                                                     console.log("Finalizado")
-                                                    navigate(user.isAdmin ? `/` : `/employee`)
+                                                    handleSubmit(values)
+                                                    // navigate(user.isAdmin ? `/` : `/employee`)
                                                 }}
                                             >
                                                 Enviar Relatório {">"}

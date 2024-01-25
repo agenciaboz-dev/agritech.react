@@ -33,7 +33,7 @@ export const StageDescription: React.FC<StageDescriptionProps> = ({ title, value
                         type="time"
                         value={values.start}
                         sx={{ ...textField }}
-                        onChange={(event) => console.log(event.target.value)}
+                        onChange={!user?.producer ? change : () => {}}
                         disabled={!user?.producer ? false : true}
                         InputLabelProps={{
                             shrink: true, // Encolher o rótulo quando houver valor

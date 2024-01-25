@@ -45,13 +45,13 @@ declare interface Material {
     id?: number
     talhao: string
     area: number
-    product: number
+    product: string
     dosage: number
     classification: string
     total: number
-    removed: string
-    applied: string
-    returned: string
+    removed: number
+    applied: number
+    returned: number
     comments: string
 
     reportId?: number //temporaly optional
@@ -65,7 +65,7 @@ declare interface TechReport {
     finish: string
     comments: string
 
-    flight?: Flight[]
+    flights?: Flight[]
     reportId?: number //temporaly optional
     // report:Report
 }

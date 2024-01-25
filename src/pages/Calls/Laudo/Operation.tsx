@@ -2,14 +2,16 @@ import { Box, TextField } from "@mui/material"
 import React, { ChangeEventHandler } from "react"
 import { textField } from "../../../style/input"
 import { colors } from "../../../style/colors"
+import { Call } from "../../../definitions/call"
 
 interface OperationProps {
     user: User
     values: NewReport
+    call: Call | undefined | null
     change: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
 }
 
-export const Operation: React.FC<OperationProps> = ({ values, change, user }) => {
+export const Operation: React.FC<OperationProps> = ({ values, change, user, call }) => {
     return (
         <Box sx={{ gap: "3vw" }}>
             <Box sx={{ gap: "3vw" }}>
@@ -62,7 +64,13 @@ export const Operation: React.FC<OperationProps> = ({ values, change, user }) =>
             <TextField
                 label="Piloto/Copiloto"
                 name="kit"
-                value={"Bruno Santana/ Rodrigo Cardoso"}
+                value={
+                    call?.kit?.employees
+                        ? call.kit?.employees.length <= 1
+                            ? `${call?.kit?.employees[0].user?.name}`
+                            : `${call?.kit?.employees[0].user?.name}/${call?.kit?.employees[1].user?.name}`
+                        : ""
+                }
                 sx={{
                     ...textField,
                 }}

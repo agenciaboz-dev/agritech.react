@@ -1,17 +1,16 @@
 import { Box, TextField } from "@mui/material"
 import React, { ChangeEventHandler } from "react"
-import { Call } from "../../../definitions/call"
 import { TitleComponents } from "../../../components/TitleComponents"
 
 interface TreatmentProps {
     user: User
-    values: any
+    values: NewReport
     change: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
     listProducts: Product[]
     open: React.MouseEventHandler<HTMLButtonElement> | undefined
 }
 
-export const Treatment: React.FC<TreatmentProps> = ({ values, change, user, listProducts, open }) => {
+export const Treatment: React.FC<TreatmentProps> = ({ listProducts, open }) => {
     return (
         <Box sx={{ gap: "3vw" }}>
             <Box sx={{ gap: "3vw", p: "2vw" }}>
