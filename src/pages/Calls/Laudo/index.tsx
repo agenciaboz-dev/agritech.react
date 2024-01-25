@@ -74,20 +74,40 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
     }
 
     const handleSubmit = (values: NewReport) => {
+        const treatmentNormalize = listProducts?.map((item) => ({
+            name: item.name,
+            dosage: parseFloat(item.dosage).toFixed(2),
+        }))
+
+        const materialNormalize = listMaterials?.map((item) => ({
+            talhao: item.talhao,
+            area: parseFloat(String(item.area)).toFixed(2),
+            product: item.product,
+            dosage: parseFloat(String(item.dosage)).toFixed(2),
+            classification: item.classification,
+            total: parseFloat(String(item.total)).toFixed(2),
+            removed: parseFloat(String(item.removed)).toFixed(2),
+            applied: parseFloat(String(item.applied)).toFixed(2),
+            returned: parseFloat(String(item.returned)).toFixed(2),
+            comments: item.comments,
+        }))
+
         const data = {
             ...values,
             call: call,
             producer: call.producerSelect?.producer,
             operation: { areaMap: values.operation?.areaMap && parseFloat(String(values.operation?.areaMap)).toFixed(2) },
-            treatment: { products: listProducts },
+            treatment: { products: listMaterials },
             techReport: { flights: listFlights },
             material: listMaterials,
         }
         console.log({ Relatório: data })
+        console.log(materialNormalize)
         if (data) {
             io.emit("", data)
             setLoading(true)
             open()
+            close()
         }
     }
 
