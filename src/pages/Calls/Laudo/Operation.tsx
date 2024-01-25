@@ -2,22 +2,13 @@ import { Box, TextField } from "@mui/material"
 import React, { ChangeEventHandler } from "react"
 import { textField } from "../../../style/input"
 import { colors } from "../../../style/colors"
-import { Call } from "../../../definitions/call"
-import { useUser } from "../../../hooks/useUser"
 
 interface OperationProps {
     user: User
-    values: any
+    values: NewReport
     change: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
 }
-// service         String
-// culture         String
-// areaMap         String
-// equipment       String
-// model           String
 
-// report          Report        @relation(fields: [reportId],references: [id],onDelete: Cascade)
-// reportId        Int
 export const Operation: React.FC<OperationProps> = ({ values, change, user }) => {
     return (
         <Box sx={{ gap: "3vw" }}>
@@ -25,44 +16,53 @@ export const Operation: React.FC<OperationProps> = ({ values, change, user }) =>
                 <p style={{ fontSize: "3.5vw", fontWeight: "bold" }}>Dados de Operação</p>
                 <TextField
                     label="Tipo de serviço"
-                    name="service"
-                    value={"Pulverização com drones"}
+                    name="operation.service"
+                    value={values.operation?.service}
                     sx={{ ...textField }}
                     onChange={change}
+                    required
                 />
                 <Box sx={{ flexDirection: "row", gap: "2vw" }}>
                     <TextField
                         label="Cultura"
-                        name="culture"
-                        value={"Pastagem"}
+                        name="operation.culture"
+                        value={values.operation?.culture}
                         sx={{ ...textField, width: "85%" }}
                         onChange={change}
+                        required
                     />
                     <TextField
-                        label="Área Mapeada (ha)"
-                        name="areaMap"
-                        value={"60"}
-                        type="number"
+                        label="Área Mapeada"
+                        name="operation.areaMap"
+                        value={values.operation?.areaMap}
                         sx={{ ...textField }}
+                        // type="number"
+                        InputProps={{ endAdornment: "ha", inputMode: "numeric" }}
                         onChange={change}
+                        required
                     />
                 </Box>
                 <TextField
                     label="Equipamento"
-                    name="equipment"
-                    value={"AGRAS T40"}
+                    name="operation.equipment"
+                    value={values.operation?.equipment}
                     sx={{ ...textField }}
+                    required
                     onChange={change}
                 />
-                <TextField label="Modelo" name="model" value={"DJI"} sx={{ ...textField }} onChange={change} />
+                <TextField
+                    label="Modelo"
+                    name="operation.model"
+                    value={values.operation?.model}
+                    sx={{ ...textField }}
+                    onChange={change}
+                    required
+                />
             </Box>
             <TextField
-                multiline
                 label="Piloto/Copiloto"
-                name="comments"
+                name="kit"
                 value={"Bruno Santana/ Rodrigo Cardoso"}
-                minRows={1}
-                maxRows={3}
                 sx={{
                     ...textField,
                 }}

@@ -1,13 +1,12 @@
-import { Modal, ModalContent, TextInput } from "@mantine/core"
-import { useDisclosure } from "@mantine/hooks"
-import React, { ChangeEvent, ChangeEventHandler, useState } from "react"
+import { Modal, TextInput } from "@mantine/core"
+import React, { ChangeEvent, useState } from "react"
 import { ButtonAgritech } from "../../../components/ButtonAgritech"
 import { LiaObjectGroupSolid } from "react-icons/lia"
 import { MdNumbers, MdOutlineAdd } from "react-icons/md"
-import { TbFileDescription } from "react-icons/tb"
-import { Box, IconButton } from "@mui/material"
+import { Box, IconButton, MenuItem, Select } from "@mui/material"
 import { AiOutlineDelete } from "react-icons/ai"
 import { colors } from "../../../style/colors"
+import { textField } from "../../../style/input"
 
 interface ModalProductProps {
     product: Product[]
@@ -17,8 +16,19 @@ interface ModalProductProps {
 }
 
 export const ModalProduct: React.FC<ModalProductProps> = ({ opened, close, product, setproduct }) => {
+    const [value, setValue] = useState("")
+    const [unit, setUnit] = useState("")
+
+    const handleInputChange = (event: any) => {
+        const { name, value } = event.target
+        if (name === "value") {
+            setValue(value)
+        } else if (name === "unit") {
+            setUnit(value)
+        }
+    }
     const addObject = () => {
-        setproduct([...product, { name: "", dosage: "1" }])
+        setproduct([...product, { name: "", dosage: "1", unit: "L" }])
     }
     const deleteObject = (id: number) => {
         const newObj = product.filter((_, index) => index !== id)
@@ -71,16 +81,55 @@ export const ModalProduct: React.FC<ModalProductProps> = ({ opened, close, produ
                         onChange={(e) => handleChange(index, e)}
                     />
 
-                    <TextInput
-                        label="Dose/HA"
-                        name="dosage"
-                        type="number"
-                        value={item.dosage}
-                        styles={{ root: { width: "100%" }, input: { border: "1px solid black" } }}
-                        withAsterisk
-                        onChange={(e) => handleChange(index, e)}
-                        leftSection={<MdNumbers style={{ width: "4.5vw", height: "4.5vw" }} />}
-                    />
+                    <Box sx={{ flexDirection: "row", gap: "2vw" }}>
+                        <TextInput
+                            label="Dose/HA"
+                            name="dosage"
+                            type="number"
+                            value={item.dosage}
+                            styles={{ root: { width: "100%" }, input: { border: "1px solid black" } }}
+                            withAsterisk
+                            onChange={(e) => handleChange(index, e)}
+                            leftSection={<MdNumbers style={{ width: "4.5vw", height: "4.5vw" }} />}
+                        />
+                        {/* <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={value}
+                            sx={{
+                                "& .MuiSelect-root": {
+                                    border: "1px solid black",
+                                },
+                                "& .MuiInputBase-root .MuiOutlinedInput-root .MuiInputBase-colorPrimary  .css-44k0ts-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root":
+                                    {
+                                        height: "9vw",
+                                        borderColor: colors.secondary,
+                                        "& fieldset": {
+                                            borderColor: colors.primary,
+                                        },
+                                    },
+                            }}
+                            onChange={handleInputChange}
+                            inputProps={{
+                                sx: {
+                                    border: "none",
+                                    "& .MuiSelect-root": {
+                                        border: "1px solid black",
+                                    },
+                                    "& .MuiOutlinedInput-root .MuiSelect-root": {
+                                        borderColor: colors.secondary,
+                                        "& fieldset": {
+                                            borderColor: colors.primary,
+                                        },
+                                    },
+                                },
+                            }}
+                        >
+                            <MenuItem value={"g"}>g</MenuItem>
+                            <MenuItem value={"kg"}>Kg</MenuItem>
+                            <MenuItem value={"l"}>L</MenuItem>
+                        </Select> */}
+                    </Box>
                 </Box>
             ))}
             <Box sx={{ width: "100%", flexDirection: "row", gap: "2vw" }}>

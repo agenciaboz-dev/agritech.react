@@ -20,7 +20,7 @@ export const TechReport: React.FC<TechReportProps> = ({ values, change, user, li
                 </Box>
                 <TitleComponents title="Voos" button click={open} />
                 {listFlights.map((item, index) => (
-                    <Box>
+                    <Box key={index}>
                         <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
                             <p>Temperatura</p>
                             <p>{item.temperature} °C</p>

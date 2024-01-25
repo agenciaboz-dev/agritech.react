@@ -23,6 +23,7 @@ import { useDisclosure } from "@mantine/hooks"
 import { ModalProduct } from "./ModalProduct"
 import { TechReport } from "./TechReport"
 import { ModalFlight } from "./ModalFlight"
+import { useCallInfo } from "../../../hooks/useCallSelect"
 
 interface LaudoCallProps {
     user: User
@@ -32,38 +33,53 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
     const header = useHeader()
     const navigate = useNavigate()
     const { callid } = useParams()
-    const { listUsers } = useUsers()
-    const { listCalls } = useCall()
-    const { listTillages } = useProducer()
+    const call = useCallInfo(callid)
 
     const [stage, setstage] = useState(0)
+
     const [opened, { open, close }] = useDisclosure(false)
     const [openedFlight, { open: openFlight, close: closeFlight }] = useDisclosure(false)
     const [listProducts, setListProducts] = useState<Product[]>([])
     const [listFlight, setListFlight] = useState<Flight[]>([])
 
-    const initialValues = { name: "" }
-
-    const handleSubmit = (values: any) => {
-        console.log(values.stages[0])
+    const initialValues: NewReport = {
+        operation: {
+            service: "",
+            culture: "",
+            areaMap: 0,
+            equipment: "",
+            model: "",
+        },
+        treatment: {
+            products: [],
+        },
+        material: [],
+        techReport: {
+            date: "",
+            init: "",
+            finish: "",
+            comments: "",
+            flight: [],
+        },
     }
-    const [call, setCall] = useState<Call | null>()
-    const [producerSelect, setProducerSelect] = useState<User | null>()
-    const [tillage, setTillage] = useState<Tillage | null>()
+
+    const handleSubmit = (values: NewReport) => {
+        const data = {
+            ...values,
+            call: call,
+            producer: call.producerSelect?.producer,
+            treatment: { products: listProducts },
+        }
+        if (call !== null) {
+            console.log(data)
+        } else {
+            console.error("call é null")
+        }
+    }
 
     useEffect(() => {
         header.setTitle("Relatório Operacional")
     }, [])
-
-    useEffect(() => {
-        setCall(listCalls.find((item) => String(item.id) === callid))
-        setProducerSelect(listUsers?.find((item) => item.producer?.id === call?.producerId) || null)
-        setTillage(listTillages?.find((item) => item.id === call?.tillageId && item.producerId === call.producerId))
-    }, [call])
-
-    useEffect(() => {
-        console.log(stage)
-    }, [stage])
     return (
         <Box
             sx={{
@@ -90,8 +106,8 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                     back
                     location={
                         user?.isAdmin
-                            ? `/adm/producer/${producerSelect?.id}/${tillage?.id}`
-                            : `/employee/producer/${producerSelect?.id}/${tillage?.id}`
+                            ? `/adm/producer/${call.producerSelect?.id}/${call.tillageSelect?.id}`
+                            : `/employee/producer/${call.producerSelect?.id}/${call.tillageSelect?.id}`
                     }
                 />
             </Box>
@@ -116,7 +132,9 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                     textButton="Acessar Cliente"
                     click={() =>
                         navigate(
-                            user.isAdmin ? `/adm/profile/${producerSelect?.id}` : `/employee/profile/${producerSelect?.id}`
+                            user.isAdmin
+                                ? `/adm/profile/${call.producerSelect?.id}`
+                                : `/employee/profile/${call.producerSelect?.id}`
                         )
                     }
                     variant
@@ -131,14 +149,14 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                                             <TextField
                                                 label="Contratante"
                                                 name="producer"
-                                                value={producerSelect ? producerSelect?.name : ""}
+                                                value={call.producerSelect ? call.producerSelect?.name : ""}
                                                 sx={{ ...textField }}
                                                 disabled={!user?.producer ? false : true}
                                             />
                                             <TextField
                                                 label="Propriedade"
                                                 name="tillage"
-                                                value={tillage ? tillage?.name : " "}
+                                                value={call.tillageSelect ? call.tillageSelect?.name : " "}
                                                 sx={{ ...textField }}
                                                 disabled={!user?.producer ? false : true}
                                             />
@@ -146,10 +164,10 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                                                 label="Área Trabalhada"
                                                 InputProps={{ endAdornment: "ha" }}
                                                 name="tillage"
-                                                value={1000}
+                                                value={values.operation?.areaMap}
                                                 sx={{ ...textField }}
                                                 disabled={!user?.producer ? false : true}
-                                                onChange={() => {}}
+                                                onChange={handleChange}
                                                 required
                                             />
                                         </Box>
@@ -184,7 +202,6 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                                                 sx={{ bgcolor: colors.button }}
                                                 onClick={() => {
                                                     setstage(1)
-                                                    handleSubmit(values)
                                                 }}
                                             >
                                                 Tratamento {">"}
@@ -201,9 +218,13 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                                                 open={open}
                                             />
                                             <ButtonAgritech
+                                                type="submit"
                                                 variant="contained"
                                                 sx={{ bgcolor: colors.button }}
-                                                onClick={() => setstage(2)}
+                                                onClick={() => {
+                                                    setstage(2)
+                                                    handleSubmit(values)
+                                                }}
                                             >
                                                 Laudo Técnico {">"}
                                             </ButtonAgritech>

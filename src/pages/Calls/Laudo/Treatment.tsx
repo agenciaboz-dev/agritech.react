@@ -21,9 +21,11 @@ export const Treatment: React.FC<TreatmentProps> = ({ values, change, user, list
                     <p style={{ fontWeight: "bold" }}>Dose/HA</p>
                 </Box>
                 {listProducts.map((item, index) => (
-                    <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
+                    <Box key={index} sx={{ flexDirection: "row", justifyContent: "space-between" }}>
                         <p>{item.name}</p>
-                        <p>{item.dosage}L</p>
+                        <p>
+                            {item.dosage} {item.unit}
+                        </p>
                     </Box>
                 ))}
             </Box>
