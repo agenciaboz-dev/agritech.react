@@ -94,6 +94,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
     useEffect(() => {
         io.on("", (data) => {
             console.log(data.report)
+            setLoading(false)
             close()
         })
 
