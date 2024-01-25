@@ -3,7 +3,7 @@ import React, { ChangeEventHandler } from "react"
 import { textField } from "../../../style/input"
 import { colors } from "../../../style/colors"
 import { Call } from "../../../definitions/call"
-
+import { NumericFormat } from "react-number-format"
 interface OperationProps {
     user: User
     values: NewReport
@@ -29,7 +29,7 @@ export const Operation: React.FC<OperationProps> = ({ values, change, user, call
                         label="Cultura"
                         name="operation.culture"
                         value={values.operation?.culture}
-                        sx={{ ...textField, width: "85%" }}
+                        sx={{ ...textField, width: "80%" }}
                         onChange={change}
                         required
                     />
@@ -39,10 +39,20 @@ export const Operation: React.FC<OperationProps> = ({ values, change, user, call
                         value={values.operation?.areaMap}
                         sx={{ ...textField }}
                         // type="number"
-                        InputProps={{ endAdornment: "ha", inputMode: "numeric" }}
+                        InputProps={{
+                            endAdornment: "ha",
+                            inputMode: "numeric",
+                        }}
                         onChange={change}
                         required
                     />
+                    {/* <NumericFormat
+                        style={{ width: "50%" }}
+                        placeholder="Área Mapeada (ha)"
+                        value={values.operation?.areaMap}
+                        decimalScale={2}
+                        fixedDecimalScale
+                    /> */}
                 </Box>
                 <TextField
                     label="Equipamento"

@@ -78,6 +78,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
             ...values,
             call: call,
             producer: call.producerSelect?.producer,
+            operation: { areaMap: values.operation?.areaMap && parseFloat(String(values.operation?.areaMap)).toFixed(2) },
             treatment: { products: listProducts },
             techReport: { flights: listFlights },
             material: listMaterials,
