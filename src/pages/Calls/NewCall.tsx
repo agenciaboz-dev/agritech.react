@@ -110,6 +110,7 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
         tillageId: tillageId || 0,
         kitId: undefined,
         userId: Number(account?.user?.id),
+        hectarePrice: 0,
     }
 
     const handleSubmit = (values: CreateCall) => {
@@ -341,8 +342,9 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                                         />
                                         <TextField
                                             label={"Custo por hectare"}
-                                            name="partialPrice"
-                                            value={"1000"}
+                                            name="hectarePrice"
+                                            type="number"
+                                            value={values.hectarePrice}
                                             sx={textField}
                                             onChange={handleChange}
                                             required

@@ -53,13 +53,14 @@ export const HeaderProfile: React.FC<HeaderProfileProps> = ({ values, handleChan
                     InputProps={{ readOnly: true }}
                 />
                 {view ? (
-                    <Button
-                        size="small"
-                        variant="contained"
-                        sx={{ bgcolor: colors.button, textTransform: "none", borderRadius: "5vw" }}
-                    >
-                        Iniciar conversa
-                    </Button>
+                    // <Button
+                    //     size="small"
+                    //     variant="contained"
+                    //     sx={{ bgcolor: colors.button, textTransform: "none", borderRadius: "5vw" }}
+                    // >
+                    //     Iniciar conversa
+                    // </Button>
+                    <></>
                 ) : (
                     <TextField
                         label={"Telefone"}

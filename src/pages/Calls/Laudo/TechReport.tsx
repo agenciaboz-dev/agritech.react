@@ -1,10 +1,11 @@
-import { Accordion, Box, Typography } from "@mui/material"
+import { Accordion, Box, TextField, Typography } from "@mui/material"
 import { AccordionSummary } from "../../../components/Accordion"
 import React, { ChangeEventHandler } from "react"
-import { Call } from "../../../definitions/call"
 import { TitleComponents } from "../../../components/TitleComponents"
 import MuiAccordionDetails from "@mui/material/AccordionDetails"
 import { styled } from "@mui/material/styles"
+import { textField } from "../../../style/input"
+import MaskedInput from "../../../components/MaskedInput"
 
 interface TechReportProps {
     user: User
@@ -28,6 +29,7 @@ export const TechReport: React.FC<TechReportProps> = ({ values, change, user, li
             <Box sx={{ gap: "3vw", p: "2vw" }}>
                 <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
                     <p style={{ fontWeight: "bold", fontSize: "3.5vw" }}>Laudo Técnico</p>
+                    
                 </Box>
                 <Box sx={{ height: "100%", overflowY: "auto" }}>
                     <TitleComponents title="Voos" button click={open} />

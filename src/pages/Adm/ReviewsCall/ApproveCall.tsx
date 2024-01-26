@@ -58,8 +58,18 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
     const kitsActived = listKits.filter((item) => item.active)
 
     const initialValues: ApprovedCall = {
+        open: findCall?.open || "",
+        comments: findCall?.comments,
+        approved: findCall?.approved,
+        stages: findCall?.stages,
+
+        tillageId: findCall?.tillageId,
+        producerId: findCall?.producerId,
+        userId: findCall?.userId,
+
         id: Number(callid),
         kitId: findCall?.kitId || 0,
+        hectarePrice: 0,
     }
     const approveCall = (values: ApprovedCall) => {
         console.log(values)
@@ -164,9 +174,10 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
                                     <Box sx={{ gap: "5vw" }}>
                                         <TextField
                                             label={"Custo por hectare"}
-                                            name="partialPrice"
-                                            value={"1000"}
+                                            name="hectarePrice"
+                                            value={values.hectarePrice}
                                             sx={textField}
+                                            type="number"
                                             onChange={handleChange}
                                             InputProps={{ startAdornment: "R$" }}
                                             required

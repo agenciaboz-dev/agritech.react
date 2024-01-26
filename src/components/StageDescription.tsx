@@ -40,13 +40,16 @@ export const StageDescription: React.FC<StageDescriptionProps> = ({ title, value
                         }}
                     />
                     <TextField
-                        label="Finalização"
+                        label="Final"
                         name="finish"
                         type="time"
                         value={values.finish}
                         sx={{ ...textField }}
                         onChange={!user?.producer ? change : () => {}}
                         disabled={!user?.producer ? false : true}
+                        InputLabelProps={{
+                            shrink: true, // Encolher o rótulo quando houver valor
+                        }}
                     />
                     <TextField
                         label="Duração"

@@ -28,6 +28,8 @@ import { Material } from "./Material"
 import { ModalMaterial } from "./ModalMaterials"
 import { useIo } from "../../../hooks/useIo"
 import { Treatment } from "./Treatment"
+import MaskedInput from "../../../components/MaskedInput"
+import { dateFrontend } from "../../../hooks/useFormattedDate"
 
 interface LaudoCallProps {
     user: User
@@ -65,7 +67,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
         },
         material: [],
         techReport: {
-            date: "",
+            date: new Date().toISOString(),
             init: "",
             finish: "",
             comments: "",
@@ -74,35 +76,60 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
     }
 
     const handleSubmit = (values: NewReport) => {
+        // const v = 8
+        // var float2 = parseFloat(String(v)).toFixed(2)
+        // console.log(float2) // 8.000
+
+        const isoDateTimeStart = `2022-01-24T${values.techReport?.init}:00.000Z`
+        const isoDateTimeFinish = `2022-01-23T${values.techReport?.finish}:00.000Z`
+
         const treatmentNormalize = listProducts?.map((item) => ({
             name: item.name,
-            dosage: parseFloat(item.dosage).toFixed(2),
+            dosage: 3.5,
+        }))
+
+        const flightNormalize = listFlights?.map((item) => ({
+            temperature: 8.5,
+            humidity: 4.5,
+            wind_velocity: 80.6,
+            height: 25.5,
+            faixa: 5.8,
+            flight_velocity: 30.4,
+            tank_volume: 22.3,
+            rate: 4.2,
+            performance: 99.4,
         }))
 
         const materialNormalize = listMaterials?.map((item) => ({
             talhao: item.talhao,
-            area: parseFloat(String(item.area)).toFixed(2),
+            area: 114.6,
             product: item.product,
-            dosage: parseFloat(String(item.dosage)).toFixed(2),
+            dosage: 22.4,
             classification: item.classification,
-            total: parseFloat(String(item.total)).toFixed(2),
-            removed: parseFloat(String(item.removed)).toFixed(2),
-            applied: parseFloat(String(item.applied)).toFixed(2),
-            returned: parseFloat(String(item.returned)).toFixed(2),
+            total: 45.3,
+            removed: 2.4,
+            applied: 8.5,
+            returned: 8.6,
             comments: item.comments,
         }))
 
         const data = {
             ...values,
-            call: call,
+            call: call.call,
             producer: call.producerSelect?.producer,
             operation: { areaMap: values.operation?.areaMap && parseFloat(String(values.operation?.areaMap)).toFixed(2) },
-            treatment: { products: listMaterials },
-            techReport: { flights: listFlights },
-            material: listMaterials,
+            treatment: { products: treatmentNormalize },
+            techReport: {
+                ...values.techReport,
+                date: new Date().toISOString(),
+                init: new Date().toISOString(),
+                finish: new Date().toISOString(),
+                flights: listFlights,
+            },
+            material: materialNormalize,
         }
         console.log({ Relatório: data })
-        console.log(materialNormalize)
+        console.log({ Products: data.treatment.products }, { TechReport: flightNormalize }, { Material: materialNormalize })
         if (data) {
             io.emit("", data)
             setLoading(true)
@@ -250,16 +277,54 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                                                 sx={{ ...textField }}
                                                 disabled={!user?.producer ? false : true}
                                             />
-                                            <TextField
-                                                label="Área Trabalhada"
-                                                InputProps={{ endAdornment: "ha" }}
-                                                name="tillage"
-                                                value={values.operation?.areaMap}
-                                                sx={{ ...textField }}
-                                                disabled={!user?.producer ? false : true}
-                                                onChange={handleChange}
-                                                required
-                                            />
+                                            {(stage === 0 || stage === 1) && (
+                                                <TextField
+                                                    label="Área Trabalhada"
+                                                    InputProps={{ endAdornment: "ha" }}
+                                                    name="operation.map"
+                                                    type="number"
+                                                    value={values.operation?.areaMap}
+                                                    sx={{ ...textField }}
+                                                    disabled={!user?.producer ? false : true}
+                                                    onChange={handleChange}
+                                                    required
+                                                />
+                                            )}
+                                            {stage === 2 && (
+                                                <Box sx={{ flexDirection: "row", gap: "1vw" }}>
+                                                    <TextField
+                                                        label={"Data"}
+                                                        type="text"
+                                                        name="techReport.date"
+                                                        value={dateFrontend(values.techReport?.date || "")}
+                                                        sx={{ ...textField, width: "30%" }}
+                                                        onChange={handleChange}
+                                                        required
+                                                    />
+                                                    <TextField
+                                                        label="Início"
+                                                        name="start"
+                                                        type="time"
+                                                        value={values.techReport?.init}
+                                                        sx={{ ...textField }}
+                                                        onChange={!user?.producer ? handleChange : () => {}}
+                                                        InputLabelProps={{
+                                                            shrink: true, // Encolher o rótulo quando houver valor
+                                                        }}
+                                                    />
+                                                    <TextField
+                                                        label="Final"
+                                                        name="finish"
+                                                        type="time"
+                                                        value={values.techReport?.finish}
+                                                        sx={{ ...textField }}
+                                                        onChange={!user?.producer ? handleChange : () => {}}
+                                                        InputLabelProps={{
+                                                            shrink: true, // Encolher o rótulo quando houver valor
+                                                        }}
+                                                    />
+                                                </Box>
+                                            )}
                                         </Box>
                                         <Stepper
                                             active={stage}

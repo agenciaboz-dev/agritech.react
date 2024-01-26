@@ -38,7 +38,7 @@ export const Operation: React.FC<OperationProps> = ({ values, change, user, call
                         name="operation.areaMap"
                         value={values.operation?.areaMap}
                         sx={{ ...textField }}
-                        // type="number"
+                        type="number"
                         InputProps={{
                             endAdornment: "ha",
                             inputMode: "numeric",

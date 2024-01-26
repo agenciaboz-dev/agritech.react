@@ -9,6 +9,7 @@ export declare interface CreateCall {
     open: string
     comments: string
 
+    hectarePrice: number
     tillageId: number
     kit?: Kit
     kitId?: number
@@ -16,8 +17,21 @@ export declare interface CreateCall {
     userId: number
 }
 export declare interface ApprovedCall {
+    open: string;
+    comments?: string;
+    approved?: boolean;
+    stages?: Stage[];
+  
+    tillage?: Tillage;
+    tillageId?: number;
+    kit?: Kit;
+    producerId?: number;
+    userId?: number;
+  
+ 
     id: number
     kitId: number
+    hectarePrice?: number
 }
 export declare interface Call extends CreateCall {
     id: number
@@ -25,6 +39,7 @@ export declare interface Call extends CreateCall {
     finish: string
 
     // status: CallStatus
+    totalPrice: number
     stages: Stage[]
     tillageId: number
 }
