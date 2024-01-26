@@ -86,6 +86,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
         tillageId: tillageSelectProd?.id || 0,
         kitId: undefined,
         userId: Number(user?.id),
+        hectarePrice: 0,
     }
 
     const handleSubmit = (values: CreateCall) => {

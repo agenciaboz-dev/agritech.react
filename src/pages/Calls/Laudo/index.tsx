@@ -30,6 +30,7 @@ import { useIo } from "../../../hooks/useIo"
 import { Treatment } from "./Treatment"
 import MaskedInput from "../../../components/MaskedInput"
 import { dateFrontend } from "../../../hooks/useFormattedDate"
+import { useSnackbar } from "burgos-snackbar"
 
 interface LaudoCallProps {
     user: User
@@ -38,6 +39,7 @@ interface LaudoCallProps {
 export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
     const io = useIo()
     const header = useHeader()
+    const { snackbar } = useSnackbar()
     const navigate = useNavigate()
     const { callid } = useParams()
     const call = useCallInfo(callid)
@@ -58,7 +60,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
         operation: {
             service: "",
             culture: "",
-            areaMap: 0,
+            areaMap: 2.5,
             equipment: "",
             model: "",
         },
@@ -71,11 +73,11 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
             init: "",
             finish: "",
             comments: "",
-            flights: [],
+            flight: [],
         },
     }
 
-    const handleSubmit = (values: NewReport) => {
+    const handleSubmit = async (values: NewReport) => {
         // const v = 8
         // var float2 = parseFloat(String(v)).toFixed(2)
         // console.log(float2) // 8.000
@@ -86,6 +88,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
         const treatmentNormalize = listProducts?.map((item) => ({
             name: item.name,
             dosage: 3.5,
+            unit: item.unit,
         }))
 
         const flightNormalize = listFlights?.map((item) => ({
@@ -114,39 +117,49 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
         }))
 
         const data = {
-            ...values,
-            call: call.call,
-            producer: call.producerSelect?.producer,
-            operation: { areaMap: values.operation?.areaMap && parseFloat(String(values.operation?.areaMap)).toFixed(2) },
-            treatment: { products: treatmentNormalize },
+            callId: call.call?.id,
+            operation: values.operation,
+            treatment: { ...values.treatment, products: treatmentNormalize },
             techReport: {
                 ...values.techReport,
                 date: new Date().toISOString(),
                 init: new Date().toISOString(),
                 finish: new Date().toISOString(),
-                flights: listFlights,
+                flight: flightNormalize,
             },
             material: materialNormalize,
         }
         console.log({ Relatório: data })
-        console.log({ Products: data.treatment.products }, { TechReport: flightNormalize }, { Material: materialNormalize })
+        console.log(
+            { Products: data.treatment.products },
+            { TechReport: flightNormalize },
+            { Material: materialNormalize },
+            { operation: values.operation }
+        )
         if (data) {
-            io.emit("", data)
+            io.emit("report:create", data)
             setLoading(true)
             open()
-            close()
         }
     }
 
     useEffect(() => {
-        io.on("", (data) => {
-            console.log(data.report)
+        io.on("report:creation:success", (data: Report) => {
+            console.log(data)
+            snackbar({ severity: "success", text: "Relatório operacional criado!" })
+
+            setLoading(false)
+            close()
+            navigate(`/adm/report/${data.id}`)
+        })
+        io.on("report:creation:failed", (error) => {
+            snackbar({ severity: "error", text: "Algo deu errado!" })
             setLoading(false)
             close()
         })
 
         return () => {
-            io.off("")
+            io.off("report:create")
         }
     }, [])
     useEffect(() => {
@@ -281,9 +294,10 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                                                 <TextField
                                                     label="Área Trabalhada"
                                                     InputProps={{ endAdornment: "ha" }}
-                                                    name="operation.map"
+                                                    // name="operation.areaMap"
                                                     type="number"
-                                                    value={values.operation?.areaMap}
+                                                    // value={values.operation?.areaMap}
+                                                    value={22.5}
                                                     sx={{ ...textField }}
                                                     disabled={!user?.producer ? false : true}
                                                     onChange={handleChange}
@@ -303,7 +317,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                                                     />
                                                     <TextField
                                                         label="Início"
-                                                        name="start"
+                                                        name="init"
                                                         type="time"
                                                         value={values.techReport?.init}
                                                         sx={{ ...textField }}

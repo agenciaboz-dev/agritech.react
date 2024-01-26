@@ -1,10 +1,12 @@
 declare interface NewReport {
-    call?: Call
-    producer?: Producer
+    callId?: number
     operation?: Operation
     treatment?: Treatment
     material?: Material[]
     techReport?: TechReport
+}
+declare interface Report extends NewReport {
+    id: number
 }
 declare interface GeralReport {
     id: number
@@ -65,7 +67,7 @@ declare interface TechReport {
     finish: string
     comments: string
 
-    flights?: Flight[]
+    flight?: Flight[]
     reportId?: number //temporaly optional
     // report:Report
 }

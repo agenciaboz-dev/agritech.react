@@ -3,8 +3,8 @@ import { Route, Routes as ReactRoutes } from "react-router-dom"
 import { NewCall } from "./NewCall"
 import { ApproveCall } from "../Adm/ReviewsCall/ApproveCall"
 import { ReportCall } from "./ReportCall"
-import { CallDetails } from "./CallDetails"
 import { LaudoCall } from "./Laudo"
+import { CallDetails } from "./CallDetails"
 
 interface CallsProps {
     user: User

@@ -9,11 +9,11 @@ import { SettingsKit } from "../Adm/Panel/SettingsKit"
 import { ViewKit } from "../Adm/Panel/ViewKit"
 import { MyCalls } from "./Panel/MyCalls"
 import { ListProducer } from "./Panel/ListProducer"
-import { CallDetails } from "../Calls/CallDetails"
 import { Userprofile } from "../Adm/ReviewsEmployee/UserProfile"
 import { ListTillages } from "../TillageDetails/ListTillages"
 import { ReportCall } from "../Calls/ReportCall"
 import { LaudoCall } from "../Calls/Laudo"
+import { CallDetails } from "../Calls/CallDetails"
 
 interface EmployeeProps {
     user: User

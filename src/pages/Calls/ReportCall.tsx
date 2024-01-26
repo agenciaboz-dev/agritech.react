@@ -215,8 +215,8 @@ export const ReportCall: React.FC<ReportCallProps> = ({ user }) => {
                     back
                     location={
                         user?.isAdmin
-                            ? `/adm/producer/${producerSelect?.id}/${tillage?.id}`
-                            : `/employee/producer/${producerSelect?.id}/${tillage?.id}`
+                            ? `/adm/producer/${producerSelect?.producer?.id}/${tillage?.id}`
+                            : `/employee/producer/${producerSelect?.producer?.id}/${tillage?.id}`
                     }
                 />
             </Box>
