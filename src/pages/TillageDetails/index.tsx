@@ -11,7 +11,7 @@ import { tabStyle } from "../../style/tabStyle"
 import { WeatherComponent } from "../../components/WeatherComponent"
 import { DialogConfirm } from "../../components/DialogConfirm"
 import { useNavigate } from "react-router-dom"
-import { OpenCallBox, ProgressCall } from "../../components/OpenCallBox"
+import { LaudoCall, OpenCallBox, ProgressCall } from "../../components/OpenCallBox"
 import { useUser } from "../../hooks/useUser"
 import { useProducer } from "../../hooks/useProducer"
 import findProducer from "../../hooks/filterProducer"
@@ -250,7 +250,8 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                             user={user}
                         />
                     ) : (
-                        tab === "call" && (
+                        tab === "call" &&
+                        !call?.report && (
                             <ProgressCall
                                 user={user}
                                 click={() =>
@@ -273,6 +274,19 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                         )
                     )}
                     {tab === "history" && <p>Nenhum Registro</p>}
+                    {tab === "call" && call?.report && (
+                        <LaudoCall
+                            user={user}
+                            click={() =>
+                                navigate(
+                                    user?.isAdmin ? `/adm/report/${call?.report?.id}` : `/employee/report/${call.report?.id}`
+                                )
+                            }
+                            data={progress}
+                            call={call}
+                            tillage={tillageSelectProd}
+                        />
+                    )}
                     <DialogConfirm
                         user={user}
                         open={open}

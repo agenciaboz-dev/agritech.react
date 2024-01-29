@@ -82,6 +82,16 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                     }}
                 >
                     <h3>Detalhes</h3>
+                    <Box>
+                        <p>Contratante: </p>
+                        <p>Propriedade: </p>
+                    </Box>
+                    <Box>
+                        <hr />
+                    </Box>
+                    <Box>
+                        <p style={{ fontWeight: "bold" }}>Dados de Operação</p>
+                    </Box>
                 </Box>
             </Box>
         </Box>

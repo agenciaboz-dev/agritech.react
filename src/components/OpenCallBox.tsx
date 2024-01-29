@@ -132,3 +132,50 @@ export const ProgressCall: React.FC<OpenCallBoxProps> = ({ data, click, call, us
         </Box>
     )
 }
+export const LaudoCall: React.FC<OpenCallBoxProps> = ({ data, click, call, user }) => {
+    const { listKits } = useKits()
+
+    const kitSelected = listKits.find((item) => item.id === call?.kitId)
+
+    return (
+        <Box
+            sx={{
+                bgcolor: "rgba(136, 164, 134, 0.29)",
+                p: "4vw",
+                borderRadius: "5vw",
+                gap: "1vw",
+                height: "53%",
+                justifyContent: "space-between",
+            }}
+        >
+            <Box sx={{ gap: "1vw" }}>
+                <Box sx={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+                    <p style={{ fontSize: "4.5vw", fontWeight: "600" }}>Chamado em processo de finalização</p>
+
+                    <IoIosArrowForward sx={{ color: colors.button }} onClick={click} />
+                </Box>
+                <p style={{ fontSize: "3.2vw", textAlign: "justify" }}>
+                    {" "}
+                    {user?.producer
+                        ? `Seu chamado está em processo de finalização. Em breve você terá acesso aos dados coletados durante os voos realizados pelo drone.`
+                        : `Este chamado está em processo de finalização. O relatório operacional já foi preenchido e está aguardando aprovação.`}
+                </p>
+            </Box>
+            <Box sx={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
+                <p style={{ fontSize: "8vw" }}>
+                    {new Date().getHours()}:{new Date().getMinutes()}
+                </p>
+            </Box>
+            <Box sx={{ flexDirection: "row", height: "25%", gap: "2vw" }}>
+                <Box sx={{ border: "1px solid gray", width: "50%", borderRadius: "2vw", height: "100%", p: "2vw" }}>
+                    <p style={{ fontSize: "3vw" }}>Kit selecionado:</p>
+                    <p style={{ fontSize: "3vw" }}>{kitSelected?.name}</p>
+                </Box>
+                <Box sx={{ border: "1px solid gray", width: "50%", borderRadius: "2vw", height: "100%", p: "2vw" }}>
+                    <p style={{ fontSize: "3vw" }}>Chamado aberto em:</p>
+                    <p style={{ fontSize: "3vw" }}>{call?.open && dateFrontend(call?.open)}</p>
+                </Box>
+            </Box>
+        </Box>
+    )
+}
