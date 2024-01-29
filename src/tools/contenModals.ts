@@ -8,13 +8,13 @@ const openCall = {
 const content = {
     title: "Abrir um chamado de pulverização",
     content:
-        "Abra um chamada para que nossa equipe encaminhe-se até o local do Talhão 1#, o prazo minino do chamado é de XX Horas segundo o contrato vigente.",
+        "Abra um chamada para que nossa equipe encaminhe-se até o local do Fazenda 1#, o prazo minino do chamado é de XX Horas segundo o contrato vigente.",
     buttonTitle: "Abrir Chamado",
 }
 const progress = {
     title: "Chamado em Aberto",
     content:
-        "Abra um chamada para que nossa equipe encaminhe-se até o local do Talhão 1#, o prazo minino do chamado é de XX Horas segundo o contrato vigente.",
+        "Abra um chamada para que nossa equipe encaminhe-se até o local do Fazenda 1#, o prazo minino do chamado é de XX Horas segundo o contrato vigente.",
     hour: "20:00",
 }
 const approveCall = {

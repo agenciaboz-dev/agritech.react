@@ -23,7 +23,7 @@ interface NewTillageProps {}
 
 const openCall = {
     title: "Adicione um CEP",
-    content: "Insira o cep do seu Talhão. Caso não tenha, insira o cep mais próximo.",
+    content: "Insira o cep da sua Fazenda. Caso não tenha, insira o cep mais próximo.",
     submitTitle: "Continuar",
     cancelTitle: "Cancelar",
 }
@@ -85,7 +85,7 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
 
     useEffect(() => {
         io.on("tillage:creation:success", (data: any) => {
-            snackbar({ severity: "success", text: "Talhão adicionada!" })
+            snackbar({ severity: "success", text: "Fazenda adicionada!" })
             addTillageProd(data.tillage)
             setLoadingTillage(false)
             navigate(`/producer/tillages`)
@@ -120,7 +120,7 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
     }, [currentStep, origin])
 
     useEffect(() => {
-        header.setTitle("Novo Talhão")
+        header.setTitle("Nova Fazenda")
     }, [])
 
     return (

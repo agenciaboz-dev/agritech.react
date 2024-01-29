@@ -41,12 +41,12 @@ export const FormTillage: React.FC<FormTillageProps> = ({ data, change, addressA
     }
 
     useEffect(() => {
-        header.setTitle(producerUser ? producerUser.name : "Novo Talhão")
+        header.setTitle(producerUser ? producerUser.name : "Nova Fazenda")
         console.log(producerUser)
     }, [])
     return (
         <Box sx={{ width: "100%", height: "74%", gap: "6vw", flexDirection: "column", p: "4vw" }}>
-            <p>Informações do Talhão</p>
+            <p>Informações da Fazenda</p>
 
             <Box
                 sx={{

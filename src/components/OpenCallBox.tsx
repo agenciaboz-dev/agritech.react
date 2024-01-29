@@ -75,7 +75,7 @@ export const OpenCallBox: React.FC<OpenCallBoxProps> = ({ data, click, callStatu
                 <p style={{ fontSize: "4.5vw", fontWeight: "600" }}>{data.title}</p>
                 <p style={{ fontSize: "3.2vw", textAlign: "justify" }}>
                     {" "}
-                    Abra um chamado para que nossa equipe encaminhe-se até o local do Talhão {tillageid}#, o prazo mínimo do
+                    Abra um chamado para que nossa equipe encaminhe-se até o local da fazenda{tillageid}#, o prazo mínimo do
                     chamado é de de 48 horas segundo o contrato vigente.
                 </p>
             </Box>
@@ -110,8 +110,8 @@ export const ProgressCall: React.FC<OpenCallBoxProps> = ({ data, click, call, us
                 <p style={{ fontSize: "3.2vw", textAlign: "justify" }}>
                     {" "}
                     {user?.producer
-                        ? `Seu chamado foi aprovado. Para que nossa equipe encaminhe-se até o local do Talhão ${call?.tillageId}#, o prazo mínimo do chamado é de 48 horas, segundo o contrato vigente.`
-                        : `Seu chamado foi aprovado. Para que nossa equipe encaminhe-se até o local do Talhão ${call?.tillageId}#, o prazo mínimo do chamado é de 48 horas, segundo o contrato vigente.`}
+                        ? `Seu chamado foi aprovado. Para que nossa equipe encaminhe-se até o local da fazenda ${call?.tillageId}#, o prazo mínimo do chamado é de 48 horas, segundo o contrato vigente.`
+                        : `Seu chamado foi aprovado. Para que nossa equipe encaminhe-se até o local da fazenda ${call?.tillageId}#, o prazo mínimo do chamado é de 48 horas, segundo o contrato vigente.`}
                 </p>
             </Box>
             <Box sx={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>

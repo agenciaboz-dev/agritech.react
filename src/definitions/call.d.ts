@@ -41,6 +41,8 @@ export declare interface Call extends CreateCall {
     report?: Report
     totalPrice: number
     stages: Stage[]
+    tillage?: Tillage
+    producer?: Producer
     tillageId: number
 }
 

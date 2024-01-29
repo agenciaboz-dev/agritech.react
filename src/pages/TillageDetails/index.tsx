@@ -279,7 +279,9 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                             user={user}
                             click={() =>
                                 navigate(
-                                    user?.isAdmin ? `/adm/report/${call?.report?.id}` : `/employee/report/${call.report?.id}`
+                                    user?.isAdmin
+                                        ? `/adm/call/${call?.id}/report/${call?.report?.id}`
+                                        : `/employee/call/${call?.id}/report/${call.report?.id}`
                                 )
                             }
                             data={progress}

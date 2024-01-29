@@ -97,7 +97,7 @@ export const ModalMaterial: React.FC<ModalMaterialProps> = ({ opened, close, mat
 
                             <Box sx={{ flexDirection: "row", gap: "2vw" }}>
                                 <TextInput
-                                    label="Talhão "
+                                    label="Fazenda "
                                     name="talhao"
                                     value={item.talhao}
                                     data-autofocus

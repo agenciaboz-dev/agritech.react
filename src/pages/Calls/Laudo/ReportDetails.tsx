@@ -1,25 +1,11 @@
-import { Box, Button, CircularProgress, IconButton } from "@mui/material"
+import { Box, Tab, Tabs } from "@mui/material"
 import React, { useEffect, useState } from "react"
-import { useHeader } from "../../../hooks/useHeader"
 import { colors } from "../../../style/colors"
 import { Header } from "../../../components/Header"
-import { TitleComponents } from "../../../components/TitleComponents"
-import { DialogConfirm } from "../../../components/DialogConfirm"
 import { useNavigate, useParams } from "react-router-dom"
-import { useUser } from "../../../hooks/useUser"
-import findProducer from "../../../hooks/filterProducer"
-import { useKits } from "../../../hooks/useKits"
 import { useCall } from "../../../hooks/useCall"
-import { useUsers } from "../../../hooks/useUsers"
-import { useProducer } from "../../../hooks/useProducer"
-import { dateFrontend } from "../../../hooks/useFormattedDate"
-import { CardTeam } from "../../../components/Kit/CardTeam"
-import findEmployee from "../../../hooks/filterEmployee"
-import { Call } from "../../../definitions/call"
-import { useIo } from "../../../hooks/useIo"
-import { useSnackbar } from "burgos-snackbar"
-import { Modal } from "@mantine/core"
-import { useDisclosure } from "@mantine/hooks"
+import { tabStyle } from "../../../style/tabStyle"
+import { OperationComponent } from "./ViewReport/OperationComponent"
 
 interface ReportDetailsProps {}
 
@@ -34,7 +20,18 @@ const p_style = {
 }
 
 export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
-    const { reportid } = useParams()
+    const { callid, reportid } = useParams()
+    const { listCalls } = useCall()
+
+    const [tab, setTab] = React.useState("operation")
+    const changeTab = (event: React.SyntheticEvent, newValue: string) => {
+        setTab(newValue)
+    }
+
+    const callSelect = listCalls.find((item) => item.id === Number(callid))
+    useEffect(() => {
+        console.log({ call_Select: callSelect })
+    }, [])
 
     return (
         <Box
@@ -81,16 +78,50 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                         height: "100%",
                     }}
                 >
-                    <h3>Detalhes</h3>
+                    <h3>Relatório Operacional</h3>
                     <Box>
-                        <p>Contratante: </p>
-                        <p>Propriedade: </p>
+                        <p>
+                            <span style={{ fontWeight: "bold" }}>Contratante:</span> {callSelect?.producer?.user.name}{" "}
+                        </p>
+                        <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
+                            <p>
+                                <span style={{ fontWeight: "bold" }}>CPF:</span> {callSelect?.producer?.user.cpf}{" "}
+                            </p>
+                            <p>
+                                <span style={{ fontWeight: "bold" }}>CNPJ:</span> {callSelect?.producer?.cnpj}{" "}
+                            </p>
+                        </Box>
+                        <p>
+                            <span style={{ fontWeight: "bold" }}>Propriedade:</span> {callSelect?.tillage?.name}{" "}
+                        </p>
+                        <p>
+                            <span style={{ fontWeight: "bold" }}>Localização:</span> {callSelect?.tillage?.address.street},{" "}
+                            {callSelect?.tillage?.address.district}, {callSelect?.tillage?.address.city}-
+                            {callSelect?.tillage?.address.uf}{" "}
+                        </p>
                     </Box>
                     <Box>
                         <hr />
                     </Box>
                     <Box>
-                        <p style={{ fontWeight: "bold" }}>Dados de Operação</p>
+                        <Tabs
+                            value={tab}
+                            onChange={changeTab}
+                            textColor="primary"
+                            indicatorColor="primary"
+                            aria-label="tabs"
+                            variant="scrollable"
+                            scrollButtons="auto"
+                            allowScrollButtonsMobile
+                        >
+                            <Tab sx={{ ...tabStyle, width: "50%" }} value="operation" label="Dados de Operação" />
+                            <Tab sx={{ ...tabStyle, width: "50%" }} value="treatment" label="Tratamento" />
+                            <Tab sx={{ ...tabStyle, width: "50%" }} value="techReport" label="Laudo Técnico" />
+                            <Tab sx={{ ...tabStyle, width: "50%" }} value="material" label="Insumos" />
+                        </Tabs>
+                        {tab === "operation" && (
+                            <OperationComponent call={callSelect} operation={callSelect?.report?.operation} />
+                        )}
                     </Box>
                 </Box>
             </Box>
