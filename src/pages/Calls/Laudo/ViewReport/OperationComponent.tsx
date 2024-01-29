@@ -10,27 +10,38 @@ interface OperationComponentProps {
 export const OperationComponent: React.FC<OperationComponentProps> = ({ operation, call }) => {
     return (
         <Box sx={{ gap: "2vw" }}>
-            <p style={{ justifyContent: "space-between" }}>
-                <span style={{ fontWeight: "bold" }}>Tipo de Serviço:</span> {operation?.service}{" "}
-            </p>
-            <p style={{ justifyContent: "space-between" }}>
-                <span style={{ fontWeight: "bold" }}>Cultura:</span> {operation?.culture}{" "}
-            </p>
-            <p style={{ justifyContent: "space-between" }}>
-                <span style={{ fontWeight: "bold" }}>Área Mapeada:</span> {operation?.areaMap} ha{" "}
-            </p>
-            <p style={{ justifyContent: "space-between" }}>
-                <span style={{ fontWeight: "bold" }}>Equipamento:</span> {operation?.equipment}{" "}
-            </p>
-            <p style={{ justifyContent: "space-between" }}>
-                <span style={{ fontWeight: "bold" }}>Modelo:</span> {operation?.model}{" "}
-            </p>
-            <p style={{ justifyContent: "space-between" }}>
-                <span style={{ fontWeight: "bold" }}>Piloto/Copiloto:</span> {operation?.model}{" "}
-            </p>
-            <p style={{ justifyContent: "space-between" }}>
-                <span style={{ fontWeight: "bold" }}>Custo total:</span> {call?.totalPrice}{" "}
-            </p>
+            <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
+                <p style={{ fontWeight: "bold" }}>Tipo de Serviço:</p>
+                <p style={{ justifyContent: "space-between" }}>{operation?.service} </p>
+            </Box>
+            <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
+                <p style={{ fontWeight: "bold" }}>Cultura:</p>
+                <p style={{ justifyContent: "space-between" }}>{operation?.culture} </p>
+            </Box>
+            <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
+                <p style={{ fontWeight: "bold" }}>Área Mapeada:</p>
+                <p style={{ justifyContent: "space-between" }}>{operation?.areaMap} </p>
+            </Box>
+            <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
+                <p style={{ fontWeight: "bold" }}>Equipamento:</p>
+                <p style={{ justifyContent: "space-between" }}>{operation?.equipment} </p>
+            </Box>
+            <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
+                <p style={{ fontWeight: "bold" }}>Modelo:</p>
+                <p style={{ justifyContent: "space-between" }}>{operation?.model} </p>
+            </Box>
+            <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
+                <p style={{ fontWeight: "bold" }}>Piloto/Copiloto:</p>
+                <p style={{ justifyContent: "space-between" }}>{operation?.service} </p>
+            </Box>
+            <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
+                <p style={{ fontWeight: "bold" }}>Custo total:</p>
+                <p style={{ justifyContent: "space-between" }}>
+                    R${" "}
+                    {call?.producer?.hectarePrice && operation?.areaMap && call?.producer?.hectarePrice * operation?.areaMap}
+                    ,00
+                </p>
+            </Box>
         </Box>
     )
 }

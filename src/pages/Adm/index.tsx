@@ -14,7 +14,7 @@ import { ApproveCall } from "./ReviewsCall/ApproveCall"
 import { Calls } from "../Calls"
 import { TillageDetails } from "../TillageDetails"
 import { ListTillages } from "../TillageDetails/ListTillages"
-import { ReportDetails } from "../Calls/Laudo/ReportDetails"
+import { ReportDetails } from "../Calls/Laudo/ViewReport/ReportDetails"
 
 interface AdmProps {
     user: User
@@ -39,7 +39,6 @@ export const Adm: React.FC<AdmProps> = ({ user }) => {
             <Route path="/call/*" element={<Calls user={user} />} />
             <Route path="/producer/:producerid" element={<ListTillages />} />
             <Route path="/producer/:producerid/:tillageid" element={<TillageDetails />} />
-          
         </ReactRoutes>
     )
 }

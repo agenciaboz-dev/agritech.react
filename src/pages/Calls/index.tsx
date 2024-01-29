@@ -5,7 +5,7 @@ import { ApproveCall } from "../Adm/ReviewsCall/ApproveCall"
 import { ReportCall } from "./ReportCall"
 import { LaudoCall } from "./Laudo"
 import { CallDetails } from "./CallDetails"
-import { ReportDetails } from "./Laudo/ReportDetails"
+import { ReportDetails } from "./Laudo/ViewReport/ReportDetails"
 
 interface CallsProps {
     user: User

@@ -28,7 +28,7 @@ export const ModalProduct: React.FC<ModalProductProps> = ({ opened, close, produ
         }
     }
     const addObject = () => {
-        setproduct([...product, { name: "", dosage: "1", unit: "L" }])
+        setproduct([...product, { name: "", dosage: 1, unit: "L" }])
     }
     const deleteObject = (id: number) => {
         const newObj = product.filter((_, index) => index !== id)

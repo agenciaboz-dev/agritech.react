@@ -1,11 +1,13 @@
 import { Box, Tab, Tabs } from "@mui/material"
 import React, { useEffect, useState } from "react"
-import { colors } from "../../../style/colors"
-import { Header } from "../../../components/Header"
+import { colors } from "../../../../style/colors"
+import { Header } from "../../../../components/Header"
 import { useNavigate, useParams } from "react-router-dom"
-import { useCall } from "../../../hooks/useCall"
-import { tabStyle } from "../../../style/tabStyle"
-import { OperationComponent } from "./ViewReport/OperationComponent"
+import { useCall } from "../../../../hooks/useCall"
+import { tabStyle } from "../../../../style/tabStyle"
+import { OperationComponent } from "./OperationComponent"
+import { TreatmentComponent } from "./TreatmentComponent"
+import { TechReportComponent } from "./TechReportComponent"
 
 interface ReportDetailsProps {}
 
@@ -81,11 +83,11 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                     <h3>Relatório Operacional</h3>
                     <Box>
                         <p>
-                            <span style={{ fontWeight: "bold" }}>Contratante:</span> {callSelect?.producer?.user.name}{" "}
+                            <span style={{ fontWeight: "bold" }}>Contratante:</span> {callSelect?.producer?.user?.name}{" "}
                         </p>
                         <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
                             <p>
-                                <span style={{ fontWeight: "bold" }}>CPF:</span> {callSelect?.producer?.user.cpf}{" "}
+                                <span style={{ fontWeight: "bold" }}>CPF:</span> {callSelect?.producer?.user?.cpf}{" "}
                             </p>
                             <p>
                                 <span style={{ fontWeight: "bold" }}>CNPJ:</span> {callSelect?.producer?.cnpj}{" "}
@@ -94,16 +96,16 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                         <p>
                             <span style={{ fontWeight: "bold" }}>Propriedade:</span> {callSelect?.tillage?.name}{" "}
                         </p>
-                        <p>
+                        {/* <p>
                             <span style={{ fontWeight: "bold" }}>Localização:</span> {callSelect?.tillage?.address.street},{" "}
                             {callSelect?.tillage?.address.district}, {callSelect?.tillage?.address.city}-
                             {callSelect?.tillage?.address.uf}{" "}
-                        </p>
+                        </p> */}
                     </Box>
                     <Box>
                         <hr />
                     </Box>
-                    <Box>
+                    <Box sx={{ gap: "4vw" }}>
                         <Tabs
                             value={tab}
                             onChange={changeTab}
@@ -122,6 +124,9 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                         {tab === "operation" && (
                             <OperationComponent call={callSelect} operation={callSelect?.report?.operation} />
                         )}
+                        {tab === "treatment" && <TreatmentComponent treatment={callSelect?.report?.treatment} />}
+                        {tab === "techReport" && <TechReportComponent tech={callSelect?.report?.techReport} />}
+                        {tab === "material" && <TreatmentComponent treatment={callSelect?.report?.treatment} />}
                     </Box>
                 </Box>
             </Box>
