@@ -7,6 +7,7 @@ declare interface NewKit {
     objects?: NewObject[]
     employees?: Employee[]
     calls?: Call[]
+    hectareDay?: number
 
     // Maybe change the calendar
     calendar?: Calendar

@@ -82,6 +82,14 @@ export const UpdateContentKit: React.FC<UpdateContentKitProps> = ({ edit, values
                                     required
                                 />
                                 <TextField
+                                    label={"Hectares por dia"}
+                                    name="hectareDay"
+                                    value={edit ? values.hectareDay : "Loren impsum dolor sit amet"}
+                                    sx={textField}
+                                    onChange={handleChange}
+                                    required
+                                />
+                                <TextField
                                     multiline
                                     maxRows={3}
                                     label={"Descrição"}
@@ -96,6 +104,8 @@ export const UpdateContentKit: React.FC<UpdateContentKitProps> = ({ edit, values
                             <Box sx={{ flexDirection: "column", gap: "0.5vw", width: "100%" }}>
                                 <p style={{ ...style_p }}>Nome do Kit </p>
                                 <p style={{}}>{values.name}</p>
+                                <p style={{ ...style_p }}>Hectares por dia</p>
+                                <p style={{}}>{values.hectareDay}</p>
                                 <p style={{ ...style_p }}>Descrição</p>
                                 <p style={{}}>{values.description}</p>
                             </Box>

@@ -8,6 +8,8 @@ import { tabStyle } from "../../../../style/tabStyle"
 import { OperationComponent } from "./OperationComponent"
 import { TreatmentComponent } from "./TreatmentComponent"
 import { TechReportComponent } from "./TechReportComponent"
+import { Material } from "../Material"
+import { MaterialComponent } from "./Material"
 
 interface ReportDetailsProps {}
 
@@ -126,7 +128,7 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                         )}
                         {tab === "treatment" && <TreatmentComponent treatment={callSelect?.report?.treatment} />}
                         {tab === "techReport" && <TechReportComponent tech={callSelect?.report?.techReport} />}
-                        {tab === "material" && <TreatmentComponent treatment={callSelect?.report?.treatment} />}
+                        {tab === "material" && <MaterialComponent material={callSelect?.report?.material} />}
                     </Box>
                 </Box>
             </Box>

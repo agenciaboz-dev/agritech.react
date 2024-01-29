@@ -48,10 +48,10 @@ export const AddKit: React.FC<AddKitProps> = ({}) => {
         description: "",
         image: "",
         image64: "",
+        hectareDay: 0,
         objects: [],
         employees: [],
         calls: [],
-        
     }
 
     const submitKit = async (values: Kit) => {
@@ -61,6 +61,7 @@ export const AddKit: React.FC<AddKitProps> = ({}) => {
         }))
         const data = {
             ...values,
+            hectareDay: Number(values.hectareDay),
             objects: objects,
             employees: employeesIds,
         }

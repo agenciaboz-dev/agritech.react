@@ -36,7 +36,7 @@ export const ContentKit: React.FC<ContentKitProps> = ({ edit, values, handleChan
     }, [])
 
     return (
-        <Box sx={{ flexDirection: "column", gap: "1vw", width: "100%", height: "92%" }}>
+        <Box sx={{ flexDirection: "column", gap: "12vw", width: "100%", height: "92%" }}>
             <ModalObject
                 opened={openedModalObjects}
                 close={close}
@@ -61,8 +61,8 @@ export const ContentKit: React.FC<ContentKitProps> = ({ edit, values, handleChan
                         emptyLabel="Adicionar foto"
                         variant="square"
                         style={{
-                            width: "28vw",
-                            height: "28vw",
+                            width: "42vw",
+                            height: "42vw",
                             fontSize: "4vw",
                             fontFamily: "MalgunGothic2",
                         }}
@@ -74,6 +74,17 @@ export const ContentKit: React.FC<ContentKitProps> = ({ edit, values, handleChan
                             value={edit ? values.name : "Kit 1"}
                             sx={{ ...textField, width: "100%" }}
                             onChange={handleChange}
+                            required
+                        />
+                        <TextField
+                            multiline
+                            maxRows={3}
+                            label={"Hectares por dia"}
+                            name="hectareDay"
+                            value={edit ? values.hectareDay : "0.0"}
+                            sx={textField}
+                            onChange={handleChange}
+                            InputProps={{ endAdornment: "ha" }}
                             required
                         />
                         <TextField
