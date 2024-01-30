@@ -1,4 +1,4 @@
-import { Box, Tab, Tabs } from "@mui/material"
+import { Accordion, AccordionSummary, Box, Tab, Tabs, Typography, styled } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { colors } from "../../../../style/colors"
 import { Header } from "../../../../components/Header"
@@ -13,6 +13,7 @@ import { MaterialComponent } from "./Material"
 import { ActionIcon, Group, Menu } from "@mantine/core"
 import { IconDots } from "@tabler/icons-react"
 import { ButtonAgritech } from "../../../../components/ButtonAgritech"
+import MuiAccordionDetails from "@mui/material/AccordionDetails"
 
 interface ReportDetailsProps {}
 
@@ -26,9 +27,19 @@ const p_style = {
     fontSize: "3.5vw",
 }
 
+const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
+    // padding: theme.spacing(2),
+    borderTop: "1px solid rgba(0, 0, 0, .125)",
+}))
+
 export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
     const { callid, reportid } = useParams()
     const { listCalls } = useCall()
+
+    const [expanded, setExpanded] = React.useState<string | false>("")
+    const expandendChange = (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
+        setExpanded(newExpanded ? panel : false)
+    }
 
     const [tab, setTab] = React.useState("operation")
     const changeTab = (event: React.SyntheticEvent, newValue: string) => {
@@ -107,8 +118,21 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                             </Menu>
                         </Group>
                     </Box>
-                    <Box sx={{ gap: "0vw" }}>
+                    <Box sx={{ gap: "4vw" }}>
                         <Box>
+                            <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
+                                <p>
+                                    <span style={{ fontWeight: "bold" }}>Data:</span>{" "}
+                                    {callSelect?.report && new Date(callSelect?.report?.date).toLocaleDateString("pt-br")}{" "}
+                                </p>
+                                <p>
+                                    <span style={{ fontWeight: "bold" }}>Hora:</span>{" "}
+                                    {callSelect?.report &&
+                                        `${new Date(callSelect?.report?.date).getHours()}:${String(
+                                            new Date(callSelect?.report?.date).getMinutes()
+                                        ).padStart(2, "0")}:${new Date(callSelect?.report?.date).getSeconds()}`}{" "}
+                                </p>
+                            </Box>
                             <p>
                                 <span style={{ fontWeight: "bold" }}>Contratante:</span> {callSelect?.producer?.user?.name}{" "}
                             </p>
@@ -124,20 +148,26 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                                 <span style={{ fontWeight: "bold" }}>Propriedade:</span> {callSelect?.tillage?.name}{" "}
                             </p>
                         </Box>
-                        <p>
-                            <span style={{ fontWeight: "bold" }}>Custo por hectare:</span> R$
-                            {callSelect?.producer?.hectarePrice},00{" "}
-                        </p>
+
                         {/* <p>
                             <span style={{ fontWeight: "bold" }}>Localização:</span> {callSelect?.tillage?.address.street},{" "}
                             {callSelect?.tillage?.address.district}, {callSelect?.tillage?.address.city}-
                             {callSelect?.tillage?.address.uf}{" "}
                         </p> */}
-                    </Box>
-                    <Box>
                         <hr />
                     </Box>
-                    <Box sx={{ gap: "3vw", justifyContent: "space-between", height: "68%" }}>
+                    <Box sx={{ gap: "2vw" }}>
+                        <p>
+                            <span style={{ fontWeight: "bold" }}>Custo por hectare:</span> R$
+                            {callSelect?.producer?.hectarePrice}
+                        </p>
+                        <p>
+                            <span style={{ fontWeight: "bold" }}>Área Trabalhada no dia:</span>{" "}
+                            {callSelect?.report?.areaTrabalhada} ha{" "}
+                        </p>
+                        <hr />
+                    </Box>
+                    <Box sx={{ gap: "3vw", justifyContent: "space-between", height: "58%" }}>
                         <Box sx={{ gap: "3vw", height: "85%" }}>
                             <Tabs
                                 value={tab}
@@ -156,9 +186,27 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                             </Tabs>
                             <Box sx={{ height: "max-content", maxHeight: "100%", overflowY: "auto" }}>
                                 {tab === "operation" && (
-                                    <>
-                                        <OperationComponent call={callSelect} operation={callSelect?.report?.operation} />
-                                    </>
+                                    <Box sx={{ gap: "4vw" }}>
+                                        <Box sx={{ gap: "2vw" }}>
+                                            <OperationComponent
+                                                call={callSelect}
+                                                operation={callSelect?.report?.operation}
+                                            />
+                                            <hr />
+                                        </Box>
+                                        {callSelect?.report?.techReport?.flight?.map((item, index) => (
+                                            <Box
+                                                key={index}
+                                                sx={{
+                                                    width: "100%",
+                                                    flexDirection: "row",
+                                                    justifyContent: "space-between",
+                                                }}
+                                            >
+                                                Voo {index + 1} <p>{item.performance} ha</p>
+                                            </Box>
+                                        ))}
+                                    </Box>
                                 )}
                                 {tab === "treatment" && <TreatmentComponent treatment={callSelect?.report?.treatment} />}
                                 {tab === "techReport" && <TechReportComponent tech={callSelect?.report?.techReport} />}

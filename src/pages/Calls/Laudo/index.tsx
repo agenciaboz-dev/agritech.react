@@ -55,6 +55,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
     const [listProducts, setListProducts] = useState<Product[]>([])
     const [listFlights, setListFlights] = useState<Flight[]>([])
     const [listMaterials, setListMaterials] = useState<Material[]>([])
+    const [areaTrabalhada, setAreaTrabalhada] = useState("")
 
     const initialValues: NewReport = {
         operation: {
@@ -64,6 +65,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
             equipment: "",
             model: "",
         },
+        areaTrabalhada: "",
         treatment: {
             products: [],
         },
@@ -76,7 +78,6 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
             flight: [],
         },
     }
-
     const handleSubmit = async (values: NewReport) => {
         // const v = 8
         // var float2 = parseFloat(String(v)).toFixed(2)
@@ -103,6 +104,11 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
             performance: Number(item.performance),
         }))
 
+        //calculate areaTrabalhada
+        const sumArea = flightNormalize?.map((item) => Number(item.performance))
+        const totalSum = sumArea.reduce((acc, currentValue) => acc + currentValue, 0)
+        console.log({ total: totalSum })
+
         const materialNormalize = listMaterials?.map((item) => ({
             talhao: item.talhao,
             area: Number(item.area),
@@ -118,7 +124,8 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
 
         const data = {
             callId: call.call?.id,
-            operation: { ...values.operation, areaMap: Number(values.operation?.areaMap) },
+            areaTrabalhada: totalSum,
+            operation: { ...values.operation, areaMap: Number(call.call?.tillage?.area) },
             treatment: { ...values.treatment, products: treatmentNormalize },
             techReport: {
                 ...values.techReport,
@@ -290,7 +297,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                                                 sx={{ ...textField }}
                                                 disabled={!user?.producer ? false : true}
                                             />
-                                            {(stage === 0 || stage === 1) && (
+                                            {/* {(stage === 0 || stage === 1) && (
                                                 <TextField
                                                     label="Área Trabalhada"
                                                     InputProps={{ endAdornment: "ha" }}
@@ -303,7 +310,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                                                     onChange={handleChange}
                                                     required
                                                 />
-                                            )}
+                                            )} */}
                                             {stage === 2 && (
                                                 <Box sx={{ flexDirection: "row", gap: "1vw" }}>
                                                     <TextField

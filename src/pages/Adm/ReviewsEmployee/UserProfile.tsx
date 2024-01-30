@@ -91,6 +91,7 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
             contract: profile?.producer?.contract || false,
             id: profile?.producer?.id,
             employeeId: profile?.producer?.employeeId,
+            hectarePrice: profile?.producer?.hectarePrice,
         },
     }
 
@@ -136,7 +137,7 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
 
         io.on("application:status:approved", handleApprovalSuccess)
         io.on("application:status:rejected", handleRejectionSuccess)
-
+        console.log(profile?.producer?.hectarePrice)
         return () => {
             io.off("application:status:approved")
             io.off("application:status:rejected")

@@ -52,6 +52,16 @@ export const HeaderProfile: React.FC<HeaderProfileProps> = ({ values, handleChan
                     sx={textField}
                     InputProps={{ readOnly: true }}
                 />
+                {/* {values.producer && (
+                    <TextField
+                        label={"Custo por Hectare"}
+                        name="hectarePrice"
+                        value={values.producer?.hectarePrice}
+                        onChange={handleChange}
+                        sx={textField}
+                        InputProps={{ readOnly: true, startAdornment: "R$" }}
+                    />
+                )} */}
                 {view ? (
                     // <Button
                     //     size="small"

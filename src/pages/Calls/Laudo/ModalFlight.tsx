@@ -196,7 +196,7 @@ export const ModalFlight: React.FC<ModalFlightProps> = ({ opened, close, flight,
                             </Box>
                             <Box sx={{ flexDirection: "row", gap: "2vw", width: "48%" }}>
                                 <TextInput
-                                    label="performance"
+                                    label="Área Sobrevoada"
                                     name="performance"
                                     value={item.performance}
                                     data-autofocus

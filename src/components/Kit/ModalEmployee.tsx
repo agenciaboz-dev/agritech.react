@@ -1,5 +1,5 @@
 import { Checkbox, Modal, Table, TextInput } from "@mantine/core"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { ButtonAgritech } from "../ButtonAgritech"
 import { colors } from "../../style/colors"
 import { useUser } from "../../hooks/useUser"
@@ -17,7 +17,13 @@ export const ModalEmployee: React.FC<ModalEmployeeProps> = ({ opened, close, set
     const [selectedRows, setSelectedRows] = useState<number[]>([])
     const { user } = useUser()
 
-    const rows = allEmployees?.map((element) => (
+    const freeEmployees = allEmployees?.filter(
+        (item) => item.employee?.kits?.length === 0 && (item.office === "copilot" || item.office === "pilot")
+    )
+    useEffect(() => {
+        console.log(freeEmployees)
+    }, [])
+    const rows = freeEmployees?.map((element) => (
         <Table.Tr
             key={element.name}
             bg={selectedRows?.includes(element.employee?.id || 0) ? "var(--mantine-color-blue-light)" : undefined}

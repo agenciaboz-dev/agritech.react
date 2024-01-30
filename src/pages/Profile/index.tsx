@@ -82,6 +82,7 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
                   cnpj: user.producer?.cnpj || "",
                   contract: user.producer?.contract,
                   id: user.producer?.id,
+                  hectarePrice: user.producer.hectarePrice,
               }
             : undefined,
     }
@@ -171,6 +172,7 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
         io.on("user:find:failed", (error) => {
             console.error(error.error)
         })
+        
 
         return () => {
             io.off("user:update:success")

@@ -80,6 +80,7 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
 
     const [tillages, setTillages] = useState<{ id: number; name: string }[]>([])
     const producerSelect = listProducers()?.find((item) => item.producer?.id === producerId)
+    const [hectare, setHectare] = useState<string>("")
 
     useEffect(() => {
         console.log(
@@ -100,6 +101,10 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
         )
         console.log(tillagesProducer)
     }, [producerId])
+    useEffect(() => {
+        setHectare(producerSelect?.producer?.hectarePrice || "")
+        // console.log(hectare)
+    }, [producerSelect])
 
     //Open Call
     const initialValues: CreateCall = {
@@ -110,7 +115,7 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
         tillageId: tillageId || 0,
         kitId: undefined,
         userId: Number(account?.user?.id),
-        hectarePrice: "",
+        hectarePrice: hectare,
     }
 
     const handleSubmit = (values: CreateCall) => {
@@ -119,12 +124,12 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
             ...values,
             hectarePrice: Number(values.hectarePrice),
         }
-        io.emit("call:create", data)
+        io.emit(user.isAdmin ? "admin:call:create" : "call:create", data)
         setLoading(true)
     }
 
     useEffect(() => {
-        io.on("call:creation:success", (data: Call) => {
+        io.on(user.isAdmin ? "adminCall:creation:success" : "call:creation:success", (data: Call) => {
             console.log({ chamadoAberto: data })
             addCall(data)
             {
@@ -137,7 +142,7 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
             })
             navigate(user.isAdmin ? "/adm/calls" : user.employee ? "/employee/" : "/producer/")
         })
-        io.on("call:creation:failed", (error) => {
+        io.on(user.isAdmin ? "adminCall:creation:failed" : "call:creation:failed", (error) => {
             console.log({ chamadoAberto: error })
             snackbar({ severity: "error", text: "Algo deu errado" })
             setLoading(false)

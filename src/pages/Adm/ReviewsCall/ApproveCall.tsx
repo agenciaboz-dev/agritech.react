@@ -56,7 +56,13 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
     const producerSelected = listUsers?.find((item) => item.producer?.id === findCall?.producerId)
     const tillageSelected = producerSelected?.producer?.tillage?.find((item) => item.id === findCall?.tillageId)
     const kitsActived = listKits.filter((item) => item.active)
+    const [hectare, setHectare] = useState<string>("")
+    console.log(findCall?.producer?.hectarePrice)
 
+    useEffect(() => {
+        setHectare(findCall?.producer?.hectarePrice || "")
+        console.log(findCall?.producer?.hectarePrice)
+    }, [findCall, findCall?.producer?.hectarePrice])
     const initialValues: ApprovedCall = {
         open: findCall?.open || "",
         comments: findCall?.comments,
@@ -69,11 +75,12 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
 
         id: Number(callid),
         kitId: findCall?.kitId || 0,
-        hectarePrice: 0,
+        hectarePrice: findCall?.producer?.hectarePrice || "",
     }
     const approveCall = (values: ApprovedCall) => {
         console.log(values)
-        io.emit("call:approve", values)
+        const data = { ...values, hectarePrice: Number(values.hectarePrice) }
+        io.emit("call:approve", data)
         setLoading(true)
     }
 
@@ -177,7 +184,6 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
                                             name="hectarePrice"
                                             value={values.hectarePrice}
                                             sx={textField}
-                                            type="number"
                                             onChange={handleChange}
                                             InputProps={{ startAdornment: "R$" }}
                                             required

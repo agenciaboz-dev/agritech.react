@@ -1,5 +1,5 @@
 import { Box, TextField } from "@mui/material"
-import React, { ChangeEventHandler } from "react"
+import React, { ChangeEventHandler, useState } from "react"
 import { textField } from "../../../style/input"
 import { colors } from "../../../style/colors"
 import { Call } from "../../../definitions/call"
@@ -35,22 +35,14 @@ export const Operation: React.FC<OperationProps> = ({ values, change, user, call
                     />
                     <TextField
                         label="Área Mapeada"
-                        name="operation.areaMap"
-                        value={values.operation?.areaMap}
+                        name=""
+                        value={call?.tillage ? call?.tillage?.area : ""}
                         sx={{ ...textField }}
                         InputProps={{
+                            readOnly: true,
                             endAdornment: "ha",
                         }}
-                        onChange={change}
-                        required
                     />
-                    {/* <NumericFormat
-                        style={{ width: "50%" }}
-                        placeholder="Área Mapeada (ha)"
-                        value={values.operation?.areaMap}
-                        decimalScale={2}
-                        fixedDecimalScale
-                    /> */}
                 </Box>
                 <TextField
                     label="Equipamento"

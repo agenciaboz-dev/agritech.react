@@ -4,9 +4,12 @@ declare interface NewReport {
     treatment?: Treatment
     material?: Material[]
     techReport?: TechReport
+    areaTrabalhada: string
 }
 declare interface Report extends NewReport {
     id: number
+    date: string
+    hour: string
 }
 declare interface GeralReport {
     id: number

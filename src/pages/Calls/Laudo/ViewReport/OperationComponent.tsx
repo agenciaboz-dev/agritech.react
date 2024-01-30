@@ -45,11 +45,7 @@ export const OperationComponent: React.FC<OperationComponentProps> = ({ operatio
             </Box>
             <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
                 <p style={{ fontWeight: "bold" }}>Custo total:</p>
-                <p style={{ justifyContent: "space-between" }}>
-                    R${" "}
-                    {call?.producer?.hectarePrice && operation?.areaMap && call?.producer?.hectarePrice * operation?.areaMap}
-                    ,00
-                </p>
+                <p style={{ justifyContent: "space-between" }}>R$ {call?.totalPrice}</p>
             </Box>
         </Box>
     )
