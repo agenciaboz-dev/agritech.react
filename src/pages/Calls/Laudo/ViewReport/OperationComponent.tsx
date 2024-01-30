@@ -20,7 +20,7 @@ export const OperationComponent: React.FC<OperationComponentProps> = ({ operatio
             </Box>
             <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
                 <p style={{ fontWeight: "bold" }}>Área Mapeada:</p>
-                <p style={{ justifyContent: "space-between" }}>{operation?.areaMap} </p>
+                <p style={{ justifyContent: "space-between" }}>{operation?.areaMap} ha</p>
             </Box>
             <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
                 <p style={{ fontWeight: "bold" }}>Equipamento:</p>
@@ -30,9 +30,18 @@ export const OperationComponent: React.FC<OperationComponentProps> = ({ operatio
                 <p style={{ fontWeight: "bold" }}>Modelo:</p>
                 <p style={{ justifyContent: "space-between" }}>{operation?.model} </p>
             </Box>
+
             <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
                 <p style={{ fontWeight: "bold" }}>Piloto/Copiloto:</p>
-                <p style={{ justifyContent: "space-between" }}>{operation?.service} </p>
+                <p style={{ justifyContent: "space-between" }}>
+                    {call?.kit?.employees && call.kit.employees[0].user?.office === "pilot"
+                        ? call?.kit?.employees[0].user?.name
+                        : call?.kit?.employees && call?.kit?.employees[1].user?.name}
+                    /
+                    {call?.kit?.employees && call.kit.employees[0].user?.office === "copilot"
+                        ? call?.kit?.employees[0].user?.name
+                        : call?.kit?.employees && call?.kit?.employees[1].user?.name}
+                </p>
             </Box>
             <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
                 <p style={{ fontWeight: "bold" }}>Custo total:</p>

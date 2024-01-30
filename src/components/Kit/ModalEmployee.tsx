@@ -69,8 +69,12 @@ export const ModalEmployee: React.FC<ModalEmployeeProps> = ({ opened, close, set
                     "Agronômo"
                 ) : element.office === "technician" ? (
                     "Técnico"
+                ) : element.office === "copilot" ? (
+                    "Copiloto"
+                ) : element.office === "seller" ? (
+                    "Vendedor"
                 ) : (
-                    "Piloto"
+                    element.office === "pilot" && "Piloto"
                 )}
             </Table.Td>
         </Table.Tr>

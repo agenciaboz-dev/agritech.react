@@ -64,8 +64,8 @@ export const UpdateContentKit: React.FC<UpdateContentKitProps> = ({ edit, values
                         emptyLabel="Adicionar foto"
                         variant="square"
                         style={{
-                            width: "28vw",
-                            height: "28vw",
+                            width: "38vw",
+                            height: "38vw",
                             fontSize: "4vw",
                             fontFamily: "MalgunGothic2",
                         }}
@@ -105,7 +105,7 @@ export const UpdateContentKit: React.FC<UpdateContentKitProps> = ({ edit, values
                                 <p style={{ ...style_p }}>Nome do Kit </p>
                                 <p style={{}}>{values.name}</p>
                                 <p style={{ ...style_p }}>Hectares por dia</p>
-                                <p style={{}}>{values.hectareDay}</p>
+                                <p style={{}}>{values.hectareDay} ha</p>
                                 <p style={{ ...style_p }}>Descrição</p>
                                 <p style={{}}>{values.description}</p>
                             </Box>
@@ -113,7 +113,7 @@ export const UpdateContentKit: React.FC<UpdateContentKitProps> = ({ edit, values
                     </Box>
                 </Box>
             </Box>
-            <Box sx={{ overflowY: "auto", gap: "4vw" }}>
+            <Box sx={{ overflowY: "auto", gap: "4vw", pt: "10vw" }}>
                 <Box sx={{}}>
                     <TitleComponents title="Objetos" button={edit} click={open} />
                     {values.objects?.map((item, index) => (

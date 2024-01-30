@@ -29,28 +29,29 @@ export const ViewKit: React.FC<ViewKitProps> = ({}) => {
     const { list } = listEmployees()
     const { user } = useUser()
 
-    const kit = listKits.filter((item) => item.id === Number(kitid))
+    const kit = listKits.find((item) => item.id === Number(kitid))
 
     const [opened, { open, close }] = useDisclosure(false)
     const [loading, setLoading] = useState(false)
     const [edit, setEdit] = useState(false)
 
     const initalValues: Kit = {
-        id: kit[0].id,
-        name: kit[0].name,
-        description: kit[0].description,
-        image: kit[0].image,
-        image64: kit[0].image64,
-        objects: kit[0].objects,
-        employees: kit[0].employees,
-        calls: kit[0].calls,
+        id: kit?.id,
+        name: kit?.name || "",
+        description: kit?.description || "",
+        image: kit?.image || "",
+        image64: kit?.image64 || "",
+        hectareDay: kit?.hectareDay,
+        objects: kit?.objects,
+        employees: kit?.employees,
+        calls: kit?.calls,
     }
-    const dataEmployee = kit[0].employees?.map((item) => {
+    const dataEmployee = kit?.employees?.map((item) => {
         return findEmployee(String(item.id))
     })
 
     const [allEmployees, setAllEmployees] = useState<User[] | undefined>()
-    const [listObjects, setListObjects] = useState<NewObject[]>(kit[0].objects || [])
+    const [listObjects, setListObjects] = useState<NewObject[]>(kit?.objects || [])
     const [team, setListEmployees] = useState<User[]>(dataEmployee || [])
 
     const data = {
@@ -107,6 +108,7 @@ export const ViewKit: React.FC<ViewKitProps> = ({}) => {
 
     useEffect(() => {
         setAllEmployees(list)
+        console.log(kit)
     }, [])
     return (
         <Formik initialValues={initalValues} onSubmit={handleUpdateKit}>
@@ -194,7 +196,7 @@ export const ViewKit: React.FC<ViewKitProps> = ({}) => {
                                         fontWeight: "bold",
                                     }}
                                 >
-                                    {kit !== null ? kit[0].name : "Kit"}
+                                    {kit !== null ? kit?.name : "Kit"}
                                 </p>
                                 <Button
                                     type="submit"

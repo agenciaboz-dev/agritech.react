@@ -121,6 +121,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
             snackbar({ severity: "error", text: "Já existe chamado ativo pra esse talhão!" })
             setLoading(false)
         })
+        console.log({ olha_aqui: call })
         return () => {
             io.off("call:creation:success")
             io.off("call:creation:failed")
