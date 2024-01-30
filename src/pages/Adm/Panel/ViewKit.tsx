@@ -50,7 +50,7 @@ export const ViewKit: React.FC<ViewKitProps> = ({}) => {
         return findEmployee(String(item.id))
     })
 
-    const [allEmployees, setAllEmployees] = useState<User[] | undefined>()
+    const [allEmployees, setAllEmployees] = useState<User[]>([])
     const [listObjects, setListObjects] = useState<NewObject[]>(kit?.objects || [])
     const [team, setListEmployees] = useState<User[]>(dataEmployee || [])
 
@@ -107,7 +107,7 @@ export const ViewKit: React.FC<ViewKitProps> = ({}) => {
     }, [])
 
     useEffect(() => {
-        setAllEmployees(list)
+        setAllEmployees(list || [])
         console.log(kit)
     }, [])
     return (

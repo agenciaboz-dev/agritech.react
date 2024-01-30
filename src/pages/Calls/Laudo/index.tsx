@@ -60,7 +60,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
         operation: {
             service: "",
             culture: "",
-            areaMap: 2.5,
+            areaMap: "",
             equipment: "",
             model: "",
         },
@@ -92,33 +92,33 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
         }))
 
         const flightNormalize = listFlights?.map((item) => ({
-            temperature: 8.5,
-            humidity: 4.5,
-            wind_velocity: 80.6,
-            height: 25.5,
-            faixa: 5.8,
-            flight_velocity: 30.4,
-            tank_volume: 22.3,
-            rate: 4.2,
-            performance: 99.4,
+            temperature: Number(item.temperature),
+            humidity: Number(item.humidity),
+            wind_velocity: Number(item.wind_velocity),
+            height: Number(item.height),
+            faixa: Number(item.faixa),
+            flight_velocity: Number(item.flight_velocity),
+            tank_volume: Number(item.tank_volume),
+            rate: Number(item.rate),
+            performance: Number(item.performance),
         }))
 
         const materialNormalize = listMaterials?.map((item) => ({
             talhao: item.talhao,
-            area: 114.6,
+            area: Number(item.area),
             product: item.product,
-            dosage: 22.4,
+            dosage: Number(item.dosage),
             classification: item.classification,
-            total: 45.3,
-            removed: 2.4,
-            applied: 8.5,
-            returned: 8.6,
+            total: Number(item.total),
+            removed: Number(item.removed),
+            applied: Number(item.applied),
+            returned: Number(item.returned),
             comments: item.comments,
         }))
 
         const data = {
             callId: call.call?.id,
-            operation: values.operation,
+            operation: { ...values.operation, areaMap: Number(values.operation?.areaMap) },
             treatment: { ...values.treatment, products: treatmentNormalize },
             techReport: {
                 ...values.techReport,

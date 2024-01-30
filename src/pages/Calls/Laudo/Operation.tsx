@@ -36,14 +36,12 @@ export const Operation: React.FC<OperationProps> = ({ values, change, user, call
                     <TextField
                         label="Área Mapeada"
                         name="operation.areaMap"
-                        // value={ values.operation?.areaMap }
-                        // value={22.5}
+                        value={values.operation?.areaMap}
                         sx={{ ...textField }}
-                        type="number"
                         InputProps={{
                             endAdornment: "ha",
                         }}
-                        // onChange={change}
+                        onChange={change}
                         required
                     />
                     {/* <NumericFormat

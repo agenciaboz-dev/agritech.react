@@ -28,7 +28,7 @@ export const ModalProduct: React.FC<ModalProductProps> = ({ opened, close, produ
         }
     }
     const addObject = () => {
-        setproduct([...product, { name: "", dosage: 1, unit: "L" }])
+        setproduct([...product, { name: "", dosage: "", unit: "L" }])
     }
     const deleteObject = (id: number) => {
         const newObj = product.filter((_, index) => index !== id)
@@ -85,7 +85,6 @@ export const ModalProduct: React.FC<ModalProductProps> = ({ opened, close, produ
                         <TextInput
                             label="Dose/HA"
                             name="dosage"
-                            type="number"
                             value={item.dosage}
                             styles={{ root: { width: "100%" }, input: { border: "1px solid black" } }}
                             withAsterisk

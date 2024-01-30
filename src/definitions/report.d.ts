@@ -21,7 +21,7 @@ declare interface Operation {
     id?: number
     service: string
     culture: string
-    areaMap: number
+    areaMap: string
     equipment: string
     model: string
 
@@ -38,7 +38,7 @@ declare interface Treatment {
 declare interface Product {
     id?: number
     name: string
-    dosage: number
+    dosage: string
     unit: string
     treatentId?: number //temporaly optional
 }
@@ -46,14 +46,14 @@ declare interface Product {
 declare interface Material {
     id?: number
     talhao: string
-    area: number
+    area: string
     product: string
-    dosage: number
+    dosage: string
     classification: string
-    total: number
-    removed: number
-    applied: number
-    returned: number
+    total: string
+    removed: string
+    applied: string
+    returned: string
     comments: string
 
     reportId?: number //temporaly optional
@@ -74,15 +74,15 @@ declare interface TechReport {
 
 declare interface Flight {
     id?: number //temporaly optional
-    temperature: number
-    humidity: number
-    wind_velocity: number
-    height: number
-    faixa: number
-    flight_velocity: number
-    tank_volume: number
-    rate: number
-    performance: number
+    temperature: string
+    humidity: string
+    wind_velocity: string
+    height: string
+    faixa: string
+    flight_velocity: string
+    tank_volume: string
+    rate: string
+    performance: string
 
     techReportId?: number //temporaly optional
     // techReport:TechReport

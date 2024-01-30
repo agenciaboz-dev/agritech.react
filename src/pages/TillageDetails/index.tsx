@@ -86,12 +86,13 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
         tillageId: tillageSelectProd?.id || 0,
         kitId: undefined,
         userId: Number(user?.id),
-        hectarePrice: 0,
+        hectarePrice: "",
     }
 
     const handleSubmit = (values: CreateCall) => {
         console.log(values)
-        io.emit("call:create", values)
+        const data = { ...values, hectarePrice: Number(values.hectarePrice) }
+        io.emit("call:create", data)
         setLoading(true)
     }
 
@@ -121,7 +122,6 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
             snackbar({ severity: "error", text: "Já existe chamado ativo pra esse talhão!" })
             setLoading(false)
         })
-        console.log({ olha_aqui: call })
         return () => {
             io.off("call:creation:success")
             io.off("call:creation:failed")

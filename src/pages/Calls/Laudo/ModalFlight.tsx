@@ -38,15 +38,15 @@ export const ModalFlight: React.FC<ModalFlightProps> = ({ opened, close, flight,
         setFlight([
             ...flight,
             {
-                temperature: 0,
-                faixa: 0,
-                flight_velocity: 0,
-                height: 0,
-                humidity: 0,
-                performance: 0,
-                rate: 0,
-                tank_volume: 0,
-                wind_velocity: 0,
+                temperature: "",
+                faixa: "",
+                flight_velocity: "",
+                height: "",
+                humidity: "",
+                performance: "",
+                rate: "",
+                tank_volume: "",
+                wind_velocity: "",
             },
         ])
     }
@@ -106,7 +106,6 @@ export const ModalFlight: React.FC<ModalFlightProps> = ({ opened, close, flight,
                                     name="temperature"
                                     value={item.temperature}
                                     data-autofocus
-                                    type="number"
                                     withAsterisk
                                     styles={{ input: { border: "1px solid black" } }}
                                     rightSection={<p>ºC</p>}
@@ -118,7 +117,6 @@ export const ModalFlight: React.FC<ModalFlightProps> = ({ opened, close, flight,
                                     name="humidity"
                                     value={item.humidity}
                                     data-autofocus
-                                    type="number"
                                     withAsterisk
                                     styles={{ input: { border: "1px solid black" } }}
                                     rightSection={<p>%</p>}
@@ -131,7 +129,6 @@ export const ModalFlight: React.FC<ModalFlightProps> = ({ opened, close, flight,
                                     name="wind_velocity"
                                     value={item.wind_velocity}
                                     data-autofocus
-                                    type="number"
                                     withAsterisk
                                     styles={{ input: { border: "1px solid black" } }}
                                     rightSection={<p style={{ fontSize: "2.9vw" }}>km/h</p>}
@@ -143,7 +140,6 @@ export const ModalFlight: React.FC<ModalFlightProps> = ({ opened, close, flight,
                                     name="height"
                                     value={item.height}
                                     data-autofocus
-                                    type="number"
                                     withAsterisk
                                     styles={{ input: { border: "1px solid black" } }}
                                     rightSection={<p>m</p>}
@@ -157,7 +153,6 @@ export const ModalFlight: React.FC<ModalFlightProps> = ({ opened, close, flight,
                                     name="faixa"
                                     value={item.faixa}
                                     data-autofocus
-                                    type="number"
                                     withAsterisk
                                     styles={{ input: { border: "1px solid black" } }}
                                     rightSection={<p>m</p>}
@@ -169,7 +164,6 @@ export const ModalFlight: React.FC<ModalFlightProps> = ({ opened, close, flight,
                                     name="flight_velocity"
                                     value={item.flight_velocity}
                                     data-autofocus
-                                    type="number"
                                     withAsterisk
                                     styles={{ input: { border: "1px solid black" } }}
                                     rightSection={<p style={{ fontSize: "2.9vw" }}>km/h</p>}
@@ -183,7 +177,6 @@ export const ModalFlight: React.FC<ModalFlightProps> = ({ opened, close, flight,
                                     name="tank_volume"
                                     value={item.tank_volume}
                                     data-autofocus
-                                    type="number"
                                     withAsterisk
                                     styles={{ input: { border: "1px solid black" } }}
                                     rightSection={<p>L</p>}
@@ -195,7 +188,6 @@ export const ModalFlight: React.FC<ModalFlightProps> = ({ opened, close, flight,
                                     name="rate"
                                     value={item.rate}
                                     data-autofocus
-                                    type="number"
                                     withAsterisk
                                     styles={{ input: { border: "1px solid black" } }}
                                     rightSection={<p>L</p>}
@@ -208,7 +200,6 @@ export const ModalFlight: React.FC<ModalFlightProps> = ({ opened, close, flight,
                                     name="performance"
                                     value={item.performance}
                                     data-autofocus
-                                    type="number"
                                     withAsterisk
                                     styles={{ input: { border: "1px solid black" } }}
                                     rightSection={<p>ha</p>}

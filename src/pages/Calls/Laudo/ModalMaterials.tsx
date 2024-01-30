@@ -33,14 +33,14 @@ export const ModalMaterial: React.FC<ModalMaterialProps> = ({ opened, close, mat
             ...material,
             {
                 talhao: "",
-                area: 0,
+                area:"",
                 product: "",
-                dosage: 0,
+                dosage:"",
                 classification: "",
-                total: 0,
-                removed: 0,
-                applied: 0,
-                returned: 0,
+                total:"",
+                removed:"",
+                applied:"",
+                returned:"",
                 comments: "",
             },
         ])
@@ -112,7 +112,6 @@ export const ModalMaterial: React.FC<ModalMaterialProps> = ({ opened, close, mat
                                     name="area"
                                     value={item.area}
                                     data-autofocus
-                                    type="number"
                                     styles={{ input: { border: "1px solid black" } }}
                                     rightSection={<p>ha</p>}
                                     onChange={(e) => handleChange(index, e)}
@@ -136,7 +135,6 @@ export const ModalMaterial: React.FC<ModalMaterialProps> = ({ opened, close, mat
                                     name="dosage"
                                     value={item.dosage}
                                     data-autofocus
-                                    type="number"
                                     withAsterisk
                                     styles={{ input: { border: "1px solid black" } }}
                                     onChange={(e) => handleChange(index, e)}
@@ -158,7 +156,6 @@ export const ModalMaterial: React.FC<ModalMaterialProps> = ({ opened, close, mat
                                     name="total"
                                     value={item.total}
                                     data-autofocus
-                                    type="number"
                                     withAsterisk
                                     styles={{ input: { border: "1px solid black" } }}
                                     onChange={(e) => handleChange(index, e)}
@@ -169,7 +166,6 @@ export const ModalMaterial: React.FC<ModalMaterialProps> = ({ opened, close, mat
                                     name="removed"
                                     value={item.removed}
                                     data-autofocus
-                                    type="number"
                                     withAsterisk
                                     styles={{ input: { border: "1px solid black" } }}
                                     rightSection={<p>L</p>}
@@ -182,7 +178,6 @@ export const ModalMaterial: React.FC<ModalMaterialProps> = ({ opened, close, mat
                                     name="applied"
                                     value={item.applied}
                                     data-autofocus
-                                    type="number"
                                     styles={{ input: { border: "1px solid black" } }}
                                     onChange={(e) => handleChange(index, e)}
                                     rightSection={<p>L</p>}
@@ -194,7 +189,6 @@ export const ModalMaterial: React.FC<ModalMaterialProps> = ({ opened, close, mat
                                     name="returned"
                                     value={item.returned}
                                     data-autofocus
-                                    type="number"
                                     styles={{ input: { border: "1px solid black" } }}
                                     rightSection={<p>L</p>}
                                     onChange={(e) => handleChange(index, e)}

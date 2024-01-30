@@ -7,5 +7,5 @@ declare interface Producer {
     reportId?: number
     // userid: number
     user?: User
-    hectarePrice?: number
+    hectarePrice?: string
 }

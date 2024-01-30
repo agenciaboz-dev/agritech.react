@@ -9,7 +9,7 @@ export declare interface CreateCall {
     open: string
     comments: string
 
-    hectarePrice: number
+    hectarePrice: string
     tillageId: number
     kit?: Kit
     kitId?: number
@@ -30,7 +30,7 @@ export declare interface ApprovedCall {
 
     id: number
     kitId: number
-    hectarePrice?: number
+    hectarePrice?: string
 }
 export declare interface Call extends CreateCall {
     id: number

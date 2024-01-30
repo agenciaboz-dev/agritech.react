@@ -110,12 +110,16 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
         tillageId: tillageId || 0,
         kitId: undefined,
         userId: Number(account?.user?.id),
-        hectarePrice: 0,
+        hectarePrice: "",
     }
 
     const handleSubmit = (values: CreateCall) => {
         console.log(values)
-        io.emit("call:create", values)
+        const data = {
+            ...values,
+            hectarePrice: Number(values.hectarePrice),
+        }
+        io.emit("call:create", data)
         setLoading(true)
     }
 
@@ -343,7 +347,6 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                                         <TextField
                                             label={"Custo por hectare"}
                                             name="hectarePrice"
-                                            type="number"
                                             value={values.hectarePrice}
                                             sx={textField}
                                             onChange={handleChange}
