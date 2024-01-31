@@ -14,7 +14,6 @@ import { ActionIcon, Group, Menu } from "@mantine/core"
 import { IconDots } from "@tabler/icons-react"
 import { ButtonAgritech } from "../../../../components/ButtonAgritech"
 import MuiAccordionDetails from "@mui/material/AccordionDetails"
-import { useDocumentMask } from "../../../../hooks/useDocumentMask"
 
 interface ReportDetailsProps {}
 
@@ -36,7 +35,6 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
     const { callid, reportid } = useParams()
     const { listCalls } = useCall()
-    const document_mask = useDocumentMask()
 
     const [expanded, setExpanded] = React.useState<string | false>("")
     const expandendChange = (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {

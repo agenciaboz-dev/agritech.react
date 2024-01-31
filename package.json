@@ -23,8 +23,11 @@
     "@react-pdf/renderer": "^3.3.2",
     "@tabler/icons-react": "^2.44.0",
     "@types/node": "^20.10.5",
+<<<<<<< HEAD
     "@types/react-currency-format": "^1.0.4",
     "@types/react-text-mask": "^5.4.14",
+=======
+>>>>>>> parent of 37c2b73 (feat: maskedInput)
     "axios": "^1.5.1",
     "burgos-array": "^1.0.2",
     "burgos-confirm": "^1.3.1",
@@ -51,7 +54,6 @@
     "react-spring-carousel": "^2.0.19",
     "react-swipeable-views": "^0.14.0",
     "react-swipeable-views-utils": "^0.14.0",
-    "react-text-mask": "^5.5.0",
     "socket.io-client": "^4.7.2"
   },
   "devDependencies": {
