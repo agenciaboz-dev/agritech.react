@@ -123,14 +123,13 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                             <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
                                 <p>
                                     <span style={{ fontWeight: "bold" }}>Data:</span>{" "}
-                                    {callSelect?.report && new Date(callSelect?.report?.date).toLocaleDateString("pt-br")}{" "}
+                                    {callSelect?.report &&
+                                        new Date(Number(callSelect?.report?.date)).toLocaleDateString("pt-br")}{" "}
                                 </p>
                                 <p>
                                     <span style={{ fontWeight: "bold" }}>Hora:</span>{" "}
                                     {callSelect?.report &&
-                                        `${new Date(callSelect?.report?.date).getHours()}:${String(
-                                            new Date(callSelect?.report?.date).getMinutes()
-                                        ).padStart(2, "0")}:${new Date(callSelect?.report?.date).getSeconds()}`}{" "}
+                                        new Date(Number(callSelect?.report?.date)).toLocaleTimeString("pt-br")}{" "}
                                 </p>
                             </Box>
                             <p>

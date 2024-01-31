@@ -1,21 +1,13 @@
 import React, { useEffect, useState } from "react"
 import { useHeader } from "../../../hooks/useHeader"
-import { Call, CallStatus } from "../../../definitions/call"
 import { Box, CircularProgress, TextField } from "@mui/material"
-import { ButtonComponent } from "../../../components/ButtonComponent"
 import { Form, Formik } from "formik"
 import { TitleComponents } from "../../../components/TitleComponents"
 import { Header } from "../../../components/Header"
 import { colors } from "../../../style/colors"
 import { textField } from "../../../style/input"
-import { StageDescription } from "../../../components/StageDescription"
 import { Modal, Stepper } from "@mantine/core"
 import { useNavigate, useParams } from "react-router-dom"
-import findProducer from "../../../hooks/filterProducer"
-import { useKits } from "../../../hooks/useKits"
-import { useUsers } from "../../../hooks/useUsers"
-import { useCall } from "../../../hooks/useCall"
-import { useProducer } from "../../../hooks/useProducer"
 import { ButtonAgritech } from "../../../components/ButtonAgritech"
 import { Operation } from "./Operation"
 
@@ -28,9 +20,11 @@ import { Material } from "./Material"
 import { ModalMaterial } from "./ModalMaterials"
 import { useIo } from "../../../hooks/useIo"
 import { Treatment } from "./Treatment"
-import MaskedInput from "../../../components/MaskedInput"
-import { dateFrontend } from "../../../hooks/useFormattedDate"
 import { useSnackbar } from "burgos-snackbar"
+import { LocalizationProvider, TimeField, ptBR } from "@mui/x-date-pickers"
+import { CiClock2 } from "react-icons/ci"
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo"
 
 interface LaudoCallProps {
     user: User
@@ -56,6 +50,8 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
     const [listFlights, setListFlights] = useState<Flight[]>([])
     const [listMaterials, setListMaterials] = useState<Material[]>([])
     const [areaTrabalhada, setAreaTrabalhada] = useState("")
+    const [initPick, setInitPick] = useState(null)
+    const [finishPick, setFinishPick] = useState(null)
 
     const initialValues: NewReport = {
         operation: {
@@ -71,7 +67,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
         },
         material: [],
         techReport: {
-            date: new Date().toISOString(),
+            date: "",
             init: "",
             finish: "",
             comments: "",
@@ -79,16 +75,9 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
         },
     }
     const handleSubmit = async (values: NewReport) => {
-        // const v = 8
-        // var float2 = parseFloat(String(v)).toFixed(2)
-        // console.log(float2) // 8.000
-
-        const isoDateTimeStart = `2022-01-24T${values.techReport?.init}:00.000Z`
-        const isoDateTimeFinish = `2022-01-23T${values.techReport?.finish}:00.000Z`
-
         const treatmentNormalize = listProducts?.map((item) => ({
             name: item.name,
-            dosage: 3.5,
+            dosage: Number(item.dosage),
             unit: item.unit,
         }))
 
@@ -129,20 +118,17 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
             treatment: { ...values.treatment, products: treatmentNormalize },
             techReport: {
                 ...values.techReport,
-                date: new Date().toISOString(),
-                init: new Date().toISOString(),
-                finish: new Date().toISOString(),
+                date: new Date().getTime().toString(),
+                init: new Date(Number(initPick)).getTime().toString(),
+                finish: new Date(Number(finishPick)).getTime().toString(),
                 flight: flightNormalize,
             },
             material: materialNormalize,
         }
         console.log({ Relatório: data })
-        console.log(
-            { Products: data.treatment.products },
-            { TechReport: flightNormalize },
-            { Material: materialNormalize },
-            { operation: values.operation }
-        )
+
+        console.log(data)
+        console.log(initPick)
         if (data) {
             io.emit("report:create", data)
             setLoading(true)
@@ -297,55 +283,65 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                                                 sx={{ ...textField }}
                                                 disabled={!user?.producer ? false : true}
                                             />
-                                            {/* {(stage === 0 || stage === 1) && (
-                                                <TextField
-                                                    label="Área Trabalhada"
-                                                    InputProps={{ endAdornment: "ha" }}
-                                                    // name="operation.areaMap"
-                                                    type="number"
-                                                    // value={values.operation?.areaMap}
-                                                    value={22.5}
-                                                    sx={{ ...textField }}
-                                                    disabled={!user?.producer ? false : true}
-                                                    onChange={handleChange}
-                                                    required
-                                                />
-                                            )} */}
-                                            {stage === 2 && (
-                                                <Box sx={{ flexDirection: "row", gap: "1vw" }}>
-                                                    <TextField
-                                                        label={"Data"}
-                                                        type="text"
-                                                        name="techReport.date"
-                                                        value={dateFrontend(values.techReport?.date || "")}
-                                                        sx={{ ...textField, width: "30%" }}
-                                                        onChange={handleChange}
-                                                        required
-                                                    />
-                                                    <TextField
-                                                        label="Início"
-                                                        name="init"
-                                                        type="time"
-                                                        value={values.techReport?.init}
-                                                        sx={{ ...textField }}
-                                                        onChange={!user?.producer ? handleChange : () => {}}
-                                                        InputLabelProps={{
-                                                            shrink: true, // Encolher o rótulo quando houver valor
-                                                        }}
-                                                    />
-                                                    <TextField
-                                                        label="Final"
-                                                        name="finish"
-                                                        type="time"
-                                                        value={values.techReport?.finish}
-                                                        sx={{ ...textField }}
-                                                        onChange={!user?.producer ? handleChange : () => {}}
-                                                        InputLabelProps={{
-                                                            shrink: true, // Encolher o rótulo quando houver valor
-                                                        }}
-                                                    />
-                                                </Box>
-                                            )}
+
+                                            <LocalizationProvider
+                                                dateAdapter={AdapterDayjs}
+                                                localeText={ptBR.components.MuiLocalizationProvider.defaultProps.localeText}
+                                            >
+                                                <DemoContainer components={["TimeField", "TimeField", "TimeField"]}>
+                                                    <Box sx={{ flexDirection: "row", gap: "1vw" }}>
+                                                        <TextField
+                                                            label="Data"
+                                                            value={new Date().toLocaleDateString("pt-br")}
+                                                            sx={{ ...textField }}
+                                                            InputProps={{ readOnly: true }}
+                                                            disabled={!user?.producer ? false : true}
+                                                        />
+                                                        <TimeField
+                                                            label="Início"
+                                                            name="init"
+                                                            sx={{ ...textField }}
+                                                            value={initPick}
+                                                            onChange={(newValue) => setInitPick(newValue)}
+                                                            format="HH:mm"
+                                                            ampm={false}
+                                                            InputProps={{
+                                                                inputMode: "numeric",
+                                                                endAdornment: (
+                                                                    <CiClock2
+                                                                        style={{
+                                                                            color: "black",
+                                                                            width: "6vw",
+                                                                            height: "6vw",
+                                                                        }}
+                                                                    />
+                                                                ),
+                                                            }}
+                                                        />
+                                                        <TimeField
+                                                            label="Final"
+                                                            name="finish"
+                                                            sx={{ ...textField }}
+                                                            value={finishPick}
+                                                            onChange={(newValue) => setFinishPick(newValue)}
+                                                            format="HH:mm"
+                                                            ampm={false}
+                                                            InputProps={{
+                                                                inputMode: "numeric",
+                                                                endAdornment: (
+                                                                    <CiClock2
+                                                                        style={{
+                                                                            color: "black",
+                                                                            width: "6vw",
+                                                                            height: "6vw",
+                                                                        }}
+                                                                    />
+                                                                ),
+                                                            }}
+                                                        />
+                                                    </Box>
+                                                </DemoContainer>
+                                            </LocalizationProvider>
                                         </Box>
                                         <Stepper
                                             active={stage}

@@ -38,7 +38,7 @@ export const StageDescription: React.FC<StageDescriptionProps> = ({ title, value
                     label="Data"
                     value={new Date().toLocaleDateString("pt-br")}
                     sx={{ ...textField }}
-                    inputProps={{ "aria-readonly": true }}
+                    InputProps={{ readOnly: true }}
                     disabled={!user?.producer ? false : true}
                 />
                 <LocalizationProvider
