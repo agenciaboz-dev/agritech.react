@@ -1171,6 +1171,13 @@
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.11.tgz#2596fb352ee96a1379c657734d4b913a613ad563"
   integrity sha512-ga8y9v9uyeiLdpKddhxYQkxNDrfvuPrlFb0N1qnZZByvcElJaXthF1UhvCh9TLWJBEHeNtdnbysW7Y6Uq8CVng==
 
+"@types/react-currency-format@^1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@types/react-currency-format/-/react-currency-format-1.0.4.tgz#e01c5d4f9cbb863a95697307aaa1c7817a7d08c2"
+  integrity sha512-qHxKxe7MSGbWkxTj6DAgnKFnc/zXrRPljxaBnw29IlLyBmTBXZjGuCnn3UBH+tzHrYBFt4mkmxbWqpyeq6Ls0g==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-dom@^18.2.7":
   version "18.2.13"
   resolved "https://registry.npmjs.org/@types/react-dom/-/react-dom-18.2.13.tgz"
