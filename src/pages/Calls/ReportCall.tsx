@@ -32,11 +32,23 @@ export const ReportCall: React.FC<ReportCallProps> = ({ user }) => {
     const { listCalls } = useCall()
     const { listTillages } = useProducer()
 
-    const [stage, setstage] = useState(0)
     const [loading, setLoading] = useState(false)
     const [call, setCall] = useState<Call | null>()
     const [producerSelect, setProducerSelect] = useState<User | null>()
     const [tillage, setTillage] = useState<Tillage | null>()
+
+    const [initPick, setInitPick] = useState(null)
+    const [finishPick, setFinishPick] = useState(null)
+    const [durationPick, setDuration] = useState(null)
+
+    const dates = {
+        initPick: initPick,
+        setInitPick: setInitPick,
+        finishPick: finishPick,
+        setFinishPick: setFinishPick,
+        durationPick: durationPick,
+        setDuration: setDuration,
+    }
 
     useEffect(() => {
         setCall(listCalls.find((item) => String(item.id) === callid))
@@ -44,11 +56,18 @@ export const ReportCall: React.FC<ReportCallProps> = ({ user }) => {
         setTillage(listTillages?.find((item) => item.id === call?.tillageId && item.producerId === call.producerId))
     }, [call])
 
+    const stageCurrent = call?.stage === "STAGE1" ? 0 : call?.stage === "STAGE2" ? 1 : call?.stage === "STAGE3" ? 2 : 3
+    const [stage, setstage] = useState(0)
+    // console.log(stageCurrent)
+
+    // console.log(call?.stage)
+    // console.log({ stage: stage })
+
     const chegadaFormik = useFormik<Stage>({
         initialValues: {
             name: "",
             comments: "",
-            date: new Date().toISOString(),
+            date: "",
             duration: "",
             finish: "",
             start: "",
@@ -82,53 +101,58 @@ export const ReportCall: React.FC<ReportCallProps> = ({ user }) => {
     })
 
     const chegadaSubmit = (values: Stage) => {
-        const isoDateTimeStart = `2022-01-24T${values.start}:00.000Z`
-        const isoDateTimeFinish = `2022-01-23T${values.finish}:00.000Z`
         const data = {
             ...values,
             id: call?.stages[0].id,
-            start: isoDateTimeStart,
-            finish: isoDateTimeFinish,
+            date: new Date().getTime().toString(),
+            start: new Date(Number(initPick)).getTime().toString(),
+            finish: new Date(Number(finishPick)).getTime().toString(),
         }
         io.emit("stage:update:one", data)
         setLoading(true)
-        // console.log(data)
+        console.log(data)
     }
 
     const pulverizacaoSubmit = (values: Stage) => {
         console.log({ pulverizou: call?.stages[1] })
-        const isoDateTimeStart = `2022-01-24T${values.start}:00.000Z`
-        const isoDateTimeFinish = `2022-01-23T${values.finish}:00.000Z`
         const data = {
             ...values,
             id: call?.stages[1].id,
-            start: isoDateTimeStart,
-            finish: isoDateTimeFinish,
+            date: new Date().getTime().toString(),
+            start: new Date(Number(initPick)).getTime().toString(),
+            finish: new Date(Number(finishPick)).getTime().toString(),
         }
         io.emit("stage:update:two", data)
         setLoading(true)
+        console.log(data)
     }
 
     const backSubmit = (values: Stage) => {
-        // console.log({ voltou: values })
-        const isoDateTimeStart = `2022-01-24T${values.start}:00.000Z`
-        const isoDateTimeFinish = `2022-01-23T${values.finish}:00.000Z`
         const data = {
             ...values,
             id: call?.stages[2].id,
-            start: isoDateTimeStart,
-            finish: isoDateTimeFinish,
+            date: new Date().getTime().toString(),
+            start: new Date(Number(initPick)).getTime().toString(),
+            finish: new Date(Number(finishPick)).getTime().toString(),
         }
         io.emit("stage:update:three", data)
         setLoading(true)
     }
 
     useEffect(() => {
+        console.log({ Estágio: call })
+        setstage(stageCurrent)
+        console.log(stageCurrent)
+
+        console.log(call?.stage)
+        console.log({ stage: stage })
+    }, [call])
+    useEffect(() => {
         const registerEvents = () => {
             io.on("stage:updateOne:success", (stage) => {
                 console.log({ stage1: stage })
                 setLoading(false)
-                setstage(1)
+                setstage(2)
             })
             io.on("stage:updateOne:failed", (stage) => {
                 snackbar({ severity: "error", text: "Tem algo errado com os dados de chegada!" })
@@ -137,7 +161,7 @@ export const ReportCall: React.FC<ReportCallProps> = ({ user }) => {
             io.on("stage:updateTwo:success", (stage) => {
                 console.log({ stage2: stage })
                 setLoading(false)
-                setstage(2)
+                setstage(3)
             })
             io.on("stage:updateTwo:failed", (stage) => {
                 snackbar({ severity: "error", text: "Tem algo errado com os dados de pulverização!!" })
@@ -146,8 +170,8 @@ export const ReportCall: React.FC<ReportCallProps> = ({ user }) => {
             io.on("stage:updateThree:success", (stage) => {
                 snackbar({ severity: "success", text: "Dados registrados!" })
                 setLoading(false)
-                setstage(3)
                 console.log("Finalizado")
+                setstage(4)
                 navigate(user.isAdmin ? `/adm/call/${callid}/laudo` : `/employee/call/${callid}/laudo`)
             })
             io.on("stage:updateThree:failed", (stage) => {
@@ -188,9 +212,6 @@ export const ReportCall: React.FC<ReportCallProps> = ({ user }) => {
         header.setTitle("Painel")
     }, [])
 
-    useEffect(() => {
-        console.log({ Estágio: call })
-    }, [call])
     return (
         <Box
             sx={{
@@ -254,7 +275,7 @@ export const ReportCall: React.FC<ReportCallProps> = ({ user }) => {
                                 label="Aberto em"
                                 name="init"
                                 type="text"
-                                value={dateFrontend(call?.init || "")}
+                                value={new Date(Number(call?.init)).toLocaleDateString("pt-br")}
                                 sx={{ ...textField }}
                                 inputProps={{ "aria-readonly": true }}
                                 disabled={!user?.producer ? false : true}
@@ -295,6 +316,7 @@ export const ReportCall: React.FC<ReportCallProps> = ({ user }) => {
                                     title={"Chegada na localização"}
                                     values={chegadaFormik.values}
                                     change={chegadaFormik.handleChange}
+                                    data={dates}
                                 />
                                 <ButtonAgritech type="submit" variant="contained" sx={{ bgcolor: colors.button }}>
                                     {loading ? (
@@ -311,6 +333,7 @@ export const ReportCall: React.FC<ReportCallProps> = ({ user }) => {
                                     title={"Pulverização"}
                                     values={pulverizacaoFormik.values}
                                     change={pulverizacaoFormik.handleChange}
+                                    data={dates}
                                 />
                                 <ButtonAgritech type="submit" variant="contained" sx={{ bgcolor: colors.button }}>
                                     {loading ? (
@@ -327,6 +350,7 @@ export const ReportCall: React.FC<ReportCallProps> = ({ user }) => {
                                     title={"Volta da Localização"}
                                     values={backFormik.values}
                                     change={backFormik.handleChange}
+                                    data={dates}
                                 />
 
                                 <ButtonAgritech type="submit" variant="contained" sx={{ bgcolor: colors.button }}>

@@ -37,7 +37,7 @@ export declare interface Call extends CreateCall {
     id: number
     init: string
     finish: string
-
+    stage: string
     // status: CallStatus
     report?: Report
     totalPrice: number
