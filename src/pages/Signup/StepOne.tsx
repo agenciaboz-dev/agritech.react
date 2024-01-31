@@ -51,7 +51,6 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, typeUser, 
                         value={data.cpf}
                         sx={{ ...textField, width: "50%" }}
                         InputProps={{
-                            // @ts-ignore
                             inputComponent: MaskedInput,
                             inputProps: { mask: "000.000.000-00", inputMode: "numeric" },
                         }}
@@ -65,7 +64,6 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, typeUser, 
                             value={data.producer?.cnpj}
                             sx={{ ...textField, width: "50%" }}
                             InputProps={{
-                                // @ts-ignore
                                 inputComponent: MaskedInput,
                                 inputProps: { mask: "00.000.000/0000-00", inputMode: "numeric" },
                             }}
@@ -80,7 +78,6 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, typeUser, 
                             value={data.employee.rg}
                             sx={{ ...textField, width: "50%" }}
                             InputProps={{
-                                // @ts-ignore
                                 inputComponent: MaskedInput,
                                 inputProps: { mask: "0000000000000", inputMode: "numeric" },
                             }}
@@ -97,7 +94,6 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, typeUser, 
                         value={data.birth}
                         sx={{ ...textField, width: "100%" }}
                         InputProps={{
-                            // @ts-ignore
                             inputComponent: MaskedInput,
                             inputProps: { mask: "00/00/0000" },
                             inputMode: "numeric",

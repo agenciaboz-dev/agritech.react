@@ -23,8 +23,7 @@ export const Address: React.FC<AddressProps> = ({ values, handleChange }) => {
                     sx={textField}
                     value={values.address?.cep}
                     onChange={handleChange}
-                    InputProps={ {
-                          // @ts-ignore
+                    InputProps={{
                         inputComponent: MaskedInput,
                         inputProps: { mask: "00.000-000" },
                     }}

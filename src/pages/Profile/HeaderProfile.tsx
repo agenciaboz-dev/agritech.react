@@ -79,7 +79,6 @@ export const HeaderProfile: React.FC<HeaderProfileProps> = ({ values, handleChan
                         onChange={handleChange}
                         sx={textField}
                         InputProps={{
-                            // @ts-ignoress
                             inputComponent: MaskedInput,
                             inputProps: { mask: "(00) 0 0000-0000" },
                         }}

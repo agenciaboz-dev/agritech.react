@@ -193,7 +193,6 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
                                                     value={values.address.cep}
                                                     onChange={handleChange}
                                                     InputProps={{
-                                                        // @ts-ignore
                                                         inputComponent: MaskedInput,
                                                         inputProps: { mask: "00.000-000", inputMode: "numeric" },
                                                     }}
