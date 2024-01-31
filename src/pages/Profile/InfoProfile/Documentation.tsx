@@ -19,7 +19,8 @@ export const Documentation: React.FC<DocumentationProps> = ({ values, handleChan
                     sx={textField}
                     value={values.cpf}
                     onChange={handleChange}
-                    InputProps={{
+                    InputProps={ {
+                          // @ts-ignore
                         inputComponent: MaskedInput,
                         inputProps: { mask: "000.000.000-00" },
                         readOnly: true,
@@ -43,7 +44,8 @@ export const Documentation: React.FC<DocumentationProps> = ({ values, handleChan
                         value={values.employee?.voter_card}
                         onChange={handleChange}
                         placeholder={"00000000/00"}
-                        InputProps={{
+                        InputProps={ {
+                              // @ts-ignore
                             inputComponent: MaskedInput,
                             inputProps: { mask: "00000000/00" },
                         }}
@@ -56,7 +58,8 @@ export const Documentation: React.FC<DocumentationProps> = ({ values, handleChan
                         value={values.employee?.work_card}
                         onChange={handleChange}
                         placeholder={"00.000.000/0000-00"}
-                        InputProps={{
+                        InputProps={ {
+                              // @ts-ignore
                             inputComponent: MaskedInput,
                             inputProps: { mask: "00.000.000/0000-00" },
                         }}

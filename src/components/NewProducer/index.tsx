@@ -20,6 +20,7 @@ import { FormTillage } from "../../pages/Producer/Panel/NewTillage/FormTillage.t
 import { useProducer } from "../../hooks/useProducer.ts"
 import { Geolocal } from "./Geolocal.tsx"
 import { useUsers } from "../../hooks/useUsers.ts"
+import { useDocumentMask } from "burgos-masks"
 
 interface NewProducerProps {}
 
@@ -39,6 +40,7 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
     const { unmask } = useDataHandler()
     const { snackbar } = useSnackbar()
     const { addUser } = useUsers()
+    const document_mask = useDocumentMask()
 
     const [currentStep, setCurrentStep] = useState(0)
     const [open, setOpen] = useState(true)
@@ -88,7 +90,7 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
             cnpj: "",
             contract: true,
             employeeId: user?.employee?.id,
-            hectarePrice: 0,
+            hectarePrice: "",
         },
     }
 
@@ -345,6 +347,7 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
                                                     value={values.address.cep}
                                                     onChange={handleChange}
                                                     InputProps={{
+                                                        // @ts-ignore
                                                         inputComponent: MaskedInput,
                                                         inputProps: { mask: "00.000-000", inputMode: "numeric" },
                                                     }}

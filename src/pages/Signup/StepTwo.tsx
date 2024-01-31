@@ -52,6 +52,7 @@ export const StepTwo: React.FC<StepTwoProps> = ({ data, handleChange, typeUser, 
                         value={data.phone}
                         sx={textField}
                         InputProps={{
+                            //@ts-ignore
                             inputComponent: MaskedInput,
                             inputProps: { mask: " (00) 0 0000-0000", inputMode: "numeric" },
                         }}
@@ -89,6 +90,7 @@ export const StepTwo: React.FC<StepTwoProps> = ({ data, handleChange, typeUser, 
                             value={data.address.cep}
                             sx={{ ...textField, width: "76%" }}
                             InputProps={{
+                                //@ts-ignore
                                 inputComponent: MaskedInput,
                                 inputProps: { mask: "00.000-000", inputMode: "numeric" },
                             }}

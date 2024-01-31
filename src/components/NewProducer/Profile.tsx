@@ -5,6 +5,7 @@ import { textField } from "../../style/input"
 import MaskedInput from "../MaskedInput"
 import { colors } from "../../style/colors"
 import { useNavigate } from "react-router-dom"
+import { useDocumentMask } from "burgos-masks"
 
 interface ProfileProps {
     values: NewProducer
@@ -13,6 +14,7 @@ interface ProfileProps {
 
 export const Profile: React.FC<ProfileProps> = ({ values, handleChange }) => {
     const [image, setImage] = useState<File>()
+    const document_mask = useDocumentMask()
 
     return (
         <Box sx={{ p: "4vw", gap: "4vw", height: "80%" }}>
@@ -95,10 +97,11 @@ export const Profile: React.FC<ProfileProps> = ({ values, handleChange }) => {
                     name="cpf"
                     value={values.cpf}
                     sx={{ ...textField, width: "100%" }}
-                    // InputProps={{
-                    //     inputComponent: MaskedInput,
-                    //     inputProps: { mask: "000.000.000-00" },
-                    // }}
+                    InputProps={{
+                        // @ts-ignore
+                        inputComponent: MaskedInput,
+                        inputProps: { mask: document_mask, inputMode: "numeric" },
+                    }}
                     onChange={handleChange}
                     required
                 />
@@ -107,10 +110,11 @@ export const Profile: React.FC<ProfileProps> = ({ values, handleChange }) => {
                     name="producer.cnpj"
                     value={values.producer?.cnpj}
                     sx={{ ...textField, width: "100%" }}
-                    // InputProps={{
-                    //     inputComponent: MaskedInput,
-                    //     inputProps: { mask: "00.000.000/0000-00", inputMode: "numeric" },
-                    // }}
+                    InputProps={{
+                        // @ts-ignore
+                        inputComponent: MaskedInput,
+                        inputProps: { mask: "00.000.000/0000-00", inputMode: "numeric" },
+                    }}
                     onChange={handleChange}
                     required
                 />
@@ -120,11 +124,12 @@ export const Profile: React.FC<ProfileProps> = ({ values, handleChange }) => {
                     value={values.phone}
                     sx={textField}
                     onChange={handleChange}
-                    // InputProps={{
-                    //     inputComponent: MaskedInput,
-                    //     inputProps: { mask: "(00) 0 0000-0000" },
-                    //     inputMode: "numeric",
-                    // }}
+                    InputProps={{
+                        // @ts-ignore
+                        inputComponent: MaskedInput,
+                        inputProps: { mask: "(00) 0 0000-0000" },
+                        inputMode: "numeric",
+                    }}
                     required
                 />
             </Box>

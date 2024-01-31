@@ -35,7 +35,8 @@ export const Personal: React.FC<PersonalProps> = ({ values, handleChange }) => {
                     sx={textField}
                     value={values.cpf}
                     onChange={handleChange}
-                    InputProps={{
+                    InputProps={ {
+                          // @ts-ignore
                         inputComponent: MaskedInput,
                         inputProps: { mask: "000.000.000-00" },
                         readOnly: true,
@@ -49,7 +50,8 @@ export const Personal: React.FC<PersonalProps> = ({ values, handleChange }) => {
                     sx={textField}
                     value={values.producer?.cnpj}
                     onChange={handleChange}
-                    InputProps={{
+                    InputProps={ {
+                          // @ts-ignore
                         inputComponent: MaskedInput,
                         inputProps: { mask: "000.000.000/0000-0" },
                         readOnly: true,

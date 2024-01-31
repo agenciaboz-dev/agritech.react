@@ -43,7 +43,8 @@ export const Contact: React.FC<ContactProps> = ({ values, handleChange }) => {
                 sx={textField}
                 value={values.phone}
                 onChange={handleChange}
-                InputProps={{
+                InputProps={ {
+                      // @ts-ignore
                     inputComponent: MaskedInput,
                     inputProps: { mask: "(00) 0 0000-0000" },
                 }}
