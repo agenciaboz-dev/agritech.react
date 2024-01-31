@@ -20,12 +20,8 @@ import { useIo } from "../../../hooks/useIo"
 import { useSnackbar } from "burgos-snackbar"
 import { useUsers } from "../../../hooks/useUsers"
 import { textField } from "../../../style/input"
-import { LocalizationProvider, MobileDatePicker, ptBR } from "@mui/x-date-pickers"
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
-import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo"
-import dayjs from "dayjs"
 
-interface ApproveCallProps {}
+interface CallApprovedProps {}
 
 const p_style = {
     fontSize: "3vw",
@@ -37,12 +33,12 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
     borderTop: "1px solid rgba(0, 0, 0, .125)",
 }))
 
-export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
+export const CallApproved: React.FC<CallApprovedProps> = ({}) => {
     const header = useHeader()
     const io = useIo()
     const navigate = useNavigate()
     const { callid } = useParams()
-    const { listCallsPending,listCalls, removeCallApprove, addCallApprove } = useCall()
+    const { listCalls, removeCallApprove, addCallApprove } = useCall()
     const { listKits } = useKits()
     const { listUsers } = useUsers()
 
@@ -55,7 +51,7 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
         setExpanded(newExpanded ? panel : false)
     }
 
-    const findCall = listCallsPending?.find((call) => String(call.id) === callid)
+    const findCall = listCalls?.find((call) => String(call.id) === callid)
 
     const producerSelected = listUsers?.find((item) => item.producer?.id === findCall?.producerId)
     const tillageSelected = producerSelected?.producer?.tillage?.find((item) => item.id === findCall?.tillageId)
@@ -83,27 +79,12 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
     const approveCall = (values: ApprovedCall) => {
         console.log(values)
         const data = { ...values, hectarePrice: Number(values.hectarePrice) }
-        io.emit("call:approve", data)
-        setLoading(true)
+        // io.emit("call:approve", data)
+        // setLoading(true)
     }
     const dateForecast = findCall?.forecast
         ? new Date(Number(findCall?.forecast) || 0).toLocaleDateString("pt-Br")
         : new Date().toLocaleDateString("pt-br")
-
-    useEffect(() => {
-        io.on("call:approve:success", (data: Call) => {
-            console.log({ chamado_aprovado: data })
-            removeCallApprove(data)
-            addCallApprove(data)
-            snackbar({ severity: "success", text: "Chamado aprovado!" })
-            setLoading(false)
-            navigate("/adm/calls")
-        })
-        io.on("call:approve:failed", (error) => {
-            snackbar({ severity: "error", text: error })
-            setLoading(false)
-        })
-    }, [])
 
     return (
         <Box

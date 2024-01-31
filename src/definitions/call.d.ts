@@ -7,6 +7,7 @@ export enum CallStatus {
 export declare interface CreateCall {
     approved?: boolean
     open: string
+    forecast: string
     comments: string
 
     hectarePrice: string
@@ -27,7 +28,7 @@ export declare interface ApprovedCall {
     kit?: Kit
     producerId?: number
     userId?: number
-
+    forecast: string
     id: number
     kitId: number
     hectarePrice?: string

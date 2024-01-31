@@ -1,4 +1,4 @@
-import { Autocomplete, Box, Button, CircularProgress, TextField, listClasses } from "@mui/material"
+import { Autocomplete, Box, Button, CircularProgress, TextField } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { colors } from "../../style/colors"
 import { Header } from "../../components/Header"
@@ -8,7 +8,6 @@ import { Form, Formik } from "formik"
 import { Call, CreateCall } from "../../definitions/call"
 import { textField } from "../../style/input"
 import listProducers from "../../hooks/listProducers"
-import useDateISO from "../../hooks/useDateISO"
 import { useUser } from "../../hooks/useUser"
 import { useKits } from "../../hooks/useKits"
 import { useProducer } from "../../hooks/useProducer"
@@ -16,7 +15,13 @@ import { useIo } from "../../hooks/useIo"
 import { useSnackbar } from "burgos-snackbar"
 import { useNavigate } from "react-router-dom"
 import { useCall } from "../../hooks/useCall"
-
+import dayjs from "dayjs"
+import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo"
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider"
+import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker"
+import { deDE, ptBR } from "@mui/x-date-pickers/locales"
+import useDateISO from "../../hooks/useDateISO"
 interface NewCallProps {
     user: User
 }
@@ -38,6 +43,7 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
     const [inputValue, setInputValue] = useState("")
     const [tillageValue, setTillageValue] = useState("")
     const [kitValue, setKitValue] = useState("")
+    const [pickDate, setPickDate] = useState(null)
 
     //Render options => user.producer
     const producerTillagesList = listTillages.filter((item) => item.producerId === user.producer?.id)
@@ -101,9 +107,9 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
         )
         console.log(tillagesProducer)
     }, [producerId])
+
     useEffect(() => {
         setHectare(producerSelect?.producer?.hectarePrice || "")
-        // console.log(hectare)
     }, [producerSelect])
 
     //Open Call
@@ -116,14 +122,17 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
         kitId: undefined,
         userId: Number(account?.user?.id),
         hectarePrice: hectare,
+        forecast: "",
     }
 
     const handleSubmit = (values: CreateCall) => {
         console.log(values)
         const data = {
             ...values,
+            forecast: dayjs(pickDate).valueOf().toString(),
             hectarePrice: Number(values.hectarePrice),
         }
+        console.log(data)
         io.emit(user.isAdmin ? "admin:call:create" : "call:create", data)
         setLoading(true)
     }
@@ -213,13 +222,23 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                     {({ values, handleChange, setFieldValue }) => (
                         <Box sx={{ gap: "4vw" }}>
                             <Form>
-                                <TextField
-                                    label="Previsão da visita"
-                                    name="openCall"
-                                    // type="date"
-                                    value={values.open}
-                                    sx={{ ...textField }}
-                                />
+                                <LocalizationProvider
+                                    dateAdapter={AdapterDayjs}
+                                    localeText={ptBR.components.MuiLocalizationProvider.defaultProps.localeText}
+                                >
+                                    <DemoContainer components={["MobileDatePicker"]}>
+                                        <DemoItem label="Previsão da visita">
+                                            <MobileDatePicker
+                                                sx={{ ...textField }}
+                                                format="D/M/YYYY"
+                                                value={pickDate}
+                                                onChange={(newDate) => setPickDate(newDate)}
+                                                timezone="system"
+                                            />
+                                        </DemoItem>
+                                    </DemoContainer>
+                                </LocalizationProvider>
+
                                 {user.employee && (
                                     <>
                                         <Autocomplete
@@ -328,7 +347,7 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                                             )
                                         }}
                                         renderInput={(params) => (
-                                            <TextField {...params} sx={{ ...textField }} label="Lavoura" required />
+                                            <TextField {...params} sx={{ ...textField }} label="Talhao" required />
                                         )}
                                     />
                                 )}
