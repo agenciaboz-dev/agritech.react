@@ -398,7 +398,7 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                                                     borderColor: colors.secondary,
                                                 },
                                                 fieldset: {
-                                                    borderColor: "#232323",
+                                                    borderColor: "#232323.",
                                                 },
                                             },
                                         },
