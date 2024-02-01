@@ -302,54 +302,155 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                                                 <TextField {...params} sx={{ ...textField }} label="Fazenda" required />
                                             )}
                                         />
+                                        <Autocomplete
+                                            value={
+                                                tillagesProducer.find((tillage) => tillage.id === values.tillageId) || null
+                                            }
+                                            inputValue={inputValue}
+                                            options={tillagesProducer || []}
+                                            getOptionLabel={(option: { id: number; name: string }) => option.name}
+                                            onChange={(event, selected) => {
+                                                if (selected) {
+                                                    setFieldValue("tillageId", selected.id)
+                                                    setTillageId(selected.id)
+                                                }
+                                            }}
+                                            renderOption={(props, option) => {
+                                                // Verifique se a opção atual tem uma 'call' associada
+                                                const isOptionDisabled = allCalls.some((call) =>
+                                                    account.user?.producer
+                                                        ? call.producerId === user?.producer?.id &&
+                                                          call.tillageId === option.id
+                                                        : call.producerId === producerId && call.tillageId === option.id
+                                                )
+
+                                                return (
+                                                    <li
+                                                        {...props}
+                                                        style={{
+                                                            color: isOptionDisabled ? "black" : "black",
+                                                            // Desabilitar a opção se necessário
+                                                            pointerEvents: isOptionDisabled ? "none" : "auto",
+                                                            opacity: isOptionDisabled ? 0.7 : 1,
+                                                            flexDirection: "column",
+
+                                                            alignItems: "start",
+                                                        }}
+                                                    >
+                                                        {option.name}{" "}
+                                                        {isOptionDisabled && (
+                                                            <span style={{ color: colors.delete, fontSize: "3vw" }}>
+                                                                Já existe chamado
+                                                            </span>
+                                                        )}
+                                                    </li>
+                                                )
+                                            }}
+                                            renderInput={(params) => (
+                                                <TextField {...params} sx={{ ...textField }} label="Talhao" required />
+                                            )}
+                                        />
                                     </>
                                 )}
                                 {user.producer && (
-                                    <Autocomplete
-                                        value={tillagesProducer.find((tillage) => tillage.id === values.tillageId) || null}
-                                        inputValue={inputValue}
-                                        options={tillagesProducer || []}
-                                        getOptionLabel={(option: { id: number; name: string }) => option.name}
-                                        onChange={(event, selected) => {
-                                            if (selected) {
-                                                setFieldValue("tillageId", selected.id)
-                                                setTillageId(selected.id)
+                                    <>
+                                        <Autocomplete
+                                            value={
+                                                tillagesProducer.find((tillage) => tillage.id === values.tillageId) || null
                                             }
-                                        }}
-                                        renderOption={(props, option) => {
-                                            // Verifique se a opção atual tem uma 'call' associada
-                                            const isOptionDisabled = allCalls.some((call) =>
-                                                account.user?.producer
-                                                    ? call.producerId === user?.producer?.id && call.tillageId === option.id
-                                                    : call.producerId === producerId && call.tillageId === option.id
-                                            )
+                                            inputValue={inputValue}
+                                            options={tillagesProducer || []}
+                                            getOptionLabel={(option: { id: number; name: string }) => option.name}
+                                            onChange={(event, selected) => {
+                                                if (selected) {
+                                                    setFieldValue("tillageId", selected.id)
+                                                    setTillageId(selected.id)
+                                                }
+                                            }}
+                                            renderOption={(props, option) => {
+                                                // Verifique se a opção atual tem uma 'call' associada
+                                                const isOptionDisabled = allCalls.some((call) =>
+                                                    account.user?.producer
+                                                        ? call.producerId === user?.producer?.id &&
+                                                          call.tillageId === option.id
+                                                        : call.producerId === producerId && call.tillageId === option.id
+                                                )
 
-                                            return (
-                                                <li
-                                                    {...props}
-                                                    style={{
-                                                        color: isOptionDisabled ? "black" : "black",
-                                                        // Desabilitar a opção se necessário
-                                                        pointerEvents: isOptionDisabled ? "none" : "auto",
-                                                        opacity: isOptionDisabled ? 0.7 : 1,
-                                                        flexDirection: "column",
+                                                return (
+                                                    <li
+                                                        {...props}
+                                                        style={{
+                                                            color: isOptionDisabled ? "black" : "black",
+                                                            // Desabilitar a opção se necessário
+                                                            pointerEvents: isOptionDisabled ? "none" : "auto",
+                                                            opacity: isOptionDisabled ? 0.7 : 1,
+                                                            flexDirection: "column",
 
-                                                        alignItems: "start",
-                                                    }}
-                                                >
-                                                    {option.name}{" "}
-                                                    {isOptionDisabled && (
-                                                        <span style={{ color: colors.delete, fontSize: "3vw" }}>
-                                                            Já existe chamado
-                                                        </span>
-                                                    )}
-                                                </li>
-                                            )
-                                        }}
-                                        renderInput={(params) => (
-                                            <TextField {...params} sx={{ ...textField }} label="Talhao" required />
-                                        )}
-                                    />
+                                                            alignItems: "start",
+                                                        }}
+                                                    >
+                                                        {option.name}{" "}
+                                                        {isOptionDisabled && (
+                                                            <span style={{ color: colors.delete, fontSize: "3vw" }}>
+                                                                Já existe chamado
+                                                            </span>
+                                                        )}
+                                                    </li>
+                                                )
+                                            }}
+                                            renderInput={(params) => (
+                                                <TextField {...params} sx={{ ...textField }} label="Fazenda" required />
+                                            )}
+                                        />
+                                        <Autocomplete
+                                            value={
+                                                tillagesProducer.find((tillage) => tillage.id === values.tillageId) || null
+                                            }
+                                            inputValue={inputValue}
+                                            options={tillagesProducer || []}
+                                            getOptionLabel={(option: { id: number; name: string }) => option.name}
+                                            onChange={(event, selected) => {
+                                                if (selected) {
+                                                    setFieldValue("tillageId", selected.id)
+                                                    setTillageId(selected.id)
+                                                }
+                                            }}
+                                            renderOption={(props, option) => {
+                                                // Verifique se a opção atual tem uma 'call' associada
+                                                const isOptionDisabled = allCalls.some((call) =>
+                                                    account.user?.producer
+                                                        ? call.producerId === user?.producer?.id &&
+                                                          call.tillageId === option.id
+                                                        : call.producerId === producerId && call.tillageId === option.id
+                                                )
+
+                                                return (
+                                                    <li
+                                                        {...props}
+                                                        style={{
+                                                            color: isOptionDisabled ? "black" : "black",
+                                                            // Desabilitar a opção se necessário
+                                                            pointerEvents: isOptionDisabled ? "none" : "auto",
+                                                            opacity: isOptionDisabled ? 0.7 : 1,
+                                                            flexDirection: "column",
+
+                                                            alignItems: "start",
+                                                        }}
+                                                    >
+                                                        {option.name}{" "}
+                                                        {isOptionDisabled && (
+                                                            <span style={{ color: colors.delete, fontSize: "3vw" }}>
+                                                                Já existe chamado
+                                                            </span>
+                                                        )}
+                                                    </li>
+                                                )
+                                            }}
+                                            renderInput={(params) => (
+                                                <TextField {...params} sx={{ ...textField }} label="Talhao" required />
+                                            )}
+                                        />
+                                    </>
                                 )}
 
                                 {user.isAdmin && (
@@ -385,8 +486,8 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                                     label="Observações"
                                     name="comments"
                                     value={values.comments}
-                                    minRows={8}
-                                    maxRows={20}
+                                    minRows={5}
+                                    maxRows={15}
                                     sx={{
                                         ...textField,
                                     }}
@@ -398,7 +499,7 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                                                     borderColor: colors.secondary,
                                                 },
                                                 fieldset: {
-                                                    borderColor: "#232323.",
+                                                    borderColor: "#232323",
                                                 },
                                             },
                                         },
