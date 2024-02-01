@@ -13,7 +13,7 @@ export const Team: React.FC<TeamProps> = ({ data, handleChange, producerName }) 
     return (
         <Box sx={{ width: "100%", flexDirection: "column", gap: "2vw" }}>
             <TextField
-                label={"Prorietário"}
+                label={"Proprietário"}
                 name="owner"
                 value={producerName}
                 sx={textField}

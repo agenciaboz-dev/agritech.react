@@ -14,6 +14,8 @@ declare interface Tillage {
     location?: NewCoordinate[]
     gallery?: Gallery[]
 
+    talhao?: Talhao[]
+
     call?: Call
     producerId?: number
 }

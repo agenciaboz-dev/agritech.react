@@ -4,10 +4,10 @@ import { useNavigationList } from "../../hooks/useNavigationList"
 import { BottomNavigation } from "../../components/BottomNavigation"
 import { PanelUser } from "./Panel"
 import { NewTillage } from "./Panel/NewTillage/index"
-import { TillageDetails } from "../TillageDetails"
 import { ListTillages } from "../TillageDetails/ListTillages"
 import { Requests } from "./Panel/Requests"
 import { CallDetails } from "../Calls/CallDetails"
+import { Tillage } from "./Panel/Tillage"
 
 interface ProducerProps {
     user: User
@@ -25,7 +25,7 @@ export const Producer: React.FC<ProducerProps> = ({ user }) => {
                 <Route path="/requests" element={<Requests />} />
                 <Route path="/new" element={<NewTillage />} />
                 <Route path="/tillages" element={<ListTillages />} />
-                <Route path="/tillage/:tillageid" element={<TillageDetails />} />
+                <Route path="/tillage/:tillageid" element={<Tillage />} />
                 <Route path="/call/:callid" element={<CallDetails />} />
             </ReactRoutes>
         </>

@@ -29,7 +29,9 @@ export const LogsCard: React.FC<LogsCardProps> = ({ review, call, variant }) => 
         <Box sx={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
             <Box sx={{ flexDirection: "column" }}>
                 <Box sx={{ flexDirection: "row", alignItems: "center", gap: "2vw" }}>
-                    <p style={{ fontSize: "3vw", color: "gray" }}>11:00 - 13:00</p>
+                    <p style={{ fontSize: "3vw", color: "gray" }}>
+                        {new Date(Number(call?.open)).toLocaleTimeString("pt-br")}
+                    </p>
                 </Box>
                 <p style={{ fontSize: "3.5vw", fontWeight: "600" }}>
                     {call?.approved

@@ -23,8 +23,8 @@ export declare interface ApprovedCall {
     approved?: boolean
     stages?: Stage[]
 
-    tillage?: Tillage
-    tillageId?: number
+    talhao: Talhao
+    talhaoId: number
     kit?: Kit
     producerId?: number
     userId?: number

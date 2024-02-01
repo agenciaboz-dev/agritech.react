@@ -70,6 +70,7 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
         },
         gallery: [],
         location: [],
+
         producerId: user?.producer?.id,
     }
     const handleSubmit = (values: NewLavoura) => {
@@ -88,7 +89,8 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
             snackbar({ severity: "success", text: "Fazenda adicionada!" })
             addTillageProd(data.tillage)
             setLoadingTillage(false)
-            navigate(`/producer/tillages`)
+            console.log({ Tillage: data.tillage })
+            navigate(`/producer/tillage/${data.tillage.id}`)
         })
         io.on("tillage:creation:failed", () => {
             snackbar({ severity: "error", text: "Algo deu errado!" })
@@ -241,7 +243,11 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
                                     )}
                                     {currentStep === 2 && (
                                         <Box sx={{ height: "100%", justifyContent: "space-between" }}>
-                                            <FormTillage data={values} addressApi={infoCep} change={handleChange} />
+                                            <FormTillage
+                                                data={values}
+                                                addressApi={infoCep}
+                                                change={handleChange}
+                                            />
                                             <Box sx={{ flexDirection: "column", gap: "2vw", p: "0 4vw" }}>
                                                 <Button
                                                     variant="outlined"

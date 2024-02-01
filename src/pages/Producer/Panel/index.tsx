@@ -114,7 +114,7 @@ export const PanelUser: React.FC<PanelUserProps> = ({ user }) => {
                                 textAlign: "left",
                             }}
                         >
-                            Lavouras Recentes
+                            Fazendas Recentes
                         </p>
                         <Box style={{ width: "100%" }}>
                             {user.producer?.tillage?.length !== 0 &&

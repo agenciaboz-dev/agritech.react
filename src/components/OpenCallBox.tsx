@@ -75,7 +75,7 @@ export const OpenCallBox: React.FC<OpenCallBoxProps> = ({ data, click, callStatu
                 <p style={{ fontSize: "4.5vw", fontWeight: "600" }}>{data.title}</p>
                 <p style={{ fontSize: "3.2vw", textAlign: "justify" }}>
                     {" "}
-                    Abra um chamado para que nossa equipe encaminhe-se até o local da fazenda{tillageid}#, o prazo mínimo do
+                    Abra um chamado para que nossa equipe encaminhe-se até o local da fazenda {tillageid}#, o prazo mínimo do
                     chamado é de de 48 horas segundo o contrato vigente.
                 </p>
             </Box>
@@ -126,7 +126,9 @@ export const ProgressCall: React.FC<OpenCallBoxProps> = ({ data, click, call, us
                 </Box>
                 <Box sx={{ border: "1px solid gray", width: "50%", borderRadius: "2vw", height: "100%", p: "2vw" }}>
                     <p style={{ fontSize: "3vw" }}>Chamado aberto em:</p>
-                    <p style={{ fontSize: "3vw" }}>{call?.open && dateFrontend(call?.open)}</p>
+                    <p style={{ fontSize: "3vw" }}>
+                        {call?.open && new Date(Number(call.open)).toLocaleDateString("pt-br")}
+                    </p>
                 </Box>
             </Box>
         </Box>
@@ -162,9 +164,7 @@ export const LaudoCall: React.FC<OpenCallBoxProps> = ({ data, click, call, user 
                 </p>
             </Box>
             <Box sx={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
-                <p style={{ fontSize: "8vw" }}>
-                    {new Date().getHours()}:{new Date().getMinutes()}
-                </p>
+                <p style={{ fontSize: "8vw" }}>{call?.open && new Date(Number(call.open)).toLocaleTimeString("pt-br")}</p>
             </Box>
             <Box sx={{ flexDirection: "row", height: "25%", gap: "2vw" }}>
                 <Box sx={{ border: "1px solid gray", width: "50%", borderRadius: "2vw", height: "100%", p: "2vw" }}>
@@ -173,7 +173,10 @@ export const LaudoCall: React.FC<OpenCallBoxProps> = ({ data, click, call, user 
                 </Box>
                 <Box sx={{ border: "1px solid gray", width: "50%", borderRadius: "2vw", height: "100%", p: "2vw" }}>
                     <p style={{ fontSize: "3vw" }}>Chamado aberto em:</p>
-                    <p style={{ fontSize: "3vw" }}>{call?.open && dateFrontend(call?.open)}</p>
+                    <p style={{ fontSize: "3vw" }}>
+                        {" "}
+                        {call?.open && new Date(Number(call.open)).toLocaleDateString("pt-br")}
+                    </p>
                 </Box>
             </Box>
         </Box>

@@ -24,7 +24,7 @@ export const ListTillages: React.FC<ListTillagesProps> = ({}) => {
     const { listTillages, tillageUpdate, setProducerid } = useProducer()
 
     useEffect(() => {
-        header.setTitle(user?.producer !== null ? "Minhas lavouras" : "Lavouras")
+        header.setTitle(user?.producer !== null ? "Minhas Fazendas" : "Fazendas")
         user?.employee && setProducerid(Number(producerid))
     }, [])
     return (

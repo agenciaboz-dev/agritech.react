@@ -1,6 +1,8 @@
 import { Box } from "@mui/system"
 import React from "react"
 import sun from "../assets/icons/sun.svg"
+import { format } from "date-fns-tz"
+import { ptBR } from "date-fns/locale"
 
 interface WeatherComponentProps {}
 
@@ -10,6 +12,10 @@ const style = {
 }
 
 export const WeatherComponent: React.FC<WeatherComponentProps> = ({}) => {
+    const currentDateTime = new Date()
+    const formattedDateTime = format(currentDateTime, "EEEE, HH:mm", { locale: ptBR })
+
+    const dateTime = formattedDateTime.charAt(0).toUpperCase() + formattedDateTime.slice(1)
     return (
         <Box
             sx={{
@@ -34,7 +40,7 @@ export const WeatherComponent: React.FC<WeatherComponentProps> = ({}) => {
             </Box>
             <Box sx={{ width: "30%", alignItems: "end" }}>
                 <p style={{ fontWeight: "600", fontSize: "3.5vw" }}>Clima</p>
-                <p style={{ fontSize: "2.9vw" }}>Segunda-feira, 15:00</p>
+                <p style={{ fontSize: "2.9vw" }}>{dateTime}</p>
                 <p style={{ fontSize: "3vw" }}> Sol</p>
             </Box>
         </Box>

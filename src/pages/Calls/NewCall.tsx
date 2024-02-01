@@ -347,7 +347,7 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                                                 )
                                             }}
                                             renderInput={(params) => (
-                                                <TextField {...params} sx={{ ...textField }} label="Talhao" required />
+                                                <TextField {...params} sx={{ ...textField }} label="Talhao" />
                                             )}
                                         />
                                     </>
