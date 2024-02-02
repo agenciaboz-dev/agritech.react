@@ -60,7 +60,6 @@ export const Tillage: React.FC<TillageProps> = ({}) => {
 
     useEffect(() => {
         header.setTitle((findTillage && findTillage?.name) || "")
-        console.log(findTillage)
     }, [])
 
     return (

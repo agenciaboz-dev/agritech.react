@@ -88,7 +88,7 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
             cnpj: "",
             contract: true,
             employeeId: user?.employee?.id,
-            hectarePrice: 0,
+            hectarePrice: "",
         },
     }
 
@@ -183,6 +183,7 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
 
         const data = {
             ...values,
+            area: Number(values.area),
             producerId: producer?.producer?.id,
         }
         io.emit("tillage:create", data)

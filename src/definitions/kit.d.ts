@@ -1,6 +1,5 @@
 declare interface NewKit {
     image: string
-    image64: string
     name: string
     description: string
     active?: boolean

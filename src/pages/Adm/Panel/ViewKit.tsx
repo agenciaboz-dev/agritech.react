@@ -40,7 +40,6 @@ export const ViewKit: React.FC<ViewKitProps> = ({}) => {
         name: kit?.name || "",
         description: kit?.description || "",
         image: kit?.image || "",
-        image64: kit?.image64 || "",
         hectareDay: kit?.hectareDay,
         objects: kit?.objects,
         employees: kit?.employees,

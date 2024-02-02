@@ -11,7 +11,7 @@ export declare interface CreateCall {
     comments: string
 
     hectarePrice: string
-    tillageId: number
+    talhaoId: number
     kit?: Kit
     kitId?: number
     producerId: number
@@ -38,6 +38,7 @@ export declare interface Call extends CreateCall {
     init: string
     finish: string
     stage: string
+    talhao?: Talhao
     // status: CallStatus
     report?: Report
     totalPrice: number

@@ -47,7 +47,6 @@ export const AddKit: React.FC<AddKitProps> = ({}) => {
         name: "",
         description: "",
         image: "",
-        image64: "",
         hectareDay: 0,
         objects: [],
         employees: [],
