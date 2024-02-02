@@ -16,7 +16,7 @@ export const Gallery: React.FC<GalleryProps> = ({ id }) => {
         height: "5vw",
     }
     return (
-        <Box sx={{ width: "100%", flexDirection: "column", gap: "2vw" }}>
+        <Box sx={{ width: "100%", flexDirection: "column", gap: "2vw", height: "100%" }}>
             <Box sx={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
                 <p>Galeria {id}</p>
                 <Box sx={{ alignItems: "center", flexDirection: "row", gap: "2vw", mr: "4vw" }}>

@@ -1,25 +1,24 @@
 import { Box, Button, CircularProgress, SxProps, TextField } from "@mui/material"
 import React, { useEffect, useState } from "react"
-import { useHeader } from "../../../../hooks/useHeader"
-import { colors } from "../../../../style/colors"
-import { Header } from "../../../../components/Header"
+import { useHeader } from "../../../../hooks/useHeader.ts"
+import { colors } from "../../../../style/colors.ts"
+import { Header } from "../../../../components/Header.tsx"
 import { Form, Formik } from "formik"
-import { useUser } from "../../../../hooks/useUser"
-import { Geolocal } from "./Geolocal"
-import { FormTillage } from "./FormTillage.tsx"
-import { useDataHandler } from "../../../../hooks/useDataHandler"
-import { useIo } from "../../../../hooks/useIo"
+import { useUser } from "../../../../hooks/useUser.ts"
+import { GeolocalTalhao } from "./GeolocalTalhao.tsx"
+import { FormTalhao } from "./FormTalhao.tsx"
+import { useDataHandler } from "../../../../hooks/useDataHandler.ts"
+import { useIo } from "../../../../hooks/useIo.ts"
 import { CepAbertoApi } from "../../../../definitions/cepabertoApi"
 import { LatLngExpression, LatLngTuple } from "leaflet"
-import { DialogConfirm } from "../../../../components/DialogConfirm"
+import { DialogConfirm } from "../../../../components/DialogConfirm.tsx"
 import { textField, input } from "../../../../style/input.ts"
-import { NewLavoura } from "../../../../definitions/newTillage"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { useSnackbar } from "burgos-snackbar"
 import MaskedInput from "../../../../components/MaskedInput.tsx"
 import { useProducer } from "../../../../hooks/useProducer.ts"
 
-interface NewTillageProps {}
+interface NewTalhaoProps {}
 
 const openCall = {
     title: "Adicione um CEP",
@@ -28,102 +27,77 @@ const openCall = {
     cancelTitle: "Cancelar",
 }
 
-export const NewTillage: React.FC<NewTillageProps> = ({}) => {
+export const NewTalhao: React.FC<NewTalhaoProps> = ({}) => {
     const io = useIo()
     const header = useHeader()
     const navigate = useNavigate()
     const { user } = useUser()
-    const { addTillageProd } = useProducer()
     const { unmask } = useDataHandler()
     const { snackbar } = useSnackbar()
 
+    const { tillageid } = useParams()
+    const findTillage = user?.producer?.tillage?.find((item) => item.id === Number(tillageid))
     //controls view
-    const [currentStep, setCurrentStep] = useState(0)
+    const [currentStep, setCurrentStep] = useState(1)
     const [loadingCoordinate, setLoadingCoordinate] = useState(false)
-    const [loadingTillage, setLoadingTillage] = useState(false)
+    const [loadingTalhao, setLoadingTalhao] = useState(false)
     const [open, setOpen] = useState(true)
 
     //control map
     const [infoCep, setInfoCep] = useState<CepAbertoApi>()
-    const [origin, setOrigin] = useState<LatLngExpression>([0, 0])
+    const [origin, setOrigin] = useState<LatLngExpression>()
     const [coordinates, setCoordinates] = useState<LatLngTuple[]>([])
 
-    const initialValues: NewLavoura = {
+    const initialValues: NewTalhao = {
         name: "",
         area: "",
-        ceo: "",
-        owner: user?.name || " ", //corrigir para o nome do Cliente
-        manager: "",
-        agronomist: "",
-        technician: "",
-        pilot: "",
-        comments: "",
-        others: "",
-        address: {
-            street: "",
-            district: "",
-            number: "",
-            city: infoCep?.cidade.nome || "",
-            cep: infoCep?.cep || "",
-            uf: infoCep?.estado.sigla || "",
-            adjunct: "",
-        },
+        calls: [],
         gallery: [],
         location: [],
-
-        producerId: user?.producer?.id,
+        tillageId: findTillage?.id || 0,
     }
-    const handleSubmit = (values: NewLavoura) => {
+    const handleSubmit = (values: NewTalhao) => {
         console.log({ enviados: values })
 
         const data = {
-            ...values,
-            area: Number(values.area),
+            name: values.name,
+            area: values.area,
+            call: values.calls,
+            gallery: values.gallery,
+            location: values.location,
+            tillageId: values.tillageId,
         }
-        io.emit("tillage:create", values)
+        io.emit("talhao:create", values)
         console.log(data)
-        setLoadingTillage(true)
+        setLoadingTalhao(true)
     }
 
     useEffect(() => {
-        io.on("tillage:creation:success", (data: any) => {
-            snackbar({ severity: "success", text: "Fazenda adicionada!" })
-            addTillageProd(data.tillage)
-            setLoadingTillage(false)
-            console.log({ Tillage: data.tillage })
+        io.on("talhao:create:success", (data: any) => {
+            snackbar({ severity: "success", text: "Talhão adicionado!" })
+            setLoadingTalhao(false)
+            console.log({ Talhão: data.talhao })
             navigate(`/producer/tillage/${data.tillage.id}`)
         })
-        io.on("tillage:creation:failed", () => {
+        io.on("talhao:create:failed", () => {
             snackbar({ severity: "error", text: "Algo deu errado!" })
         })
     }, [])
 
-    const handleCoordinates = (value: string) => {
-        io.emit("coordinate:cep", { data: unmask(value) })
-        setLoadingCoordinate(true)
-    }
-    useEffect(() => {
+    const recoverCepTillage = () => {
+        io.emit("coordinate:cep", { data: unmask(findTillage?.address.cep || "") })
         io.on("coordinate:cep:success", (data: CepAbertoApi) => {
-            setLoadingCoordinate(false)
             console.log("Encontrando o cep")
             setInfoCep(data)
             setOrigin([Number(data.latitude), Number(data.longitude)])
-            setCurrentStep(1)
         })
         io.on("coordinate:cep:empty", () => {
-            snackbar({ severity: "warning", text: "O CEP não existe! Insira um CEP válido." })
-            setOpen(true)
-            setLoadingCoordinate(false)
+            snackbar({ severity: "warning", text: "O CEP não encontrado!" })
         })
-
-        return () => {
-            io.off("coordinate:cep:success")
-            io.off("coordinate:cep:error")
-        }
-    }, [currentStep, origin])
-
+    }
     useEffect(() => {
-        header.setTitle("Nova Fazenda")
+        header.setTitle("Novo Talhão")
+        recoverCepTillage()
     }, [])
 
     return (
@@ -160,7 +134,7 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
             >
                 {currentStep === 1 && (
                     <p style={{ color: colors.text.white, width: "100%", fontSize: "5vw", padding: "2vw 4vw" }}>
-                        Localização da lavoura
+                        Localização do Talhão
                     </p>
                 )}
                 <Box
@@ -179,72 +153,44 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
                         <Formik initialValues={initialValues} onSubmit={handleSubmit}>
                             {({ values, handleChange }) => (
                                 <Form>
-                                    {currentStep === 0 && (
-                                        <DialogConfirm
-                                            open={open}
-                                            setOpen={setOpen}
-                                            data={openCall}
-                                            user={user}
-                                            children={
-                                                <TextField
-                                                    sx={{
-                                                        ...textField,
-                                                        ...input,
-                                                    }}
-                                                    label="CEP"
-                                                    name="address.cep"
-                                                    value={values.address.cep}
-                                                    onChange={handleChange}
-                                                    InputProps={{
-                                                        inputComponent: MaskedInput,
-                                                        inputProps: { mask: "00.000-000", inputMode: "numeric" },
-                                                    }}
+                                    {currentStep === 1 &&
+                                        (!origin ? (
+                                            <Box sx={{ height: "100%", alignItems: "center", justifyContent: "center" }}>
+                                                <CircularProgress sx={{ color: colors.button }} />
+                                            </Box>
+                                        ) : (
+                                            <>
+                                                <GeolocalTalhao
+                                                    origin={origin}
+                                                    infoCep={infoCep}
+                                                    coordinates={coordinates}
+                                                    setCoordinates={setCoordinates}
                                                 />
-                                            }
-                                            click={() => {
-                                                {
-                                                    !loadingCoordinate && setOpen(false)
-                                                }
-                                                handleCoordinates(values.address.cep)
-                                            }}
-                                            loading={loadingCoordinate}
-                                        />
-                                    )}
-                                    {currentStep === 1 && (
-                                        <>
-                                            <Geolocal
-                                                data={values}
-                                                handleChange={handleChange}
-                                                origin={origin}
-                                                infoCep={infoCep}
-                                                coordinates={coordinates}
-                                                setCoordinates={setCoordinates}
-                                            />
-                                            <Button
-                                                variant="contained"
-                                                sx={{
-                                                    fontSize: 17,
-                                                    color: colors.text.white,
-                                                    width: "90%",
-                                                    backgroundColor: colors.primary,
-                                                    borderRadius: "5vw",
-                                                    textTransform: "none",
-                                                    margin: "0 5vw",
-                                                    position: "absolute",
-                                                    zIndex: 1,
-                                                    bottom: "25vw",
-                                                }}
-                                                onClick={() => {
-                                                    setCurrentStep(2)
-                                                }}
-                                            >
-                                                Próximo
-                                            </Button>
-                                        </>
-                                    )}
+                                                <Button
+                                                    variant="contained"
+                                                    sx={{
+                                                        fontSize: 17,
+                                                        color: colors.text.white,
+                                                        width: "90%",
+                                                        backgroundColor: colors.primary,
+                                                        borderRadius: "5vw",
+                                                        textTransform: "none",
+                                                        margin: "0 5vw",
+                                                        position: "absolute",
+                                                        zIndex: 1,
+                                                        bottom: "25vw",
+                                                    }}
+                                                    onClick={() => {
+                                                        setCurrentStep(2)
+                                                    }}
+                                                >
+                                                    Próximo
+                                                </Button>
+                                            </>
+                                        ))}
                                     {currentStep === 2 && (
                                         <Box sx={{ height: "100%", justifyContent: "space-between" }}>
-                                            <FormTillage data={values} addressApi={infoCep} change={handleChange} />
+                                            <FormTalhao data={values} change={handleChange} />
                                             <Box sx={{ flexDirection: "column", gap: "2vw", p: "0 4vw" }}>
                                                 <Button
                                                     variant="outlined"
@@ -277,7 +223,7 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
                                                         textTransform: "none",
                                                     }}
                                                 >
-                                                    {loadingTillage ? <CircularProgress sx={{ color: "#fff" }} /> : "Salvar"}
+                                                    {loadingTalhao ? <CircularProgress sx={{ color: "#fff" }} /> : "Salvar"}
                                                 </Button>
                                             </Box>
                                         </Box>

@@ -4,6 +4,7 @@ declare interface NewTalhao {
     location: Coordinate[]
     gallery: Gallery[]
     calls: Call[]
+    tillageId: number
 }
 declare interface Talhao extends NewTalhao {
     id: number

@@ -17,21 +17,20 @@ import { useUser } from "../../../../hooks/useUser"
 import { CepAbertoApi } from "../../../../definitions/cepabertoApi"
 import { NewLavoura } from "../../../../definitions/newTillage"
 
-interface FormTillageProps {
-    data: NewLavoura
+interface FormTalhaoProps {
+    data: NewTalhao
     change: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
-    addressApi?: CepAbertoApi
     producerUser?: User
 }
 
-export const FormTillage: React.FC<FormTillageProps> = ({ data, change, addressApi, producerUser }) => {
+export const FormTalhao: React.FC<FormTalhaoProps> = ({ data, change }) => {
     const header = useHeader()
     const { user } = useUser()
     const [image, setImage] = useState<File>()
     const navigate = useNavigate()
     const listGallery = useArray().newArray(3)
 
-    const [tab, setTab] = React.useState("team")
+    const [tab, setTab] = React.useState("gallery")
     const changeTab = (event: React.SyntheticEvent, newValue: string) => {
         setTab(newValue)
     }
@@ -40,18 +39,15 @@ export const FormTillage: React.FC<FormTillageProps> = ({ data, change, addressA
         console.log(values)
     }
 
-    useEffect(() => {
-        header.setTitle(producerUser ? producerUser.name : "Nova Fazenda")
-        console.log(producerUser)
-    }, [])
+    useEffect(() => {}, [])
     return (
-        <Box sx={{ width: "100%", height: "74%", gap: "6vw", flexDirection: "column", p: "4vw" }}>
-            <p>Informações da Fazenda</p>
+        <Box sx={{ width: "100%", height: "74%", gap: "3vw", flexDirection: "column", p: "4vw" }}>
+            <p>Informações do Talhão</p>
 
             <Box
                 sx={{
                     flexDirection: "row",
-                    gap: "5vw",
+                    gap: "3vw",
                     width: "100%",
                     height: "23%",
                     alignItems: "center",
@@ -64,74 +60,66 @@ export const FormTillage: React.FC<FormTillageProps> = ({ data, change, addressA
                     emptyLabel="Adicionar foto"
                     variant="square"
                     style={{
-                        width: "40vw",
-                        height: "40vw",
+                        width: "30vw",
+                        height: "30vw",
                         fontSize: "4vw",
                         fontFamily: "MalgunGothic2",
                     }}
                 />
                 <Box sx={{ flexDirection: "column", gap: "2vw", width: "65%" }}>
                     <TextField
-                        label={"Nome da lavoura"}
+                        label={"Nome do Talhão"}
                         name="name"
                         value={data.name}
                         sx={textField}
                         onChange={change}
                         required
                     />
-                    <TextField
-                        label={"Endereço"}
-                        name="address.city"
-                        value={`${addressApi?.cidade.nome}, ${addressApi?.estado.sigla} - ${addressApi?.cep}`}
-                        sx={textField}
-                        onChange={change}
-                        required
-                    />
+
                     <TextField
                         label={"Area"}
                         name="area"
                         value={data.area}
                         sx={textField}
                         onChange={change}
-                        InputProps={{ endAdornment: "ha" }}
                         required
+                        InputProps={{ endAdornment: "ha" }}
                     />
                 </Box>
             </Box>
-            <Tabs
-                value={tab}
-                onChange={changeTab}
-                textColor="primary"
-                indicatorColor="primary"
-                aria-label="tabs"
-                variant="scrollable"
-                scrollButtons="auto"
-                allowScrollButtonsMobile
-            >
-                <Tab sx={tabStyle} value="team" label="Equipe" />
-                <Tab sx={tabStyle} value="additional" label="Adicionais" />
-                <Tab sx={tabStyle} value="gallery" label="Imagens" />
-            </Tabs>
-            {tab === "team" && <Team data={data} handleChange={change} producerName={producerUser?.name} />}
-            {tab === "additional" && <Additional data={data} handleChange={change} />}
-            {tab === "gallery" && (
-                <Box sx={{ width: "100%", height: "52%", gap: "3vw" }}>
-                    <Box sx={{ width: "100%", height: "66%", overflowY: "auto", gap: "2vw" }}>
-                        {listGallery.map((item, index) => (
-                            <Gallery key={index} id={index + 1} />
-                        ))}
+            <Box>
+                <Tabs
+                    value={tab}
+                    onChange={changeTab}
+                    textColor="primary"
+                    indicatorColor="primary"
+                    aria-label="tabs"
+                    variant="scrollable"
+                    scrollButtons="auto"
+                    allowScrollButtonsMobile
+                >
+                    <Tab sx={tabStyle} value="gallery" label="Imagens" />
+                </Tabs>
+                {/* {tab === "additional" && <Additional data={data} handleChange={change} />} */}
+                {tab === "gallery" && (
+                    <Box sx={{ width: "100%", height: "66%", gap: "2vw", pt: "2vw" }}>
+                        <p>Adicionar nova Galeria</p>
+                        <TextField
+                            label={"Nome da Galeria"}
+                            name="name_gallery"
+                            value={""}
+                            sx={textField}
+                            onChange={change}
+                            disabled
+                        />
+                        <Box sx={{ width: "100%", height: "100%", overflowY: "auto", gap: "1vw" }}>
+                            {listGallery.map((item, index) => (
+                                <Gallery key={index} id={index + 1} />
+                            ))}
+                        </Box>
                     </Box>
-                    <p>Adicionar nova Galeria</p>
-                    <TextField
-                        label={"Nome da Galeria"}
-                        name="name_gallery"
-                        value={""}
-                        sx={textField}
-                        onChange={change}
-                        required
-                    />
-                </Box>
-            )}
+                )}
+            </Box>
         </Box>
     )
 }

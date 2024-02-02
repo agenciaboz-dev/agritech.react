@@ -267,7 +267,7 @@ export const Tillage: React.FC<TillageProps> = ({}) => {
                             bottom: "26vw",
                             right: "8vw",
                         }}
-                        onClick={() => navigate("/call/new")}
+                        onClick={() => navigate(`/producer/${findTillage?.id}/new_Talhao`)}
                     >
                         <PiPlant color={"#fff"} sx={{ width: "6vw", height: "6vw" }} />
                     </IconButton>
