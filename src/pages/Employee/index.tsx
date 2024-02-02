@@ -14,6 +14,7 @@ import { ListTillages } from "../TillageDetails/ListTillages"
 import { ReportCall } from "../Calls/ReportCall"
 import { LaudoCall } from "../Calls/Laudo"
 import { CallDetails } from "../Calls/CallDetails"
+import { NewTalhao } from "../TillageDetails/NewTalhao"
 
 interface EmployeeProps {
     user: User
@@ -39,6 +40,7 @@ export const Employee: React.FC<EmployeeProps> = ({ user }) => {
                 <Route path="/call/:callid" element={<CallDetails />} />
                 <Route path="/call/:callid/report" element={<ReportCall user={user} />} />
                 <Route path="/call/:callid/laudo" element={<LaudoCall user={user} />} />
+                <Route path="/tillage/:tillageid/new_Talhao" element={<NewTalhao />} />
             </ReactRoutes>
         </>
     )

@@ -21,6 +21,7 @@ import { useCall } from "../../hooks/useCall"
 import { Call, CreateCall } from "../../definitions/call"
 import { approveCall, content, openCall, progress } from "../../tools/contenModals"
 import { LogsCard } from "./LogsCard"
+import { PiPlant } from "react-icons/pi"
 
 interface TillageDetailsProps {}
 
@@ -337,6 +338,26 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                             <LogsCard call={call} talhao={selectedAvatar} />
                         </Box>
                     )}
+                    <IconButton
+                        sx={{
+                            bgcolor: colors.button,
+                            width: "12vw",
+                            height: "12vw",
+                            borderRadius: "10vw",
+                            position: "absolute",
+                            bottom: "26vw",
+                            right: "8vw",
+                        }}
+                        onClick={() =>
+                            navigate(
+                                user?.isAdmin
+                                    ? `/adm/tillage/${tillageSelect?.id}/new_Talhao`
+                                    : `/employee/tillage/${tillageSelect?.id}/new_Talhao`
+                            )
+                        }
+                    >
+                        <PiPlant color={"#fff"} sx={{ width: "6vw", height: "6vw" }} />
+                    </IconButton>
                 </Box>
             </Box>
         </Box>
