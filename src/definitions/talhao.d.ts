@@ -13,4 +13,5 @@ declare interface Talhao extends NewTalhao {
     location: Coordinate[]
     gallery: Gallery[]
     calls: Call[]
+    tillage?: Tillage
 }

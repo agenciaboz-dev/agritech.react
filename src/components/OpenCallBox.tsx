@@ -19,10 +19,10 @@ interface OpenCallBoxProps {
     call?: Call
     tillage?: Tillage
     user: User | null
+    talhao?: Talhao
 }
 
-export const OpenCallBox: React.FC<OpenCallBoxProps> = ({ data, click, callStatus, call, user }) => {
-    const { tillageid } = useParams()
+export const OpenCallBox: React.FC<OpenCallBoxProps> = ({ data, click, callStatus, call, user, talhao, tillage }) => {
     return !call?.approved && callStatus ? (
         <Box
             sx={{
@@ -75,8 +75,8 @@ export const OpenCallBox: React.FC<OpenCallBoxProps> = ({ data, click, callStatu
                 <p style={{ fontSize: "4.5vw", fontWeight: "600" }}>{data.title}</p>
                 <p style={{ fontSize: "3.2vw", textAlign: "justify" }}>
                     {" "}
-                    Abra um chamado para que nossa equipe encaminhe-se até o local da fazenda {tillageid}#, o prazo mínimo do
-                    chamado é de de 48 horas segundo o contrato vigente.
+                    Abra um chamado para que nossa equipe encaminhe-se até o local da fazenda {tillage?.name}, o prazo mínimo
+                    do chamado é de de 48 horas segundo o contrato vigente.
                 </p>
             </Box>
             <p style={{ fontSize: "3.2vw", textAlign: "end", width: "100%", color: colors.primary }} onClick={click}>
@@ -85,7 +85,7 @@ export const OpenCallBox: React.FC<OpenCallBoxProps> = ({ data, click, callStatu
         </Box>
     )
 }
-export const ProgressCall: React.FC<OpenCallBoxProps> = ({ data, click, call, user }) => {
+export const ProgressCall: React.FC<OpenCallBoxProps> = ({  click, call, user }) => {
     const { listKits } = useKits()
 
     const kitSelected = listKits.find((item) => item.id === call?.kitId)
@@ -134,7 +134,7 @@ export const ProgressCall: React.FC<OpenCallBoxProps> = ({ data, click, call, us
         </Box>
     )
 }
-export const LaudoCall: React.FC<OpenCallBoxProps> = ({ data, click, call, user }) => {
+export const LaudoCall: React.FC<OpenCallBoxProps> = ({ data, click, call, user  }) => {
     const { listKits } = useKits()
 
     const kitSelected = listKits.find((item) => item.id === call?.kitId)

@@ -23,7 +23,7 @@ export declare interface ApprovedCall {
     approved?: boolean
     stages?: Stage[]
 
-    talhao: Talhao
+    talhao?: Talhao
     talhaoId: number
     kit?: Kit
     producerId?: number

@@ -13,18 +13,16 @@ interface LogsCardProps {
     review?: boolean
     call?: Call
     variant?: boolean
-    talhao: number
+    talhao: Talhao
+    tillage?: Tillage
 }
 
-export const LogsCard: React.FC<LogsCardProps> = ({ review, call, variant, talhao }) => {
+export const LogsCard: React.FC<LogsCardProps> = ({ review, call, variant, talhao, tillage }) => {
     const navigate = useNavigate()
-    const account = useUser()
+    const { user } = useUser()
     const { listKits } = useKits()
     const { listUsers } = useUsers()
-    const producerSelected = listUsers?.find((item) => item.producer?.id === call?.producerId)
     const kitSelected = listKits.find((item) => item.id === call?.kitId)
-
-    const tillageSelected = producerSelected?.producer?.tillage?.find((item) => item.id === call?.tillageId)
 
     return (
         <Box sx={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
@@ -35,17 +33,17 @@ export const LogsCard: React.FC<LogsCardProps> = ({ review, call, variant, talha
                     </p>
                 </Box>
                 <p style={{ fontSize: "3.5vw", fontWeight: "600" }}>
-                    {call?.approved
-                        ? `Chamado aberto para ${tillageSelected?.name}`
-                        : `Chamado pendente para ${tillageSelected?.name}`}
+                    {call?.approved ? `Chamado aberto` : `Chamado pendente`}
                 </p>
                 <p style={{ fontSize: "3vw", color: "gray", flexDirection: "column" }}>
-                    Talhão {talhao} - {call?.approved ? `Utilizando #Kit ${kitSelected?.name}` : "Selecione um kit"}
+                    {talhao.name} - {call?.approved ? `Utilizando #Kit ${kitSelected?.name}` : "Selecione um kit"}
                 </p>
             </Box>
 
             <IconButton
-                onClick={() => {}}
+                onClick={() => {
+                    user?.isAdmin && !call?.approved && navigate(`/adm/calls/${call?.id}`)
+                }}
                 // onClick={() => navigate(account.user?.isAdmin ? `/adm/call/${user?.id}/report` : `/call/1/report`)}
             >
                 <IoIosArrowForward style={{ width: "5vw", height: "5vw" }} />

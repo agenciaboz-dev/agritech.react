@@ -74,10 +74,9 @@ export const NewTalhao: React.FC<NewTalhaoProps> = ({}) => {
 
     useEffect(() => {
         io.on("talhao:create:success", (data: any) => {
-            snackbar({ severity: "success", text: "Talhão adicionado!" })
             setLoadingTalhao(false)
-            console.log({ Talhão: data.talhao })
-            navigate(`/producer/tillage/${data.tillage.id}`)
+            snackbar({ severity: "success", text: "Talhão adicionado!" })
+            navigate(`/producer/tillage/${tillageid}`)
         })
         io.on("talhao:create:failed", () => {
             snackbar({ severity: "error", text: "Algo deu errado!" })

@@ -42,7 +42,7 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
     const io = useIo()
     const navigate = useNavigate()
     const { callid } = useParams()
-    const { listCallsPending,listCalls, removeCallApprove, addCallApprove } = useCall()
+    const { listCallsPending, listCalls, removeCallApprove, addCallApprove } = useCall()
     const { listKits } = useKits()
     const { listUsers } = useUsers()
 
@@ -58,8 +58,9 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
     const findCall = listCallsPending?.find((call) => String(call.id) === callid)
 
     const producerSelected = listUsers?.find((item) => item.producer?.id === findCall?.producerId)
-    const tillageSelected = producerSelected?.producer?.tillage?.find((item) => item.id === findCall?.tillageId)
+    const tillageSelected = producerSelected?.producer?.tillage?.find((item) => item.id === findCall?.talhaoId)
     const kitsActived = listKits.filter((item) => item.active)
+    console.log(tillageSelected)
     const [hectare, setHectare] = useState("")
     console.log(findCall?.producer)
     useEffect(() => {
@@ -71,7 +72,7 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
         approved: findCall?.approved,
         stages: findCall?.stages,
 
-        tillageId: findCall?.tillageId,
+        talhaoId: findCall?.talhaoId || 0,
         producerId: findCall?.producerId,
         userId: findCall?.userId,
 
@@ -163,7 +164,9 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
                         <Box sx={{ flexDirection: "column", gap: "2vw", width: "65%" }}>
                             <Box>
                                 <p style={p_style}>Nome da Fazenda</p>
-                                <p>{tillageSelected?.name}</p>
+                                <p>
+                                    {tillageSelected?.name} - {findCall?.talhao?.name}
+                                </p>
                             </Box>
                             <Box>
                                 <p style={p_style}>Endereço </p>
