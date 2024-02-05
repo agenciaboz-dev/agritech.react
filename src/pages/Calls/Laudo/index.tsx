@@ -36,11 +36,12 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
     const header = useHeader()
     const { snackbar } = useSnackbar()
     const navigate = useNavigate()
-    const { callid } = useParams()
+    const { callid, reportid } = useParams()
     const call = useCallInfo(callid)
     const { listCalls } = useCall()
 
     const selectedCall = listCalls.find((item) => item.id === Number(callid))
+    // console.log({ Laudo: selectedCall })
 
     const [stage, setstage] = useState(0)
     const [loading, setLoading] = useState(true)
@@ -163,9 +164,9 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
         header.setTitle("Relatório Operacional")
     }, [])
 
-    useEffect(() => {
-        console.log({ call: selectedCall })
-    }, [selectedCall])
+    // useEffect(() => {
+    //     console.log({ call: selectedCall })
+    // }, [selectedCall])
     return (
         <Box
             sx={{

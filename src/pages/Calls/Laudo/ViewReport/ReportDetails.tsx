@@ -47,8 +47,10 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
     }
 
     const callSelect = listCalls.find((item) => item.id === Number(callid))
+    const selectedReport = callSelect?.reports?.find((item) => item.id === Number(reportid))
+
     useEffect(() => {
-        console.log({ call_Select: callSelect })
+        console.log({ call_Select: selectedReport })
     }, [])
 
     return (
@@ -71,7 +73,7 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                     flexDirection: "row",
                 }}
             >
-                <Header back location="/" />
+                <Header back location={`/adm/producer/${callSelect?.producerId}/${callSelect?.talhao?.tillageId}`} />
             </Box>
             <Box
                 style={{
@@ -123,13 +125,11 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                             <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
                                 <p>
                                     <span style={{ fontWeight: "bold" }}>Data:</span>{" "}
-                                    {callSelect?.report &&
-                                        new Date(Number(callSelect?.report?.date)).toLocaleDateString("pt-br")}{" "}
+                                    {selectedReport && new Date(Number(selectedReport?.date)).toLocaleDateString("pt-br")}{" "}
                                 </p>
                                 <p>
                                     <span style={{ fontWeight: "bold" }}>Hora:</span>{" "}
-                                    {callSelect?.report &&
-                                        new Date(Number(callSelect?.report?.date)).toLocaleTimeString("pt-br")}{" "}
+                                    {selectedReport && new Date(Number(selectedReport?.date)).toLocaleTimeString("pt-br")}{" "}
                                 </p>
                             </Box>
                             <p>
@@ -144,7 +144,10 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                                 </p>
                             </Box>
                             <p>
-                                <span style={{ fontWeight: "bold" }}>Propriedade:</span> {callSelect?.tillage?.name}{" "}
+                                <span style={{ fontWeight: "bold" }}>Propriedade:</span> {callSelect?.talhao?.tillage?.name}{" "}
+                            </p>
+                            <p>
+                                <span style={{ fontWeight: "bold" }}>Talhão:</span> {callSelect?.talhao?.name}{" "}
                             </p>
                         </Box>
 
@@ -162,7 +165,7 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                         </p>
                         <p>
                             <span style={{ fontWeight: "bold" }}>Área Trabalhada no dia:</span>{" "}
-                            {callSelect?.report?.areaTrabalhada} ha{" "}
+                            {selectedReport?.areaTrabalhada} ha{" "}
                         </p>
                         <hr />
                     </Box>
@@ -187,13 +190,10 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                                 {tab === "operation" && (
                                     <Box sx={{ gap: "4vw" }}>
                                         <Box sx={{ gap: "2vw" }}>
-                                            <OperationComponent
-                                                call={callSelect}
-                                                operation={callSelect?.report?.operation}
-                                            />
+                                            <OperationComponent call={callSelect} operation={selectedReport?.operation} />
                                             <hr />
                                         </Box>
-                                        {callSelect?.report?.techReport?.flight?.map((item, index) => (
+                                        {selectedReport?.techReport?.flight?.map((item, index) => (
                                             <Box
                                                 key={index}
                                                 sx={{
@@ -207,9 +207,9 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                                         ))}
                                     </Box>
                                 )}
-                                {tab === "treatment" && <TreatmentComponent treatment={callSelect?.report?.treatment} />}
-                                {tab === "techReport" && <TechReportComponent tech={callSelect?.report?.techReport} />}
-                                {tab === "material" && <MaterialComponent material={callSelect?.report?.material} />}
+                                {tab === "treatment" && <TreatmentComponent treatment={selectedReport?.treatment} />}
+                                {tab === "techReport" && <TechReportComponent tech={selectedReport?.techReport} />}
+                                {tab === "material" && <MaterialComponent material={selectedReport?.material} />}
                             </Box>
                         </Box>
                         <Box sx={{ gap: "3vw" }}>
