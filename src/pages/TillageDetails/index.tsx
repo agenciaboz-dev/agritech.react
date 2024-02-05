@@ -1,4 +1,4 @@
-import { Avatar, Box, IconButton, Tab, Tabs } from "@mui/material"
+import { Avatar, Box, IconButton, Tab, Tabs, TextField } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { colors } from "../../style/colors"
 import { Header } from "../../components/Header"
@@ -21,6 +21,13 @@ import { Call, CreateCall } from "../../definitions/call"
 import { approveCall, content, openCall, progress } from "../../tools/contenModals"
 import { LogsCard } from "./LogsCard"
 import { PiPlant } from "react-icons/pi"
+import { LocalizationProvider, MobileDatePicker } from "@mui/x-date-pickers"
+import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo"
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
+import { ptBR } from "@mui/x-date-pickers/locales"
+import { textField, input } from "../../style/input"
+import "../..//style/styles.css"
+import dayjs from "dayjs"
 
 interface TillageDetailsProps {}
 
@@ -44,6 +51,8 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
 
     const [selectedTalhao, setSelectedTalhao] = useState<Talhao>()
     const [selectedAvatar, setSelectedAvatar] = useState(0)
+    const [pickDate, setPickDate] = useState(null)
+    const [pickHectarePrice, setPickHectarePrice] = useState<string | null>(null)
 
     const toggleSelection = (talhao: Talhao) => {
         if (selectedAvatar === talhao.id) {
@@ -106,7 +115,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
 
     const handleSubmit = (values: CreateCall) => {
         console.log(values)
-        const data = { ...values, hectarePrice: Number(values.hectarePrice) }
+        const data = { ...values, hectarePrice: Number(pickHectarePrice), forecast: dayjs(pickDate).valueOf().toString() }
         io.emit("call:create", data)
         setLoading(true)
     }
@@ -315,7 +324,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                             )}
 
                             {tab === "history" && <p>Nenhum Registro</p>}
-                            {tab === "calls" && selectedCall?.reports?.length !== 0 && selectedCall !== null && (
+                            {/* {tab === "calls" && selectedCall?.reports?.length !== 0 && selectedCall !== null && (
                                 <LaudoCall
                                     user={user}
                                     click={() =>
@@ -331,12 +340,42 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                                     tillage={tillageSelectProd}
                                     setSelectedCall={() => {}}
                                 />
-                            )}
+                            )} */}
                             <DialogConfirm
                                 user={user}
                                 open={open}
                                 setOpen={setOpen}
                                 data={openCall}
+                                children={
+                                    <Box sx={{ gap: "3vw" }}>
+                                        <LocalizationProvider
+                                            dateAdapter={AdapterDayjs}
+                                            localeText={ptBR.components.MuiLocalizationProvider.defaultProps.localeText}
+                                        >
+                                            <DemoContainer components={["MobileDatePicker"]} sx={{ color: "#fff" }}>
+                                                <DemoItem label="Previsão da visita">
+                                                    <MobileDatePicker
+                                                        sx={{ ...textField }}
+                                                        format="D/M/YYYY"
+                                                        value={pickDate}
+                                                        onChange={(newDate) => setPickDate(newDate)}
+                                                        timezone="system"
+                                                        className="qzy322-MuiFormControl-root-MuiTextField-root MuiOutlinedInput-input custom-datepicker"
+                                                    />
+                                                </DemoItem>
+                                            </DemoContainer>
+                                        </LocalizationProvider>
+                                        <TextField
+                                            label={"Custo por hectare"}
+                                            name="hectarePrice"
+                                            value={pickHectarePrice || ""}
+                                            sx={{ ...textField, ...input }}
+                                            onChange={(e) => setPickHectarePrice(e.target.value)}
+                                            required
+                                            InputProps={{ startAdornment: "R$" }}
+                                        />
+                                    </Box>
+                                }
                                 click={() => {
                                     setVariant(true)
                                     setOpen(false)

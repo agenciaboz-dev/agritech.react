@@ -1,0 +1,11 @@
+.custom-datepicker {
+    border: 1px solid #fff;
+    border-radius: 2vw;
+    /* Outros estilos personalizados aqui */
+}
+
+/* Correção no seletor */
+.qzy322-MuiFormControl-root-MuiTextField-root .MuiOutlinedInput-input {
+    height: 3.5vw;
+    /* Outros estilos personalizados aqui */
+}
