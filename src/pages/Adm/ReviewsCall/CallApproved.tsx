@@ -92,11 +92,11 @@ export const CallApproved: React.FC<CallApprovedProps> = ({}) => {
     useEffect(() => {
         io.on("call:approve:success", (data: Call) => {
             console.log({ chamado_aprovado: data })
+            setLoading(false)
+            navigate(`/adm/producer/${producerSelected?.producer?.id}/${tillageSelected?.id}`)
             removeCallApprove(data)
             addCallApprove(data)
             snackbar({ severity: "success", text: "Chamado aprovado!" })
-            setLoading(false)
-            navigate(`/adm/producer/${producerSelected?.producer?.id}/${tillageSelected?.id}`)
         })
         io.on("call:approve:failed", (error) => {
             snackbar({ severity: "error", text: error })

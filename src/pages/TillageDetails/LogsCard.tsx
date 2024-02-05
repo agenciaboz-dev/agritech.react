@@ -15,9 +15,10 @@ interface LogsCardProps {
     variant?: boolean
     talhao: Talhao
     tillage?: Tillage
+    setSelectedCall: (value: Call) => void
 }
 
-export const LogsCard: React.FC<LogsCardProps> = ({ review, call, variant, talhao, tillage }) => {
+export const LogsCard: React.FC<LogsCardProps> = ({ review, call, variant, talhao, tillage, setSelectedCall }) => {
     const navigate = useNavigate()
     const { user } = useUser()
     const { listKits } = useKits()
@@ -43,6 +44,7 @@ export const LogsCard: React.FC<LogsCardProps> = ({ review, call, variant, talha
             <IconButton
                 onClick={() => {
                     user?.isAdmin && !call?.approved && navigate(`/adm/calls/talhao/${talhao.id}/${call?.id}`)
+                    call && setSelectedCall(call)
                 }}
                 // onClick={() => navigate(account.user?.isAdmin ? `/adm/call/${user?.id}/report` : `/call/1/report`)}
             >

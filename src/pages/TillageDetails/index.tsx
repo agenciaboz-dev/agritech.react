@@ -40,7 +40,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
     const [variant, setVariant] = useState(false)
 
     const [tillageSelect, setTillageSelect] = useState<Tillage>()
-    const firstTalhao = tillageSelect?.talhao?.[0] || null
+    const [selectedCall, setSelectedCall] = useState<Call | null>(null)
 
     const [selectedTalhao, setSelectedTalhao] = useState<Talhao>()
     const [selectedAvatar, setSelectedAvatar] = useState(0)
@@ -53,6 +53,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
             // Caso contrário, selecione o novo avatar
             setSelectedAvatar(talhao.id)
             setSelectedTalhao(talhao)
+            setSelectedCall(null)
             console.log({ recebido: talhao })
             console.log({ enviado: selectedTalhao })
         }
@@ -79,13 +80,6 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
         setTillageSelectProd(findTillage)
         setTillageSelect(findTillage)
     }, [listTillages, tillageid])
-
-    // useEffect(() => {
-    //     if (tillageSelect?.talhao) {
-    //         setSelectedTalhao(tillageSelect.talhao[0])
-    //         console.log(selectedAvatar)
-    //     }
-    // }, [])
 
     //
     useEffect(() => {
@@ -151,6 +145,9 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
         }
     }, [call, callStatus])
 
+    useEffect(() => {
+        console.log(selectedCall)
+    }, [selectedCall])
     return (
         <Box
             sx={{
@@ -283,34 +280,42 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                                     talhao={selectedTalhao}
                                     tillage={tillageSelect}
                                     user={user}
+                                    setSelectedCall={() => {}}
+                                />
+                            ) : tab === "calls" && selectedCall ? (
+                                <ProgressCall
+                                    user={user}
+                                    click={() =>
+                                        navigate(
+                                            user?.producer !== null
+                                                ? `/producer/call/${call?.id}`
+                                                : call?.stages.length === 3
+                                                ? user.isAdmin
+                                                    ? `/adm/call/${call?.id}/laudo`
+                                                    : `/employee/call/${call?.id}/laudo`
+                                                : user.isAdmin
+                                                ? `/adm/call/${selectedCall?.id}/report`
+                                                : `/employee/call/${call?.id}/report`
+                                        )
+                                    }
+                                    data={progress}
+                                    call={selectedCall}
+                                    tillage={tillageSelectProd}
+                                    setSelectedCall={setSelectedCall}
                                 />
                             ) : (
+                                tab === "calls" &&
                                 selectedTalhao?.calls.map((item, index) => (
-                                    <LogsCard key={index} call={item} talhao={selectedTalhao} tillage={tillageSelect} />
+                                    <LogsCard
+                                        key={index}
+                                        call={item}
+                                        talhao={selectedTalhao}
+                                        tillage={tillageSelect}
+                                        setSelectedCall={setSelectedCall}
+                                    />
                                 ))
                             )}
 
-                            {/* {tab === "calls" && selectedTalhao?.calls.length !== 0 && (
-                        <ProgressCall
-                            user={user}
-                            click={() =>
-                                navigate(
-                                    user?.producer !== null
-                                        ? `/producer/call/${call?.id}`
-                                        : call?.stages.length === 3
-                                        ? user.isAdmin
-                                            ? `/adm/call/${call?.id}/laudo`
-                                            : `/employee/call/${call?.id}/laudo`
-                                        : user.isAdmin
-                                        ? `/adm/call/${call?.id}/report`
-                                        : `/employee/call/${call?.id}/report`
-                                )
-                            }
-                            data={progress}
-                            call={call}
-                            tillage={tillageSelectProd}
-                        />
-                    )} */}
                             {tab === "history" && <p>Nenhum Registro</p>}
                             {tab === "calls" && call?.report && (
                                 <LaudoCall
@@ -325,6 +330,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                                     data={progress}
                                     call={call}
                                     tillage={tillageSelectProd}
+                                    setSelectedCall={() => {}}
                                 />
                             )}
                             <DialogConfirm

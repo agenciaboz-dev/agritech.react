@@ -53,10 +53,10 @@ export const ReportCall: React.FC<ReportCallProps> = ({ user }) => {
     useEffect(() => {
         setCall(listCalls.find((item) => String(item.id) === callid))
         setProducerSelect(listUsers?.find((item) => item.producer?.id === call?.producerId) || null)
-        setTillage(listTillages?.find((item) => item.id === call?.tillageId && item.producerId === call.producerId))
+        setTillage(listTillages?.find((item) => item.id === call?.talhao?.tillageId && item.producerId === call.producerId))
     }, [call])
 
-    const stageCurrent = call?.stage === "STAGE1" ? 0 : call?.stage === "STAGE2" ? 1 : call?.stage === "STAGE3" ? 2 : 3
+    // const stageCurrent = call?.stage === "STAGE1" ? 0 : call?.stage === "STAGE2" ? 1 : call?.stage === "STAGE3" ? 2 : 3
     const [stage, setstage] = useState(0)
     // console.log(stageCurrent)
 
@@ -141,18 +141,17 @@ export const ReportCall: React.FC<ReportCallProps> = ({ user }) => {
 
     useEffect(() => {
         console.log({ Estágio: call })
-        setstage(stageCurrent)
-        console.log(stageCurrent)
+        // setstage(stageCurrent)
+        // console.log(stageCurrent)
 
         console.log(call?.stage)
-        console.log({ stage: stage })
     }, [call])
     useEffect(() => {
         const registerEvents = () => {
             io.on("stage:updateOne:success", (stage) => {
                 console.log({ stage1: stage })
                 setLoading(false)
-                setstage(2)
+                setstage(1)
             })
             io.on("stage:updateOne:failed", (stage) => {
                 snackbar({ severity: "error", text: "Tem algo errado com os dados de chegada!" })
@@ -161,7 +160,7 @@ export const ReportCall: React.FC<ReportCallProps> = ({ user }) => {
             io.on("stage:updateTwo:success", (stage) => {
                 console.log({ stage2: stage })
                 setLoading(false)
-                setstage(3)
+                setstage(2)
             })
             io.on("stage:updateTwo:failed", (stage) => {
                 snackbar({ severity: "error", text: "Tem algo errado com os dados de pulverização!!" })
@@ -171,7 +170,7 @@ export const ReportCall: React.FC<ReportCallProps> = ({ user }) => {
                 snackbar({ severity: "success", text: "Dados registrados!" })
                 setLoading(false)
                 console.log("Finalizado")
-                setstage(4)
+                setstage(3)
                 navigate(user.isAdmin ? `/adm/call/${callid}/laudo` : `/employee/call/${callid}/laudo`)
             })
             io.on("stage:updateThree:failed", (stage) => {

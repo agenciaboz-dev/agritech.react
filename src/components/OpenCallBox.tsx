@@ -1,7 +1,7 @@
 import { Box } from "@mui/material"
 import React from "react"
 import { colors } from "../style/colors"
-import { IoIosArrowForward } from "react-icons/io"
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io"
 import { Call } from "../definitions/call"
 import { useKits } from "../hooks/useKits"
 import { dateFrontend } from "../hooks/useFormattedDate"
@@ -20,6 +20,7 @@ interface OpenCallBoxProps {
     tillage?: Tillage
     user: User | null
     talhao?: Talhao
+    setSelectedCall: (value: Call | null) => void
 }
 
 export const OpenCallBox: React.FC<OpenCallBoxProps> = ({ data, click, callStatus, call, user, talhao, tillage }) => {
@@ -85,7 +86,7 @@ export const OpenCallBox: React.FC<OpenCallBoxProps> = ({ data, click, callStatu
         </Box>
     )
 }
-export const ProgressCall: React.FC<OpenCallBoxProps> = ({  click, call, user }) => {
+export const ProgressCall: React.FC<OpenCallBoxProps> = ({ click, call, user, setSelectedCall, tillage }) => {
     const { listKits } = useKits()
 
     const kitSelected = listKits.find((item) => item.id === call?.kitId)
@@ -103,6 +104,7 @@ export const ProgressCall: React.FC<OpenCallBoxProps> = ({  click, call, user })
         >
             <Box sx={{ gap: "1vw" }}>
                 <Box sx={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+                    <IoIosArrowBack sx={{ color: colors.button }} onClick={() => setSelectedCall(null)} />
                     <p style={{ fontSize: "4.5vw", fontWeight: "600" }}>Chamado Aberto</p>
 
                     <IoIosArrowForward sx={{ color: colors.button }} onClick={click} />
@@ -110,14 +112,12 @@ export const ProgressCall: React.FC<OpenCallBoxProps> = ({  click, call, user })
                 <p style={{ fontSize: "3.2vw", textAlign: "justify" }}>
                     {" "}
                     {user?.producer
-                        ? `Seu chamado foi aprovado. Para que nossa equipe encaminhe-se até o local da fazenda ${call?.tillageId}#, o prazo mínimo do chamado é de 48 horas, segundo o contrato vigente.`
-                        : `Seu chamado foi aprovado. Para que nossa equipe encaminhe-se até o local da fazenda ${call?.tillageId}#, o prazo mínimo do chamado é de 48 horas, segundo o contrato vigente.`}
+                        ? `Seu chamado foi aprovado. Para que nossa equipe encaminhe-se até o local da fazenda, o prazo mínimo do chamado é de 48 horas, segundo o contrato vigente.`
+                        : `Seu chamado foi aprovado. Para que nossa equipe encaminhe-se até o local da fazenda, o prazo mínimo do chamado é de 48 horas, segundo o contrato vigente.`}
                 </p>
             </Box>
             <Box sx={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
-                <p style={{ fontSize: "8vw" }}>
-                    {new Date().getHours()}:{new Date().getMinutes()}
-                </p>
+                <p style={{ fontSize: "8vw" }}>{call && new Date(Number(call?.init)).toLocaleTimeString("pt-br")}</p>
             </Box>
             <Box sx={{ flexDirection: "row", height: "25%", gap: "2vw" }}>
                 <Box sx={{ border: "1px solid gray", width: "50%", borderRadius: "2vw", height: "100%", p: "2vw" }}>
@@ -134,7 +134,7 @@ export const ProgressCall: React.FC<OpenCallBoxProps> = ({  click, call, user })
         </Box>
     )
 }
-export const LaudoCall: React.FC<OpenCallBoxProps> = ({ data, click, call, user  }) => {
+export const LaudoCall: React.FC<OpenCallBoxProps> = ({ data, click, call, user }) => {
     const { listKits } = useKits()
 
     const kitSelected = listKits.find((item) => item.id === call?.kitId)
