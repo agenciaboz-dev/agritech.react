@@ -37,8 +37,8 @@ export const CallApproved: React.FC<CallApprovedProps> = ({}) => {
     const header = useHeader()
     const io = useIo()
     const navigate = useNavigate()
-    const { callid } = useParams()
-    const { listCalls, removeCallApprove, addCallApprove } = useCall()
+    const { talhaoid, callid } = useParams()
+    const { listCalls, listCallsPending, removeCallApprove, addCallApprove } = useCall()
     const { listKits } = useKits()
     const { listUsers } = useUsers()
 
@@ -50,24 +50,27 @@ export const CallApproved: React.FC<CallApprovedProps> = ({}) => {
     const expandendChange = (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
         setExpanded(newExpanded ? panel : false)
     }
+    const findCall = listCallsPending?.find((call) => String(call.id) === callid)
 
-    const findCall = listCalls?.find((call) => String(call.id) === callid)
+    // const findTalhao = listCalls?.find((item) => String(item.talhao?.id) === talhaoid)
 
     const producerSelected = listUsers?.find((item) => item.producer?.id === findCall?.producerId)
-    const tillageSelected = producerSelected?.producer?.tillage?.find((item) => item.id === findCall?.tillageId)
+    const tillageSelected = producerSelected?.producer?.tillage?.find((item) => item.id === findCall?.talhao?.tillageId)
     const kitsActived = listKits.filter((item) => item.active)
     const [hectare, setHectare] = useState("")
-    console.log(findCall?.producer)
+    console.log(findCall)
+
     useEffect(() => {
         setHectare(findCall?.producer?.hectarePrice || "")
     }, [findCall, findCall?.producer?.hectarePrice])
+
     const initialValues: ApprovedCall = {
         open: findCall?.open || "",
         comments: findCall?.comments,
         approved: findCall?.approved,
         stages: findCall?.stages,
 
-        tillageId: findCall?.tillageId,
+        talhaoId: findCall?.tillageId || 0,
         producerId: findCall?.producerId,
         userId: findCall?.userId,
 
@@ -79,13 +82,27 @@ export const CallApproved: React.FC<CallApprovedProps> = ({}) => {
     const approveCall = (values: ApprovedCall) => {
         console.log(values)
         const data = { ...values, hectarePrice: Number(values.hectarePrice) }
-        // io.emit("call:approve", data)
-        // setLoading(true)
+        io.emit("call:approve", data)
+        setLoading(true)
     }
     const dateForecast = findCall?.forecast
         ? new Date(Number(findCall?.forecast) || 0).toLocaleDateString("pt-Br")
         : new Date().toLocaleDateString("pt-br")
 
+    useEffect(() => {
+        io.on("call:approve:success", (data: Call) => {
+            console.log({ chamado_aprovado: data })
+            removeCallApprove(data)
+            addCallApprove(data)
+            snackbar({ severity: "success", text: "Chamado aprovado!" })
+            setLoading(false)
+            navigate(`/adm/producer/${producerSelected?.producer?.id}/${tillageSelected?.id}`)
+        })
+        io.on("call:approve:failed", (error) => {
+            snackbar({ severity: "error", text: error })
+            setLoading(false)
+        })
+    }, [])
     return (
         <Box
             sx={{
@@ -106,7 +123,7 @@ export const CallApproved: React.FC<CallApprovedProps> = ({}) => {
                     flexDirection: "row",
                 }}
             >
-                <Header back location="/adm/calls" />
+                <Header back location={`/adm/producer/${producerSelected?.producer?.id}/${tillageSelected?.id}`} />
             </Box>
             <Box
                 style={{

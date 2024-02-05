@@ -42,7 +42,7 @@ export const LogsCard: React.FC<LogsCardProps> = ({ review, call, variant, talha
 
             <IconButton
                 onClick={() => {
-                    user?.isAdmin && !call?.approved && navigate(`/adm/calls/${call?.id}`)
+                    user?.isAdmin && !call?.approved && navigate(`/adm/calls/talhao/${talhao.id}/${call?.id}`)
                 }}
                 // onClick={() => navigate(account.user?.isAdmin ? `/adm/call/${user?.id}/report` : `/call/1/report`)}
             >
