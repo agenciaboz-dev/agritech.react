@@ -54,8 +54,6 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
             setSelectedAvatar(talhao.id)
             setSelectedTalhao(talhao)
             setSelectedCall(null)
-            console.log({ recebido: talhao })
-            console.log({ enviado: selectedTalhao })
         }
     }
 
@@ -146,7 +144,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
     }, [call, callStatus])
 
     useEffect(() => {
-        console.log(selectedCall)
+        console.log({ call_selecioonada: selectedCall })
     }, [selectedCall])
     return (
         <Box
@@ -282,17 +280,17 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                                     user={user}
                                     setSelectedCall={() => {}}
                                 />
-                            ) : tab === "calls" && selectedCall ? (
+                            ) : tab === "calls" && selectedCall && selectedCall.reports?.length === 0 ? (
                                 <ProgressCall
                                     user={user}
                                     click={() =>
                                         navigate(
                                             user?.producer !== null
                                                 ? `/producer/call/${call?.id}`
-                                                : call?.stages.length === 3
+                                                : selectedCall?.stage === "STAGE4"
                                                 ? user.isAdmin
-                                                    ? `/adm/call/${call?.id}/laudo`
-                                                    : `/employee/call/${call?.id}/laudo`
+                                                    ? `/adm/call/${selectedCall?.id}/laudo`
+                                                    : `/employee/call/${selectedCall?.id}/laudo`
                                                 : user.isAdmin
                                                 ? `/adm/call/${selectedCall?.id}/report`
                                                 : `/employee/call/${call?.id}/report`
@@ -317,15 +315,16 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                             )}
 
                             {tab === "history" && <p>Nenhum Registro</p>}
-                            {tab === "calls" && call?.report && (
+                            {tab === "calls" && selectedCall?.reports?.length !== 0 && selectedCall !== null && (
                                 <LaudoCall
                                     user={user}
                                     click={() =>
-                                        navigate(
-                                            user?.isAdmin
-                                                ? `/adm/call/${call?.id}/report/${call?.report?.id}`
-                                                : `/employee/call/${call?.id}/report/${call.report?.id}`
-                                        )
+                                        // navigate(
+                                        //     user?.isAdmin
+                                        //         ? `/adm/call/${call?.id}/report/${selectedCall?.reports?.id}`
+                                        //         : `/employee/call/${call?.id}/report/${selectedCall?.report?.id}`
+                                        // )
+                                        {}
                                     }
                                     data={progress}
                                     call={call}

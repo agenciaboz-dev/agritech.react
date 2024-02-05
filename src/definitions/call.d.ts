@@ -40,7 +40,7 @@ export declare interface Call extends CreateCall {
     stage: string
     talhao?: Talhao
     // status: CallStatus
-    report?: Report
+    reports?: Report[]
     totalPrice: number
     stages: Stage[]
     tillage?: Tillage

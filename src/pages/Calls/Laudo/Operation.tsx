@@ -36,7 +36,7 @@ export const Operation: React.FC<OperationProps> = ({ values, change, user, call
                     <TextField
                         label="Área Mapeada"
                         name=""
-                        value={call?.tillage ? call?.tillage?.area : ""}
+                        value={call?.talhao?.tillage?.area ? call?.talhao?.tillage?.area : ""}
                         sx={{ ...textField }}
                         InputProps={{
                             readOnly: true,

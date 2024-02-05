@@ -25,6 +25,7 @@ import { LocalizationProvider, TimeField, ptBR } from "@mui/x-date-pickers"
 import { CiClock2 } from "react-icons/ci"
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo"
+import { useCall } from "../../../hooks/useCall"
 
 interface LaudoCallProps {
     user: User
@@ -37,6 +38,9 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
     const navigate = useNavigate()
     const { callid } = useParams()
     const call = useCallInfo(callid)
+    const { listCalls } = useCall()
+
+    const selectedCall = listCalls.find((item) => item.id === Number(callid))
 
     const [stage, setstage] = useState(0)
     const [loading, setLoading] = useState(true)
@@ -114,7 +118,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
         const data = {
             callId: call.call?.id,
             areaTrabalhada: totalSum,
-            operation: { ...values.operation, areaMap: Number(call.call?.tillage?.area) },
+            operation: { ...values.operation, areaMap: Number(selectedCall?.talhao?.tillage?.area) },
             treatment: { ...values.treatment, products: treatmentNormalize },
             techReport: {
                 ...values.techReport,
@@ -158,6 +162,10 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
     useEffect(() => {
         header.setTitle("Relatório Operacional")
     }, [])
+
+    useEffect(() => {
+        console.log({ call: selectedCall })
+    }, [selectedCall])
     return (
         <Box
             sx={{
@@ -229,8 +237,8 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                     back
                     location={
                         user?.isAdmin
-                            ? `/adm/producer/${call.producerSelect?.id}/${call.tillageSelect?.id}`
-                            : `/employee/producer/${call.producerSelect?.id}/${call.tillageSelect?.id}`
+                            ? `/adm/producer/${selectedCall?.producerId}/${selectedCall?.talhao?.tillageId}`
+                            : `/employee/producer/${selectedCall?.producerId}/${selectedCall?.talhao?.tillageId}`
                     }
                 />
             </Box>
@@ -279,7 +287,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                                             <TextField
                                                 label="Propriedade"
                                                 name="tillage"
-                                                value={call.tillageSelect ? call.tillageSelect?.name : " "}
+                                                value={selectedCall ? selectedCall.talhao?.tillage?.name : " "}
                                                 sx={{ ...textField }}
                                                 disabled={!user?.producer ? false : true}
                                             />
@@ -368,7 +376,12 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                                     </Box>
                                     {stage === 0 && (
                                         <Box sx={{ height: "100%", justifyContent: "space-between", pt: "6vw" }}>
-                                            <Operation user={user} values={values} change={handleChange} call={call.call} />
+                                            <Operation
+                                                user={user}
+                                                values={values}
+                                                change={handleChange}
+                                                call={selectedCall}
+                                            />
                                             <ButtonAgritech
                                                 variant="contained"
                                                 sx={{ bgcolor: colors.button }}

@@ -24,7 +24,9 @@ export const LogsCard: React.FC<LogsCardProps> = ({ review, call, variant, talha
     const { listKits } = useKits()
     const { listUsers } = useUsers()
     const kitSelected = listKits.find((item) => item.id === call?.kitId)
-
+    // useEffect(() => {
+    //     console.log({ Call: call })
+    // }, [])
     return (
         <Box sx={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
             <Box sx={{ flexDirection: "column" }}>
@@ -43,9 +45,23 @@ export const LogsCard: React.FC<LogsCardProps> = ({ review, call, variant, talha
 
             <IconButton
                 onClick={() => {
-                    user?.isAdmin && !call?.approved && navigate(`/adm/calls/talhao/${talhao.id}/${call?.id}`)
-                    call && setSelectedCall(call)
+                    if (user?.isAdmin) {
+                        if (!call?.approved) {
+                            navigate(`/adm/calls/talhao/${talhao.id}/${call?.id}`)
+                            call && setSelectedCall(call)
+                        } else {
+                            if (call.reports?.length === 0) {
+                                console.log("sem relatorio")
+                                call && setSelectedCall(call)
+                            } else {
+                                navigate(`/adm/call/${call?.id}/report/${call?.reports && call.reports[0].id}`)
+                                console.log("com relatorio")
+                                call && setSelectedCall(call)
+                            }
+                        }
+                    }
                 }}
+
                 // onClick={() => navigate(account.user?.isAdmin ? `/adm/call/${user?.id}/report` : `/call/1/report`)}
             >
                 <IoIosArrowForward style={{ width: "5vw", height: "5vw" }} />
