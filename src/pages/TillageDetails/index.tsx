@@ -1,4 +1,4 @@
-import { Avatar, Box, IconButton, Tab, Tabs, TextField } from "@mui/material"
+import { Autocomplete, Avatar, Box, IconButton, Tab, Tabs, TextField } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { colors } from "../../style/colors"
 import { Header } from "../../components/Header"
@@ -28,6 +28,7 @@ import { ptBR } from "@mui/x-date-pickers/locales"
 import { textField, input } from "../../style/input"
 import "../..//style/styles.css"
 import dayjs from "dayjs"
+import { useKits } from "../../hooks/useKits"
 
 interface TillageDetailsProps {}
 
@@ -38,7 +39,8 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
 
     const { snackbar } = useSnackbar()
     const { user } = useUser()
-    const { addCallPending, allCalls } = useCall()
+    const { addCallPending, allCalls, addCall } = useCall()
+    const { listKits } = useKits()
 
     const images = useArray().newArray(5)
     const [open, setOpen] = useState(false)
@@ -48,6 +50,22 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
 
     const [tillageSelect, setTillageSelect] = useState<Tillage>()
     const [selectedCall, setSelectedCall] = useState<Call | null>(null)
+
+    const [selectedKit, setSelectedKit] = useState(null) // Estado para o valor selecionado
+    const [kitValue, setKitValue] = useState("") // Estado para o texto do campo de entrada
+
+    const handleKitChange = (event: any, selected: any) => {
+        if (selected) {
+            setSelectedKit(selected)
+            setKitValue(selected.name)
+        }
+    }
+    const getOptionSelected = (option: any, value: any) => option.id === value.id
+    const kits =
+        listKits?.map((item) => ({
+            id: item.id || 0,
+            name: item.name,
+        })) || []
 
     const [selectedTalhao, setSelectedTalhao] = useState<Talhao>()
     const [selectedAvatar, setSelectedAvatar] = useState(0)
@@ -90,11 +108,16 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
 
     //
     useEffect(() => {
-        const callTillage = allCalls.filter((item) => item.tillageId === Number(tillageid))
-        callTillage.length === 0 ? setCallStatus(false) : setCallStatus(true)
-        setCall(callTillage[0])
-    }, [allCalls, callStatus])
+        console.log(call)
+        selectedCall ? setCallStatus(true) : setCallStatus(false)
+        call && setSelectedCall(call)
+        console.log({ selectedCall: selectedCall?.forecast })
+    }, [call])
 
+    useEffect(() => {
+        console.log(callStatus)
+        setCallStatus(false)
+    }, [selectedAvatar])
     const handleClickOpen = () => {
         setOpen(true)
     }
@@ -114,9 +137,14 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
     }
 
     const handleSubmit = (values: CreateCall) => {
-        console.log(values)
-        const data = { ...values, hectarePrice: Number(pickHectarePrice), forecast: dayjs(pickDate).valueOf().toString() }
-        io.emit("call:create", data)
+        const data = {
+            ...values,
+            kitId: Number(selectedKit?.id),
+            hectarePrice: Number(pickHectarePrice),
+            forecast: dayjs(pickDate).valueOf().toString(),
+        }
+        console.log(data)
+        io.emit(user?.isAdmin ? "admin:call:create" : "call:create", data)
         setLoading(true)
     }
 
@@ -126,31 +154,34 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
     }, [tillageSelect])
 
     useEffect(() => {
-        io.on("call:creation:success", (data: Call) => {
+        io.on(user?.isAdmin ? "adminCall:creation:success" : "call:creation:success", (data: Call) => {
             console.log({ chamadoAberto: data })
-            addCallPending(data)
+            addCall(data)
             setLoading(false)
             setCall(data)
+            setSelectedCall(data)
+            console.log(data)
             snackbar({
                 severity: "success",
                 text: !user?.isAdmin ? "Chamado aberto! Aguarde a aprovação." : "Chamado aberto!",
             })
         })
-        io.on("call:creation:failed", (error) => {
+        io.on(user?.isAdmin ? "adminCall:creation:failed" : "call:creation:success", (error) => {
             console.log({ chamadoAberto: error })
             snackbar({ severity: "error", text: "Algo deu errado" })
             setLoading(false)
         })
         io.on("call:update:failed", (error) => {
             console.log({ chamadoAberto: error })
-            snackbar({ severity: "error", text: "Já existe chamado ativo pra esse talhão!" })
             setLoading(false)
         })
         return () => {
+            io.off("adminCall:creation:success")
+            io.off("adminCall:creation:failed")
             io.off("call:creation:success")
             io.off("call:creation:failed")
         }
-    }, [call, callStatus])
+    }, [])
 
     useEffect(() => {
         console.log({ call_selecioonada: selectedCall })
@@ -324,23 +355,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                             )}
 
                             {tab === "history" && <p>Nenhum Registro</p>}
-                            {/* {tab === "calls" && selectedCall?.reports?.length !== 0 && selectedCall !== null && (
-                                <LaudoCall
-                                    user={user}
-                                    click={() =>
-                                        // navigate(
-                                        //     user?.isAdmin
-                                        //         ? `/adm/call/${call?.id}/report/${selectedCall?.reports?.id}`
-                                        //         : `/employee/call/${call?.id}/report/${selectedCall?.report?.id}`
-                                        // )
-                                        {}
-                                    }
-                                    data={progress}
-                                    call={call}
-                                    tillage={tillageSelectProd}
-                                    setSelectedCall={() => {}}
-                                />
-                            )} */}
+
                             <DialogConfirm
                                 user={user}
                                 open={open}
@@ -374,6 +389,22 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                                             required
                                             InputProps={{ startAdornment: "R$" }}
                                         />
+                                        <Autocomplete
+                                            value={selectedKit}
+                                            getOptionLabel={(option) => option.name}
+                                            options={kits || []}
+                                            onChange={handleKitChange}
+                                            isOptionEqualToValue={getOptionSelected}
+                                            renderInput={(params) => (
+                                                <TextField
+                                                    {...params}
+                                                    label="Kit"
+                                                    value={kitValue}
+                                                    onChange={(e) => setKitValue(e.target.value)}
+                                                    sx={{ ...textField, ...input }}
+                                                />
+                                            )}
+                                        />
                                     </Box>
                                 }
                                 click={() => {
@@ -395,13 +426,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                                     }}
                                 />
                             )}
-                            {/* {tab === "calls" && call && (
-                        <Box sx={{ height: "50%", overflowY: "auto", p: "2vw" }}>
-                            <LogsCard call={call} talhao={selectedAvatar} />
-                            <LogsCard call={call} talhao={selectedAvatar} />
-                            <LogsCard call={call} talhao={selectedAvatar} />
-                        </Box>
-                    )} */}
+
                             {/* <IconButton
                         sx={{
                             bgcolor: colors.button,

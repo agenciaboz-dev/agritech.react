@@ -36,28 +36,18 @@ export const OpenCallBox: React.FC<OpenCallBoxProps> = ({ data, click, callStatu
             }}
         >
             <Box sx={{ gap: "3vw" }}>
-                <p style={{ fontSize: "4.5vw", fontWeight: "600" }}>Aguardando aprovação</p>
                 {user && user.producer ? (
-                    <p style={{ fontSize: "3.2vw", textAlign: "justify" }}>
-                        Agora seu chamado será analisado por nossa equipe e em breve te retornaremos um feedback de aprovado
-                        ou reprovado.
-                    </p>
-                ) : user && user.isAdmin ? (
-                    <>
+                    <Box>
+                        <p style={{ fontSize: "4.5vw", fontWeight: "600" }}>Aguardando aprovação</p>
                         <p style={{ fontSize: "3.2vw", textAlign: "justify" }}>
-                            Este chamado está em análise nesse momento. Faça alguma ação para que o cliente possa ter
-                            feedback.
+                            Agora seu chamado será analisado por nossa equipe e em breve te retornaremos um feedback de
+                            aprovado ou reprovado.
                         </p>
-                        <p
-                            style={{ fontSize: "3.2vw", textAlign: "end", width: "100%", color: colors.primary }}
-                            onClick={click}
-                        >
-                            {" "}
-                            {user?.isAdmin ? "Aprovar Chamado" : data.buttonTitle}
-                        </p>
-                    </>
-                ) : (
+                    </Box>
+                ) : !user?.isAdmin ? (
                     <p style={{ fontSize: "3.2vw", textAlign: "justify" }}>Este chamado está em análise nesse momento.</p>
+                ) : (
+                    <p style={{ fontSize: "4.5vw", fontWeight: "600" }}>Chamado Aprovado</p>
                 )}
             </Box>
         </Box>
