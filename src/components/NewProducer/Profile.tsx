@@ -5,6 +5,8 @@ import { textField } from "../../style/input"
 import MaskedInput from "../MaskedInput"
 import { colors } from "../../style/colors"
 import { useNavigate } from "react-router-dom"
+import { useCnpjMask, useCpfMask, usePhoneMask } from "burgos-masks"
+import MaskedInputNando from "../MaskedNando"
 
 interface ProfileProps {
     values: NewProducer
@@ -95,10 +97,10 @@ export const Profile: React.FC<ProfileProps> = ({ values, handleChange }) => {
                     name="cpf"
                     value={values.cpf}
                     sx={{ ...textField, width: "100%" }}
-                    // InputProps={{
-                    //     inputComponent: MaskedInput,
-                    //     inputProps: { mask: "000.000.000-00" },
-                    // }}
+                    InputProps={{
+                        inputComponent: MaskedInputNando,
+                        inputProps: { mask: useCpfMask, inputMode: "numeric" },
+                    }}
                     onChange={handleChange}
                     required
                 />
@@ -107,10 +109,10 @@ export const Profile: React.FC<ProfileProps> = ({ values, handleChange }) => {
                     name="producer.cnpj"
                     value={values.producer?.cnpj}
                     sx={{ ...textField, width: "100%" }}
-                    // InputProps={{
-                    //     inputComponent: MaskedInput,
-                    //     inputProps: { mask: "00.000.000/0000-00", inputMode: "numeric" },
-                    // }}
+                    InputProps={{
+                        inputComponent: MaskedInputNando,
+                        inputProps: { mask: useCnpjMask, inputMode: "numeric" },
+                    }}
                     onChange={handleChange}
                     required
                 />
@@ -120,11 +122,11 @@ export const Profile: React.FC<ProfileProps> = ({ values, handleChange }) => {
                     value={values.phone}
                     sx={textField}
                     onChange={handleChange}
-                    // InputProps={{
-                    //     inputComponent: MaskedInput,
-                    //     inputProps: { mask: "(00) 0 0000-0000" },
-                    //     inputMode: "numeric",
-                    // }}
+                    InputProps={{
+                        inputComponent: MaskedInputNando,
+                        inputProps: { mask: usePhoneMask },
+                        inputMode: "numeric",
+                    }}
                     required
                 />
             </Box>

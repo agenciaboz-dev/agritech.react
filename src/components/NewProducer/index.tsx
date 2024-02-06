@@ -21,6 +21,9 @@ import { useProducer } from "../../hooks/useProducer.ts"
 import { Geolocal } from "./Geolocal.tsx"
 import { useUsers } from "../../hooks/useUsers.ts"
 import { useEstadosBrasil } from "../../hooks/useEstadosBrasil.ts"
+import { useCepMask } from "burgos-masks"
+import MaskedInputNando from "../MaskedNando.tsx"
+import { unmaskNumber } from "../../hooks/unmaskNumber.ts"
 
 interface NewProducerProps {}
 
@@ -112,18 +115,16 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
                 // uf: "AM",
                 uf: estados.find((estado) => estado.value == values.address.uf)?.value || "",
             },
-        }
-        console.log(data)
-
-        io.emit("user:signup", {
-            ...data,
             producer: {
-                cnpj: unmask(data.producer?.cnpj || ""),
+                cnpj: unmask(values.producer?.cnpj || ""),
                 contract: values.producer.contract,
                 tillage: values.producer.tillage,
                 employeeId: user?.employee?.id,
             },
-        })
+        }
+        console.log(data)
+
+        io.emit("user:signup", data)
         setLoadingProducer(true)
     }
 
@@ -194,7 +195,7 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
                 uf: infoCep?.estado.sigla,
                 adjunct: infoCep?.complemento,
             },
-            area: Number(values.area),
+            area: unmaskNumber(values.area),
             producerId: producer?.producer?.id,
         }
         io.emit("tillage:create", data)
@@ -358,8 +359,8 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
                                                     value={values.address.cep}
                                                     onChange={handleChange}
                                                     InputProps={{
-                                                        inputComponent: MaskedInput,
-                                                        inputProps: { mask: "00.000-000", inputMode: "numeric" },
+                                                        inputComponent: MaskedInputNando,
+                                                        inputProps: { mask: useCepMask, inputMode: "numeric" },
                                                     }}
                                                 />
                                             }

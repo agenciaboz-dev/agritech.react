@@ -16,6 +16,8 @@ import { LatLngExpression, LatLngTuple } from "leaflet"
 import { useUser } from "../../../../hooks/useUser"
 import { CepAbertoApi } from "../../../../definitions/cepabertoApi"
 import { NewLavoura } from "../../../../definitions/newTillage"
+import { useNumberMask } from "burgos-masks"
+import MaskedInputNando from "../../../../components/MaskedNando"
 
 interface FormTillageProps {
     data: NewLavoura
@@ -30,6 +32,7 @@ export const FormTillage: React.FC<FormTillageProps> = ({ data, change, addressA
     const [image, setImage] = useState<File>()
     const navigate = useNavigate()
     const listGallery = useArray().newArray(3)
+    const floatMask = useNumberMask({ allowDecimal: true, allowLeadingZeroes: true })
 
     const [tab, setTab] = React.useState("team")
     const changeTab = (event: React.SyntheticEvent, newValue: string) => {
@@ -93,7 +96,11 @@ export const FormTillage: React.FC<FormTillageProps> = ({ data, change, addressA
                         value={data.area}
                         sx={textField}
                         onChange={change}
-                        InputProps={{ endAdornment: "ha" }}
+                        InputProps={{
+                            inputComponent: MaskedInputNando,
+                            inputProps: { mask: floatMask, inputMode: "numeric" },
+                            endAdornment: "ha",
+                        }}
                         required
                     />
                 </Box>
