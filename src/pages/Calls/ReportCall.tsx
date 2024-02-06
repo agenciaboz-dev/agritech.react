@@ -17,6 +17,7 @@ import { ButtonAgritech } from "../../components/ButtonAgritech"
 import { dateFrontend } from "../../hooks/useFormattedDate"
 import { useIo } from "../../hooks/useIo"
 import { useSnackbar } from "burgos-snackbar"
+import moment from "moment"
 
 interface ReportCallProps {
     user: User
@@ -101,12 +102,19 @@ export const ReportCall: React.FC<ReportCallProps> = ({ user }) => {
     })
 
     const chegadaSubmit = (values: Stage) => {
+        const durationTimestamp =
+            Number(new Date(Number(finishPick)).getTime().toString()) -
+            Number(new Date(Number(initPick)).getTime().toString())
+
+        // console.log(`Novo Timestamp: ${new Date(Number(durationTimestamp)).toLocaleDateString("pr-br")}`)
+
         const data = {
             ...values,
             id: call?.stages[0].id,
             date: new Date().getTime().toString(),
             start: new Date(Number(initPick)).getTime().toString(),
             finish: new Date(Number(finishPick)).getTime().toString(),
+            duration: durationTimestamp.toString(),
         }
         io.emit("stage:update:one", data)
         setLoading(true)
@@ -145,7 +153,7 @@ export const ReportCall: React.FC<ReportCallProps> = ({ user }) => {
         // console.log(stageCurrent)
 
         console.log(call?.stage)
-    }, [call])
+    }, [call?.stage])
     useEffect(() => {
         const registerEvents = () => {
             io.on("stage:updateOne:success", (stage) => {
@@ -205,7 +213,7 @@ export const ReportCall: React.FC<ReportCallProps> = ({ user }) => {
             // Ao desmontar o componente, desregiste os eventos
             unregisterEvents()
         }
-    }, [])
+    }, [stage])
 
     useEffect(() => {
         header.setTitle("Painel")
