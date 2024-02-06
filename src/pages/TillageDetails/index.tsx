@@ -186,6 +186,9 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
     useEffect(() => {
         console.log({ call_selecioonada: selectedCall })
     }, [selectedCall])
+    useEffect(() => {
+        console.log(tillageSelect)
+    }, [])
     return (
         <Box
             sx={{
@@ -257,26 +260,32 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                         Detalhes
                     </p> */}
                 </Box>
-                <Box sx={{ flexDirection: "row", gap: "2vw", width: "100%", overflow: "auto", p: "0vw 4vw 8vw" }}>
-                    {tillageSelect?.talhao?.map((item, index) => (
-                        <Box sx={{ alignItems: "center" }} key={index}>
-                            <Avatar
-                                src={GeoImage}
-                                style={{
-                                    width: "28vw",
-                                    height: "38vw",
-                                    fontSize: "4vw",
-                                    fontFamily: "MalgunGothic2",
-                                    marginLeft: "0vw",
-                                    borderRadius: "8vw",
-                                    border: selectedTalhao?.id === item.id ? `5px solid ${colors.secondary}` : "",
-                                }}
-                                onClick={() => (selectedTalhao?.id !== item.id ? toggleSelection(item) : () => {})}
-                            />
-                            <p style={{ fontSize: "3.5vw", color: colors.text.white }}>{item.name}</p>
-                        </Box>
-                    ))}
-                </Box>
+                {tillageSelect?.talhao?.length !== 0 ? (
+                    <Box sx={{ flexDirection: "row", gap: "2vw", width: "100%", overflow: "auto", p: "0vw 4vw 8vw" }}>
+                        {tillageSelect?.talhao?.map((item, index) => (
+                            <Box sx={{ alignItems: "center" }} key={index}>
+                                <Avatar
+                                    src={GeoImage}
+                                    style={{
+                                        width: "28vw",
+                                        height: "38vw",
+                                        fontSize: "4vw",
+                                        fontFamily: "MalgunGothic2",
+                                        marginLeft: "0vw",
+                                        borderRadius: "8vw",
+                                        border: selectedTalhao?.id === item.id ? `5px solid ${colors.secondary}` : "",
+                                    }}
+                                    onClick={() => (selectedTalhao?.id !== item.id ? toggleSelection(item) : () => {})}
+                                />
+                                <p style={{ fontSize: "3.5vw", color: colors.text.white }}>{item.name}</p>
+                            </Box>
+                        ))}
+                    </Box>
+                ) : (
+                    <Box sx={{ p: "2vw 4vw 8vw" }}>
+                        <p style={{ fontSize: "4vw", color: colors.text.white }}>Nenhum talhão cadastrado.</p>
+                    </Box>
+                )}
 
                 <Box
                     style={{
@@ -292,7 +301,8 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                     }}
                 >
                     <WeatherComponent />
-                    {selectedAvatar === 0 ? (
+
+                    {selectedAvatar === 0 && tillageSelect?.talhao?.length !== 0 ? (
                         <p>Selecione um talhão</p>
                     ) : (
                         <>
@@ -353,7 +363,9 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                                     />
                                 ))
                             )}
-
+                            {tillageSelect?.talhao?.length === 0 && tab === "calls" && (
+                                <p>É necessário ter talhões cadastrados para abrir chamados.</p>
+                            )}
                             {tab === "history" && <p>Nenhum Registro</p>}
 
                             <DialogConfirm
@@ -427,26 +439,26 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                                 />
                             )}
 
-                            {/* <IconButton
-                        sx={{
-                            bgcolor: colors.button,
-                            width: "12vw",
-                            height: "12vw",
-                            borderRadius: "10vw",
-                            position: "absolute",
-                            bottom: "26vw",
-                            right: "8vw",
-                        }}
-                        onClick={() =>
-                            navigate(
-                                user?.isAdmin
-                                    ? `/adm/tillage/${tillageSelect?.id}/new_talhao`
-                                    : `/employee/tillage/${tillageSelect?.id}/new_talhao`
-                            )
-                        }
-                    >
-                        <PiPlant color={"#fff"} sx={{ width: "6vw", height: "6vw" }} />
-                    </IconButton> */}
+                            <IconButton
+                                sx={{
+                                    bgcolor: colors.button,
+                                    width: "12vw",
+                                    height: "12vw",
+                                    borderRadius: "10vw",
+                                    position: "absolute",
+                                    bottom: "26vw",
+                                    right: "8vw",
+                                }}
+                                onClick={() =>
+                                    navigate(
+                                        user?.isAdmin
+                                            ? `/adm/producer/${tillageSelect?.producerId}/${tillageSelect?.id}/new_talhao`
+                                            : `/employee/producer/${tillageSelect?.producerId}/${tillageSelect?.id}/new_talhao`
+                                    )
+                                }
+                            >
+                                <PiPlant color={"#fff"} sx={{ width: "6vw", height: "6vw" }} />
+                            </IconButton>
                         </>
                     )}
                 </Box>

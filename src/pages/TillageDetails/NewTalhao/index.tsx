@@ -17,6 +17,7 @@ import { useNavigate, useParams } from "react-router-dom"
 import { useSnackbar } from "burgos-snackbar"
 import MaskedInput from "../../../components/MaskedInput.tsx"
 import { useProducer } from "../../../hooks/useProducer.ts"
+import { useUsers } from "../../../hooks/useUsers.ts"
 
 interface NewTalhaoProps {}
 
@@ -34,9 +35,14 @@ export const NewTalhao: React.FC<NewTalhaoProps> = ({}) => {
     const { user } = useUser()
     const { unmask } = useDataHandler()
     const { snackbar } = useSnackbar()
+    const { listUsers } = useUsers()
 
-    const { tillageid } = useParams()
-    const findTillage = user?.producer?.tillage?.find((item) => item.id === Number(tillageid))
+    const { producerid, tillageid } = useParams()
+    console.log({ tillageId: tillageid, producerid: producerid })
+    const findTillage = listUsers
+        ?.find((item) => item.producer?.id === Number(producerid))
+        ?.producer?.tillage?.find((item) => item.id === Number(tillageid))
+
     //controls view
     const [currentStep, setCurrentStep] = useState(1)
     const [loadingCoordinate, setLoadingCoordinate] = useState(false)
@@ -65,7 +71,7 @@ export const NewTalhao: React.FC<NewTalhaoProps> = ({}) => {
             call: values.calls,
             gallery: values.gallery,
             location: values.location,
-            tillageId: values.tillageId,
+            tillageId: findTillage?.id,
         }
         io.emit("talhao:create", values)
         console.log(data)
@@ -77,7 +83,9 @@ export const NewTalhao: React.FC<NewTalhaoProps> = ({}) => {
             snackbar({ severity: "success", text: "Talhão adicionado!" })
             setLoadingTalhao(false)
             console.log({ Talhão: data.talhao })
-            navigate(`/employee/producer/${findTillage?.producerId}`)
+            navigate(
+                user?.isAdmin ? `/adm/producer/${producerid}/${tillageid}` : `/employee/producer/${producerid}/${tillageid}`
+            )
         })
         io.on("talhao:create:failed", () => {
             snackbar({ severity: "error", text: "Algo deu errado!" })
@@ -120,7 +128,16 @@ export const NewTalhao: React.FC<NewTalhaoProps> = ({}) => {
                     flexDirection: "row",
                 }}
             >
-                <Header back location="../" />
+                <Header
+                    back
+                    location={
+                        user?.isAdmin
+                            ? `/adm/producer/${producerid}/${tillageid}`
+                            : user?.producer
+                            ? ` /producer/tillage/${tillageid}`
+                            : `/employee/producer/${producerid}/${tillageid}`
+                    }
+                />
             </Box>
             <Box
                 style={{
