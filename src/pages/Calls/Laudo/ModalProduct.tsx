@@ -3,10 +3,13 @@ import React, { ChangeEvent, useState } from "react"
 import { ButtonAgritech } from "../../../components/ButtonAgritech"
 import { LiaObjectGroupSolid } from "react-icons/lia"
 import { MdNumbers, MdOutlineAdd } from "react-icons/md"
-import { Box, IconButton, MenuItem, Select } from "@mui/material"
+import { Box, IconButton, MenuItem, Select, TextField } from "@mui/material"
 import { AiOutlineDelete } from "react-icons/ai"
 import { colors } from "../../../style/colors"
 import { textField } from "../../../style/input"
+import { useNumberMask } from "burgos-masks"
+import MaskedInput from "../../../components/MaskedInput"
+import MaskedInputNando from "../../../components/MaskedNando"
 
 interface ModalProductProps {
     product: Product[]
@@ -18,6 +21,7 @@ interface ModalProductProps {
 export const ModalProduct: React.FC<ModalProductProps> = ({ opened, close, product, setproduct }) => {
     const [value, setValue] = useState("")
     const [unit, setUnit] = useState("")
+    const floatMask = useNumberMask({ allowDecimal: true,allowLeadingZeroes: true })
 
     const handleInputChange = (event: any) => {
         const { name, value } = event.target
@@ -62,34 +66,37 @@ export const ModalProduct: React.FC<ModalProductProps> = ({ opened, close, produ
             }}
         >
             {product.map((item, index) => (
-                <Box sx={{ gap: "0.5vw" }} key={index}>
+                <Box sx={{ gap: "3vw" }} key={index}>
                     <Box sx={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
                         <h4>Produto {index + 1}</h4>
                         <IconButton onClick={() => deleteObject(index)}>
                             <AiOutlineDelete color={colors.delete} />
                         </IconButton>
                     </Box>
-                    <TextInput
+                    <TextField
                         label="Nome"
                         name="name"
                         value={item.name}
                         data-autofocus
                         type="text"
-                        withAsterisk
-                        styles={{ input: { border: "1px solid black" } }}
-                        leftSection={<LiaObjectGroupSolid style={{ width: "6vw", height: "6vw" }} />}
-                        onChange={(e) => handleChange(index, e)}
+                        required
+                        sx={{ ...textField, width: "100%" }}
+                        onChange={(e) => handleChange(index, e as React.ChangeEvent<HTMLInputElement>)}
                     />
 
                     <Box sx={{ flexDirection: "row", gap: "2vw" }}>
-                        <TextInput
+                        <TextField
                             label="Dose/HA"
                             name="dosage"
                             value={item.dosage}
-                            styles={{ root: { width: "100%" }, input: { border: "1px solid black" } }}
-                            withAsterisk
-                            onChange={(e) => handleChange(index, e)}
-                            leftSection={<MdNumbers style={{ width: "4.5vw", height: "4.5vw" }} />}
+                            sx={{ ...textField, width: "100%" }}
+                            required
+                            onChange={(e) => handleChange(index, e as React.ChangeEvent<HTMLInputElement>)}
+                            InputProps={{
+                                inputComponent: MaskedInputNando,
+                                inputProps: { mask: floatMask, inputMode: "numeric" },
+                                endAdornment: "L",
+                            }}
                         />
                         {/* <Select
                             labelId="demo-simple-select-label"

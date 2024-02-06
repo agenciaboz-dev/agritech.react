@@ -2,12 +2,15 @@ import { Modal, TextInput } from "@mantine/core"
 import React, { ChangeEvent } from "react"
 import { ButtonAgritech } from "../../../components/ButtonAgritech"
 import { MdOutlineAdd } from "react-icons/md"
-import { Accordion, Box, IconButton, Typography } from "@mui/material"
+import { Accordion, Box, IconButton, TextField, Typography } from "@mui/material"
 import { AiOutlineDelete } from "react-icons/ai"
 import { colors } from "../../../style/colors"
 import MuiAccordionDetails from "@mui/material/AccordionDetails"
 import { styled } from "@mui/material/styles"
 import { AccordionSummary } from "../../../components/Accordion"
+import MaskedInputNando from "../../../components/MaskedNando"
+import { useNumberMask } from "burgos-masks"
+import { textField } from "../../../style/input"
 
 interface ModalMaterialProps {
     material: Material[]
@@ -23,6 +26,7 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 
 export const ModalMaterial: React.FC<ModalMaterialProps> = ({ opened, close, material, setMaterial }) => {
     const [expanded, setExpanded] = React.useState<string | false>("")
+    const floatMask = useNumberMask({ allowDecimal: true,allowLeadingZeroes: true })
 
     const expandendChange = (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
         setExpanded(newExpanded ? panel : false)
@@ -33,14 +37,14 @@ export const ModalMaterial: React.FC<ModalMaterialProps> = ({ opened, close, mat
             ...material,
             {
                 talhao: "",
-                area:"",
+                area: "",
                 product: "",
-                dosage:"",
+                dosage: "",
                 classification: "",
-                total:"",
-                removed:"",
-                applied:"",
-                returned:"",
+                total: "",
+                removed: "",
+                applied: "",
+                returned: "",
                 comments: "",
             },
         ])
@@ -87,7 +91,7 @@ export const ModalMaterial: React.FC<ModalMaterialProps> = ({ opened, close, mat
                         <Typography>Insumo {index + 1}</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
-                        <Box sx={{ gap: "0.5vw" }} key={index}>
+                        <Box sx={{ gap: "2vw" }} key={index}>
                             <Box sx={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
                                 <h4>Insumo {index + 1}</h4>
                                 <IconButton onClick={() => deleteObject(index)}>
@@ -96,103 +100,127 @@ export const ModalMaterial: React.FC<ModalMaterialProps> = ({ opened, close, mat
                             </Box>
 
                             <Box sx={{ flexDirection: "row", gap: "2vw" }}>
-                                <TextInput
+                                <TextField
                                     label="Fazenda "
                                     name="talhao"
                                     value={item.talhao}
                                     data-autofocus
-                                    styles={{ input: { border: "1px solid black" } }}
-                                    onChange={(e) => handleChange(index, e)}
-                                    rightSection={<p></p>}
-                                    withAsterisk
+                                    sx={{ ...textField, width: "50%" }}
+                                    onChange={(e) => handleChange(index, e as React.ChangeEvent<HTMLInputElement>)}
+                                    required
                                 />
 
-                                <TextInput
+                                <TextField
                                     label="Área"
                                     name="area"
                                     value={item.area}
                                     data-autofocus
-                                    styles={{ input: { border: "1px solid black" } }}
-                                    rightSection={<p>ha</p>}
-                                    onChange={(e) => handleChange(index, e)}
-                                    withAsterisk
+                                    sx={{ ...textField, width: "50%" }}
+                                    onChange={(e) => handleChange(index, e as React.ChangeEvent<HTMLInputElement>)}
+                                    InputProps={{
+                                        inputComponent: MaskedInputNando,
+                                        inputProps: { mask: floatMask, inputMode: "numeric" },
+                                        endAdornment: "ha",
+                                    }}
+                                    required
                                 />
                             </Box>
 
-                            <TextInput
+                            <TextField
                                 label="Produto"
                                 name="product"
                                 value={item.product}
-                                styles={{ input: { border: "1px solid black", width: "100%" } }}
-                                onChange={(e) => handleChange(index, e)}
+                                sx={{ ...textField, width: "100%" }}
+                                onChange={(e) => handleChange(index, e as React.ChangeEvent<HTMLInputElement>)}
                                 data-autofocus
-                                withAsterisk
+                                required
                             />
 
                             <Box sx={{ flexDirection: "row", gap: "2vw", width: "100%" }}>
-                                <TextInput
+                                <TextField
                                     label="Dose/ha"
                                     name="dosage"
                                     value={item.dosage}
                                     data-autofocus
-                                    withAsterisk
-                                    styles={{ input: { border: "1px solid black" } }}
-                                    onChange={(e) => handleChange(index, e)}
+                                    required
+                                    sx={{ ...textField, width: "50%" }}
+                                    onChange={(e) => handleChange(index, e as React.ChangeEvent<HTMLInputElement>)}
+                                    InputProps={{
+                                        inputComponent: MaskedInputNando,
+                                        inputProps: { mask: floatMask, inputMode: "numeric" },
+                                        endAdornment: "L",
+                                    }}
                                 />
-                                <TextInput
+                                <TextField
                                     label="Classificação"
                                     name="classification"
                                     value={item.classification}
                                     data-autofocus
-                                    withAsterisk
-                                    styles={{ input: { border: "1px solid black" } }}
-                                    onChange={(e) => handleChange(index, e)}
+                                    required
+                                    sx={{ ...textField, width: "50%" }}
+                                    onChange={(e) => handleChange(index, e as React.ChangeEvent<HTMLInputElement>)}
                                 />
                             </Box>
 
                             <Box sx={{ flexDirection: "row", gap: "3vw" }}>
-                                <TextInput
+                                <TextField
                                     label="Total"
                                     name="total"
                                     value={item.total}
                                     data-autofocus
-                                    withAsterisk
-                                    styles={{ input: { border: "1px solid black" } }}
-                                    onChange={(e) => handleChange(index, e)}
-                                    rightSection={<p>L</p>}
+                                    required
+                                    sx={{ ...textField, width: "100%" }}
+                                    onChange={(e) => handleChange(index, e as React.ChangeEvent<HTMLInputElement>)}
+                                    InputProps={{
+                                        inputComponent: MaskedInputNando,
+                                        inputProps: { mask: floatMask, inputMode: "numeric" },
+                                        endAdornment: "L",
+                                    }}
                                 />
-                                <TextInput
+                                <TextField
                                     label="Retirado"
                                     name="removed"
                                     value={item.removed}
                                     data-autofocus
-                                    withAsterisk
-                                    styles={{ input: { border: "1px solid black" } }}
-                                    rightSection={<p>L</p>}
-                                    onChange={(e) => handleChange(index, e)}
+                                    required
+                                    sx={{ ...textField, width: "100%" }}
+                                    InputProps={{
+                                        inputComponent: MaskedInputNando,
+                                        inputProps: { mask: floatMask, inputMode: "numeric" },
+                                        endAdornment: "L",
+                                    }}
+                                    onChange={(e) => handleChange(index, e as React.ChangeEvent<HTMLInputElement>)}
                                 />
                             </Box>
                             <Box sx={{ flexDirection: "row", gap: "2vw" }}>
-                                <TextInput
+                                <TextField
                                     label="Aplicado "
                                     name="applied"
                                     value={item.applied}
                                     data-autofocus
-                                    styles={{ input: { border: "1px solid black" } }}
-                                    onChange={(e) => handleChange(index, e)}
-                                    rightSection={<p>L</p>}
-                                    withAsterisk
+                                    sx={{ ...textField, width: "100%" }}
+                                    onChange={(e) => handleChange(index, e as React.ChangeEvent<HTMLInputElement>)}
+                                    InputProps={{
+                                        inputComponent: MaskedInputNando,
+                                        inputProps: { mask: floatMask, inputMode: "numeric" },
+                                        endAdornment: "L",
+                                    }}
+                                    required
                                 />
 
-                                <TextInput
+                                <TextField
                                     label="Devolvido"
                                     name="returned"
                                     value={item.returned}
                                     data-autofocus
-                                    styles={{ input: { border: "1px solid black" } }}
-                                    rightSection={<p>L</p>}
-                                    onChange={(e) => handleChange(index, e)}
-                                    withAsterisk
+                                    sx={{ ...textField, width: "100%" }}
+                                    InputProps={{
+                                        inputComponent: MaskedInputNando,
+                                        inputProps: { mask: floatMask, inputMode: "numeric" },
+                                        endAdornment: "L",
+                                    }}
+                                    onChange={(e) => handleChange(index, e as React.ChangeEvent<HTMLInputElement>)}
+                                    required
                                 />
                             </Box>
                         </Box>

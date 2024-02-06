@@ -5,6 +5,8 @@ import { Call } from "../../../definitions/call"
 import { TitleComponents } from "../../../components/TitleComponents"
 import MuiAccordionDetails from "@mui/material/AccordionDetails"
 import { styled } from "@mui/material/styles"
+import { useNumberMask } from "burgos-masks"
+import { textField } from "../../../style/input"
 
 interface MaterialProps {
     values: NewReport
@@ -17,6 +19,7 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 }))
 export const Material: React.FC<MaterialProps> = ({ listMaterials, open }) => {
     const [expanded, setExpanded] = React.useState<string | false>("")
+    const floatMask = useNumberMask({ allowDecimal: true, allowLeadingZeroes: true })
 
     const expandendChange = (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
         setExpanded(newExpanded ? panel : false)

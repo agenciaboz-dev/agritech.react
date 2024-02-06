@@ -26,6 +26,7 @@ import { CiClock2 } from "react-icons/ci"
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo"
 import { useCall } from "../../../hooks/useCall"
+import { unmaskNumber } from "../../../hooks/unmaskNumber"
 
 interface LaudoCallProps {
     user: User
@@ -82,20 +83,20 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
     const handleSubmit = async (values: NewReport) => {
         const treatmentNormalize = listProducts?.map((item) => ({
             name: item.name,
-            dosage: Number(item.dosage),
+            dosage: unmaskNumber(item.dosage),
             unit: item.unit,
         }))
 
         const flightNormalize = listFlights?.map((item) => ({
-            temperature: Number(item.temperature),
-            humidity: Number(item.humidity),
-            wind_velocity: Number(item.wind_velocity),
-            height: Number(item.height),
-            faixa: Number(item.faixa),
-            flight_velocity: Number(item.flight_velocity),
-            tank_volume: Number(item.tank_volume),
-            rate: Number(item.rate),
-            performance: Number(item.performance),
+            temperature: unmaskNumber(item.temperature),
+            humidity: unmaskNumber(item.humidity),
+            wind_velocity: unmaskNumber(item.wind_velocity),
+            height: unmaskNumber(item.height),
+            faixa: unmaskNumber(item.faixa),
+            flight_velocity: unmaskNumber(item.flight_velocity),
+            tank_volume: unmaskNumber(item.tank_volume),
+            rate: unmaskNumber(item.rate),
+            performance: unmaskNumber(item.performance),
         }))
 
         //calculate areaTrabalhada
@@ -105,14 +106,14 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
 
         const materialNormalize = listMaterials?.map((item) => ({
             talhao: item.talhao,
-            area: Number(item.area),
+            area: unmaskNumber(item.area),
             product: item.product,
-            dosage: Number(item.dosage),
+            dosage: unmaskNumber(item.dosage),
             classification: item.classification,
-            total: Number(item.total),
-            removed: Number(item.removed),
-            applied: Number(item.applied),
-            returned: Number(item.returned),
+            total: unmaskNumber(item.total),
+            removed: unmaskNumber(item.removed),
+            applied: unmaskNumber(item.applied),
+            returned: unmaskNumber(item.returned),
             comments: item.comments,
         }))
 
@@ -132,8 +133,8 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
         }
         console.log({ Relatório: data })
 
-        console.log(data)
-        console.log(initPick)
+        // console.log(data)
+        // console.log(initPick)
         if (data) {
             io.emit("report:create", data)
             setLoading(true)
