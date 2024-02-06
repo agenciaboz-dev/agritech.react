@@ -17,6 +17,7 @@ import { useNavigate, useParams } from "react-router-dom"
 import { useSnackbar } from "burgos-snackbar"
 import MaskedInput from "../../../../components/MaskedInput.tsx"
 import { useProducer } from "../../../../hooks/useProducer.ts"
+import { unmaskNumber } from "../../../../hooks/unmaskNumber.ts"
 
 interface NewTalhaoProps {}
 
@@ -61,7 +62,7 @@ export const NewTalhao: React.FC<NewTalhaoProps> = ({}) => {
 
         const data = {
             name: values.name,
-            area: values.area,
+            area: unmaskNumber(values.area),
             call: values.calls,
             gallery: values.gallery,
             location: values.location,

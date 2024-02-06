@@ -18,6 +18,9 @@ import { useNavigate } from "react-router-dom"
 import { useSnackbar } from "burgos-snackbar"
 import MaskedInput from "../../../../components/MaskedInput.tsx"
 import { useProducer } from "../../../../hooks/useProducer.ts"
+import { unmaskNumber } from "../../../../hooks/unmaskNumber.ts"
+import MaskedInputNando from "../../../../components/MaskedNando.tsx"
+import { useCepMask } from "burgos-masks"
 
 interface NewTillageProps {}
 
@@ -77,8 +80,16 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
         console.log({ enviados: values })
 
         const data = {
-            ...values,
-            area: Number(values.area),
+            address: {
+                street: infoCep?.logradouro,
+                district: infoCep?.bairro,
+                number: "",
+                city: infoCep?.cidade.nome,
+                cep: unmask(infoCep?.cep || ""),
+                uf: infoCep?.estado.sigla,
+                adjunct: infoCep?.complemento,
+            },
+            area: unmaskNumber(values.area),
         }
         io.emit("tillage:create", values)
         console.log(data)
@@ -196,8 +207,8 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
                                                     value={values.address.cep}
                                                     onChange={handleChange}
                                                     InputProps={{
-                                                        inputComponent: MaskedInput,
-                                                        inputProps: { mask: "00.000-000", inputMode: "numeric" },
+                                                        inputComponent: MaskedInputNando,
+                                                        inputProps: { mask: useCepMask, inputMode: "numeric" },
                                                     }}
                                                 />
                                             }

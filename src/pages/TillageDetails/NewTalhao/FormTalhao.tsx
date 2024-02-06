@@ -16,6 +16,8 @@ import { LatLngExpression, LatLngTuple } from "leaflet"
 import { useUser } from "../../../hooks/useUser"
 import { CepAbertoApi } from "../../../definitions/cepabertoApi"
 import { NewLavoura } from "../../../definitions/newTillage"
+import { useNumberMask } from "burgos-masks"
+import MaskedInputNando from "../../../components/MaskedNando"
 
 interface FormTalhaoProps {
     data: NewTalhao
@@ -29,6 +31,7 @@ export const FormTalhao: React.FC<FormTalhaoProps> = ({ data, change }) => {
     const [image, setImage] = useState<File>()
     const navigate = useNavigate()
     const listGallery = useArray().newArray(3)
+    const floatMask = useNumberMask({ allowDecimal: true, allowLeadingZeroes: true })
 
     const [tab, setTab] = React.useState("gallery")
     const changeTab = (event: React.SyntheticEvent, newValue: string) => {
@@ -83,7 +86,11 @@ export const FormTalhao: React.FC<FormTalhaoProps> = ({ data, change }) => {
                         sx={textField}
                         onChange={change}
                         required
-                        InputProps={{ endAdornment: "ha" }}
+                        InputProps={{
+                            inputComponent: MaskedInputNando,
+                            inputProps: { mask: floatMask, inputMode: "numeric" },
+                            endAdornment: "ha",
+                        }}
                     />
                 </Box>
             </Box>

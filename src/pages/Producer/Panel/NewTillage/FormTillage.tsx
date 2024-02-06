@@ -75,7 +75,7 @@ export const FormTillage: React.FC<FormTillageProps> = ({ data, change, addressA
                 />
                 <Box sx={{ flexDirection: "column", gap: "2vw", width: "65%" }}>
                     <TextField
-                        label={"Nome da lavoura"}
+                        label={"Nome da fazenda"}
                         name="name"
                         value={data.name}
                         sx={textField}
@@ -91,7 +91,7 @@ export const FormTillage: React.FC<FormTillageProps> = ({ data, change, addressA
                         required
                     />
                     <TextField
-                        label={"Area"}
+                        label={"Área"}
                         name="area"
                         value={data.area}
                         sx={textField}

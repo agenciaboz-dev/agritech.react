@@ -18,6 +18,7 @@ import { useSnackbar } from "burgos-snackbar"
 import MaskedInput from "../../../components/MaskedInput.tsx"
 import { useProducer } from "../../../hooks/useProducer.ts"
 import { useUsers } from "../../../hooks/useUsers.ts"
+import { unmaskNumber } from "../../../hooks/unmaskNumber.ts"
 
 interface NewTalhaoProps {}
 
@@ -38,7 +39,6 @@ export const NewTalhao: React.FC<NewTalhaoProps> = ({}) => {
     const { listUsers } = useUsers()
 
     const { producerid, tillageid } = useParams()
-    console.log({ tillageId: tillageid, producerid: producerid })
     const findTillage = listUsers
         ?.find((item) => item.producer?.id === Number(producerid))
         ?.producer?.tillage?.find((item) => item.id === Number(tillageid))
@@ -53,7 +53,6 @@ export const NewTalhao: React.FC<NewTalhaoProps> = ({}) => {
     const [infoCep, setInfoCep] = useState<CepAbertoApi>()
     const [origin, setOrigin] = useState<LatLngExpression>()
     const [coordinates, setCoordinates] = useState<LatLngTuple[]>([])
-
     const initialValues: NewTalhao = {
         name: "",
         area: "",
@@ -66,14 +65,11 @@ export const NewTalhao: React.FC<NewTalhaoProps> = ({}) => {
         console.log({ enviados: values })
 
         const data = {
-            name: values.name,
-            area: values.area,
-            call: values.calls,
-            gallery: values.gallery,
-            location: values.location,
+            ...values,
+            area: unmaskNumber(values.area),
             tillageId: findTillage?.id,
         }
-        io.emit("talhao:create", values)
+        io.emit("talhao:create", data)
         console.log(data)
         setLoadingTalhao(true)
     }
