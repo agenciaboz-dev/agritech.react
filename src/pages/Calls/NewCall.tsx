@@ -20,8 +20,11 @@ import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo"
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider"
 import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker"
-import { deDE, ptBR } from "@mui/x-date-pickers/locales"
-import useDateISO from "../../hooks/useDateISO"
+import { ptBR } from "@mui/x-date-pickers/locales"
+import { useCurrencyMask, useNumberMask } from "burgos-masks"
+import MaskedInputNando from "../../components/MaskedNando"
+import { unmaskCurrency } from "../../hooks/unmaskNumber"
+
 interface NewCallProps {
     user: User
 }
@@ -142,7 +145,7 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
         const data = {
             ...values,
             forecast: dayjs(pickDate).valueOf().toString(),
-            hectarePrice: Number(values.hectarePrice),
+            hectarePrice: unmaskCurrency(values.hectarePrice),
         }
         console.log(data)
         io.emit(user.isAdmin ? "admin:call:create" : "call:create", data)
@@ -413,6 +416,7 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                                                 <TextField {...params} sx={{ ...textField }} label="Kit" required />
                                             )}
                                         />
+
                                         <TextField
                                             label={"Custo por hectare"}
                                             name="hectarePrice"
@@ -420,7 +424,14 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                                             sx={textField}
                                             onChange={handleChange}
                                             required
-                                            InputProps={{ startAdornment: "R$" }}
+                                            InputProps={{
+                                                //@ts-ignore
+                                                inputComponent: MaskedInputNando,
+                                                inputProps: {
+                                                    mask: useCurrencyMask({ decimalLimit: 6 }),
+                                                    inputMode: "numeric",
+                                                },
+                                            }}
                                         />
                                     </Box>
                                 )}

@@ -1,6 +1,7 @@
 import { Box } from "@mui/material"
 import React from "react"
 import { Call } from "../../../../definitions/call"
+import { CurrencyText } from "../../../../components/CurrencyText"
 
 interface OperationComponentProps {
     operation?: Operation
@@ -44,8 +45,10 @@ export const OperationComponent: React.FC<OperationComponentProps> = ({ operatio
                 </p>
             </Box>
             <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
-                <p style={{ fontWeight: "bold" }}>Custo total:</p>
-                <p style={{ justifyContent: "space-between" }}>R$ {call?.totalPrice}</p>
+                <p style={{ fontWeight: "bold" }}>Custo total: </p>
+                <p style={{ justifyContent: "space-between" }}>
+                    <CurrencyText value={Number(call?.totalPrice)} />
+                </p>
             </Box>
         </Box>
     )

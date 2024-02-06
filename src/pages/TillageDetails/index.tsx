@@ -29,6 +29,9 @@ import { textField, input } from "../../style/input"
 import "../..//style/styles.css"
 import dayjs from "dayjs"
 import { useKits } from "../../hooks/useKits"
+import { unmaskCurrency } from "../../hooks/unmaskNumber"
+import { useCurrencyMask } from "burgos-masks"
+import MaskedInputNando from "../../components/MaskedNando"
 
 interface TillageDetailsProps {}
 
@@ -70,7 +73,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
     const [selectedTalhao, setSelectedTalhao] = useState<Talhao>()
     const [selectedAvatar, setSelectedAvatar] = useState(0)
     const [pickDate, setPickDate] = useState(null)
-    const [pickHectarePrice, setPickHectarePrice] = useState<string | null>(null)
+    const [pickHectarePrice, setPickHectarePrice] = useState<string>("")
 
     const toggleSelection = (talhao: Talhao) => {
         if (selectedAvatar === talhao.id) {
@@ -140,7 +143,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
         const data = {
             ...values,
             kitId: Number(selectedKit?.id),
-            hectarePrice: Number(pickHectarePrice),
+            hectarePrice: unmaskCurrency(pickHectarePrice),
             forecast: dayjs(pickDate).valueOf().toString(),
         }
         console.log(data)
@@ -166,7 +169,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                 text: !user?.isAdmin ? "Chamado aberto! Aguarde a aprovação." : "Chamado aberto!",
             })
         })
-        io.on(user?.isAdmin ? "adminCall:creation:failed" : "call:creation:success", (error) => {
+        io.on(user?.isAdmin ? "adminCall:creation:failed" : "call:creation:failed", (error) => {
             console.log({ chamadoAberto: error })
             snackbar({ severity: "error", text: "Algo deu errado" })
             setLoading(false)
@@ -399,24 +402,32 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                                             sx={{ ...textField, ...input }}
                                             onChange={(e) => setPickHectarePrice(e.target.value)}
                                             required
-                                            InputProps={{ startAdornment: "R$" }}
+                                            InputProps={{
+                                                inputComponent: MaskedInputNando,
+                                                inputProps: {
+                                                    mask: useCurrencyMask({ decimalLimit: 6 }),
+                                                    inputMode: "numeric",
+                                                },
+                                            }}
                                         />
-                                        <Autocomplete
-                                            value={selectedKit}
-                                            getOptionLabel={(option) => option.name}
-                                            options={kits || []}
-                                            onChange={handleKitChange}
-                                            isOptionEqualToValue={getOptionSelected}
-                                            renderInput={(params) => (
-                                                <TextField
-                                                    {...params}
-                                                    label="Kit"
-                                                    value={kitValue}
-                                                    onChange={(e) => setKitValue(e.target.value)}
-                                                    sx={{ ...textField, ...input }}
-                                                />
-                                            )}
-                                        />
+                                        {user?.isAdmin && (
+                                            <Autocomplete
+                                                value={selectedKit}
+                                                getOptionLabel={(option) => option.name}
+                                                options={kits || []}
+                                                onChange={handleKitChange}
+                                                isOptionEqualToValue={getOptionSelected}
+                                                renderInput={(params) => (
+                                                    <TextField
+                                                        {...params}
+                                                        label="Kit"
+                                                        value={kitValue}
+                                                        onChange={(e) => setKitValue(e.target.value)}
+                                                        sx={{ ...textField, ...input }}
+                                                    />
+                                                )}
+                                            />
+                                        )}
                                     </Box>
                                 }
                                 click={() => {
@@ -446,7 +457,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                                     height: "12vw",
                                     borderRadius: "10vw",
                                     position: "absolute",
-                                    bottom: "26vw",
+                                    bottom: "20vw",
                                     right: "8vw",
                                 }}
                                 onClick={() =>

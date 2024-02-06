@@ -1423,10 +1423,24 @@
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.11.tgz#2596fb352ee96a1379c657734d4b913a613ad563"
   integrity sha512-ga8y9v9uyeiLdpKddhxYQkxNDrfvuPrlFb0N1qnZZByvcElJaXthF1UhvCh9TLWJBEHeNtdnbysW7Y6Uq8CVng==
 
+"@types/react-currency-format@^1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@types/react-currency-format/-/react-currency-format-1.0.4.tgz#e01c5d4f9cbb863a95697307aaa1c7817a7d08c2"
+  integrity sha512-qHxKxe7MSGbWkxTj6DAgnKFnc/zXrRPljxaBnw29IlLyBmTBXZjGuCnn3UBH+tzHrYBFt4mkmxbWqpyeq6Ls0g==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-dom@^18.2.7":
   version "18.2.13"
   resolved "https://registry.npmjs.org/@types/react-dom/-/react-dom-18.2.13.tgz"
   integrity sha512-eJIUv7rPP+EC45uNYp/ThhSpE16k22VJUknt5OLoH9tbXoi8bMhwLf5xRuWMywamNbWzhrSmU7IBJfPup1+3fw==
+  dependencies:
+    "@types/react" "*"
+
+"@types/react-text-mask@^5.4.14":
+  version "5.4.14"
+  resolved "https://registry.yarnpkg.com/@types/react-text-mask/-/react-text-mask-5.4.14.tgz#eb7d7b2a47e41b76c6473f106238493e207d3ee1"
+  integrity sha512-VkQuH+7Ol+ue/EFe9EFqJAmDe3ay5VML29l3aJkdzAriMhiprJOmdAFjZ3jOT6p3+nBgEUHxaQtUgg8k8Sk5wA==
   dependencies:
     "@types/react" "*"
 
@@ -1793,10 +1807,10 @@ burgos-estadosbrasil@^1.0.1:
   resolved "https://registry.yarnpkg.com/burgos-estadosbrasil/-/burgos-estadosbrasil-1.0.1.tgz#01d49a146d6e8b7c9b48415e20f1b3967dd910f8"
   integrity sha512-dLv8ArM26k9rWP3vktkDrNu3k5AgWBc7m4ZJ9ZLmMV99/x+7oZEmQt7+0BZShxllRpNmNgzD68ZGTxmldyPMAQ==
 
-burgos-masks@^1.0.45:
-  version "1.0.45"
-  resolved "https://registry.yarnpkg.com/burgos-masks/-/burgos-masks-1.0.45.tgz#a3136007ee50de98d72f8dc50b3f4929298dc305"
-  integrity sha512-iC9VQ/toWxNj4N4WuESbQlsh3o9QwSk4k72fcAiFVCQotNNGYIJ1mVQ74Xp/9H8QHqNAAnH43tkvcuetkFdjYw==
+burgos-masks@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/burgos-masks/-/burgos-masks-1.1.1.tgz#9b9690f4abdb5a5fdc24dbb63f16af75b65e97ee"
+  integrity sha512-QFX1p2pT5f3oZABqteGGee5oToAEIuGZVim8vHwirYmirOrXShVvKsOsjssuGNRAVxwu4jnDzwEGphCj7QwU3g==
   dependencies:
     text-mask-addons "^3.8.0"
 
@@ -3823,7 +3837,7 @@ promzard@^1.0.0:
   dependencies:
     read "^2.0.0"
 
-prop-types@^15.5.4, prop-types@^15.6.0, prop-types@^15.6.2, prop-types@^15.7.2, prop-types@^15.8.1:
+prop-types@^15.5.4, prop-types@^15.5.6, prop-types@^15.6.0, prop-types@^15.6.2, prop-types@^15.7.2, prop-types@^15.8.1:
   version "15.8.1"
   resolved "https://registry.npmjs.org/prop-types/-/prop-types-15.8.1.tgz"
   integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
@@ -4029,6 +4043,13 @@ react-swipeable-views@^0.14.0:
     react-swipeable-views-core "^0.14.0"
     react-swipeable-views-utils "^0.14.0"
     warning "^4.0.1"
+
+react-text-mask@^5.5.0:
+  version "5.5.0"
+  resolved "https://registry.yarnpkg.com/react-text-mask/-/react-text-mask-5.5.0.tgz#468ea690160b364981205f5633e7475e939383ff"
+  integrity sha512-SLJlJQxa0uonMXsnXRpv5abIepGmHz77ylQcra0GNd7Jtk4Wj2Mtp85uGQHv1avba2uI8ZvRpIEQPpJKsqRGYw==
+  dependencies:
+    prop-types "^15.5.6"
 
 react-textarea-autosize@8.5.3:
   version "8.5.3"

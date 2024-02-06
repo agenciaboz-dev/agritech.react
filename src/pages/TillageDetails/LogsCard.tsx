@@ -39,7 +39,12 @@ export const LogsCard: React.FC<LogsCardProps> = ({ review, call, variant, talha
                     {call?.approved ? `Chamado aberto` : `Chamado pendente`}
                 </p>
                 <p style={{ fontSize: "3vw", color: "gray", flexDirection: "column" }}>
-                    {talhao.name} - {call?.approved ? `Utilizando #Kit ${kitSelected?.name}` : "Selecione um kit"}
+                    {talhao.name} -{" "}
+                    {call?.approved
+                        ? `Utilizando #Kit ${kitSelected?.name}`
+                        : user?.isAdmin
+                        ? "Selecione um kit"
+                        : "Aguarde a seleção do kit"}
                 </p>
             </Box>
 

@@ -24,6 +24,9 @@ import { LocalizationProvider, MobileDatePicker, ptBR } from "@mui/x-date-picker
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo"
 import dayjs from "dayjs"
+import MaskedInputNando from "../../../components/MaskedNando"
+import { useCurrencyMask } from "burgos-masks"
+import { unmaskCurrency } from "../../../hooks/unmaskNumber"
 
 interface ApproveCallProps {}
 
@@ -62,7 +65,7 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
     const kitsActived = listKits.filter((item) => item.active)
     console.log(tillageSelected)
     const [hectare, setHectare] = useState("")
-    console.log(findCall?.producer)
+
     useEffect(() => {
         setHectare(findCall?.producer?.hectarePrice || "")
     }, [findCall, findCall?.producer?.hectarePrice])
@@ -83,7 +86,7 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
     }
     const approveCall = (values: ApprovedCall) => {
         console.log(values)
-        const data = { ...values, hectarePrice: Number(values.hectarePrice) }
+        const data = { ...values, hectarePrice: unmaskCurrency(values.hectarePrice || "") }
         io.emit("call:approve", data)
         setLoading(true)
     }
@@ -165,19 +168,21 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
                             <Box>
                                 <p style={p_style}>Nome da Fazenda</p>
                                 <p>
-                                    {tillageSelected?.name} - {findCall?.talhao?.name}
+                                    {findCall?.talhao?.tillage?.name} - {findCall?.talhao?.name}
                                 </p>
                             </Box>
                             <Box>
                                 <p style={p_style}>Endereço </p>
                                 <p>
-                                    {tillageSelected?.address?.city}, {tillageSelected?.address?.uf} -{" "}
-                                    {tillageSelected?.address?.cep}
+                                    {findCall?.talhao?.tillage?.address?.street},{" "}
+                                    {findCall?.talhao?.tillage?.address.district} -{" "}
+                                    {findCall?.talhao?.tillage?.address?.city}, {findCall?.talhao?.tillage?.address?.uf} -{" "}
+                                    {findCall?.talhao?.tillage?.address?.cep}
                                 </p>
                             </Box>
                             <Box>
                                 <p style={p_style}>Área</p>
-                                <p>{tillageSelected?.area}</p>
+                                <p>{findCall?.talhao?.area} ha</p>
                             </Box>
                         </Box>
                     </Box>
@@ -199,7 +204,13 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
                                                 value={values.hectarePrice}
                                                 sx={textField}
                                                 onChange={handleChange}
-                                                InputProps={{ startAdornment: "R$" }}
+                                                InputProps={{
+                                                    inputComponent: MaskedInputNando,
+                                                    inputProps: {
+                                                        mask: useCurrencyMask({ decimalLimit: 6 }),
+                                                        inputMode: "numeric",
+                                                    },
+                                                }}
                                                 required
                                             />
                                         </Box>

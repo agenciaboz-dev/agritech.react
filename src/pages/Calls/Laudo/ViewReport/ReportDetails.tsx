@@ -14,6 +14,7 @@ import { ActionIcon, Group, Menu } from "@mantine/core"
 import { IconDots } from "@tabler/icons-react"
 import { ButtonAgritech } from "../../../../components/ButtonAgritech"
 import MuiAccordionDetails from "@mui/material/AccordionDetails"
+import { CurrencyText } from "../../../../components/CurrencyText"
 
 interface ReportDetailsProps {}
 
@@ -160,8 +161,8 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                     </Box>
                     <Box sx={{ gap: "2vw" }}>
                         <p>
-                            <span style={{ fontWeight: "bold" }}>Custo por hectare:</span> R$
-                            {callSelect?.producer?.hectarePrice}
+                            <span style={{ fontWeight: "bold" }}>Custo por hectare: </span>
+                            <CurrencyText value={Number(callSelect?.producer?.hectarePrice)} />
                         </p>
                         <p>
                             <span style={{ fontWeight: "bold" }}>Área Trabalhada no dia:</span>{" "}
