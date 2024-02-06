@@ -6,6 +6,8 @@ import MaskedInput from "../../components/MaskedInput"
 import { useGender } from "../../hooks/useGender"
 import { textField } from "../../style/input"
 import { useRelationship } from "../../hooks/useRelationship"
+import MaskedInputNando from "../../components/MaskedNando"
+import { useCnpjMask, useCpfMask } from "burgos-masks"
 
 interface StepOneProps {
     data: SignupValues
@@ -51,8 +53,8 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, typeUser, 
                         value={data.cpf}
                         sx={{ ...textField, width: "50%" }}
                         InputProps={{
-                            inputComponent: MaskedInput,
-                            inputProps: { mask: "000.000.000-00", inputMode: "numeric" },
+                            inputComponent: MaskedInputNando,
+                            inputProps: { mask: useCpfMask, inputMode: "numeric" },
                         }}
                         onChange={handleChange}
                         required
@@ -64,8 +66,8 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, typeUser, 
                             value={data.producer?.cnpj}
                             sx={{ ...textField, width: "50%" }}
                             InputProps={{
-                                inputComponent: MaskedInput,
-                                inputProps: { mask: "00.000.000/0000-00", inputMode: "numeric" },
+                                inputComponent: MaskedInputNando,
+                                inputProps: { mask: useCnpjMask, inputMode: "numeric" },
                             }}
                             onChange={handleChange}
                             required

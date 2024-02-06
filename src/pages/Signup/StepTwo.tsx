@@ -4,6 +4,8 @@ import { colors } from "../../style/colors"
 import MaskedInput from "../../components/MaskedInput"
 import { useEstadosBrasil } from "../../hooks/useEstadosBrasil"
 import { textField } from "../../style/input"
+import MaskedInputNando from "../../components/MaskedNando"
+import { useCepMask, usePhoneMask } from "burgos-masks"
 
 interface StepTwoProps {
     data: SignupValues
@@ -52,8 +54,8 @@ export const StepTwo: React.FC<StepTwoProps> = ({ data, handleChange, typeUser, 
                         value={data.phone}
                         sx={textField}
                         InputProps={{
-                            inputComponent: MaskedInput,
-                            inputProps: { mask: " (00) 0 0000-0000", inputMode: "numeric" },
+                            inputComponent: MaskedInputNando,
+                            inputProps: { mask: usePhoneMask, inputMode: "numeric" },
                         }}
                         onChange={handleChange}
                         required
@@ -89,8 +91,8 @@ export const StepTwo: React.FC<StepTwoProps> = ({ data, handleChange, typeUser, 
                             value={data.address.cep}
                             sx={{ ...textField, width: "76%" }}
                             InputProps={{
-                                inputComponent: MaskedInput,
-                                inputProps: { mask: "00.000-000", inputMode: "numeric" },
+                                inputComponent: MaskedInputNando,
+                                inputProps: { mask: useCepMask, inputMode: "numeric" },
                             }}
                             onChange={handleChange}
                             required

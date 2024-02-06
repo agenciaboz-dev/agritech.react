@@ -3,6 +3,7 @@ import React, { ChangeEventHandler } from "react"
 import { colors } from "../../style/colors"
 import { textField } from "../../style/input"
 import { useBankAccount } from "../../hooks/useBankAccount"
+import MaskedInput from "../../components/MaskedInput"
 
 interface StepThreeProps {
     data: SignupValues
@@ -35,6 +36,10 @@ export const StepThree: React.FC<StepThreeProps> = ({ data, handleChange, setCur
                         name="employee.voter_card"
                         sx={{ ...textField, width: "100%" }}
                         onChange={handleChange}
+                        InputProps={{
+                            inputComponent: MaskedInput,
+                            inputProps: { mask: "0000000000000", inputMode: "numeric" },
+                        }}
                         required
                     />
                     <TextField
@@ -45,6 +50,10 @@ export const StepThree: React.FC<StepThreeProps> = ({ data, handleChange, setCur
                         sx={{ ...textField, width: "100%" }}
                         onChange={handleChange}
                         required
+                        InputProps={{
+                            inputComponent: MaskedInput,
+                            inputProps: { mask: "0000000000000", inputMode: "numeric" },
+                        }}
                     />
                 </Box>
                 <Box sx={{ gap: "2vw" }}>
