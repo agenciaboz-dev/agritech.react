@@ -15,6 +15,7 @@ import { IconDots } from "@tabler/icons-react"
 import { ButtonAgritech } from "../../../../components/ButtonAgritech"
 import MuiAccordionDetails from "@mui/material/AccordionDetails"
 import { CurrencyText } from "../../../../components/CurrencyText"
+import { formatCNPJ, formatCPF } from "../../../../hooks/useFormattedDocument.ts"
 
 interface ReportDetailsProps {}
 
@@ -138,10 +139,12 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                             </p>
                             <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
                                 <p>
-                                    <span style={{ fontWeight: "bold" }}>CPF:</span> {callSelect?.producer?.user?.cpf}{" "}
+                                    <span style={{ fontWeight: "bold" }}>CPF:</span>{" "}
+                                    {formatCPF(callSelect?.producer?.user?.cpf || "")}{" "}
                                 </p>
                                 <p>
-                                    <span style={{ fontWeight: "bold" }}>CNPJ:</span> {callSelect?.producer?.cnpj}{" "}
+                                    <span style={{ fontWeight: "bold" }}>CNPJ:</span>{" "}
+                                    {formatCNPJ(callSelect?.producer?.cnpj || "")}{" "}
                                 </p>
                             </Box>
                             <p>
