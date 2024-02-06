@@ -11,6 +11,8 @@ import { ModalEmployee } from "../../../components/Kit/ModalEmployee"
 import { CardTeam } from "../../../components/Kit/CardTeam"
 import { CardObject } from "../../../components/Kit/CardObject"
 import { ModalObjectUpdate } from "../../../components/Kit/ModalObjectUpdate"
+import { useNumberMask } from "burgos-masks"
+import MaskedInputNando from "../../../components/MaskedNando"
 
 interface UpdateContentKitProps {
     edit?: boolean
@@ -34,7 +36,7 @@ const style_p = {
 export const UpdateContentKit: React.FC<UpdateContentKitProps> = ({ edit, values, handleChange, data }) => {
     const [image, setImage] = useState<File>()
     const io = useIo()
-
+    const floatMask = useNumberMask({ allowDecimal: true, allowLeadingZeroes: true })
     const [openedModalObjects, { open, close }] = useDisclosure(false)
     const [openedModalEmployees, { open: openEmployees, close: closeEmployees }] = useDisclosure(false)
 
@@ -87,6 +89,11 @@ export const UpdateContentKit: React.FC<UpdateContentKitProps> = ({ edit, values
                                     value={edit ? values.hectareDay : "Loren impsum dolor sit amet"}
                                     sx={textField}
                                     onChange={handleChange}
+                                    InputProps={{
+                                        inputComponent: MaskedInputNando,
+                                        inputProps: { mask: floatMask, inputMode: "numeric" },
+                                        endAdornment: "ha",
+                                    }}
                                     required
                                 />
                                 <TextField

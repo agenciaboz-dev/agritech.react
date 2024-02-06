@@ -17,6 +17,7 @@ import { AiOutlineSave } from "react-icons/ai"
 import findEmployee from "../../../hooks/filterEmployee"
 import listEmployees from "../../../hooks/listEmployees"
 import { useUser } from "../../../hooks/useUser"
+import { unmaskNumber } from "../../../hooks/unmaskNumber"
 
 interface ViewKitProps {}
 
@@ -74,10 +75,11 @@ export const ViewKit: React.FC<ViewKitProps> = ({}) => {
         }))
         const data = {
             ...values,
+            hectareDay: unmaskNumber(String(values.hectareDay)),
             objects: objects,
             employees: employeesIds,
         }
-        console.log(data)
+
         setEdit(!edit)
         io.emit("kit:update", data)
         setLoading(true)
@@ -87,6 +89,7 @@ export const ViewKit: React.FC<ViewKitProps> = ({}) => {
     useEffect(() => {
         io.on("kit:update:success", (data: Kit) => {
             updateKit(data)
+            console.log(data)
             snackbar({ severity: "success", text: "Kit atualizado!" })
             setLoading(false)
             close()

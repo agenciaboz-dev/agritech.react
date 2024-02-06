@@ -14,6 +14,7 @@ import { useSnackbar } from "burgos-snackbar"
 import { useDisclosure } from "@mantine/hooks"
 import { Modal } from "@mantine/core"
 import { useKits } from "../../../hooks/useKits"
+import { unmaskNumber } from "../../../hooks/unmaskNumber"
 
 interface AddKitProps {}
 
@@ -47,7 +48,7 @@ export const AddKit: React.FC<AddKitProps> = ({}) => {
         name: "",
         description: "",
         image: "",
-        hectareDay: 0,
+        hectareDay: undefined,
         objects: [],
         employees: [],
         calls: [],
@@ -60,7 +61,7 @@ export const AddKit: React.FC<AddKitProps> = ({}) => {
         }))
         const data = {
             ...values,
-            hectareDay: Number(values.hectareDay),
+            hectareDay: unmaskNumber(String(values.hectareDay)),
             objects: objects,
             employees: employeesIds,
         }
