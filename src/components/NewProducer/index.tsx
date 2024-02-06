@@ -20,6 +20,7 @@ import { FormTillage } from "../../pages/Producer/Panel/NewTillage/FormTillage.t
 import { useProducer } from "../../hooks/useProducer.ts"
 import { Geolocal } from "./Geolocal.tsx"
 import { useUsers } from "../../hooks/useUsers.ts"
+import { useEstadosBrasil } from "../../hooks/useEstadosBrasil.ts"
 
 interface NewProducerProps {}
 
@@ -53,6 +54,7 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
 
     const [producer, setProducer] = useState<User>()
     const [tillage, setTilllage] = useState<Tillage>()
+    const estados = useEstadosBrasil()
 
     useEffect(() => {
         header.setTitle(producer ? `${producer?.name}` : "Novo Cliente")
@@ -96,7 +98,7 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
         const data = {
             ...values,
             username: values.email,
-            password: "2024",
+            password: unmask(values.cpf),
             cpf: unmask(values.cpf),
             phone: unmask(values.phone),
             approved: true,
@@ -107,8 +109,8 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
                 city: values.address.city,
                 cep: unmask(values.address.cep),
                 complement: values.address.adjunct,
-                uf: "AM",
-                // uf: estados.find((estado) => estado.value == values.address.uf)?.value || "",
+                // uf: "AM",
+                uf: estados.find((estado) => estado.value == values.address.uf)?.value || "",
             },
         }
         console.log(data)
@@ -183,10 +185,20 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
 
         const data = {
             ...values,
+            address: {
+                street: infoCep?.logradouro,
+                district: infoCep?.bairro,
+                number: "",
+                city: infoCep?.cidade.nome,
+                cep: unmask(infoCep?.cep || ""),
+                uf: infoCep?.estado.sigla,
+                adjunct: infoCep?.complemento,
+            },
             area: Number(values.area),
             producerId: producer?.producer?.id,
         }
         io.emit("tillage:create", data)
+        console.log(data)
         setLoadingTillage(true)
     }
 
@@ -420,7 +432,7 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
                                                         height: "10vw",
                                                     }}
                                                     onClick={() => {
-                                                        setCurrentStep(1)
+                                                        setCurrentStep(2)
                                                     }}
                                                 >
                                                     Voltar
