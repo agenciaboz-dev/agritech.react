@@ -173,47 +173,64 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                         </p>
                         <hr />
                     </Box>
-                    <Box sx={{ gap: "3vw", justifyContent: "space-between", height: "58%" }}>
-                        <Box sx={{ gap: "3vw", height: "85%" }}>
-                            <Tabs
-                                value={tab}
-                                onChange={changeTab}
-                                textColor="primary"
-                                indicatorColor="primary"
-                                aria-label="tabs"
-                                variant="scrollable"
-                                // scrollButtons="auto"
-                                // allowScrollButtonsMobile
-                            >
-                                <Tab sx={{ ...tabStyle, width: "40%" }} value="operation" label="Dados de Operação" />
-                                <Tab sx={{ ...tabStyle, width: "38%" }} value="treatment" label="Tratamento" />
-                                <Tab sx={{ ...tabStyle, width: "30%" }} value="techReport" label="Laudo Técnico" />
-                                <Tab sx={{ ...tabStyle, width: "35%" }} value="material" label="Insumos" />
-                            </Tabs>
-                            <Box sx={{ height: "max-content", maxHeight: "100%", overflowY: "auto" }}>
-                                {tab === "operation" && (
-                                    <Box sx={{ gap: "4vw" }}>
-                                        <Box sx={{ gap: "2vw" }}>
-                                            <OperationComponent call={callSelect} operation={selectedReport?.operation} />
-                                            <hr />
+
+                    <Box sx={{ gap: "0vw", justifyContent: "space-between", height: "53%" }}>
+                        <Box sx={{ gap: "3vw", height: "100%" }}>
+                            <Box sx={{ gap: "1vw" }}>
+                                {tab === "operation" &&
+                                    selectedReport?.techReport?.flight?.map((item, index) => (
+                                        <Box
+                                            key={index}
+                                            sx={{
+                                                width: "100%",
+                                                flexDirection: "row",
+                                                justifyContent: "space-between",
+                                                gap: "3vw",
+                                            }}
+                                        >
+                                            Voo {index + 1} <p>{item.performance} ha</p>
                                         </Box>
-                                        {selectedReport?.techReport?.flight?.map((item, index) => (
-                                            <Box
-                                                key={index}
-                                                sx={{
-                                                    width: "100%",
-                                                    flexDirection: "row",
-                                                    justifyContent: "space-between",
-                                                }}
-                                            >
-                                                Voo {index + 1} <p>{item.performance} ha</p>
+                                    ))}
+                                <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
+                                    <p style={{ fontWeight: "bold" }}>Custo total: </p>
+                                    <p style={{ justifyContent: "space-between" }}>
+                                        <CurrencyText value={Number(callSelect?.totalPrice)} />
+                                    </p>
+                                </Box>
+                            </Box>
+                            <hr />
+                            <Box sx={{ gap: "1vw", height: "90%" }}>
+                                <Tabs
+                                    value={tab}
+                                    onChange={changeTab}
+                                    textColor="primary"
+                                    indicatorColor="primary"
+                                    aria-label="tabs"
+                                    variant="scrollable"
+                                    // scrollButtons="auto"
+                                    // allowScrollButtonsMobile
+                                >
+                                    <Tab sx={{ ...tabStyle, width: "40%" }} value="operation" label="Dados de Operação" />
+                                    <Tab sx={{ ...tabStyle, width: "38%" }} value="treatment" label="Tratamento" />
+                                    <Tab sx={{ ...tabStyle, width: "30%" }} value="techReport" label="Laudo Técnico" />
+                                    <Tab sx={{ ...tabStyle, width: "35%" }} value="material" label="Insumos" />
+                                </Tabs>
+                                <Box sx={{ height: "max-content", maxHeight: "100%", overflowY: "auto" }}>
+                                    {tab === "operation" && (
+                                        <Box sx={{ gap: "4vw" }}>
+                                            <Box sx={{ gap: "2vw" }}>
+                                                <OperationComponent
+                                                    call={callSelect}
+                                                    operation={selectedReport?.operation}
+                                                />
+                                                <hr />
                                             </Box>
-                                        ))}
-                                    </Box>
-                                )}
-                                {tab === "treatment" && <TreatmentComponent treatment={selectedReport?.treatment} />}
-                                {tab === "techReport" && <TechReportComponent tech={selectedReport?.techReport} />}
-                                {tab === "material" && <MaterialComponent material={selectedReport?.material} />}
+                                        </Box>
+                                    )}
+                                    {tab === "treatment" && <TreatmentComponent treatment={selectedReport?.treatment} />}
+                                    {tab === "techReport" && <TechReportComponent tech={selectedReport?.techReport} />}
+                                    {tab === "material" && <MaterialComponent material={selectedReport?.material} />}
+                                </Box>
                             </Box>
                         </Box>
                         <Box sx={{ gap: "3vw" }}>

@@ -44,12 +44,7 @@ export const OperationComponent: React.FC<OperationComponentProps> = ({ operatio
                         : call?.kit?.employees && call?.kit?.employees[1].user?.name}
                 </p>
             </Box>
-            <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
-                <p style={{ fontWeight: "bold" }}>Custo total: </p>
-                <p style={{ justifyContent: "space-between" }}>
-                    <CurrencyText value={Number(call?.totalPrice)} />
-                </p>
-            </Box>
+          
         </Box>
     )
 }

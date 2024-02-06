@@ -10,7 +10,6 @@ export const TreatmentComponent: React.FC<TreatmentComponentProps> = ({ treatmen
     return (
         <Box sx={{ gap: "3vw" }}>
             <Box sx={{ gap: "3vw", p: "2vw" }}>
-                <TitleComponents title="Tratamento" />
                 <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
                     <p style={{ fontWeight: "bold" }}>Produtos</p>
                     <p style={{ fontWeight: "bold" }}>Dose/HA</p>

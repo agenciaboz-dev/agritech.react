@@ -18,12 +18,9 @@ export const MaterialComponent: React.FC<MaterialComponentProps> = ({ material }
     }
     return (
         <Box sx={{ gap: "3vw" }}>
-            <Box sx={{ gap: "3vw", p: "2vw" }}>
-                <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
-                    <p style={{ fontWeight: "bold", fontSize: "3.5vw" }}>Laudo Técnico</p>
-                </Box>
+            <Box sx={{ gap: "2vw", p: "0 2vw" }}>
+                <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}></Box>
                 <Box sx={{ height: "100%", overflowY: "auto" }}>
-                    <TitleComponents title="Insumos" />
                     {material?.map((item, index) => (
                         <Accordion
                             elevation={0}
@@ -32,7 +29,7 @@ export const MaterialComponent: React.FC<MaterialComponentProps> = ({ material }
                             onChange={expandendChange(String(index))}
                         >
                             <AccordionSummary aria-controls="panel1-content" id="panel1-header">
-                                <Typography>Voo {index + 1}</Typography>
+                                <Typography>Insumo {index + 1}</Typography>
                             </AccordionSummary>
                             <AccordionDetails>
                                 <Box key={index}>
@@ -46,11 +43,11 @@ export const MaterialComponent: React.FC<MaterialComponentProps> = ({ material }
                                     </Box>
                                     <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
                                         <p>Produto</p>
-                                        <p>{item.product} ha</p>
+                                        <p>{item.product} </p>
                                     </Box>
                                     <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
                                         <p>Dose/ha</p>
-                                        <p>{item.dosage}</p>
+                                        <p>{item.dosage}L</p>
                                     </Box>
                                     <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
                                         <p>Classificação</p>

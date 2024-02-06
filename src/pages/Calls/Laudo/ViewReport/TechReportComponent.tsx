@@ -19,11 +19,7 @@ export const TechReportComponent: React.FC<TechReportComponentProps> = ({ tech }
     return (
         <Box sx={{ gap: "3vw" }}>
             <Box sx={{ gap: "3vw", p: "2vw" }}>
-                <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
-                    <p style={{ fontWeight: "bold", fontSize: "3.5vw" }}>Laudo Técnico</p>
-                </Box>
-                <Box sx={{ height: "100%", overflowY: "auto" }}>
-                    <TitleComponents title="Voos" />
+                <Box sx={{ maxheight: "90%", height: "100%", overflowY: "auto" }}>
                     {tech?.flight?.map((item, index) => (
                         <Accordion
                             elevation={0}
