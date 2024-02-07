@@ -55,12 +55,13 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
         name: "",
         area: "",
         ceo: "",
-        owner: user?.name || " ", //corrigir para o nome do Cliente
+        owner: user?.name || "", //corrigir para o nome do Cliente
         manager: "",
         agronomist: "",
         technician: "",
         pilot: "",
         comments: "",
+        hectarePrice: "",
         others: "",
         address: {
             street: "",
@@ -80,9 +81,10 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
         console.log({ enviados: values })
 
         const data = {
+            ...values,
             address: {
-                street: infoCep?.logradouro,
-                district: infoCep?.bairro,
+                street: infoCep?.logradouro || "",
+                district: infoCep?.bairro || "",
                 number: "",
                 city: infoCep?.cidade.nome,
                 cep: unmask(infoCep?.cep || ""),
@@ -90,8 +92,9 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
                 adjunct: infoCep?.complemento,
             },
             area: unmaskNumber(values.area),
+            hectarePrice: unmaskNumber(values.hectarePrice || 0),
         }
-        io.emit("tillage:create", values)
+        io.emit("tillage:create", data)
         console.log(data)
         setLoadingTillage(true)
     }

@@ -119,7 +119,9 @@ export const FormTillage: React.FC<FormTillageProps> = ({ data, change, addressA
                 <Tab sx={tabStyle} value="additional" label="Adicionais" />
                 <Tab sx={tabStyle} value="gallery" label="Imagens" />
             </Tabs>
-            {tab === "team" && <Team data={data} handleChange={change} producerName={producerUser?.name} />}
+            {tab === "team" && (
+                <Team data={data} handleChange={change} producerName={user?.producer ? user.name : producerUser?.name} />
+            )}
             {tab === "additional" && <Additional data={data} handleChange={change} />}
             {tab === "gallery" && (
                 <Box sx={{ width: "100%", height: "52%", gap: "3vw" }}>

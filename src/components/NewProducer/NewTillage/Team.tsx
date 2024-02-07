@@ -15,10 +15,10 @@ export const Team: React.FC<TeamProps> = ({ data, handleChange, producerName }) 
             <TextField
                 label={"Proprietário"}
                 name="owner"
-                value={producerName}
+                value={data.owner}
                 sx={textField}
+                InputProps={{ readOnly: true }}
                 // onChange={handleChange}
-                required
             />
             <TextField label={"CEO"} name="ceo" value={data.ceo} sx={textField} onChange={handleChange} />
             <TextField

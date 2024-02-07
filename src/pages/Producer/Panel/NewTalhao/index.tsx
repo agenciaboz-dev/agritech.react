@@ -68,7 +68,7 @@ export const NewTalhao: React.FC<NewTalhaoProps> = ({}) => {
             location: values.location,
             tillageId: values.tillageId,
         }
-        io.emit("talhao:create", values)
+        io.emit("talhao:create", data)
         console.log(data)
         setLoadingTalhao(true)
     }

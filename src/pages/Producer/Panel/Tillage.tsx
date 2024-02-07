@@ -27,6 +27,7 @@ export const Tillage: React.FC<TillageProps> = ({}) => {
     const io = useIo()
     const header = useHeader()
     const navigate = useNavigate()
+    const { listTillages } = useProducer()
 
     const { user } = useUser()
     const { tillageid } = useParams()
@@ -37,8 +38,8 @@ export const Tillage: React.FC<TillageProps> = ({}) => {
     const [loading, setLoading] = useState(false)
     const [variant, setVariant] = useState(false)
 
-    const findTillage = user?.producer?.tillage?.find((item) => item.id === Number(tillageid))
-
+    const findTillage = listTillages.find((item) => item.id === Number(tillageid))
+    console.log(findTillage)
     const [tab, setTab] = React.useState("calls")
     const changeTab = (event: React.SyntheticEvent, newValue: string) => {
         setTab(newValue)
@@ -59,7 +60,7 @@ export const Tillage: React.FC<TillageProps> = ({}) => {
     }
 
     useEffect(() => {
-        header.setTitle((findTillage && findTillage?.name) || "")
+        header.setTitle(findTillage ? findTillage?.name : "")
     }, [])
 
     return (
@@ -124,7 +125,7 @@ export const Tillage: React.FC<TillageProps> = ({}) => {
                         Detalhes
                     </p> */}
                 </Box>
-                {findTillage?.talhao && (
+                {findTillage?.talhao?.length !== 0 ? (
                     <Box sx={{ flexDirection: "row", gap: "2vw", width: "100%", overflow: "auto", p: "0vw 4vw 8vw" }}>
                         {findTillage?.talhao &&
                             findTillage.talhao.map((item, index) => (
@@ -148,6 +149,10 @@ export const Tillage: React.FC<TillageProps> = ({}) => {
                                 </Box>
                             ))}
                     </Box>
+                ) : (
+                    <Box sx={{ p: "2vw 4vw 8vw" }}>
+                        <p style={{ fontSize: "4vw", color: colors.text.white }}>Nenhum talhão cadastrado.</p>
+                    </Box>
                 )}
                 <Box
                     style={{
@@ -163,113 +168,122 @@ export const Tillage: React.FC<TillageProps> = ({}) => {
                     }}
                 >
                     <WeatherComponent />
-                    <Tabs
-                        value={tab}
-                        onChange={changeTab}
-                        textColor="primary"
-                        indicatorColor="primary"
-                        aria-label="tabs"
-                        variant="scrollable"
-                        scrollButtons="auto"
-                        allowScrollButtonsMobile
-                    >
-                        <Tab sx={{ ...tabStyle, width: "50%" }} value="history" label="Histórico" />
-                        <Tab sx={{ ...tabStyle, width: "50%" }} value="calls" label="Chamados" />
-                    </Tabs>
-                    {/* {tab === "calls" && (!call || !callStatus) && (
-                        <OpenCallBox
-                            click={user?.isAdmin && callStatus ? handleOpenApprove : handleClickOpen}
-                            data={content}
-                            callStatus={callStatus}
-                            call={call}
+                    {selectedAvatar === 0 && findTillage?.talhao?.length !== 0 ? (
+                        <p>Selecione um talhão</p>
+                    ) : (
+                        <>
+                            <Tabs
+                                value={tab}
+                                onChange={changeTab}
+                                textColor="primary"
+                                indicatorColor="primary"
+                                aria-label="tabs"
+                                variant="scrollable"
+                                scrollButtons="auto"
+                                allowScrollButtonsMobile
+                            >
+                                <Tab sx={{ ...tabStyle, width: "50%" }} value="history" label="Histórico" />
+                                <Tab sx={{ ...tabStyle, width: "50%" }} value="calls" label="Chamados" />
+                            </Tabs>
+                            {/* {tab === "calls" && (!call || !callStatus) && (
+                            <OpenCallBox
+                                click={user?.isAdmin && callStatus ? handleOpenApprove : handleClickOpen}
+                                data={content}
+                                callStatus={callStatus}
+                                call={call}
+                                user={user}
+                            />
+                        )} */}
+                            {/* {tab === "calls" && !call?.report && call?.approved && (
+                            <ProgressCall
+                                user={user}
+                                click={() =>
+                                    navigate(
+                                        user?.producer !== null
+                                            ? `/producer/call/${call?.id}`
+                                            : call?.stages.length === 3
+                                            ? user.isAdmin
+                                                ? `/adm/call/${call?.id}/laudo`
+                                                : `/employee/call/${call?.id}/laudo`
+                                            : user.isAdmin
+                                            ? `/adm/call/${call?.id}/report`
+                                            : `/employee/call/${call?.id}/report`
+                                    )
+                                }
+                                data={progress}
+                                call={call}
+                                tillage={tillageSelectProd}
+                            />
+                        )} */}
+                            {findTillage?.talhao?.length === 0 && tab === "calls" && (
+                                <p>É necessário ter talhões cadastrados para abrir chamados.</p>
+                            )}
+                            {tab === "history" && <p>Nenhum Registro</p>}
+                            {tab === "calls" && !findTillage?.talhao && (
+                                <p style={{ padding: "2vw" }}>Não existe nenhum talhão cadastrado.</p>
+                            )}
+                            {/* {tab === "calls" && call?.report && (
+                            <LaudoCall
+                                user={user}
+                                click={() =>
+                                    navigate(
+                                        user?.isAdmin
+                                            ? `/adm/call/${call?.id}/report/${call?.report?.id}`
+                                            : `/employee/call/${call?.id}/report/${call.report?.id}`
+                                    )
+                                }
+                                data={progress}
+                                call={call}
+                                tillage={tillageSelectProd}
+                            />
+                        )} */}
+                            {/* <DialogConfirm
                             user={user}
-                        />
-                    )} */}
-                    {/* {tab === "calls" && !call?.report && call?.approved && (
-                        <ProgressCall
-                            user={user}
-                            click={() =>
-                                navigate(
-                                    user?.producer !== null
-                                        ? `/producer/call/${call?.id}`
-                                        : call?.stages.length === 3
-                                        ? user.isAdmin
-                                            ? `/adm/call/${call?.id}/laudo`
-                                            : `/employee/call/${call?.id}/laudo`
-                                        : user.isAdmin
-                                        ? `/adm/call/${call?.id}/report`
-                                        : `/employee/call/${call?.id}/report`
-                                )
-                            }
-                            data={progress}
-                            call={call}
-                            tillage={tillageSelectProd}
-                        />
-                    )} */}
-                    {tab === "history" && <p>Nenhum Registro</p>}
-                    {tab === "calls" && !findTillage?.talhao && (
-                        <p style={{ padding: "2vw" }}>Não existe nenhum talhão cadastrado.</p>
-                    )}
-                    {/* {tab === "calls" && call?.report && (
-                        <LaudoCall
-                            user={user}
-                            click={() =>
-                                navigate(
-                                    user?.isAdmin
-                                        ? `/adm/call/${call?.id}/report/${call?.report?.id}`
-                                        : `/employee/call/${call?.id}/report/${call.report?.id}`
-                                )
-                            }
-                            data={progress}
-                            call={call}
-                            tillage={tillageSelectProd}
-                        />
-                    )} */}
-                    {/* <DialogConfirm
-                        user={user}
-                        open={open}
-                        setOpen={setOpen}
-                        data={openCall}
-                        click={() => {
-                            setVariant(true)
-                            setOpen(false)
-                            handleSubmit(initialValues)
-                        }}
-                    />
-                    {user?.isAdmin && (
-                        <DialogConfirm
-                            user={user}
-                            open={openApproved}
-                            setOpen={setOpenApproved}
-                            data={approveCall}
+                            open={open}
+                            setOpen={setOpen}
+                            data={openCall}
                             click={() => {
                                 setVariant(true)
-                                setOpenApproved(false)
-                                navigate(`/adm/calls/${call?.id}`)
+                                setOpen(false)
+                                handleSubmit(initialValues)
                             }}
                         />
+                        {user?.isAdmin && (
+                            <DialogConfirm
+                                user={user}
+                                open={openApproved}
+                                setOpen={setOpenApproved}
+                                data={approveCall}
+                                click={() => {
+                                    setVariant(true)
+                                    setOpenApproved(false)
+                                    navigate(`/adm/calls/${call?.id}`)
+                                }}
+                            />
+                        )}
+                        {tab === "calls" && call && (
+                            <Box sx={{ height: "50%", overflowY: "auto", p: "2vw" }}>
+                                <LogsCard call={call} talhao={selectedAvatar} />
+                                <LogsCard call={call} talhao={selectedAvatar} />
+                                <LogsCard call={call} talhao={selectedAvatar} />
+                            </Box>
+                        )} */}
+                            <IconButton
+                                sx={{
+                                    bgcolor: colors.button,
+                                    width: "12vw",
+                                    height: "12vw",
+                                    borderRadius: "10vw",
+                                    position: "absolute",
+                                    bottom: "26vw",
+                                    right: "8vw",
+                                }}
+                                onClick={() => navigate(`/producer/${findTillage?.id}/new_Talhao`)}
+                            >
+                                <PiPlant color={"#fff"} sx={{ width: "6vw", height: "6vw" }} />
+                            </IconButton>
+                        </>
                     )}
-                    {tab === "calls" && call && (
-                        <Box sx={{ height: "50%", overflowY: "auto", p: "2vw" }}>
-                            <LogsCard call={call} talhao={selectedAvatar} />
-                            <LogsCard call={call} talhao={selectedAvatar} />
-                            <LogsCard call={call} talhao={selectedAvatar} />
-                        </Box>
-                    )} */}
-                    <IconButton
-                        sx={{
-                            bgcolor: colors.button,
-                            width: "12vw",
-                            height: "12vw",
-                            borderRadius: "10vw",
-                            position: "absolute",
-                            bottom: "26vw",
-                            right: "8vw",
-                        }}
-                        onClick={() => navigate(`/producer/${findTillage?.id}/new_Talhao`)}
-                    >
-                        <PiPlant color={"#fff"} sx={{ width: "6vw", height: "6vw" }} />
-                    </IconButton>
                 </Box>
             </Box>
         </Box>

@@ -14,6 +14,7 @@ declare interface NewLavoura {
     address: Address
     location?: NewCoordinate[]
     gallery?: Gallery[]
+    hectarePrice?: string
 
     call?: Call
     producerId?: number
