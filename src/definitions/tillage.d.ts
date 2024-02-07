@@ -13,7 +13,7 @@ declare interface Tillage {
     address: Address
     location?: NewCoordinate[]
     gallery?: Gallery[]
-
+    hectarePrice: string
     talhao?: Talhao[]
 
     call?: Call

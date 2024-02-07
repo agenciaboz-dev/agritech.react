@@ -4,7 +4,7 @@ import { colors } from "../../style/colors"
 import { Header } from "../../components/Header"
 import { useHeader } from "../../hooks/useHeader"
 import { TitleComponents } from "../../components/TitleComponents"
-import { Form, Formik } from "formik"
+import { Form, Formik, useFormik } from "formik"
 import { Call, CreateCall } from "../../definitions/call"
 import { textField } from "../../style/input"
 import listProducers from "../../hooks/listProducers"
@@ -21,9 +21,12 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider"
 import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker"
 import { ptBR } from "@mui/x-date-pickers/locales"
-import { useCurrencyMask, useNumberMask } from "burgos-masks"
+import { useCurrencyMask } from "burgos-masks"
 import MaskedInputNando from "../../components/MaskedNando"
 import { unmaskCurrency } from "../../hooks/unmaskNumber"
+import { CurrencyText } from "../../components/CurrencyText"
+import { Test } from "./Test"
+import { useUsers } from "../../hooks/useUsers"
 
 interface NewCallProps {
     user: User
@@ -34,18 +37,17 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
     const header = useHeader()
     const account = useUser()
     const navigate = useNavigate()
+    const { listUsers } = useUsers()
     const { snackbar } = useSnackbar()
     const { listKits } = useKits()
-    const { allCalls } = useCall()
     const { listTillages } = useProducer()
     const { addCall, addCallPending, addCallApprove } = useCall()
 
     const [loading, setLoading] = useState(false)
-    const [producerId, setProducerId] = useState<number | null>(null)
+    const [selectedProducer, setSelectedProducer] = useState<Producer | null>(null)
     const [tillageId, setTillageId] = useState<number | null>(null)
     const [talhaoId, setTalhaoId] = useState<number | null>(null)
-    const [inputValue, setInputValue] = useState("")
-    const [tillageValue, setTillageValue] = useState("")
+
     const [kitValue, setKitValue] = useState("")
     const [pickDate, setPickDate] = useState(null)
 
@@ -57,12 +59,6 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
             name: tillage.name,
             call: tillage.call,
         })) || []
-    )
-
-    const callTillage = allCalls.find((item) =>
-        account.user?.producer
-            ? item.producerId === user?.producer?.id && item.tillageId === tillageId
-            : item.producerId === producerId && item.tillageId === tillageId
     )
 
     useEffect(() => {
@@ -82,22 +78,23 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
             name: item.name,
         })) || []
 
-    const producers =
-        listProducers()?.map((item) => ({
-            id: item.producer?.id || 0,
-            name: item.name,
-        })) || []
+    const [producers, setProducers] = useState(
+        listUsers?.map((user) => user.producer).filter((item) => !!item) as Producer[]
+    )
+
+    useEffect(() => {
+        console.log(producers)
+    }, [producers])
 
     const [tillages, setTillages] = useState<{ id: number; name: string }[]>([])
     const [talhoes, setTalhoes] = useState<{ id: number; name: string }[]>([])
-    const producerSelect = listProducers()?.find((item) => item.producer?.id === producerId)
-    const [hectare, setHectare] = useState<string>("")
-    const tillageSelect = tillages?.find((item) => item.id === tillageId)
 
+    const findTillageInfo = selectedProducer?.tillage?.find((item) => item.id === tillageId)
+    const talhaoSelect = findTillageInfo?.talhao?.find((item) => item.id === talhaoId)
     useEffect(() => {
         console.log(
-            producerSelect?.producer?.tillage?.length !== 0
-                ? producerSelect?.producer?.tillage?.map((tillage) => ({
+            selectedProducer?.tillage?.length !== 0
+                ? selectedProducer?.tillage?.map((tillage) => ({
                       id: tillage.id,
                       name: tillage.name,
                       call: tillage.call,
@@ -105,7 +102,7 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                 : undefined
         )
         setTillages(
-            producerSelect?.producer?.tillage?.map((tillage) => ({
+            selectedProducer?.tillage?.map((tillage) => ({
                 id: tillage.id,
                 name: tillage.name,
                 call: tillage.call,
@@ -113,7 +110,7 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
         )
 
         setTalhoes(
-            producerSelect?.producer?.tillage
+            selectedProducer?.tillage
                 ?.find((item) => item.id === tillageId)
                 ?.talhao?.map((item) => ({
                     id: item.id,
@@ -121,29 +118,46 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                     call: item.calls,
                 })) || []
         )
-    }, [producerId, tillageId])
+    }, [selectedProducer, tillageId])
 
     useEffect(() => {
-        setHectare(producerSelect?.producer?.hectarePrice || "")
-    }, [producerSelect])
+        console.log(findTillageInfo)
+    }, [findTillageInfo])
+    // useEffect(() => {
+    //     setHectare(producerSelect?.producer?.hectarePrice || "")
+    // }, [producerSelect])
 
     //Open Call
-    const initialValues: CreateCall = {
-        approved: user.isAdmin ? true : false,
-        open: new Date().toLocaleDateString("pt-br"),
-        comments: "",
-        producerId: user.producer ? user.producer.id || 0 : 0,
-        talhaoId: talhaoId || 0,
-        kitId: undefined,
-        userId: Number(account?.user?.id),
-        hectarePrice: hectare,
-        forecast: "",
-    }
+
+    const formik = useFormik<CreateCall>({
+        initialValues: {
+            approved: user.isAdmin ? true : false,
+            open: "",
+            comments: "",
+            producerId: selectedProducer?.id || 0,
+
+            talhaoId: talhaoId || 0,
+            kitId: undefined,
+            userId: Number(account?.user?.id),
+            hectarePrice: findTillageInfo?.hectarePrice.toString().replace(".", ",") || "",
+            forecast: "",
+        },
+        onSubmit: (values) => {
+            handleSubmit(values)
+        },
+        enableReinitialize: true,
+    })
 
     const handleSubmit = (values: CreateCall) => {
         console.log(values)
         const data = {
-            ...values,
+            approved: user.isAdmin ? true : false,
+            open: new Date().getTime().toString(),
+            comments: "",
+            producerId: user.producer ? user.producer.id : selectedProducer?.id,
+            talhaoId: talhaoId || 0,
+            userId: Number(account?.user?.id),
+            kitId: values.kitId,
             forecast: dayjs(pickDate).valueOf().toString(),
             hectarePrice: unmaskCurrency(values.hectarePrice),
         }
@@ -154,7 +168,7 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
 
     useEffect(() => {
         io.on(user.isAdmin ? "adminCall:creation:success" : "call:creation:success", (data: Call) => {
-            console.log({ chamadoAberto: data })
+            // console.log({ chamadoAberto: data })
             addCall(data)
             {
                 !data.approved ? addCallPending(data) : addCallApprove(data)
@@ -185,6 +199,14 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
     useEffect(() => {
         header.setTitle("Painel")
     }, [])
+
+    useEffect(() => {
+        console.log(formik.values)
+    }, [formik.values])
+
+    useEffect(() => {
+        formik.setFieldValue("producerId", selectedProducer?.id || 0)
+    }, [selectedProducer])
 
     return (
         <Box
@@ -225,83 +247,81 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                 <TitleComponents
                     title="Novo Chamado"
                     style={{ fontSize: "5vw" }}
-                    button={user?.employee && producerId ? true : false}
+                    button={user?.employee && selectedProducer?.id ? true : false}
                     click={() =>
-                        producerId &&
-                        navigate(user.isAdmin ? `/adm/producer/${producerId}` : `/employee/producer/${producerId}`)
+                        selectedProducer?.id &&
+                        navigate(
+                            user.isAdmin
+                                ? `/adm/producer/${selectedProducer?.id}`
+                                : `/employee/producer/${selectedProducer?.id}`
+                        )
                     }
                     textButton="Acessar Cliente"
                     variant
                 />
-                <Formik initialValues={initialValues} onSubmit={handleSubmit}>
-                    {({ values, handleChange, setFieldValue }) => (
-                        <Box sx={{ gap: "4vw" }}>
-                            <Form>
-                                <LocalizationProvider
-                                    dateAdapter={AdapterDayjs}
-                                    localeText={ptBR.components.MuiLocalizationProvider.defaultProps.localeText}
-                                >
-                                    <DemoContainer components={["MobileDatePicker"]}>
-                                        <DemoItem label="Previsão da visita">
-                                            <MobileDatePicker
-                                                sx={{ ...textField }}
-                                                format="D/M/YYYY"
-                                                value={pickDate}
-                                                onChange={(newDate) => setPickDate(newDate)}
-                                                timezone="system"
-                                            />
-                                        </DemoItem>
-                                    </DemoContainer>
-                                </LocalizationProvider>
+                <form onSubmit={formik.handleSubmit}>
+                    <Box sx={{ gap: "4vw" }}>
+                        <LocalizationProvider
+                            dateAdapter={AdapterDayjs}
+                            localeText={ptBR.components.MuiLocalizationProvider.defaultProps.localeText}
+                        >
+                            <DemoContainer components={["MobileDatePicker"]}>
+                                <DemoItem label="Previsão da visita">
+                                    <MobileDatePicker
+                                        sx={{ ...textField }}
+                                        format="D/M/YYYY"
+                                        value={pickDate}
+                                        onChange={(newDate) => setPickDate(newDate)}
+                                        timezone="system"
+                                    />
+                                </DemoItem>
+                            </DemoContainer>
+                        </LocalizationProvider>
 
-                                {user.employee && (
-                                    <>
-                                        <Autocomplete
-                                            value={producers.find((prod) => prod.id === values.producerId) || null}
-                                            options={producers || []}
-                                            getOptionLabel={(option: { id: number; name: string }) => option.name}
-                                            // inputValue={inputValue}
-                                            onChange={(event, selected) => {
-                                                if (selected) {
-                                                    setFieldValue("producerId", selected.id)
-                                                    setProducerId(selected.id)
-                                                }
-                                            }}
-                                            renderInput={(params) => (
-                                                <TextField {...params} sx={{ ...textField }} label="Cliente" required />
-                                            )}
-                                        />
-                                        <Autocomplete
-                                            value={tillages.find((item) => item.id === tillageId) || null}
-                                            options={tillages || []}
-                                            getOptionLabel={(option: { id: number; name: string }) => option.name}
-                                            onChange={(event, selected) => {
-                                                if (selected) {
-                                                    setFieldValue("tillageId", selected.id)
-                                                    setTillageId(selected.id)
-                                                }
-                                            }}
-                                            renderInput={(params) => (
-                                                <TextField {...params} sx={{ ...textField }} label="Fazenda" required />
-                                            )}
-                                        />
-                                        <Autocomplete
-                                            value={talhoes.find((talhao) => talhao.id === values.talhaoId) || null}
-                                            options={talhoes || []}
-                                            getOptionLabel={(option: { id: number; name: string }) => option.name}
-                                            onChange={(event, selected) => {
-                                                if (selected) {
-                                                    setFieldValue("talhaoId", selected.id)
-                                                    setTalhaoId(selected.id)
-                                                }
-                                            }}
-                                            renderInput={(params) => (
-                                                <TextField {...params} sx={{ ...textField }} label="Talhao" required />
-                                            )}
-                                        />
-                                    </>
-                                )}
-                                {/* {user.producer && (
+                        {user.employee && (
+                            <>
+                                <Autocomplete
+                                    value={selectedProducer}
+                                    options={producers || []}
+                                    getOptionLabel={(option) => option.user?.name || ""}
+                                    // inputValue={inputValue}
+                                    onChange={(event, selected) => setSelectedProducer(selected)}
+                                    isOptionEqualToValue={(option, value) => option.id == value.id}
+                                    renderInput={(params) => (
+                                        <TextField {...params} sx={{ ...textField }} label="Cliente" required />
+                                    )}
+                                />
+                                <Autocomplete
+                                    value={tillages.find((item) => item.id === tillageId) || null}
+                                    options={tillages || []}
+                                    getOptionLabel={(option: { id: number; name: string }) => option.name}
+                                    onChange={(event, selected) => {
+                                        if (selected) {
+                                            formik.setFieldValue("tillageId", selected.id)
+                                            setTillageId(selected.id)
+                                        }
+                                    }}
+                                    renderInput={(params) => (
+                                        <TextField {...params} sx={{ ...textField }} label="Fazenda" required />
+                                    )}
+                                />
+                                <Autocomplete
+                                    value={talhoes.find((talhao) => talhao.id === formik.values.talhaoId) || null}
+                                    options={talhoes || []}
+                                    getOptionLabel={(option: { id: number; name: string }) => option.name}
+                                    onChange={(event, selected) => {
+                                        if (selected) {
+                                            formik.setFieldValue("talhaoId", selected.id)
+                                            setTalhaoId(selected.id)
+                                        }
+                                    }}
+                                    renderInput={(params) => (
+                                        <TextField {...params} sx={{ ...textField }} label="Talhao" required />
+                                    )}
+                                />
+                            </>
+                        )}
+                        {/* {user.producer && (
                                     <>
                                         <Autocomplete
                                             value={
@@ -400,102 +420,85 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                                     </>
                                 )} */}
 
-                                {user.isAdmin && (
-                                    <Box gap="4vw">
-                                        <Autocomplete
-                                            value={kits.find((kit) => kit.id === values.kitId) || null}
-                                            getOptionLabel={(option: { id: number; name: string }) => option.name}
-                                            options={kits || []}
-                                            onChange={(event, selected) => {
-                                                if (selected) {
-                                                    setFieldValue("kitId", selected.id)
-                                                    setKitValue(selected.name)
-                                                }
-                                            }}
-                                            renderInput={(params) => (
-                                                <TextField {...params} sx={{ ...textField }} label="Kit" required />
-                                            )}
-                                        />
-
-                                        <TextField
-                                            label={"Custo por hectare"}
-                                            name="hectarePrice"
-                                            value={values.hectarePrice}
-                                            sx={textField}
-                                            onChange={handleChange}
-                                            required
-                                            InputProps={{
-                                                //@ts-ignore
-                                                inputComponent: MaskedInputNando,
-                                                inputProps: {
-                                                    mask: useCurrencyMask({ decimalLimit: 6 }),
-                                                    inputMode: "numeric",
-                                                },
-                                            }}
-                                        />
-                                    </Box>
-                                )}
-
-                                <TextField
-                                    multiline
-                                    label="Observações"
-                                    name="comments"
-                                    value={values.comments}
-                                    minRows={5}
-                                    maxRows={15}
-                                    sx={{
-                                        ...textField,
+                        {user.isAdmin && (
+                            <Box gap="4vw">
+                                <Autocomplete
+                                    value={kits.find((kit) => kit.id === formik.values.kitId) || null}
+                                    getOptionLabel={(option: { id: number; name: string }) => option.name}
+                                    options={kits || []}
+                                    onChange={(event, selected) => {
+                                        if (selected) {
+                                            formik.setFieldValue("kitId", selected.id)
+                                            setKitValue(selected.name)
+                                        }
                                     }}
-                                    onChange={handleChange}
-                                    InputProps={{
-                                        sx: {
-                                            "& .MuiOutlinedInput-root": {
-                                                "&.Mui-focused fieldset": {
-                                                    borderColor: colors.secondary,
-                                                },
-                                                fieldset: {
-                                                    borderColor: "#232323",
-                                                },
-                                            },
-                                        },
-                                    }}
+                                    renderInput={(params) => (
+                                        <TextField {...params} sx={{ ...textField }} label="Kit" required />
+                                    )}
                                 />
-                                {user.producer && tillagesProducer.length !== 0 && (
-                                    <Button
-                                        variant="contained"
-                                        type="submit"
-                                        sx={{
-                                            fontSize: 17,
-                                            color: colors.text.white,
-                                            width: "100%",
-                                            backgroundColor: colors.button,
-                                            borderRadius: "5vw",
-                                            textTransform: "none",
-                                        }}
-                                    >
-                                        {loading ? <CircularProgress sx={{ color: "#fff" }} /> : "Abrir Chamado"}
-                                    </Button>
-                                )}
-                                {user.employee && tillages.length !== 0 && (
-                                    <Button
-                                        variant="contained"
-                                        type="submit"
-                                        sx={{
-                                            fontSize: 17,
-                                            color: colors.text.white,
-                                            width: "100%",
-                                            backgroundColor: colors.button,
-                                            borderRadius: "5vw",
-                                            textTransform: "none",
-                                        }}
-                                    >
-                                        {loading ? <CircularProgress sx={{ color: "#fff" }} /> : "Abrir Chamado"}
-                                    </Button>
-                                )}
-                            </Form>
-                        </Box>
-                    )}
-                </Formik>
+
+                                <Test handleChange={formik.handleChange} values={formik.values} />
+                            </Box>
+                        )}
+
+                        <TextField
+                            multiline
+                            label="Observações"
+                            name="comments"
+                            value={formik.values.comments}
+                            minRows={5}
+                            maxRows={15}
+                            sx={{
+                                ...textField,
+                            }}
+                            onChange={formik.handleChange}
+                            InputProps={{
+                                sx: {
+                                    "& .MuiOutlinedInput-root": {
+                                        "&.Mui-focused fieldset": {
+                                            borderColor: colors.secondary,
+                                        },
+                                        fieldset: {
+                                            borderColor: "#232323",
+                                        },
+                                    },
+                                },
+                            }}
+                        />
+                        {user.producer && tillagesProducer.length !== 0 && (
+                            <Button
+                                variant="contained"
+                                type="submit"
+                                sx={{
+                                    fontSize: 17,
+                                    color: colors.text.white,
+                                    width: "100%",
+                                    backgroundColor: colors.button,
+                                    borderRadius: "5vw",
+                                    textTransform: "none",
+                                }}
+                            >
+                                {loading ? <CircularProgress sx={{ color: "#fff" }} /> : "Abrir Chamado"}
+                            </Button>
+                        )}
+                        {user.employee && tillages.length !== 0 && (
+                            <Button
+                                variant="contained"
+                                type="submit"
+                                sx={{
+                                    fontSize: 17,
+                                    color: colors.text.white,
+                                    width: "100%",
+                                    backgroundColor: colors.button,
+                                    borderRadius: "5vw",
+                                    textTransform: "none",
+                                }}
+                            >
+                                {loading ? <CircularProgress sx={{ color: "#fff" }} /> : "Abrir Chamado"}
+                            </Button>
+                        )}
+                    </Box>
+                </form>
             </Box>
         </Box>
     )

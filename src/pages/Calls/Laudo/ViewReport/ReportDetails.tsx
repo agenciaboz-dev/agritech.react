@@ -165,7 +165,7 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                     <Box sx={{ gap: "2vw" }}>
                         <p>
                             <span style={{ fontWeight: "bold" }}>Custo por hectare: </span>
-                            <CurrencyText value={Number(callSelect?.producer?.hectarePrice)} />
+                            <CurrencyText value={Number(callSelect?.talhao?.tillage?.hecatrePrice)} />
                         </p>
                         <p>
                             <span style={{ fontWeight: "bold" }}>Área Trabalhada no dia:</span>{" "}

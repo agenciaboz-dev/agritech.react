@@ -2,7 +2,7 @@ import React, { createContext, useState, useEffect, ReactNode } from "react"
 import { useIo } from "../hooks/useIo"
 
 interface UsersContextType {
-    listUsers: User[] | undefined
+    listUsers: User[]
     pendingUsers: User[]
     addUser: (value: User) => void
     setPendingUsers: React.Dispatch<React.SetStateAction<User[]>>
@@ -22,8 +22,6 @@ export const UsersProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     }
 
     useEffect(() => {
-        io.emit("users:list")
-
         const updateListUsers = (updatedList: any) => {
             setListUsers(updatedList)
         }
@@ -48,6 +46,7 @@ export const UsersProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 
     useEffect(() => {
         io.emit("user:pendingApproval")
+        io.emit("users:list")
 
         // Atualiza a lista completa de usuários pendentes
         const handleUpdatePendingList = (updatedList: any) => {
