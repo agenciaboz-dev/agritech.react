@@ -32,6 +32,7 @@ import { useKits } from "../../hooks/useKits"
 import { unmaskCurrency } from "../../hooks/unmaskNumber"
 import { useCurrencyMask } from "burgos-masks"
 import MaskedInputNando from "../../components/MaskedNando"
+import { CurrencyText } from "../../components/CurrencyText"
 
 interface TillageDetailsProps {}
 
@@ -395,38 +396,33 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                                                 </DemoItem>
                                             </DemoContainer>
                                         </LocalizationProvider>
-                                        <TextField
-                                            label={"Custo por hectare"}
-                                            name="hectarePrice"
-                                            value={pickHectarePrice || ""}
-                                            sx={{ ...textField, ...input }}
-                                            onChange={(e) => setPickHectarePrice(e.target.value)}
-                                            required
-                                            InputProps={{
-                                                inputComponent: MaskedInputNando,
-                                                inputProps: {
-                                                    mask: useCurrencyMask({ decimalLimit: 6 }),
-                                                    inputMode: "numeric",
-                                                },
-                                            }}
-                                        />
+
                                         {user?.isAdmin && (
-                                            <Autocomplete
-                                                value={selectedKit}
-                                                getOptionLabel={(option) => option.name}
-                                                options={kits || []}
-                                                onChange={handleKitChange}
-                                                isOptionEqualToValue={getOptionSelected}
-                                                renderInput={(params) => (
-                                                    <TextField
-                                                        {...params}
-                                                        label="Kit"
-                                                        value={kitValue}
-                                                        onChange={(e) => setKitValue(e.target.value)}
-                                                        sx={{ ...textField, ...input }}
-                                                    />
-                                                )}
-                                            />
+                                            <Box sx={{ gap: "2vw" }}>
+                                                <Autocomplete
+                                                    value={selectedKit}
+                                                    getOptionLabel={(option) => option.name}
+                                                    options={kits || []}
+                                                    onChange={handleKitChange}
+                                                    isOptionEqualToValue={getOptionSelected}
+                                                    renderInput={(params) => (
+                                                        <TextField
+                                                            {...params}
+                                                            label="Kit"
+                                                            value={kitValue}
+                                                            onChange={(e) => setKitValue(e.target.value)}
+                                                            sx={{ ...textField, ...input }}
+                                                        />
+                                                    )}
+                                                />
+                                                <Box sx={{ flexDirection: "row", gap: "2vw", color: colors.text.white }}>
+                                                    <p style={{ fontSize: "4vw" }}>Custo por hectare: </p>
+                                                    {"  "}
+                                                    <p style={{ fontSize: "4vw" }}>
+                                                        <CurrencyText value={tillageSelect?.hectarePrice || ""} />
+                                                    </p>
+                                                </Box>
+                                            </Box>
                                         )}
                                     </Box>
                                 }
