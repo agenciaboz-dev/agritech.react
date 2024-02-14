@@ -75,6 +75,8 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
     const [selectedAvatar, setSelectedAvatar] = useState(0)
     const [pickDate, setPickDate] = useState(null)
     const [pickHectarePrice, setPickHectarePrice] = useState<string>("")
+    const [weatherData, setWeatherData] = useState()
+    const [icon, setIcon] = useState<string>("")
 
     const toggleSelection = (talhao: Talhao) => {
         if (selectedAvatar === talhao.id) {
@@ -119,7 +121,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
     }, [call])
 
     useEffect(() => {
-        console.log(callStatus)
+        // console.log(callStatus)
         setCallStatus(false)
     }, [selectedAvatar])
     const handleClickOpen = () => {
@@ -190,9 +192,23 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
     useEffect(() => {
         console.log({ call_selecioonada: selectedCall })
     }, [selectedCall])
+
     useEffect(() => {
-        console.log(tillageSelect)
-    }, [])
+        console.log(tillageSelect?.address.city)
+        io.emit("weather:find", tillageSelect?.address.city)
+        io.on("weather:find:success", (data: any) => {
+            console.log({ aqui: data.currentConditions.icon })
+            setWeatherData(data.data)
+            setIcon(data.currentConditions.icon)
+        })
+        io.on("weather:find:failed", (data: any) => {})
+
+        return () => {
+            io.off("weather:find:success")
+            io.off("weather:find:failed")
+        }
+    }, [selectedTalhao])
+
     return (
         <Box
             sx={{
@@ -304,7 +320,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                         height: "100%",
                     }}
                 >
-                    <WeatherComponent />
+                    <WeatherComponent dataWeather={weatherData} icon={icon} />
 
                     {selectedAvatar === 0 && tillageSelect?.talhao?.length !== 0 ? (
                         <p>Selecione um talhão</p>
