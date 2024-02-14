@@ -37,7 +37,7 @@ export const OperationComponent: React.FC<OperationComponentProps> = ({ operatio
                 <p style={{ justifyContent: "space-between" }}>
                     {call?.kit?.employees && call.kit.employees[0].user?.office === "pilot"
                         ? call?.kit?.employees[0].user?.name
-                        : call?.kit?.employees && call?.kit?.employees[1].user?.name}
+                        :  call?.kit?.employees && call?.kit?.employees[1].user?.name}
                     /
                     {call?.kit?.employees && call.kit.employees[0].user?.office === "copilot"
                         ? call?.kit?.employees[0].user?.name

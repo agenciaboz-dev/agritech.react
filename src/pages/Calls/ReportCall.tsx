@@ -55,7 +55,7 @@ export const ReportCall: React.FC<ReportCallProps> = ({ user }) => {
         setCall(listCalls.find((item) => String(item.id) === callid))
         setProducerSelect(listUsers?.find((item) => item.producer?.id === call?.producerId) || null)
         setTillage(listTillages?.find((item) => item.id === call?.talhao?.tillageId && item.producerId === call.producerId))
-    }, [call])
+    }, [call, listCalls])
 
     // const stageCurrent = call?.stage === "STAGE1" ? 0 : call?.stage === "STAGE2" ? 1 : call?.stage === "STAGE3" ? 2 : 3
     const [stage, setstage] = useState(0)
@@ -154,7 +154,11 @@ export const ReportCall: React.FC<ReportCallProps> = ({ user }) => {
 
         console.log(call?.stage)
     }, [call?.stage])
+
     useEffect(() => {
+        if (call?.stage === "STAGE3") {
+            navigate(user.isAdmin ? `/adm/call/${callid}/laudo` : `/employee/call/${callid}/laudo`)
+        }
         const registerEvents = () => {
             io.on("stage:updateOne:success", (stage) => {
                 console.log({ stage1: stage })
@@ -167,8 +171,11 @@ export const ReportCall: React.FC<ReportCallProps> = ({ user }) => {
 
             io.on("stage:updateTwo:success", (stage) => {
                 console.log({ stage2: stage })
+                snackbar({ severity: "success", text: "Dados registrados!" })
+
                 setLoading(false)
                 setstage(2)
+                navigate(user.isAdmin ? `/adm/call/${callid}/laudo` : `/employee/call/${callid}/laudo`)
             })
             io.on("stage:updateTwo:failed", (stage) => {
                 snackbar({ severity: "error", text: "Tem algo errado com os dados de pulverização!!" })
@@ -179,7 +186,7 @@ export const ReportCall: React.FC<ReportCallProps> = ({ user }) => {
                 setLoading(false)
                 console.log("Finalizado")
                 setstage(3)
-                navigate(user.isAdmin ? `/adm/call/${callid}/laudo` : `/employee/call/${callid}/laudo`)
+                // navigate(user.isAdmin ? `/adm/call/${callid}/laudo` : `/employee/call/${callid}/laudo`)
             })
             io.on("stage:updateThree:failed", (stage) => {
                 snackbar({ severity: "error", text: "Tem algo errado com os dados de volta!" })
@@ -214,6 +221,17 @@ export const ReportCall: React.FC<ReportCallProps> = ({ user }) => {
             unregisterEvents()
         }
     }, [stage])
+    useEffect(() => {
+        console.log({ CALL_: call?.stage })
+        if (call?.stage === "STAGE1") {
+            setstage(0)
+        } else if (call?.stage === "STAGE2") {
+            setstage(1)
+        } else if (call?.stage === "STAGE3") {
+            setstage(2)
+        }
+        console.log({ STAFE: stage })
+    }, [call?.stage])
 
     useEffect(() => {
         header.setTitle("Painel")
@@ -302,21 +320,23 @@ export const ReportCall: React.FC<ReportCallProps> = ({ user }) => {
                                 disabled={!user?.producer ? false : true}
                             />
                         </Box>
-                        <Stepper
-                            active={stage}
-                            size="xs"
-                            // onStepClick={setstage}
-                            styles={{
-                                step: { flexDirection: "column", alignItems: "center", gap: "4vw" },
-                                content: { margin: 0 },
-                                stepIcon: { margin: 0 },
-                                stepBody: { margin: 0 },
-                            }}
-                        >
-                            <Stepper.Step label="Chegada" step={2} />
-                            <Stepper.Step label="Pulverização" />
-                            <Stepper.Step label="Finalização" />
-                        </Stepper>
+                        {call?.stage !== "STAGE3" && (
+                            <Stepper
+                                active={call?.stage === "STAGE1" ? 0 : call?.stage === "STAGE2" ? 1 : 2}
+                                size="xs"
+                                // onStepClick={setstage}
+                                styles={{
+                                    step: { flexDirection: "column", alignItems: "center", gap: "4vw" },
+                                    content: { margin: 0 },
+                                    stepIcon: { margin: 0 },
+                                    stepBody: { margin: 0 },
+                                }}
+                            >
+                                <Stepper.Step label="Chegada" />
+                                <Stepper.Step label="Pulverização" />
+                                {/* <Stepper.Step label="Finalização" /> */}
+                            </Stepper>
+                        )}
                         {stage === 0 && (
                             <form onSubmit={chegadaFormik.handleSubmit}>
                                 <StageDescription
@@ -351,7 +371,7 @@ export const ReportCall: React.FC<ReportCallProps> = ({ user }) => {
                                 </ButtonAgritech>
                             </form>
                         )}
-                        {stage === 2 && (
+                        {/* {stage === 2 && (
                             <form onSubmit={backFormik.handleSubmit}>
                                 <StageDescription
                                     title={"Volta da Localização"}
@@ -368,7 +388,7 @@ export const ReportCall: React.FC<ReportCallProps> = ({ user }) => {
                                     )}
                                 </ButtonAgritech>
                             </form>
-                        )}
+                        )} */}
                         {/* {!user?.producer && <ButtonComponent title="Reportar" location="" />} */}
                     </Box>
                 </Box>

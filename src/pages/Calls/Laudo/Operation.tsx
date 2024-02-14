@@ -1,5 +1,5 @@
 import { Box, TextField } from "@mui/material"
-import React, { ChangeEventHandler, useState } from "react"
+import React, { ChangeEventHandler, useEffect, useState } from "react"
 import { textField } from "../../../style/input"
 import { colors } from "../../../style/colors"
 import { Call } from "../../../definitions/call"
@@ -12,6 +12,9 @@ interface OperationProps {
 }
 
 export const Operation: React.FC<OperationProps> = ({ values, change, user, call }) => {
+    useEffect(() => {
+        console.log(call?.talhao)
+    }, [call?.talhao?.tillage?.area])
     return (
         <Box sx={{ gap: "3vw" }}>
             <Box sx={{ gap: "3vw" }}>

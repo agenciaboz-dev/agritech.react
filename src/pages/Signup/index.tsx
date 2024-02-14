@@ -103,7 +103,7 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                 city: values.address.city,
                 cep: unmask(values.address.cep),
                 uf: estados.find((estado) => estado.value == values.address.uf)?.value || "",
-                complement: values.address.adjunct,
+                adjunct: values.address.adjunct,
             },
         }
         if (typeUser === "employee") {
@@ -124,7 +124,7 @@ export const Signup: React.FC<SignupProps> = ({}) => {
             console.log(data)
         } else if (typeUser === "producer") {
             console.log(data)
-            io.emit("user:signup", { ...data, producer: { cnpj: unmask(data.producer?.cnpj || "") } })
+            io.emit("user:signup", { ...data, producer: { cnpj: unmask(data.producer?.cnpj || "")} })
         }
         setLoading(true)
     }
