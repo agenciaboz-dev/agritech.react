@@ -1,5 +1,5 @@
 import { Box } from "@mui/material"
-import React from "react"
+import React, { useEffect } from "react"
 import { Call } from "../../../../definitions/call"
 import { CurrencyText } from "../../../../components/CurrencyText"
 
@@ -9,6 +9,9 @@ interface OperationComponentProps {
 }
 
 export const OperationComponent: React.FC<OperationComponentProps> = ({ operation, call }) => {
+    useEffect(() => {
+        console.log(call?.kit?.employees)
+    }, [])
     return (
         <Box sx={{ gap: "2vw" }}>
             <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
@@ -35,16 +38,19 @@ export const OperationComponent: React.FC<OperationComponentProps> = ({ operatio
             <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
                 <p style={{ fontWeight: "bold" }}>Piloto/Copiloto:</p>
                 <p style={{ justifyContent: "space-between" }}>
-                    {call?.kit?.employees && call.kit.employees[0].user?.office === "pilot"
-                        ? call?.kit?.employees[0].user?.name
-                        :  call?.kit?.employees && call?.kit?.employees[1].user?.name}
+                    {call?.kit?.employees &&
+                        call?.kit?.employees?.length !== 0 &&
+                        (call?.kit?.employees[0].user?.office === "pilot"
+                            ? call?.kit?.employees[0].user?.name
+                            : call?.kit?.employees && call?.kit?.employees[1].user?.name)}
                     /
-                    {call?.kit?.employees && call.kit.employees[0].user?.office === "copilot"
-                        ? call?.kit?.employees[0].user?.name
-                        : call?.kit?.employees && call?.kit?.employees[1].user?.name}
+                    {call?.kit?.employees &&
+                        call?.kit?.employees?.length !== 0 &&
+                        (call.kit.employees[0].user?.office === "copilot"
+                            ? call?.kit?.employees[0].user?.name
+                            : call?.kit?.employees && call?.kit?.employees[1].user?.name)}
                 </p>
             </Box>
-          
         </Box>
     )
 }

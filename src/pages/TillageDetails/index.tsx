@@ -372,16 +372,19 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                                     setSelectedCall={setSelectedCall}
                                 />
                             ) : (
-                                tab === "calls" &&
-                                selectedTalhao?.calls.map((item, index) => (
-                                    <LogsCard
-                                        key={index}
-                                        call={item}
-                                        talhao={selectedTalhao}
-                                        tillage={tillageSelect}
-                                        setSelectedCall={setSelectedCall}
-                                    />
-                                ))
+                                tab === "calls" && (
+                                    <Box sx={{ overflowY: "auto", height: "50%" }}>
+                                        {selectedTalhao?.calls.map((item, index) => (
+                                            <LogsCard
+                                                key={index}
+                                                call={item}
+                                                talhao={selectedTalhao}
+                                                tillage={tillageSelect}
+                                                setSelectedCall={setSelectedCall}
+                                            />
+                                        ))}
+                                    </Box>
+                                )
                             )}
                             {tillageSelect?.talhao?.length === 0 && tab === "calls" && (
                                 <p>É necessário ter talhões cadastrados para abrir chamados.</p>
