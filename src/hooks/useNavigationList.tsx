@@ -76,27 +76,22 @@ export const useNavigationList = () => {
                 location: "/",
                 icon: <img src={GridPanel} alt="Logotipo do App" />,
             },
+
             {
                 id: 2,
-                title: "Conversas",
-                location: "/chats",
-                icon: <img src={Chats} alt="Logotipo do App" />,
-            },
-            {
-                id: 3,
                 title: "Calendário",
                 location: "/calendar",
                 icon: <img src={Calendar} alt="Logotipo do App" />,
             },
 
             {
-                id: 4,
+                id: 3,
                 title: "Chamados",
                 location: "/calls",
                 icon: <img src={Alert} alt="Logotipo do App" style={{ width: "6vw" }} />,
             },
             {
-                id: 5,
+                id: 4,
                 title: "Análises",
                 location: "/reviews",
                 icon: <img src={Analysis} alt="Logotipo do App" />,
@@ -143,20 +138,15 @@ export const useNavigationList = () => {
                 location: "/",
                 icon: <GridViewIcon sx={iconStyle} />,
             },
+
             {
                 id: 2,
-                title: "Conversas",
-                location: "/chats",
-                icon: <ChatIcon sx={iconStyle} />,
-            },
-            {
-                id: 3,
                 title: "Transações",
                 location: "/transactions",
                 icon: <SwapHorizIcon sx={iconStyle} />,
             },
             {
-                id: 4,
+                id: 3,
                 title: "Chamados",
                 location: "/requests",
                 icon: <img src={Alert} alt="Logotipo do App" style={{ width: "6vw" }} />,
@@ -204,14 +194,9 @@ export const useNavigationList = () => {
                 location: "/panel",
                 icon: <GridViewIcon sx={iconStyle} />,
             },
+
             {
                 id: 2,
-                title: "Conversas",
-                location: "/chats",
-                icon: <ChatIcon sx={iconStyle} />,
-            },
-            {
-                id: 3,
                 title: "Chamados",
                 location: "/requests",
                 icon: <img src={Alert} alt="Logotipo do App" style={{ width: "6vw" }} />,
