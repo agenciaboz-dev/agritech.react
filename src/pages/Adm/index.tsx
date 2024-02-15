@@ -17,6 +17,7 @@ import { ListTillages } from "../TillageDetails/ListTillages"
 import { ReportDetails } from "../Calls/Laudo/ViewReport/ReportDetails"
 import { NewTalhao } from "../TillageDetails/NewTalhao"
 import { CallApproved } from "./ReviewsCall/CallApproved"
+import { NewEmployee } from "../../components/NewEmployee"
 
 interface AdmProps {
     user: User
@@ -35,6 +36,7 @@ export const Adm: React.FC<AdmProps> = ({ user }) => {
             <Route path="/employees" element={<ListEmployee />} />
             <Route path="/producers" element={<ListProducer />} />
             <Route path="/new_producer/*" element={<NewProducer />} />
+            <Route path="/new_employee/*" element={<NewEmployee />} />
             <Route path="/calendar/:userid" element={<Calendar />} />
             <Route path="/calls" element={<ReviewsCall user={user} />} />
             <Route path="/calls/:callid" element={<ApproveCall />} />

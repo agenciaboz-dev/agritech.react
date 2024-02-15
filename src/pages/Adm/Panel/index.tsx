@@ -159,12 +159,12 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                                     width: "100%",
                                     flexDirection: "row",
                                     alignItems: "center",
-                                    justifyContent: "end",
+                                    justifyContent: "space-between",
                                     gap: 20,
                                     paddingTop: "2vw",
                                 }}
                             >
-                                {/* <Button
+                                <Button
                                     variant="contained"
                                     color="primary"
                                     sx={{
@@ -180,7 +180,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                                     onClick={() => navigate("/adm/new_employee")}
                                 >
                                     Cadastrar novo colaborador
-                                </Button> */}
+                                </Button>
                                 <Box
                                     sx={{
                                         flexDirection: "row",

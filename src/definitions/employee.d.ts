@@ -11,5 +11,6 @@ declare interface Employee {
     producers?: Producer[]
     kits?: Kit[]
     bank?: Bank
+    professional?:Professional
     user?: User
 }

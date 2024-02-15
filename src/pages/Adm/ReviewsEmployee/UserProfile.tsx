@@ -25,7 +25,7 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
     const { pendingUsers, setPendingUsers } = useUsers()
     const { listUsers, setListUsers } = useUsers()
 
-    const producerSelect = listUsers?.filter((item) => item.id === Number(userId)) || []
+    const userSelect = listUsers?.filter((item) => item.id === Number(userId)) || []
 
     const { unmask } = useDataHandler()
     const { snackbar } = useSnackbar()
@@ -91,7 +91,6 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
             contract: profile?.producer?.contract || false,
             id: profile?.producer?.id,
             employeeId: profile?.producer?.employeeId,
-            hectarePrice: profile?.producer?.hectarePrice,
         },
     }
 
@@ -137,7 +136,6 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
 
         io.on("application:status:approved", handleApprovalSuccess)
         io.on("application:status:rejected", handleRejectionSuccess)
-        console.log(profile?.producer?.hectarePrice)
         return () => {
             io.off("application:status:approved")
             io.off("application:status:rejected")
@@ -184,17 +182,18 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
             >
                 <Box sx={{ flexDirection: "row", justifyContent: "space-between", width: "100%", alignItems: "center" }}>
                     <p style={{ fontSize: "4.5vw", fontFamily: "MalgunGothic2", textAlign: "left" }}>Informações Pessoais</p>
-                    {view && (
+                    {view && userSelect[0].producer && (
                         <Button
                             variant="contained"
                             size="small"
                             sx={{ bgcolor: colors.button, borderRadius: "5vw", textTransform: "none", fontSize: "3vw" }}
                             onClick={() => {
-                                if (producerSelect !== null) {
+                                if (userSelect !== null) {
                                     const path = user?.isAdmin
-                                        ? `/adm/producer/${producerSelect[0].producer?.id}`
-                                        : `/employee/producer/${producerSelect[0].producer?.id}`
+                                        ? `/adm/producer/${userSelect[0].producer?.id}`
+                                        : `/employee/producer/${userSelect[0].producer?.id}`
                                     navigate(path)
+                                } else {
                                 }
                             }}
                         >
