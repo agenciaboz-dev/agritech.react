@@ -97,7 +97,6 @@ export const WeatherComponent: React.FC<WeatherComponentProps> = ({ dataWeather,
         setData(dataWeather)
     }, [dataWeather])
 
-    useEffect(() => {}, [])
     return (
         data !== null && (
             <Box

@@ -55,7 +55,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
     const [tillageSelect, setTillageSelect] = useState<Tillage>()
     const [selectedCall, setSelectedCall] = useState<Call | null>(null)
 
-    const [selectedKit, setSelectedKit] = useState(null) // Estado para o valor selecionado
+    const [selectedKit, setSelectedKit] = useState<Kit | null>(null) // Estado para o valor selecionado
     const [kitValue, setKitValue] = useState("") // Estado para o texto do campo de entrada
 
     const handleKitChange = (event: any, selected: any) => {
@@ -200,7 +200,6 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
         tillageSelect?.address.city && io.emit("weather:find", { data: tillageSelect?.address.city })
 
         io.on("weather:find:success", (data: any) => {
-            console.log({ aqui: data.currentConditions.icon })
             setWeatherData(data.currentConditions)
             setIcon(data.currentConditions.icon)
         })
