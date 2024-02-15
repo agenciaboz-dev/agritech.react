@@ -151,8 +151,9 @@ export const NewEmployee: React.FC<NewEmployeeProps> = ({}) => {
             approved: true,
             employee: {
                 rg: values.employee?.rg,
-                gender: values.employee?.gender,
-                relationship: values.employee.relationship,
+                gender: gender.find((gender) => gender.id == String(values.employee?.gender))?.value || "",
+                relationship:
+                    typeRelationship.find((relationship) => relationship.id == values.employee?.relationship)?.value || "",
                 nationality: values.employee?.nationality,
                 voter_card: values.employee?.voter_card,
                 work_card: values.employee?.work_card,
