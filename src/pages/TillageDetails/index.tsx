@@ -75,8 +75,9 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
     const [selectedAvatar, setSelectedAvatar] = useState(0)
     const [pickDate, setPickDate] = useState(null)
     const [pickHectarePrice, setPickHectarePrice] = useState<string>("")
-    const [weatherData, setWeatherData] = useState()
+    const [weatherData, setWeatherData] = useState<CurrentConditions>()
     const [icon, setIcon] = useState<string>("")
+    const [loadingIcon, setLoadingIcon] = useState(false)
 
     const toggleSelection = (talhao: Talhao) => {
         if (selectedAvatar === talhao.id) {
@@ -110,7 +111,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
         const findTillage = listTillages.find((item) => item.id === Number(tillageid))
         setTillageSelectProd(findTillage)
         setTillageSelect(findTillage)
-    }, [listTillages, tillageid])
+    }, [tillageid])
 
     //
     useEffect(() => {
@@ -157,6 +158,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
     useEffect(() => {
         header.setTitle(!tillageSelect ? `Informações` : tillageSelect.name)
         setProducerid(Number(producerid))
+        // console.log(tillageSelect)
     }, [tillageSelect])
 
     useEffect(() => {
@@ -194,11 +196,12 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
     }, [selectedCall])
 
     useEffect(() => {
-        console.log(tillageSelect?.address.city)
-        io.emit("weather:find", tillageSelect?.address.city)
+        // console.log({ location: tillageSelect?.address.city })
+        tillageSelect?.address.city && io.emit("weather:find", { data: tillageSelect?.address.city })
+
         io.on("weather:find:success", (data: any) => {
             console.log({ aqui: data.currentConditions.icon })
-            setWeatherData(data.data)
+            setWeatherData(data.currentConditions)
             setIcon(data.currentConditions.icon)
         })
         io.on("weather:find:failed", (data: any) => {})
@@ -207,7 +210,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
             io.off("weather:find:success")
             io.off("weather:find:failed")
         }
-    }, [selectedTalhao])
+    }, [tillageSelect])
 
     return (
         <Box
