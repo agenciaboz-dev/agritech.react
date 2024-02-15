@@ -38,8 +38,8 @@ export const InfoProfile: React.FC<InfoProfileProps> = ({ values, handleChange, 
                 {values.employee?.id !== undefined && <Tab sx={tabStyle} value="documentation" label="Documentação" />}
                 <Tab sx={tabStyle} value="contact" label="Contato" />
                 <Tab sx={tabStyle} value="address" label="Endereço" />
-                {!review && <Tab sx={tabStyle} value="bank" label="Dados Bancários" />}
-                {!review && <Tab sx={tabStyle} value="professional" label="Profissional" />}
+                {values.employee && <Tab sx={tabStyle} value="bank" label="Dados Bancários" />}
+                {values.employee && <Tab sx={tabStyle} value="professional" label="Profissional" />}
             </Tabs>
             {tab === "personal" && <Personal values={values} handleChange={handleChange ? handleChange : () => {}} />}
             {tab === "documentation" && values.employee?.id !== undefined && (
@@ -47,10 +47,10 @@ export const InfoProfile: React.FC<InfoProfileProps> = ({ values, handleChange, 
             )}
             {tab === "contact" && <Contact values={values} handleChange={handleChange ? handleChange : () => {}} />}
             {tab === "address" && <Address values={values} handleChange={handleChange ? handleChange : () => {}} />}
-            {!review && tab === "bank" && values.employee && (
+            {values.employee != null && tab === "bank" && values.employee && (
                 <Bank values={values} handleChange={handleChange ? handleChange : () => {}} />
             )}
-            {!review && tab === "professional" && values.employee && (
+            {values.employee !== null && tab === "professional" && values.employee && (
                 <Professional values={values} handleChange={handleChange ? handleChange : () => {}} />
             )}
         </Box>

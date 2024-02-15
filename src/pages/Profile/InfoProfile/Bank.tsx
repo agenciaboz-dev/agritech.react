@@ -63,15 +63,14 @@ export const Bank: React.FC<BankProps> = ({ values, handleChange }) => {
                     value={values.employee?.bank?.agency}
                     onChange={handleChange}
                 />
-                <TextField label={"Dígito"} name={"number"} sx={textField} onChange={handleChange} />
+                <TextField
+                    label={"Nº da conta"}
+                    name={"employee.bank.account"}
+                    sx={textField}
+                    value={values.employee?.bank?.account}
+                    onChange={handleChange}
+                />
             </Box>
-            <TextField
-                label={"Nº da conta"}
-                name={"employee.bank.account"}
-                sx={textField}
-                value={values.employee?.bank?.account}
-                onChange={handleChange}
-            />
         </Box>
     )
 }

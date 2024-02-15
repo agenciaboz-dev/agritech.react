@@ -11,6 +11,7 @@ import { HeaderProfile } from "../../Profile/HeaderProfile"
 import { InfoProfile } from "../../Profile/InfoProfile"
 import { useIo } from "../../../hooks/useIo"
 import { useUser } from "../../../hooks/useUser"
+import { unmaskCurrency } from "../../../hooks/unmaskNumber"
 
 interface UserprofileProps {
     view?: boolean
@@ -84,6 +85,10 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
                 name: profile?.employee?.bank?.name || "",
                 agency: profile?.employee?.bank?.agency || "",
                 type: profile?.employee?.bank?.type || "",
+            },
+            professional: {
+                salary: profile?.employee?.professional?.salary,
+                admission: new Date(profile?.employee?.professional?.admission || 0).toLocaleDateString("pt-br") || "",
             },
         },
         producer: {

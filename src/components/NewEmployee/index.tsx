@@ -167,12 +167,12 @@ export const NewEmployee: React.FC<NewEmployeeProps> = ({}) => {
             },
         }
         console.log(data)
-        io.emit("user:signup", data)
+        io.emit("user:newEmployee", data)
         setLoading(true)
     }
 
     useEffect(() => {
-        io.on("user:signup:success", (data: User) => {
+        io.on("user:signup:success", (data: NewEmployee) => {
             console.log(data)
             snackbar({ severity: "success", text: "Colaborador cadastrado!" })
             setLoading(false)

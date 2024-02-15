@@ -4,7 +4,7 @@ import { useIo } from "../hooks/useIo"
 interface UsersContextType {
     listUsers: User[]
     pendingUsers: User[]
-    addUser: (value: User) => void
+    addUser: (value: any) => void
     setPendingUsers: React.Dispatch<React.SetStateAction<User[]>>
     setListUsers: (value: User[]) => void
 }
