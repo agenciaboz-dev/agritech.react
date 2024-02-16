@@ -3,7 +3,7 @@ import React, { ChangeEventHandler } from "react"
 import { TitleComponents } from "../../../components/TitleComponents"
 import { NewReport, Product } from "../../../definitions/report"
 
-interface TreatmentProps {
+interface TreatmentComponentProps {
     user: User
     values: NewReport
     change: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
@@ -11,7 +11,7 @@ interface TreatmentProps {
     open: React.MouseEventHandler<HTMLButtonElement> | undefined
 }
 
-export const Treatment: React.FC<TreatmentProps> = ({ listProducts, open }) => {
+export const TreatmentComponent: React.FC<TreatmentComponentProps> = ({ listProducts, open }) => {
     return (
         <Box sx={{ gap: "3vw" }}>
             <Box sx={{ gap: "3vw", p: "2vw" }}>

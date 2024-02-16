@@ -9,17 +9,17 @@ import { textField } from "../../../style/input"
 import { Modal, Stepper } from "@mantine/core"
 import { useNavigate, useParams } from "react-router-dom"
 import { ButtonAgritech } from "../../../components/ButtonAgritech"
-import { Operation } from "./Operation"
+import { OperationComponent } from "./Operation"
 
 import { useDisclosure } from "@mantine/hooks"
 import { ModalProduct } from "./ModalProduct"
-import { TechReport } from "./TechReport"
+import { TechReportComponent } from "./TechReportComponent"
 import { ModalFlight } from "./ModalFlight"
 import { useCallInfo } from "../../../hooks/useCallSelect"
 import { MaterialComponent } from "./MaterialComponent"
 import { ModalMaterial } from "./ModalMaterials"
 import { useIo } from "../../../hooks/useIo"
-import { Treatment } from "./Treatment"
+import { TreatmentComponent } from "./Treatment"
 import { useSnackbar } from "burgos-snackbar"
 import { LocalizationProvider, TimeField, ptBR } from "@mui/x-date-pickers"
 import { CiClock2 } from "react-icons/ci"
@@ -27,8 +27,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo"
 import { useCall } from "../../../hooks/useCall"
 import { unmaskNumber } from "../../../hooks/unmaskNumber"
-import { Flight, Material, NewReport, Product, Report } from "../../../definitions/report"
-import { report } from "process"
+import { Flight, Material, NewReport, Operation, Product, Report, TechReport, Treatment } from "../../../definitions/report"
 
 interface LaudoCallProps {
     user: User
@@ -44,6 +43,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
     const { listCalls } = useCall()
 
     const selectedCall = listCalls.find((item) => item.id === Number(callid))
+    const report = selectedCall?.reports?.find((item) => item.id === Number(reportid))
     // console.log({ Laudo: selectedCall })
 
     const [stage, setstage] = useState(0)
@@ -82,6 +82,107 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
             flight: [],
         },
     }
+
+    const updateOperation = async (values: Operation | undefined) => {
+        if (values) {
+            const data = {
+                id: report?.operation?.id,
+                ...values,
+                areaMap: Number(selectedCall?.talhao?.tillage?.area),
+            }
+            io.emit("operation:update", data)
+        }
+    }
+
+    useEffect(() => {
+        io.on("operation:update:success", (data) => {
+            console.log(data)
+        })
+        io.on("operation:update:failed", (error) => {
+            console.log(error)
+        })
+        return () => {
+            io.off("operation:update:success")
+            io.off("operation:update:failed")
+        }
+    }, [])
+
+    const createTreatment = async (values: Treatment | undefined) => {
+        if (values) {
+            const treatmentNormalize = listProducts?.map((item) => ({
+                name: item.name,
+                dosage: unmaskNumber(item.dosage),
+                unit: item.unit,
+            }))
+
+            const data = {
+                id: report?.treatment?.id,
+                ...values,
+                products: treatmentNormalize,
+            }
+            io.emit("treatment:update", data)
+            console.log({ enviei: data })
+        }
+    }
+
+    useEffect(() => {
+        io.on("treatment:update:success", (data) => {
+            console.log(data)
+        })
+        io.on("treatment:update:failed", (error) => {
+            console.log(error)
+        })
+        return () => {
+            io.off("treatment:update:success")
+            io.off("treatment:update:failed")
+        }
+    }, [])
+
+    const createTechReport = async (values: TechReport | undefined) => {
+        if (values) {
+            const flightNormalize = listFlights?.map((item) => ({
+                temperature: unmaskNumber(item.temperature),
+                humidity: unmaskNumber(item.humidity),
+                wind_velocity: unmaskNumber(item.wind_velocity),
+                height: unmaskNumber(item.height),
+                faixa: unmaskNumber(item.faixa),
+                flight_velocity: unmaskNumber(item.flight_velocity),
+                tank_volume: unmaskNumber(item.tank_volume),
+                rate: unmaskNumber(item.rate),
+                performance: unmaskNumber(item.performance),
+            }))
+            //calculate areaTrabalhada
+            const sumArea = flightNormalize?.map((item) => Number(item.performance))
+            const totalSum = sumArea.reduce((acc, currentValue) => acc + currentValue, 0)
+            console.log({ total: totalSum })
+
+            const data = {
+                id: report?.treatment?.id,
+                ...values,
+                date: new Date().getTime().toString(),
+                init: new Date(Number(initPick)).getTime().toString(),
+                finish: new Date(Number(finishPick)).getTime().toString(),
+                flight: flightNormalize,
+            }
+            io.emit("techReport:update", data)
+            // io.emit("report:update", data)
+            console.log({ enviei: data })
+        }
+    }
+
+    useEffect(() => {
+        io.on("techReport:update:success", (data) => {
+            console.log(data)
+        })
+        io.on("techReport:update:failed", (error) => {
+            console.log(error)
+        })
+        return () => {
+            io.off("techReport:update:success")
+            io.off("techReport:update:failed")
+        }
+    }, [])
+
     const handleSubmit = async (values: NewReport) => {
         const treatmentNormalize = listProducts?.map((item) => ({
             name: item.name,
@@ -170,7 +271,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
 
     useEffect(() => {
         console.log(report)
-    }, [report])
+    }, [])
 
     // useEffect(() => {
     //     console.log({ call: selectedCall })
@@ -385,63 +486,67 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                                     </Box>
                                     {stage === 0 && (
                                         <Box sx={{ height: "100%", justifyContent: "space-between", pt: "6vw" }}>
-                                            <Operation
+                                            <OperationComponent
                                                 user={user}
                                                 values={values}
                                                 change={handleChange}
                                                 call={selectedCall}
                                             />
-                                            {/* <ButtonAgritech
+                                            <ButtonAgritech
                                                 variant="contained"
-                                                type="submit"
+                                                // type="submit"
                                                 sx={{ bgcolor: colors.button }}
                                                 onClick={() => {
+                                                    updateOperation(values.operation)
                                                     setstage(1)
                                                 }}
                                             >
-                                                Salvar {">"}
-                                            </ButtonAgritech> */}
+                                                Salvar{">"}
+                                            </ButtonAgritech>
                                         </Box>
                                     )}
                                     {stage === 1 && (
                                         <Box sx={{ height: "100%", justifyContent: "space-between", pt: "6vw" }}>
-                                            <Treatment
+                                            <TreatmentComponent
                                                 listProducts={listProducts}
                                                 user={user}
                                                 values={values}
                                                 change={handleChange}
                                                 open={openProducts}
                                             />
-                                            {/* <ButtonAgritech
+                                            <ButtonAgritech
                                                 variant="contained"
+                                                // type="submit"
                                                 sx={{ bgcolor: colors.button }}
                                                 onClick={() => {
+                                                    createTreatment(values.treatment)
                                                     setstage(2)
                                                 }}
                                             >
-                                                Laudo Técnico {">"}
-                                            </ButtonAgritech> */}
+                                                Salvar{">"}
+                                            </ButtonAgritech>
                                         </Box>
                                     )}
                                     {stage === 2 && (
                                         <Box sx={{ height: "100%", justifyContent: "space-between", pt: "6vw" }}>
-                                            <TechReport
+                                            <TechReportComponent
                                                 listFlights={listFlights}
                                                 user={user}
                                                 values={values}
                                                 change={handleChange}
                                                 open={openFlight}
                                             />
-                                            {/* <ButtonAgritech
-                                                type="submit"
+                                            <ButtonAgritech
+                                                // type="submit"
                                                 variant="contained"
                                                 sx={{ bgcolor: colors.button }}
                                                 onClick={() => {
+                                                    createTechReport(values.techReport)
                                                     setstage(3)
                                                 }}
                                             >
-                                                Insumos {">"}
-                                            </ButtonAgritech> */}
+                                                Salvar {">"}
+                                            </ButtonAgritech>
                                         </Box>
                                     )}
                                     {stage === 3 && (
@@ -452,20 +557,20 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                                                 listMaterials={listMaterials}
                                                 open={openMaterials}
                                             />
+                                            <ButtonAgritech
+                                                // type="submit"
+                                                variant="contained"
+                                                sx={{ bgcolor: colors.button }}
+                                                onClick={() => {
+                                                    console.log("Finalizado")
+                                                    // handleSubmit(values)
+                                                    // navigate(user.isAdmin ? `/` : `/employee`)
+                                                }}
+                                            >
+                                                Salvar {">"}
+                                            </ButtonAgritech>
                                         </Box>
                                     )}
-                                    <ButtonAgritech
-                                        type="submit"
-                                        variant="contained"
-                                        sx={{ bgcolor: colors.button }}
-                                        onClick={() => {
-                                            console.log("Finalizado")
-                                            handleSubmit(values)
-                                            // navigate(user.isAdmin ? `/` : `/employee`)
-                                        }}
-                                    >
-                                        Salvar Dados {">"}
-                                    </ButtonAgritech>
                                     {/* {!user?.producer && <ButtonComponent title="Reportar" location="" />} */}
                                 </Box>
                             </Form>

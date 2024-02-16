@@ -5,14 +5,14 @@ import { colors } from "../../../style/colors"
 import { Call } from "../../../definitions/call"
 import { NewReport } from "../../../definitions/report"
 // import { NumericFormat } from "react-number-format"
-interface OperationProps {
+interface OperationComponentProps {
     user: User
     values: NewReport
     call: Call | undefined | null
     change: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
 }
 
-export const Operation: React.FC<OperationProps> = ({ values, change, user, call }) => {
+export const OperationComponent: React.FC<OperationComponentProps> = ({ values, change, user, call }) => {
     useEffect(() => {
         console.log(call?.talhao)
     }, [call?.talhao?.tillage?.area])

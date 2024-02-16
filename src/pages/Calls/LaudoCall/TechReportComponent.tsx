@@ -8,7 +8,7 @@ import { textField } from "../../../style/input"
 import MaskedInput from "../../../components/MaskedInput"
 import { Flight, NewReport } from "../../../definitions/report"
 
-interface TechReportProps {
+interface TechReportComponentProps {
     user: User
     values: NewReport
     change: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
@@ -19,7 +19,7 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
     // padding: theme.spacing(2),
     borderTop: "1px solid rgba(0, 0, 0, .125)",
 }))
-export const TechReport: React.FC<TechReportProps> = ({ values, change, user, listFlights, open }) => {
+export const TechReportComponent: React.FC<TechReportComponentProps> = ({ values, change, user, listFlights, open }) => {
     const [expanded, setExpanded] = React.useState<string | false>("")
 
     const expandendChange = (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {

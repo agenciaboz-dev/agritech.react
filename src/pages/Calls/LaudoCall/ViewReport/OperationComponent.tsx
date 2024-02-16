@@ -2,6 +2,7 @@ import { Box } from "@mui/material"
 import React, { useEffect } from "react"
 import { Call } from "../../../../definitions/call"
 import { CurrencyText } from "../../../../components/CurrencyText"
+import { Operation } from "../../../../definitions/report"
 
 interface OperationComponentProps {
     operation?: Operation
