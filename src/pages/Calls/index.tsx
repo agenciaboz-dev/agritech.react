@@ -2,10 +2,11 @@ import React from "react"
 import { Route, Routes as ReactRoutes } from "react-router-dom"
 import { NewCall } from "./NewCall"
 import { ApproveCall } from "../Adm/ReviewsCall/ApproveCall"
-import { ReportCall } from "./ReportCall"
-import { LaudoCall } from "./Laudo"
+import { ReportStage } from "./ReportStage"
 import { CallDetails } from "./CallDetails"
-import { ReportDetails } from "./Laudo/ViewReport/ReportDetails"
+import { ReportDetails } from "./LaudoCall/ViewReport/ReportDetails"
+import { ListLaudos } from "./ListLaudos"
+import { LaudoCall } from "./LaudoCall"
 
 interface CallsProps {
     user: User
@@ -17,8 +18,9 @@ export const Calls: React.FC<CallsProps> = ({ user }) => {
             <Route path="/new" element={<NewCall user={user} />} />
             <Route path="/:callid" element={<CallDetails />} />
             <Route path="/calls/:callid" element={<ApproveCall />} />
-            <Route path="/:callid/report" element={<ReportCall user={user} />} />
-            <Route path="/:callid/laudo" element={<LaudoCall user={user} />} />
+            <Route path="/:callid/stages/:reportid" element={<ReportStage user={user} />} />
+            <Route path="/:callid/laudos/" element={<ListLaudos user={user} />} />
+            <Route path="/:callid/laudo/:reportid" element={<LaudoCall user={user} />} />
             <Route path="/:callid/report/:reportid" element={<ReportDetails />} />
         </ReactRoutes>
     )

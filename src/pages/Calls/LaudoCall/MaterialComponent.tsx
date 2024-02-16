@@ -1,27 +1,39 @@
-import { Accordion, AccordionSummary, Box, Typography, styled } from "@mui/material"
-import React from "react"
-import { TitleComponents } from "../../../../components/TitleComponents"
+import { Accordion, Box, Typography } from "@mui/material"
+import { AccordionSummary } from "../../../components/Accordion"
+import React, { ChangeEventHandler } from "react"
+import { Call } from "../../../definitions/call"
+import { TitleComponents } from "../../../components/TitleComponents"
 import MuiAccordionDetails from "@mui/material/AccordionDetails"
+import { styled } from "@mui/material/styles"
+import { useNumberMask } from "burgos-masks"
+import { textField } from "../../../style/input"
+import { Material, NewReport } from "../../../definitions/report"
 
 interface MaterialComponentProps {
-    material?: Material[]
+    values: NewReport
+    change: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
+    listMaterials: Material[]
+    open: React.MouseEventHandler<HTMLButtonElement> | undefined
 }
 const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
-    // padding: theme.spacing(2),
     borderTop: "1px solid rgba(0, 0, 0, .125)",
 }))
-export const MaterialComponent: React.FC<MaterialComponentProps> = ({ material }) => {
+export const MaterialComponent: React.FC<MaterialComponentProps> = ({ listMaterials, open }) => {
     const [expanded, setExpanded] = React.useState<string | false>("")
+    const floatMask = useNumberMask({ allowDecimal: true, allowLeadingZeroes: true })
 
     const expandendChange = (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
         setExpanded(newExpanded ? panel : false)
     }
     return (
         <Box sx={{ gap: "3vw" }}>
-            <Box sx={{ gap: "2vw", p: "0 2vw" }}>
-                <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}></Box>
+            <Box sx={{ gap: "3vw", p: "2vw" }}>
+                <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
+                    <p style={{ fontWeight: "bold", fontSize: "3.5vw" }}>Utilização de Insumos</p>
+                </Box>
                 <Box sx={{ height: "100%", overflowY: "auto" }}>
-                    {material?.map((item, index) => (
+                    <TitleComponents title="Insumos" button click={open} />
+                    {listMaterials.map((item, index) => (
                         <Accordion
                             elevation={0}
                             key={index}
@@ -43,11 +55,11 @@ export const MaterialComponent: React.FC<MaterialComponentProps> = ({ material }
                                     </Box>
                                     <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
                                         <p>Produto</p>
-                                        <p>{item.product} </p>
+                                        <p>{item.product} ha</p>
                                     </Box>
                                     <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
                                         <p>Dose/ha</p>
-                                        <p>{item.dosage}L</p>
+                                        <p>{item.dosage}</p>
                                     </Box>
                                     <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
                                         <p>Classificação</p>

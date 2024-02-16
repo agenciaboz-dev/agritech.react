@@ -1,24 +1,17 @@
-import { Accordion, Box, TextField, Typography } from "@mui/material"
-import { AccordionSummary } from "../../../components/Accordion"
-import React, { ChangeEventHandler } from "react"
-import { TitleComponents } from "../../../components/TitleComponents"
+import { Accordion, AccordionSummary, Box, Typography, styled } from "@mui/material"
+import React from "react"
+import { TitleComponents } from "../../../../components/TitleComponents"
 import MuiAccordionDetails from "@mui/material/AccordionDetails"
-import { styled } from "@mui/material/styles"
-import { textField } from "../../../style/input"
-import MaskedInput from "../../../components/MaskedInput"
+import { Material } from "../../../../definitions/report"
 
-interface TechReportProps {
-    user: User
-    values: NewReport
-    change: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
-    listFlights: Flight[]
-    open: React.MouseEventHandler<HTMLButtonElement> | undefined
+interface MaterialComponentProps {
+    material?: Material[]
 }
 const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
     // padding: theme.spacing(2),
     borderTop: "1px solid rgba(0, 0, 0, .125)",
 }))
-export const TechReport: React.FC<TechReportProps> = ({ values, change, user, listFlights, open }) => {
+export const MaterialComponent: React.FC<MaterialComponentProps> = ({ material }) => {
     const [expanded, setExpanded] = React.useState<string | false>("")
 
     const expandendChange = (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
@@ -26,13 +19,10 @@ export const TechReport: React.FC<TechReportProps> = ({ values, change, user, li
     }
     return (
         <Box sx={{ gap: "3vw" }}>
-            <Box sx={{ gap: "3vw", p: "2vw" }}>
-                <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
-                    <p style={{ fontWeight: "bold", fontSize: "3.5vw" }}>Laudo Técnico</p>
-                </Box>
+            <Box sx={{ gap: "2vw", p: "0 2vw" }}>
+                <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}></Box>
                 <Box sx={{ height: "100%", overflowY: "auto" }}>
-                    <TitleComponents title="Voos" button click={open} />
-                    {listFlights.map((item, index) => (
+                    {material?.map((item, index) => (
                         <Accordion
                             elevation={0}
                             key={index}
@@ -40,46 +30,45 @@ export const TechReport: React.FC<TechReportProps> = ({ values, change, user, li
                             onChange={expandendChange(String(index))}
                         >
                             <AccordionSummary aria-controls="panel1-content" id="panel1-header">
-                                <Typography>Voo {index + 1}</Typography>
+                                <Typography>Insumo {index + 1}</Typography>
                             </AccordionSummary>
                             <AccordionDetails>
-                                {" "}
                                 <Box key={index}>
                                     <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
-                                        <p>Temperatura</p>
-                                        <p>{item.temperature} °C</p>
+                                        <p>Talhão</p>
+                                        <p>{item.talhao}</p>
                                     </Box>
                                     <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
-                                        <p>Umidade Relativa</p>
-                                        <p>{item.humidity} %</p>
+                                        <p>Área</p>
+                                        <p>{item.area} ha</p>
                                     </Box>
                                     <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
-                                        <p>Veloc. Vento</p>
-                                        <p>{item.wind_velocity} km/h</p>
+                                        <p>Produto</p>
+                                        <p>{item.product} </p>
                                     </Box>
                                     <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
-                                        <p>Altura de voo</p>
-                                        <p>{item.height} m</p>
+                                        <p>Dose/ha</p>
+                                        <p>{item.dosage}L</p>
                                     </Box>
                                     <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
-                                        <p>Faixa de aplicação </p>
-                                        <p>{item.faixa} m</p>
+                                        <p>Classificação</p>
+                                        <p>{item.classification}</p>
                                     </Box>
                                     <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
-                                        <p>Velocidade de voo </p>
-                                        <p>{item.flight_velocity} km/h</p>
+                                        <p>Total</p>
+                                        <p>{item.total}L</p>
                                     </Box>
                                     <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
-                                        <p>Volume de tanque </p>
-                                        <p>{item.tank_volume} L</p>
+                                        <p>Retirado</p>
+                                        <p>{item.removed}L</p>
                                     </Box>
                                     <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
-                                        <p>Taxa de aplicação</p>
-                                        <p>{item.rate} L</p>
+                                        <p>Aplicado</p>
+                                        <p>{item.applied}L</p>
                                     </Box>
                                     <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
-                                        <p>Área Sobrevoada </p>
-                                        <p>{item.performance} ha</p>
+                                        <p>Devolvido</p>
+                                        <p>{item.returned}L</p>
                                     </Box>
                                 </Box>
                             </AccordionDetails>

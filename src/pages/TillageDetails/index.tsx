@@ -43,7 +43,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
 
     const { snackbar } = useSnackbar()
     const { user } = useUser()
-    const { addCallPending, allCalls, addCall } = useCall()
+    const { addCallPending, allCalls, addCall, addCallApprove } = useCall()
     const { listKits } = useKits()
 
     const images = useArray().newArray(5)
@@ -81,10 +81,8 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
 
     const toggleSelection = (talhao: Talhao) => {
         if (selectedAvatar === talhao.id) {
-            // Se o mesmo avatar já está selecionado, mantenha-o selecionado
             setSelectedAvatar(talhao.id)
         } else {
-            // Caso contrário, selecione o novo avatar
             setSelectedAvatar(talhao.id)
             setSelectedTalhao(talhao)
             setSelectedCall(null)
@@ -118,11 +116,9 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
         console.log(call)
         selectedCall ? setCallStatus(true) : setCallStatus(false)
         call && setSelectedCall(call)
-        console.log({ selectedCall: selectedCall?.forecast })
     }, [call])
 
     useEffect(() => {
-        // console.log(callStatus)
         setCallStatus(false)
     }, [selectedAvatar])
     const handleClickOpen = () => {
@@ -162,13 +158,13 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
     }, [tillageSelect])
 
     useEffect(() => {
-        io.on(user?.isAdmin ? "adminCall:creation:success" : "call:creation:success", (data: Call) => {
+        io.on(user?.isAdmin ? "adminCall:creation:success" : "call:creation:success", (data: any) => {
             console.log({ chamadoAberto: data })
             addCall(data)
+            addCallApprove(data)
             setLoading(false)
             setCall(data)
             setSelectedCall(data)
-            console.log(data)
             snackbar({
                 severity: "success",
                 text: !user?.isAdmin ? "Chamado aberto! Aguarde a aprovação." : "Chamado aberto!",
@@ -192,10 +188,6 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
     }, [])
 
     useEffect(() => {
-        console.log({ call_selecioonada: selectedCall })
-    }, [selectedCall])
-
-    useEffect(() => {
         // console.log({ location: tillageSelect?.address.city })
         tillageSelect?.address.city && io.emit("weather:find", { data: tillageSelect?.address.city })
 
@@ -210,6 +202,8 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
             io.off("weather:find:failed")
         }
     }, [tillageSelect])
+
+    
 
     return (
         <Box
@@ -462,6 +456,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                                     click={() => {
                                         setVariant(true)
                                         setOpenApproved(false)
+                                        console.log("cria")
                                         navigate(`/adm/calls/${call?.id}`)
                                     }}
                                 />

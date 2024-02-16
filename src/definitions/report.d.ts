@@ -1,3 +1,5 @@
+import { Call } from "./call"
+
 declare interface NewReport {
     callId?: number
     operation?: Operation
@@ -5,6 +7,10 @@ declare interface NewReport {
     material?: Material[]
     techReport?: TechReport
     areaTrabalhada: string
+    stages?: Stage[]
+    stage?: string
+    talhao?: Talhao
+    call?: Call
 }
 declare interface Report extends NewReport {
     id: number
@@ -14,11 +20,14 @@ declare interface Report extends NewReport {
 declare interface GeralReport {
     id: number
     call: Call
+    stages?: Stage[]
     producer: Producer
     operation: Operation
     treatment: Treatment
     material: Material
     techReport: TechReport
+    talhao?: Talhao
+    call?: Call
 }
 declare interface Operation {
     id?: number
@@ -89,4 +98,15 @@ declare interface Flight {
 
     techReportId?: number //temporaly optional
     // techReport:TechReport
+}
+
+export declare interface Stage {
+    id?: number
+    name: string
+    date: string
+    start: string
+    finish: string
+    duration: string
+    comments: string
+    reportId: number
 }

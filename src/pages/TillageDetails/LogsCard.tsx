@@ -55,14 +55,16 @@ export const LogsCard: React.FC<LogsCardProps> = ({ review, call, variant, talha
                             navigate(`/adm/calls/talhao/${talhao.id}/${call?.id}`)
                             call && setSelectedCall(call)
                         } else {
-                            if (call.reports?.length === 0) {
-                                console.log("sem relatorio")
-                                call && setSelectedCall(call)
-                            } else {
-                                navigate(`/adm/call/${call?.id}/report/${call?.reports && call.reports[0].id}`)
-                                console.log("com relatorio")
-                                call && setSelectedCall(call)
-                            }
+                            navigate(`/adm/call/${call?.id}/laudos`)
+                            // if (call?.reports && call.reports[0].stage === "STAGE1") {
+                            //     console.log("sem relatorio")
+                            //     navigate(`/adm/call/${call?.id}/stages/${call?.reports && call.reports[0].id}`)
+                            //     call && setSelectedCall(call)
+                            // } else {
+                            //     navigate(`/adm/call/${call?.id}/report/${call?.reports && call.reports[0].id}`)
+                            //     console.log("com relatorio")
+                            //     call && setSelectedCall(call)
+                            // }
                         }
                     }
                 }}

@@ -8,14 +8,15 @@ import { tabStyle } from "../../../../style/tabStyle"
 import { OperationComponent } from "./OperationComponent"
 import { TreatmentComponent } from "./TreatmentComponent"
 import { TechReportComponent } from "./TechReportComponent"
-import { Material } from "../Material"
-import { MaterialComponent } from "./Material"
+
+// import { MaterialComponent } from "./Material"
 import { ActionIcon, Group, Menu } from "@mantine/core"
 import { IconDots } from "@tabler/icons-react"
 import { ButtonAgritech } from "../../../../components/ButtonAgritech"
 import MuiAccordionDetails from "@mui/material/AccordionDetails"
 import { CurrencyText } from "../../../../components/CurrencyText"
 import { formatCNPJ, formatCPF } from "../../../../hooks/useFormattedDocument.ts"
+import { MaterialComponent } from "./MaterialComponent.tsx"
 
 interface ReportDetailsProps {}
 

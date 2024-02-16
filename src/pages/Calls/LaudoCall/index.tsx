@@ -16,7 +16,7 @@ import { ModalProduct } from "./ModalProduct"
 import { TechReport } from "./TechReport"
 import { ModalFlight } from "./ModalFlight"
 import { useCallInfo } from "../../../hooks/useCallSelect"
-import { Material } from "./Material"
+import { MaterialComponent } from "./MaterialComponent"
 import { ModalMaterial } from "./ModalMaterials"
 import { useIo } from "../../../hooks/useIo"
 import { Treatment } from "./Treatment"
@@ -27,6 +27,8 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo"
 import { useCall } from "../../../hooks/useCall"
 import { unmaskNumber } from "../../../hooks/unmaskNumber"
+import { Flight, Material, NewReport, Product, Report } from "../../../definitions/report"
+import { report } from "process"
 
 interface LaudoCallProps {
     user: User
@@ -118,7 +120,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
         }))
 
         const data = {
-            callId: call.call?.id,
+            id: Number(reportid),
             areaTrabalhada: totalSum,
             operation: { ...values.operation, areaMap: Number(selectedCall?.talhao?.tillage?.area) },
             treatment: { ...values.treatment, products: treatmentNormalize },
@@ -136,34 +138,39 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
         // console.log(data)
         // console.log(initPick)
         if (data) {
-            io.emit("report:create", data)
+            io.emit("report:update", data)
             setLoading(true)
             open()
         }
     }
 
     useEffect(() => {
-        io.on("report:creation:success", (data: Report) => {
+        io.on("report:update:success", (data: Report) => {
             console.log(data)
             snackbar({ severity: "success", text: "Relatório operacional criado!" })
 
             setLoading(false)
             close()
-            navigate(`/adm/report/${data.id}`)
+            // navigate(`/adm/report/${data.id}`)
         })
-        io.on("report:creation:failed", (error) => {
+        io.on("report:update:failed", (error) => {
             snackbar({ severity: "error", text: "Algo deu errado!" })
             setLoading(false)
             close()
         })
 
         return () => {
-            io.off("report:create")
+            io.off("report:update:success")
+            io.off("report:update:failed")
         }
     }, [])
     useEffect(() => {
         header.setTitle("Relatório Operacional")
     }, [])
+
+    useEffect(() => {
+        console.log(report)
+    }, [report])
 
     // useEffect(() => {
     //     console.log({ call: selectedCall })
@@ -384,15 +391,16 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                                                 change={handleChange}
                                                 call={selectedCall}
                                             />
-                                            <ButtonAgritech
+                                            {/* <ButtonAgritech
                                                 variant="contained"
+                                                type="submit"
                                                 sx={{ bgcolor: colors.button }}
                                                 onClick={() => {
                                                     setstage(1)
                                                 }}
                                             >
-                                                Tratamento {">"}
-                                            </ButtonAgritech>
+                                                Salvar {">"}
+                                            </ButtonAgritech> */}
                                         </Box>
                                     )}
                                     {stage === 1 && (
@@ -404,7 +412,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                                                 change={handleChange}
                                                 open={openProducts}
                                             />
-                                            <ButtonAgritech
+                                            {/* <ButtonAgritech
                                                 variant="contained"
                                                 sx={{ bgcolor: colors.button }}
                                                 onClick={() => {
@@ -412,7 +420,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                                                 }}
                                             >
                                                 Laudo Técnico {">"}
-                                            </ButtonAgritech>
+                                            </ButtonAgritech> */}
                                         </Box>
                                     )}
                                     {stage === 2 && (
@@ -424,7 +432,8 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                                                 change={handleChange}
                                                 open={openFlight}
                                             />
-                                            <ButtonAgritech
+                                            {/* <ButtonAgritech
+                                                type="submit"
                                                 variant="contained"
                                                 sx={{ bgcolor: colors.button }}
                                                 onClick={() => {
@@ -432,32 +441,31 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                                                 }}
                                             >
                                                 Insumos {">"}
-                                            </ButtonAgritech>
+                                            </ButtonAgritech> */}
                                         </Box>
                                     )}
                                     {stage === 3 && (
                                         <Box sx={{ height: "100%", justifyContent: "space-between", pt: "6vw" }}>
-                                            <Material
+                                            <MaterialComponent
                                                 values={values}
                                                 change={handleChange}
                                                 listMaterials={listMaterials}
                                                 open={openMaterials}
                                             />
-                                            <ButtonAgritech
-                                                type="submit"
-                                                variant="contained"
-                                                sx={{ bgcolor: colors.button }}
-                                                onClick={() => {
-                                                    setstage(4)
-                                                    console.log("Finalizado")
-                                                    handleSubmit(values)
-                                                    // navigate(user.isAdmin ? `/` : `/employee`)
-                                                }}
-                                            >
-                                                Enviar Relatório {">"}
-                                            </ButtonAgritech>
                                         </Box>
                                     )}
+                                    <ButtonAgritech
+                                        type="submit"
+                                        variant="contained"
+                                        sx={{ bgcolor: colors.button }}
+                                        onClick={() => {
+                                            console.log("Finalizado")
+                                            handleSubmit(values)
+                                            // navigate(user.isAdmin ? `/` : `/employee`)
+                                        }}
+                                    >
+                                        Salvar Dados {">"}
+                                    </ButtonAgritech>
                                     {/* {!user?.producer && <ButtonComponent title="Reportar" location="" />} */}
                                 </Box>
                             </Form>

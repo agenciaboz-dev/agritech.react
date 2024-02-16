@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { useHeader } from "../../hooks/useHeader"
-import { Call, Stage } from "../../definitions/call"
+import { Call } from "../../definitions/call"
 import { Box, CircularProgress, TextField } from "@mui/material"
 import { useFormik } from "formik"
 import { TitleComponents } from "../../components/TitleComponents"
@@ -14,27 +14,27 @@ import { useUsers } from "../../hooks/useUsers"
 import { useCall } from "../../hooks/useCall"
 import { useProducer } from "../../hooks/useProducer"
 import { ButtonAgritech } from "../../components/ButtonAgritech"
-import { dateFrontend } from "../../hooks/useFormattedDate"
 import { useIo } from "../../hooks/useIo"
 import { useSnackbar } from "burgos-snackbar"
-import moment from "moment"
+import { Report, Stage } from "../../definitions/report"
 
-interface ReportCallProps {
+interface ReportStageProps {
     user: User
 }
 
-export const ReportCall: React.FC<ReportCallProps> = ({ user }) => {
+export const ReportStage: React.FC<ReportStageProps> = ({ user }) => {
     const header = useHeader()
     const navigate = useNavigate()
     const io = useIo()
     const { snackbar } = useSnackbar()
-    const { callid } = useParams()
+    const { callid, reportid } = useParams()
     const { listUsers } = useUsers()
     const { listCalls } = useCall()
     const { listTillages } = useProducer()
 
     const [loading, setLoading] = useState(false)
     const [call, setCall] = useState<Call | null>()
+    const [report, setReport] = useState<Report | null>()
     const [producerSelect, setProducerSelect] = useState<User | null>()
     const [tillage, setTillage] = useState<Tillage | null>()
 
@@ -53,6 +53,9 @@ export const ReportCall: React.FC<ReportCallProps> = ({ user }) => {
 
     useEffect(() => {
         setCall(listCalls.find((item) => String(item.id) === callid))
+        if (call) {
+            setReport(call.reports?.find((item) => item.id === Number(reportid)))
+        }
         setProducerSelect(listUsers?.find((item) => item.producer?.id === call?.producerId) || null)
         setTillage(listTillages?.find((item) => item.id === call?.talhao?.tillageId && item.producerId === call.producerId))
     }, [call, listCalls])
@@ -72,7 +75,7 @@ export const ReportCall: React.FC<ReportCallProps> = ({ user }) => {
             duration: "",
             finish: "",
             start: "",
-            callId: Number(callid),
+            reportId: Number(reportid),
         },
         onSubmit: (values) => chegadaSubmit(values),
     })
@@ -84,7 +87,7 @@ export const ReportCall: React.FC<ReportCallProps> = ({ user }) => {
             duration: "",
             finish: "",
             start: "",
-            callId: Number(callid),
+            reportId: Number(reportid),
         },
         onSubmit: (values) => pulverizacaoSubmit(values),
     })
@@ -96,7 +99,7 @@ export const ReportCall: React.FC<ReportCallProps> = ({ user }) => {
             duration: "",
             finish: "",
             start: "",
-            callId: Number(callid),
+            reportId: Number(reportid),
         },
         onSubmit: (values) => backSubmit(values),
     })
@@ -110,7 +113,7 @@ export const ReportCall: React.FC<ReportCallProps> = ({ user }) => {
 
         const data = {
             ...values,
-            id: call?.stages[0].id,
+            id: report?.stages ? report?.stages[0].id : null,
             date: new Date().getTime().toString(),
             start: new Date(Number(initPick)).getTime().toString(),
             finish: new Date(Number(finishPick)).getTime().toString(),
@@ -118,14 +121,14 @@ export const ReportCall: React.FC<ReportCallProps> = ({ user }) => {
         }
         io.emit("stage:update:one", data)
         setLoading(true)
-        console.log(data)
+        console.log({ STEP1: data })
     }
 
     const pulverizacaoSubmit = (values: Stage) => {
-        console.log({ pulverizou: call?.stages[1] })
+        // console.log({ pulverizou: report?.stages[1] })
         const data = {
             ...values,
-            id: call?.stages[1].id,
+            id: report?.stages ? report?.stages[1].id : null,
             date: new Date().getTime().toString(),
             start: new Date(Number(initPick)).getTime().toString(),
             finish: new Date(Number(finishPick)).getTime().toString(),
@@ -138,7 +141,7 @@ export const ReportCall: React.FC<ReportCallProps> = ({ user }) => {
     const backSubmit = (values: Stage) => {
         const data = {
             ...values,
-            id: call?.stages[2].id,
+            id: report?.stages ? report?.stages[2].id : null,
             date: new Date().getTime().toString(),
             start: new Date(Number(initPick)).getTime().toString(),
             finish: new Date(Number(finishPick)).getTime().toString(),
@@ -148,16 +151,16 @@ export const ReportCall: React.FC<ReportCallProps> = ({ user }) => {
     }
 
     useEffect(() => {
-        console.log({ Estágio: call })
+        console.log({ Estágio: report })
         // setstage(stageCurrent)
         // console.log(stageCurrent)
 
-        console.log(call?.stage)
-    }, [call?.stage])
+        console.log(report?.stage)
+    }, [report?.stage])
 
     useEffect(() => {
-        if (call?.stage === "STAGE3") {
-            navigate(user.isAdmin ? `/adm/call/${callid}/laudo` : `/employee/call/${callid}/laudo`)
+        if (report?.stage === "STAGE3") {
+            navigate(user.isAdmin ? `/adm/call/${callid}/laudo/${reportid}` : `/employee/call/${callid}/laudo`)
         }
         const registerEvents = () => {
             io.on("stage:updateOne:success", (stage) => {
@@ -192,15 +195,15 @@ export const ReportCall: React.FC<ReportCallProps> = ({ user }) => {
                 snackbar({ severity: "error", text: "Tem algo errado com os dados de volta!" })
             })
 
-            io.on("call:updateOne:success", (call) => {
-                setCall(call)
-            })
-            io.on("call:updateTwo:success", (call) => {
-                setCall(call)
-            })
-            io.on("call:updateThree:success", (call) => {
-                setCall(call)
-            })
+            // io.on("call:updateOne:success", (call) => {
+            //     setCall(call)
+            // })
+            // io.on("call:updateTwo:success", (call) => {
+            //     setCall(call)
+            // })
+            // io.on("call:updateThree:success", (call) => {
+            //     setCall(call)
+            // })
         }
 
         // Função para desregistrar todos os eventos
@@ -222,16 +225,16 @@ export const ReportCall: React.FC<ReportCallProps> = ({ user }) => {
         }
     }, [stage])
     useEffect(() => {
-        console.log({ CALL_: call?.stage })
-        if (call?.stage === "STAGE1") {
+        console.log({ REPORT: report?.stage })
+        if (report?.stage === "STAGE1") {
             setstage(0)
-        } else if (call?.stage === "STAGE2") {
+        } else if (report?.stage === "STAGE2") {
             setstage(1)
-        } else if (call?.stage === "STAGE3") {
+        } else if (report?.stage === "STAGE3") {
             setstage(2)
         }
         console.log({ STAFE: stage })
-    }, [call?.stage])
+    }, [report?.stage])
 
     useEffect(() => {
         header.setTitle("Painel")
@@ -257,14 +260,7 @@ export const ReportCall: React.FC<ReportCallProps> = ({ user }) => {
                     flexDirection: "row",
                 }}
             >
-                <Header
-                    back
-                    location={
-                        user?.isAdmin
-                            ? `/adm/producer/${producerSelect?.producer?.id}/${tillage?.id}`
-                            : `/employee/producer/${producerSelect?.producer?.id}/${tillage?.id}`
-                    }
-                />
+                <Header back location={user?.isAdmin ? `/adm/call/${callid}/laudos` : `/employee/call/${callid}/laudos`} />
             </Box>
 
             <Box

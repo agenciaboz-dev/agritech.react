@@ -17,6 +17,7 @@ import { AccordionSummary } from "../../../components/Accordion"
 import { useNumberMask } from "burgos-masks"
 import { textField } from "../../../style/input"
 import MaskedInputNando from "../../../components/MaskedNando"
+import { Flight } from "../../../definitions/report"
 
 interface ModalFlightProps {
     flight: Flight[]

@@ -3,6 +3,7 @@ import React, { ChangeEventHandler, useEffect, useState } from "react"
 import { textField } from "../../../style/input"
 import { colors } from "../../../style/colors"
 import { Call } from "../../../definitions/call"
+import { NewReport } from "../../../definitions/report"
 // import { NumericFormat } from "react-number-format"
 interface OperationProps {
     user: User
@@ -67,13 +68,13 @@ export const Operation: React.FC<OperationProps> = ({ values, change, user, call
             <TextField
                 label="Piloto/Copiloto"
                 name="kit"
-                value={
-                    call?.kit?.employees
-                        ? call.kit?.employees.length <= 1
-                            ? `${call?.kit?.employees[0].user?.name}`
-                            : `${call?.kit?.employees[0].user?.name}/${call?.kit?.employees[1].user?.name}`
-                        : ""
-                }
+                // value={
+                //     call?.kit?.employees
+                //         ? call.kit?.employees.length <= 1
+                //             ? `${call?.kit?.employees[0].user?.name}`
+                //             : `${call?.kit?.employees[0].user?.name}/${call?.kit?.employees[1].user?.name}`
+                //         : ""
+                // }
                 sx={{
                     ...textField,
                 }}

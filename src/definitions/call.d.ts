@@ -1,3 +1,5 @@
+import { Report } from "./report"
+
 export enum CallStatus {
     OPEN,
     INPROGRESS,
@@ -21,7 +23,6 @@ export declare interface ApprovedCall {
     open: string
     comments?: string
     approved?: boolean
-    stages?: Stage[]
 
     talhao?: Talhao
     talhaoId: number
@@ -42,19 +43,9 @@ export declare interface Call extends CreateCall {
     // status: CallStatus
     reports?: Report[]
     totalPrice: number
-    stages: Stage[]
     tillage?: Tillage
     producer?: Producer
     tillageId: number
 }
 
-export declare interface Stage {
-    id?: number
-    name: string
-    date: string
-    start: string
-    finish: string
-    duration: string
-    comments: string
-    callId: number
-}
+

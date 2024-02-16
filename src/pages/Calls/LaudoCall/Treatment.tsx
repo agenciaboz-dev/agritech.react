@@ -1,6 +1,7 @@
 import { Box, TextField } from "@mui/material"
 import React, { ChangeEventHandler } from "react"
 import { TitleComponents } from "../../../components/TitleComponents"
+import { NewReport, Product } from "../../../definitions/report"
 
 interface TreatmentProps {
     user: User
