@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { useHeader } from "../../../hooks/useHeader"
 import { Box, CircularProgress, TextField } from "@mui/material"
-import { Form, Formik } from "formik"
+import { Form, Formik, useFormik } from "formik"
 import { TitleComponents } from "../../../components/TitleComponents"
 import { Header } from "../../../components/Header"
 import { colors } from "../../../style/colors"
@@ -27,7 +27,19 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo"
 import { useCall } from "../../../hooks/useCall"
 import { unmaskNumber } from "../../../hooks/unmaskNumber"
-import { Flight, Material, NewReport, Operation, Product, Report, TechReport, Treatment } from "../../../definitions/report"
+import {
+    Flight,
+    Material,
+    NewReport,
+    Operation,
+    Product,
+    Report,
+    Stage,
+    TechReport,
+    Treatment,
+} from "../../../definitions/report"
+import dayjs from "dayjs"
+import { ModalStage } from "./ModalStage"
 
 interface LaudoCallProps {
     user: User
@@ -63,25 +75,68 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
 
     const initialValues: NewReport = {
         operation: {
-            service: "",
-            culture: "",
+            service: report?.operation?.service || "",
+            culture: report?.operation?.culture || "",
             areaMap: "",
-            equipment: "",
+            equipment: report?.call?.kit?.name || "",
             model: "",
         },
-        areaTrabalhada: "",
+        areaTrabalhada: String(report?.areaTrabalhada) || "",
         treatment: {
             products: [],
         },
         material: [],
         techReport: {
-            date: "",
-            init: "",
-            finish: "",
+            date: new Date(Number(report?.techReport?.date)).toLocaleDateString("pt-br") || "",
+            init: new Date(Number(report?.techReport?.init)).toLocaleTimeString("pt-br") || "",
+            finish: new Date(Number(report?.techReport?.finish)).toLocaleTimeString("pt-br") || "",
             comments: "",
             flight: [],
         },
     }
+    const flightNormalize = listFlights?.map((item) => ({
+        temperature: unmaskNumber(item.temperature),
+        humidity: unmaskNumber(item.humidity),
+        wind_velocity: unmaskNumber(item.wind_velocity),
+        height: unmaskNumber(item.height),
+        faixa: unmaskNumber(item.faixa),
+        flight_velocity: unmaskNumber(item.flight_velocity),
+        tank_volume: unmaskNumber(item.tank_volume),
+        rate: unmaskNumber(item.rate),
+        performance: unmaskNumber(item.performance),
+    }))
+    //calculate areaTrabalhada
+    const sumArea = flightNormalize?.map((item) => Number(item.performance))
+    const totalSum = sumArea.reduce((acc, currentValue) => acc + currentValue, 0)
+
+    useEffect(() => {
+        if (report?.treatment?.products) setListProducts(report?.treatment?.products)
+        if (report?.material) setListMaterials(report?.material)
+        if (report?.techReport?.flight) setListFlights(report?.techReport.flight)
+    }, [report])
+
+    // const addProduct = (newProduct: Product) => {
+    //     io.emit("product:create", newProduct)
+
+    //     // Atualizar a lista de produtos no frontend
+    //     const updatedList = [...listProducts, newProduct]
+    //     setListProducts(updatedList)
+    // }
+
+    // // Quando atualizar um produto existente
+    // const editProduct = (productId: number, updatedProduct: Product) => {
+    //     // Emitir evento de atualização para o backend
+    //     io.emit("updateProduct", { productId, updatedProduct })
+
+    //     // Atualizar a lista de produtos no frontend
+    //     const updatedList = listProducts.map((product) => {
+    //         if (product.id === productId) {
+    //             return updatedProduct
+    //         }
+    //         return product
+    //     })
+    //     setListProducts(updatedList)
+    // }
 
     const updateOperation = async (values: Operation | undefined) => {
         if (values) {
@@ -137,6 +192,9 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
             io.off("treatment:update:failed")
         }
     }, [])
+    useEffect(() => {
+        console.log(report)
+    }, [])
 
     const createTechReport = async (values: TechReport | undefined) => {
         if (values) {
@@ -154,11 +212,11 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
             //calculate areaTrabalhada
             const sumArea = flightNormalize?.map((item) => Number(item.performance))
             const totalSum = sumArea.reduce((acc, currentValue) => acc + currentValue, 0)
-            console.log({ total: totalSum })
 
             const data = {
-                id: report?.treatment?.id,
+                id: report?.techReport?.id,
                 ...values,
+                areaTrabalhada: totalSum,
                 date: new Date().getTime().toString(),
                 init: new Date(Number(initPick)).getTime().toString(),
                 finish: new Date(Number(finishPick)).getTime().toString(),
@@ -180,6 +238,43 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
         return () => {
             io.off("techReport:update:success")
             io.off("techReport:update:failed")
+        }
+    }, [])
+
+    const submitMaterial = async () => {
+        const materialNormalize = listMaterials?.map((item) => ({
+            talhao: item.talhao,
+            area: unmaskNumber(item.area),
+            product: item.product,
+            dosage: unmaskNumber(item.dosage),
+            classification: item.classification,
+            total: unmaskNumber(item.total),
+            removed: unmaskNumber(item.removed),
+            applied: unmaskNumber(item.applied),
+            returned: unmaskNumber(item.returned),
+            comments: item.comments,
+        }))
+
+        const data = {
+            reportId: report?.id,
+            areaTrabalhada: totalSum,
+            materials: materialNormalize,
+        }
+        io.emit("report:update", data)
+
+        console.log({ enviei: data })
+    }
+
+    useEffect(() => {
+        io.on("report:update:success", (data) => {
+            console.log(data)
+        })
+        io.on("report:update:failed", (error) => {
+            console.log(error)
+        })
+        return () => {
+            io.off("report:update:success")
+            io.off("report:update:failed")
         }
     }, [])
 
@@ -265,6 +360,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
             io.off("report:update:failed")
         }
     }, [])
+
     useEffect(() => {
         header.setTitle("Relatório Operacional")
     }, [])
@@ -276,6 +372,10 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
     // useEffect(() => {
     //     console.log({ call: selectedCall })
     // }, [selectedCall])
+
+    const [openedStageFinish, { open: openStage, close: closeStage }] = useDisclosure(false)
+    const closeReport = async () => {}
+
     return (
         <Box
             sx={{
@@ -325,6 +425,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                 product={listProducts}
                 setproduct={setListProducts}
             />
+            <ModalStage opened={openedStageFinish} close={closeStage} report={report} />
             <ModalFlight opened={openedFlight} close={closeFlight} flight={listFlights} setFlight={setListFlights} />
             <ModalMaterial
                 opened={openedMaterials}
@@ -366,7 +467,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                     flexDirection: "column",
                 }}
             >
-                <TitleComponents
+                {/* <TitleComponents
                     title="Preencher dados"
                     style={{ fontSize: "5vw" }}
                     button={user?.employee ? true : false}
@@ -379,14 +480,50 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                         )
                     }
                     variant
+                /> */}
+                <TitleComponents
+                    title="Preencher dados"
+                    style={{ fontSize: "5vw" }}
+                    button={user?.employee ? true : false}
+                    styleButton
+                    textButton="Fechar Relatório"
+                    click={openStage}
+                    variant
                 />
                 <Formik initialValues={initialValues} onSubmit={handleSubmit}>
                     {({ values, handleChange }) => (
-                        <Box sx={{ gap: "3vw", height: "85%", overflowY: "auto", p: "2vw 0" }}>
+                        <Box sx={{ gap: "4vw", height: "85%", overflowY: "auto", p: "2vw 0" }}>
                             <Form>
                                 <Box sx={{ justifyContent: "space-between", height: "100%" }}>
-                                    <Box sx={{ gap: "5vw" }}>
-                                        <Box gap={"3vw"}>
+                                    <Box sx={{ gap: "3vw" }}>
+                                        <Box gap={"2vw"}>
+                                            <Box sx={{}}>
+                                                <p>{new Date(Number(report?.date)).toLocaleDateString("pt-br")}</p>
+                                                <Box
+                                                    sx={{
+                                                        flexDirection: "row",
+                                                        justifyContent: "space-between",
+                                                        width: "100%",
+                                                    }}
+                                                >
+                                                    {report?.techReport?.init && (
+                                                        <p>
+                                                            <span style={{ fontWeight: "bold" }}>Início: </span>
+                                                            {new Date(Number(report.techReport.init)).toLocaleTimeString(
+                                                                "pt-br"
+                                                            )}{" "}
+                                                        </p>
+                                                    )}
+                                                    {report?.techReport?.finish && (
+                                                        <p>
+                                                            <span style={{ fontWeight: "bold" }}>Final: </span>
+                                                            {new Date(Number(report.techReport.finish)).toLocaleTimeString(
+                                                                "pt-br"
+                                                            )}{" "}
+                                                        </p>
+                                                    )}
+                                                </Box>
+                                            </Box>
                                             <TextField
                                                 label="Contratante"
                                                 name="producer"
@@ -406,57 +543,57 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                                                 dateAdapter={AdapterDayjs}
                                                 localeText={ptBR.components.MuiLocalizationProvider.defaultProps.localeText}
                                             >
-                                                <DemoContainer components={["TimeField", "TimeField", "TimeField"]}>
-                                                    <Box sx={{ flexDirection: "row", gap: "1vw" }}>
-                                                        <TextField
-                                                            label="Data"
-                                                            value={new Date().toLocaleDateString("pt-br")}
-                                                            sx={{ ...textField }}
-                                                            InputProps={{ readOnly: true }}
-                                                            disabled={!user?.producer ? false : true}
-                                                        />
-                                                        <TimeField
-                                                            label="Início"
-                                                            name="init"
-                                                            sx={{ ...textField }}
-                                                            value={initPick}
-                                                            onChange={(newValue) => setInitPick(newValue)}
-                                                            format="HH:mm"
-                                                            ampm={false}
-                                                            InputProps={{
-                                                                inputMode: "numeric",
-                                                                endAdornment: (
-                                                                    <CiClock2
-                                                                        style={{
-                                                                            color: "black",
-                                                                            width: "6vw",
-                                                                            height: "6vw",
-                                                                        }}
-                                                                    />
-                                                                ),
-                                                            }}
-                                                        />
-                                                        <TimeField
-                                                            label="Final"
-                                                            name="finish"
-                                                            sx={{ ...textField }}
-                                                            value={finishPick}
-                                                            onChange={(newValue) => setFinishPick(newValue)}
-                                                            format="HH:mm"
-                                                            ampm={false}
-                                                            InputProps={{
-                                                                inputMode: "numeric",
-                                                                endAdornment: (
-                                                                    <CiClock2
-                                                                        style={{
-                                                                            color: "black",
-                                                                            width: "6vw",
-                                                                            height: "6vw",
-                                                                        }}
-                                                                    />
-                                                                ),
-                                                            }}
-                                                        />
+                                                <DemoContainer
+                                                    components={["TimeField", "TimeField", "TimeField"]}
+                                                    sx={{ paddingTop: 0 }}
+                                                >
+                                                    <Box sx={{ flexDirection: "row", gap: "1vw", paddingTop: "0" }}>
+                                                        {!report?.techReport?.init && (
+                                                            <TimeField
+                                                                label="Início"
+                                                                name="init"
+                                                                sx={{ ...textField }}
+                                                                value={initPick}
+                                                                onChange={(newValue) => setInitPick(newValue)}
+                                                                format="HH:mm"
+                                                                ampm={false}
+                                                                InputProps={{
+                                                                    inputMode: "numeric",
+                                                                    endAdornment: (
+                                                                        <CiClock2
+                                                                            style={{
+                                                                                color: "black",
+                                                                                width: "6vw",
+                                                                                height: "6vw",
+                                                                            }}
+                                                                        />
+                                                                    ),
+                                                                }}
+                                                            />
+                                                        )}
+                                                        {!report?.techReport?.finish && (
+                                                            <TimeField
+                                                                label="Final"
+                                                                name="finish"
+                                                                sx={{ ...textField }}
+                                                                value={finishPick}
+                                                                onChange={(newValue) => setFinishPick(newValue)}
+                                                                format="HH:mm"
+                                                                ampm={false}
+                                                                InputProps={{
+                                                                    inputMode: "numeric",
+                                                                    endAdornment: (
+                                                                        <CiClock2
+                                                                            style={{
+                                                                                color: "black",
+                                                                                width: "6vw",
+                                                                                height: "6vw",
+                                                                            }}
+                                                                        />
+                                                                    ),
+                                                                }}
+                                                            />
+                                                        )}
                                                     </Box>
                                                 </DemoContainer>
                                             </LocalizationProvider>
@@ -469,7 +606,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                                                 step: {
                                                     flexDirection: "column",
                                                     alignItems: "center",
-                                                    gap: "2vw",
+                                                    gap: "1vw",
                                                     justifyContent: "center",
                                                     marginLeft: 0,
                                                 },
@@ -485,7 +622,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                                         </Stepper>
                                     </Box>
                                     {stage === 0 && (
-                                        <Box sx={{ height: "100%", justifyContent: "space-between", pt: "6vw" }}>
+                                        <Box sx={{ height: "100%", justifyContent: "space-between", pt: "5vw" }}>
                                             <OperationComponent
                                                 user={user}
                                                 values={values}
@@ -506,7 +643,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                                         </Box>
                                     )}
                                     {stage === 1 && (
-                                        <Box sx={{ height: "100%", justifyContent: "space-between", pt: "6vw" }}>
+                                        <Box sx={{ height: "100%", justifyContent: "space-between", pt: "5vw" }}>
                                             <TreatmentComponent
                                                 listProducts={listProducts}
                                                 user={user}
@@ -528,7 +665,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                                         </Box>
                                     )}
                                     {stage === 2 && (
-                                        <Box sx={{ height: "100%", justifyContent: "space-between", pt: "6vw" }}>
+                                        <Box sx={{ height: "100%", justifyContent: "space-between", pt: "5vw" }}>
                                             <TechReportComponent
                                                 listFlights={listFlights}
                                                 user={user}
@@ -550,7 +687,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                                         </Box>
                                     )}
                                     {stage === 3 && (
-                                        <Box sx={{ height: "100%", justifyContent: "space-between", pt: "6vw" }}>
+                                        <Box sx={{ height: "100%", justifyContent: "space-between", pt: "5vw" }}>
                                             <MaterialComponent
                                                 values={values}
                                                 change={handleChange}
@@ -562,6 +699,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                                                 variant="contained"
                                                 sx={{ bgcolor: colors.button }}
                                                 onClick={() => {
+                                                    submitMaterial()
                                                     console.log("Finalizado")
                                                     // handleSubmit(values)
                                                     // navigate(user.isAdmin ? `/` : `/employee`)

@@ -68,13 +68,13 @@ export const OperationComponent: React.FC<OperationComponentProps> = ({ values, 
             <TextField
                 label="Piloto/Copiloto"
                 name="kit"
-                // value={
-                //     call?.kit?.employees
-                //         ? call.kit?.employees.length <= 1
-                //             ? `${call?.kit?.employees[0].user?.name}`
-                //             : `${call?.kit?.employees[0].user?.name}/${call?.kit?.employees[1].user?.name}`
-                //         : ""
-                // }
+                value={
+                    call?.kit?.employees
+                        ? call.kit?.employees.length <= 1
+                            ? `${call?.kit?.employees[0].user?.name}`
+                            : `${call?.kit?.employees[0].user?.name}/${call?.kit?.employees[1].user?.name}`
+                        : ""
+                }
                 sx={{
                     ...textField,
                 }}

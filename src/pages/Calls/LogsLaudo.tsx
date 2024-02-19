@@ -21,7 +21,7 @@ interface LogsLaudoProps {
 export const LogsLaudo: React.FC<LogsLaudoProps> = ({ report, talhao, id, tillage, setSelectedCall }) => {
     const navigate = useNavigate()
     const { user } = useUser()
-
+    console.log({ Relatorio: report.id })
     return (
         <Box sx={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
             <Box sx={{ flexDirection: "column" }}>
@@ -41,6 +41,8 @@ export const LogsLaudo: React.FC<LogsLaudoProps> = ({ report, talhao, id, tillag
                                 ? navigate(`/adm/call/${report.call?.id}/stages/${report.id}`)
                                 : navigate(`/employee/call/${report.call?.id}/stages/${report.id}`)
                             // call && setSelectedCall(call)
+                        } else if (report && report.stage === "STAGE4") {
+                            navigate(`/adm/call/${report.call?.id}/report/${report.id}`)
                         } else {
                             // navigate(`/adm/call/${call?.id}/report/${call?.reports && call.reports[0].id}`)
                             console.log("com relatorio")

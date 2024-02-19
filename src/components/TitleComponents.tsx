@@ -8,6 +8,7 @@ interface TitleComponentsProps {
     textButton?: string
     location?: string
     style?: React.CSSProperties | undefined
+    styleButton?: boolean
     variant?: boolean
     click?: React.MouseEventHandler<HTMLButtonElement> | undefined
     submit?: boolean
@@ -23,6 +24,7 @@ export const TitleComponents: React.FC<TitleComponentsProps> = ({
     style,
     variant,
     disabled,
+    styleButton,
 }) => {
     return (
         <Box sx={{ gap: "2vw" }}>
@@ -32,7 +34,11 @@ export const TitleComponents: React.FC<TitleComponentsProps> = ({
                     <Button
                         size="small"
                         variant="contained"
-                        sx={{ bgcolor: colors.button, textTransform: "none", borderRadius: "5vw" }}
+                        sx={{
+                            bgcolor: styleButton ? colors.secondary : colors.button,
+                            textTransform: "none",
+                            borderRadius: "5vw",
+                        }}
                         onClick={click}
                         type={submit ? "submit" : "button"}
                         disabled={disabled}

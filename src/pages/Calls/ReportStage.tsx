@@ -178,7 +178,7 @@ export const ReportStage: React.FC<ReportStageProps> = ({ user }) => {
 
                 setLoading(false)
                 setstage(2)
-                navigate(user.isAdmin ? `/adm/call/${callid}/laudo` : `/employee/call/${callid}/laudo`)
+                navigate(user.isAdmin ? `/adm/call/${call?.id}/laudo/${stage.reportId}` : `/employee/call/${call?.id}/laudo`)
             })
             io.on("stage:updateTwo:failed", (stage) => {
                 snackbar({ severity: "error", text: "Tem algo errado com os dados de pulverização!!" })
@@ -318,7 +318,7 @@ export const ReportStage: React.FC<ReportStageProps> = ({ user }) => {
                         </Box>
                         {call?.stage !== "STAGE3" && (
                             <Stepper
-                                active={call?.stage === "STAGE1" ? 0 : call?.stage === "STAGE2" ? 1 : 2}
+                                active={stage}
                                 size="xs"
                                 // onStepClick={setstage}
                                 styles={{

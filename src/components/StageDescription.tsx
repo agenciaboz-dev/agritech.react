@@ -2,13 +2,14 @@ import { Box, TextField } from "@mui/material"
 import React, { ChangeEventHandler, useEffect, useState } from "react"
 import { textField } from "../style/input"
 import { colors } from "../style/colors"
-import { Call, Stage } from "../definitions/call"
+import { Call } from "../definitions/call"
 import { useUser } from "../hooks/useUser"
 import { dateFrontend } from "../hooks/useFormattedDate"
 import { LocalizationProvider, TimeField, ptBR } from "@mui/x-date-pickers"
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo"
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import { CiClock2 } from "react-icons/ci"
+import { Stage } from "../definitions/report"
 
 interface StageDescriptionProps {
     title: string
