@@ -113,30 +113,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
         if (report?.treatment?.products) setListProducts(report?.treatment?.products)
         if (report?.material) setListMaterials(report?.material)
         if (report?.techReport?.flight) setListFlights(report?.techReport.flight)
-    }, [report])
-
-    // const addProduct = (newProduct: Product) => {
-    //     io.emit("product:create", newProduct)
-
-    //     // Atualizar a lista de produtos no frontend
-    //     const updatedList = [...listProducts, newProduct]
-    //     setListProducts(updatedList)
-    // }
-
-    // // Quando atualizar um produto existente
-    // const editProduct = (productId: number, updatedProduct: Product) => {
-    //     // Emitir evento de atualização para o backend
-    //     io.emit("updateProduct", { productId, updatedProduct })
-
-    //     // Atualizar a lista de produtos no frontend
-    //     const updatedList = listProducts.map((product) => {
-    //         if (product.id === productId) {
-    //             return updatedProduct
-    //         }
-    //         return product
-    //     })
-    //     setListProducts(updatedList)
-    // }
+    }, [])
 
     const updateOperation = async (values: Operation | undefined) => {
         if (values) {
@@ -193,7 +170,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
         }
     }, [])
     useEffect(() => {
-        console.log(report)
+        console.log({ Chegou: report })
     }, [])
 
     const createTechReport = async (values: TechReport | undefined) => {
