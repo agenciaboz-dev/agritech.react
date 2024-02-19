@@ -203,8 +203,6 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
         }
     }, [tillageSelect])
 
-    
-
     return (
         <Box
             sx={{
