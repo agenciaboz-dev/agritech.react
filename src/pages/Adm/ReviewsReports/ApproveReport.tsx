@@ -28,7 +28,7 @@ import MaskedInputNando from "../../../components/MaskedNando"
 import { useCurrencyMask } from "burgos-masks"
 import { unmaskCurrency } from "../../../hooks/unmaskNumber"
 
-interface ApproveCallProps {}
+interface ApproveReportProps {}
 
 const p_style = {
     fontSize: "3vw",
@@ -40,7 +40,7 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
     borderTop: "1px solid rgba(0, 0, 0, .125)",
 }))
 
-export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
+export const ApproveReport: React.FC<ApproveReportProps> = ({}) => {
     const header = useHeader()
     const io = useIo()
     const navigate = useNavigate()

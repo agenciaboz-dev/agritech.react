@@ -16,6 +16,8 @@ declare interface Report extends NewReport {
     id: number
     date: string
     hour: string
+    approved?: boolean
+    close: string
 }
 declare interface GeralReport {
     id: number

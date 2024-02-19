@@ -6,12 +6,12 @@ import { textField } from "../../../style/input"
 import { useDisclosure } from "@mantine/hooks"
 import { ModalObject } from "../../../components/Kit/ModalObject"
 import { NewObject } from "../../../definitions/object"
-import { ModalEmployee } from "../../../components/Kit/ModalEmployee"
 import { CardTeam } from "../../../components/Kit/CardTeam"
 import { CardObject } from "../../../components/Kit/CardObject"
 import { useHeader } from "../../../hooks/useHeader"
 import { useNumberMask } from "burgos-masks"
 import MaskedInputNando from "../../../components/MaskedNando"
+import { ModalEmployee } from "../../../components/Kit/ModalEmployeeUpdate"
 
 interface ContentKitProps {
     edit?: boolean
@@ -33,10 +33,15 @@ export const ContentKit: React.FC<ContentKitProps> = ({ edit, values, handleChan
 
     const [openedModalObjects, { open, close }] = useDisclosure(false)
     const [openedModalEmployees, { open: openEmployees, close: closeEmployees }] = useDisclosure(false)
-
+    const [objeto, setObjetos] = useState<NewObject[]>([])
     useEffect(() => {
         header.setTitle("Kits")
     }, [])
+
+    useEffect(() => {
+        setObjetos(data.listObjects)
+        console.log({ oia: data.listObjects })
+    }, [data.listObjects])
 
     return (
         <Box sx={{ flexDirection: "column", gap: "12vw", width: "100%", height: "92%" }}>

@@ -21,6 +21,7 @@ export const Calls: React.FC<CallsProps> = ({ user }) => {
             <Route path="/:callid/stages/:reportid" element={<ReportStage user={user} />} />
             <Route path="/:callid/laudos/" element={<ListLaudos user={user} />} />
             <Route path="/:callid/laudo/:reportid" element={<LaudoCall user={user} />} />
+            
             <Route path="/:callid/report/:reportid" element={<ReportDetails />} />
         </ReactRoutes>
     )

@@ -7,7 +7,7 @@ import { useDisclosure } from "@mantine/hooks"
 import { ModalObject } from "../../../components/Kit/ModalObject"
 import { useIo } from "../../../hooks/useIo"
 import { NewObject } from "../../../definitions/object"
-import { ModalEmployee } from "../../../components/Kit/ModalEmployee"
+import { ModalEmployeeUpdate } from "../../../components/Kit/ModalEmployee"
 import { CardTeam } from "../../../components/Kit/CardTeam"
 import { CardObject } from "../../../components/Kit/CardObject"
 import { ModalObjectUpdate } from "../../../components/Kit/ModalObjectUpdate"
@@ -18,6 +18,7 @@ interface UpdateContentKitProps {
     edit?: boolean
     values: NewKit
     handleChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> | undefined
+    kitId?: number
     data: {
         list: User[] | undefined
         listObjects: NewObject[]
@@ -33,27 +34,32 @@ const style_p = {
     fontWeight: "bold",
 }
 
-export const UpdateContentKit: React.FC<UpdateContentKitProps> = ({ edit, values, handleChange, data }) => {
+export const UpdateContentKit: React.FC<UpdateContentKitProps> = ({ edit, values, handleChange, data, kitId }) => {
     const [image, setImage] = useState<File>()
     const io = useIo()
     const floatMask = useNumberMask({ allowDecimal: true, allowLeadingZeroes: true })
     const [openedModalObjects, { open, close }] = useDisclosure(false)
     const [openedModalEmployees, { open: openEmployees, close: closeEmployees }] = useDisclosure(false)
 
+    useEffect(() => {
+        console.log(data.listObjects)
+    }, [data.listObjects])
+
     return (
         <Box sx={{ flexDirection: "column", gap: "1vw", width: "100%", height: "92%" }}>
             <ModalObjectUpdate
                 opened={openedModalObjects}
                 close={close}
-                object={values.objects || []}
+                object={data.listObjects}
                 setObject={data.setListObjects}
             />
-            <ModalEmployee
+            <ModalEmployeeUpdate
                 opened={openedModalEmployees}
                 close={closeEmployees}
                 employees={data.team}
                 setEmployees={data.setListEmployees}
                 allEmployees={data.list}
+                kitId={kitId}
             />
 
             <Box sx={{ gap: "3vw", height: "30%" }}>
@@ -123,7 +129,7 @@ export const UpdateContentKit: React.FC<UpdateContentKitProps> = ({ edit, values
             <Box sx={{ overflowY: "auto", gap: "4vw", pt: "10vw" }}>
                 <Box sx={{}}>
                     <TitleComponents title="Objetos" button={edit} click={open} />
-                    {values.objects?.map((item, index) => (
+                    {data.listObjects?.map((item, index) => (
                         <CardObject key={index} object={item} />
                     ))}
                 </Box>

@@ -50,12 +50,16 @@ export const ViewKit: React.FC<ViewKitProps> = ({}) => {
         return findEmployee(String(item.id))
     })
 
-    const [allEmployees, setAllEmployees] = useState<User[]>([])
-    const [listObjects, setListObjects] = useState<NewObject[]>(kit?.objects || [])
+    const [allEmployees, setAllEmployees] = useState<User[] | null>([])
+    const [listObjects, setListObjects] = useState<NewObject[]>([])
     const [team, setListEmployees] = useState<User[]>(dataEmployee || [])
 
+    useEffect(() => {
+        kit?.objects && setListObjects(kit.objects)
+    }, [])
+
     const data = {
-        list: allEmployees,
+        list: allEmployees || undefined,
         listObjects: listObjects,
         setListObjects: setListObjects,
         team: team,
@@ -85,12 +89,15 @@ export const ViewKit: React.FC<ViewKitProps> = ({}) => {
         setLoading(true)
         open()
     }
+    useEffect(() => {
+        console.log(edit)
+    }, [edit])
 
     useEffect(() => {
         io.on("kit:update:success", (data: Kit) => {
             updateKit(data)
             console.log(data)
-            snackbar({ severity: "success", text: "Kit atualizado!" })
+            // !edit && snackbar({ severity: "success", text: "Kit atualizado!" })
             setLoading(false)
             close()
         })
@@ -201,7 +208,7 @@ export const ViewKit: React.FC<ViewKitProps> = ({}) => {
                                     {kit !== null ? kit?.name : "Kit"}
                                 </p>
                                 <Button
-                                    type="submit"
+                                    type={"submit"}
                                     size="small"
                                     variant="contained"
                                     sx={{
@@ -214,7 +221,7 @@ export const ViewKit: React.FC<ViewKitProps> = ({}) => {
                                         width: "fit-content",
                                         color: edit ? colors.text.white : colors.text.black,
                                     }}
-                                    onClick={() => {}}
+                                    // onClick={}
                                 >
                                     {!edit ? (
                                         <Box sx={{ flexDirection: "row", alignItems: "center", gap: "2vw" }}>
@@ -240,7 +247,13 @@ export const ViewKit: React.FC<ViewKitProps> = ({}) => {
                                 }}
                             >
                                 <Box sx={{ overflowX: "hidden", overflowY: "auto", height: "88%", p: "0 2vw" }}>
-                                    <UpdateContentKit data={data} edit={edit} values={values} handleChange={handleChange} />
+                                    <UpdateContentKit
+                                        data={data}
+                                        edit={edit}
+                                        values={values}
+                                        handleChange={handleChange}
+                                        kitId={kit?.id}
+                                    />
                                 </Box>
                             </Box>
                         </Box>

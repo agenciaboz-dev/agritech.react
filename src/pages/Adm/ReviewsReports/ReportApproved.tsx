@@ -20,15 +20,11 @@ import { useIo } from "../../../hooks/useIo"
 import { useSnackbar } from "burgos-snackbar"
 import { useUsers } from "../../../hooks/useUsers"
 import { textField } from "../../../style/input"
-import { LocalizationProvider, MobileDatePicker, ptBR } from "@mui/x-date-pickers"
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
-import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo"
-import dayjs from "dayjs"
+import { unmaskCurrency } from "../../../hooks/unmaskNumber"
 import MaskedInputNando from "../../../components/MaskedNando"
 import { useCurrencyMask } from "burgos-masks"
-import { unmaskCurrency } from "../../../hooks/unmaskNumber"
 
-interface ApproveCallProps {}
+interface ReportApprovedProps {}
 
 const p_style = {
     fontSize: "3vw",
@@ -40,12 +36,12 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
     borderTop: "1px solid rgba(0, 0, 0, .125)",
 }))
 
-export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
+export const ReportApproved: React.FC<ReportApprovedProps> = ({}) => {
     const header = useHeader()
     const io = useIo()
     const navigate = useNavigate()
-    const { callid } = useParams()
-    const { listCallsPending, listCalls, removeCallApprove, addCallApprove } = useCall()
+    const { talhaoid, callid } = useParams()
+    const { listCalls, listCallsPending, removeCallApprove, addCallApprove } = useCall()
     const { listKits } = useKits()
     const { listUsers } = useUsers()
 
@@ -57,32 +53,16 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
     const expandendChange = (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
         setExpanded(newExpanded ? panel : false)
     }
-
     const findCall = listCallsPending?.find((call) => String(call.id) === callid)
 
+    // const findTalhao = listCalls?.find((item) => String(item.talhao?.id) === talhaoid)
+
     const producerSelected = listUsers?.find((item) => item.producer?.id === findCall?.producerId)
-    const tillageSelected = producerSelected?.producer?.tillage?.find((item) => item.id === findCall?.talhaoId)
+    const tillageSelected = producerSelected?.producer?.tillage?.find((item) => item.id === findCall?.talhao?.tillageId)
     const kitsActived = listKits.filter((item) => item.active)
-    console.log(tillageSelected)
     const [hectare, setHectare] = useState("")
+    console.log(findCall)
 
-    useEffect(() => {
-        setHectare(findCall?.tillage?.hectarePrice || "")
-    }, [findCall])
-    const initialValues: ApprovedCall = {
-        open: findCall?.open || "",
-        comments: findCall?.comments,
-        approved: findCall?.approved,
-
-        talhaoId: findCall?.talhaoId || 0,
-        producerId: findCall?.producerId,
-        userId: findCall?.userId,
-
-        id: Number(callid),
-        kitId: findCall?.kitId || 0,
-        hectarePrice: findCall?.tillage?.hectarePrice || "",
-        forecast: findCall?.forecast || "",
-    }
     const approveCall = (values: ApprovedCall) => {
         console.log(values)
         const data = { ...values, hectarePrice: unmaskCurrency(values.hectarePrice || "") }
@@ -96,18 +76,17 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
     useEffect(() => {
         io.on("call:approve:success", (data: Call) => {
             console.log({ chamado_aprovado: data })
+            setLoading(false)
+            navigate(`/adm/producer/${producerSelected?.producer?.id}/${tillageSelected?.id}`)
             removeCallApprove(data)
             addCallApprove(data)
             snackbar({ severity: "success", text: "Chamado aprovado!" })
-            setLoading(false)
-            navigate("/adm/calls")
         })
         io.on("call:approve:failed", (error) => {
             snackbar({ severity: "error", text: error })
             setLoading(false)
         })
     }, [])
-
     return (
         <Box
             sx={{
@@ -128,7 +107,7 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
                     flexDirection: "row",
                 }}
             >
-                <Header back location="/adm/calls" />
+                <Header back location={`/adm/producer/${producerSelected?.producer?.id}/${tillageSelected?.id}`} />
             </Box>
             <Box
                 style={{
@@ -167,6 +146,7 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
                             <Box>
                                 <p style={p_style}>Nome da Fazenda</p>
                                 <p>
+                                    {" "}
                                     {findCall?.talhao?.tillage?.name} - {findCall?.talhao?.name}
                                 </p>
                             </Box>
@@ -186,77 +166,7 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
                         </Box>
                     </Box>
 
-                    <Box sx={{ height: "63%" }}>
-                        <Formik initialValues={initialValues} onSubmit={approveCall}>
-                            {({ values, handleChange, setFieldValue }) => (
-                                <Form>
-                                    <Box sx={{ gap: "5vw" }}>
-                                        <Box sx={{ gap: "3vw" }}>
-                                            <TextField
-                                                label="Previsão da visita"
-                                                sx={{ ...textField }}
-                                                value={dateForecast}
-                                            />
-                                            <TextField
-                                                label={"Custo por hectare"}
-                                                name="hectarePrice"
-                                                value={values.hectarePrice}
-                                                sx={textField}
-                                                onChange={handleChange}
-                                                InputProps={{
-                                                    inputComponent: MaskedInputNando,
-                                                    inputProps: {
-                                                        mask: useCurrencyMask({ decimalLimit: 6 }),
-                                                        inputMode: "numeric",
-                                                    },
-                                                }}
-                                                required
-                                            />
-                                        </Box>
-
-                                        <TitleComponents
-                                            title="Escolha o kit para enviar"
-                                            button
-                                            textButton="Salvar Kit"
-                                            submit
-                                            disabled={!values.kitId}
-                                        />
-                                        <Box sx={{ height: "100%", overflowY: "auto" }}>
-                                            {kitsActived.map((kit, index) => (
-                                                <Accordion
-                                                    elevation={0}
-                                                    key={index}
-                                                    expanded={expanded === String(index)}
-                                                    onChange={expandendChange(String(index))}
-                                                >
-                                                    <AccordionSummary aria-controls="panel1d-content" id={String(index)}>
-                                                        <Typography>{kit.name}</Typography>
-                                                        <Radio
-                                                            name="kitId"
-                                                            value={kit.id}
-                                                            checked={values.kitId === kit.id}
-                                                            onChange={() => {
-                                                                setFieldValue("kitId", kit.id)
-                                                                handleChange
-                                                            }}
-                                                        />
-                                                    </AccordionSummary>
-                                                    <AccordionDetails>
-                                                        <p>Objetos</p>
-                                                        {kit.objects?.map((obj: NewObject, index) => (
-                                                            <p key={index}>
-                                                                {obj.quantity}x {obj.name}
-                                                            </p>
-                                                        ))}
-                                                    </AccordionDetails>
-                                                </Accordion>
-                                            ))}
-                                        </Box>
-                                    </Box>
-                                </Form>
-                            )}
-                        </Formik>
-                    </Box>
+                    <Box sx={{ height: "63%" }}></Box>
                 </Box>
             </Box>
         </Box>

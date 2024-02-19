@@ -226,6 +226,7 @@ export const AddKit: React.FC<AddKitProps> = ({}) => {
                             >
                                 <Box sx={{ overflowX: "hidden", overflowY: "auto", height: "95%", p: "0 2vw" }}>
                                     <ContentKit edit values={values} handleChange={handleChange} data={data} />
+                                    
                                 </Box>
                             </Box>
                         </Box>

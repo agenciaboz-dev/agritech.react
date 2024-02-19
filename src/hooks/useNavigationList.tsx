@@ -18,7 +18,9 @@ import Pin from "../assets/icons/pin.svg"
 import Timer from "../assets/icons/timer.svg"
 import Receipt from "../assets/icons/receipt.svg"
 import Alert from "../assets/icons/circle_alert.svg"
+import Database from "../assets/icons/database.svg"
 import { PiPlantLight } from "react-icons/pi"
+import { CiViewTable } from "react-icons/ci"
 
 // import CircumIcon from "@klarr-agency/circum-icons-react" // React
 
@@ -64,6 +66,12 @@ export const useNavigationList = () => {
             },
             {
                 id: 5,
+                title: "Relatórios",
+                location: "/adm/reports",
+                icon: <CiViewTable style={{ width: "7vw", height: "6vw", paddingLeft: 0, paddingRight: 0 }} />,
+            },
+            {
+                id: 6,
                 title: "Histórico",
                 location: "/adm/history",
                 icon: <img src={Timer} style={{ width: "6vw" }} />,
@@ -139,12 +147,12 @@ export const useNavigationList = () => {
                 icon: <GridViewIcon sx={iconStyle} />,
             },
 
-            {
-                id: 2,
-                title: "Transações",
-                location: "/transactions",
-                icon: <SwapHorizIcon sx={iconStyle} />,
-            },
+            // {
+            //     id: 2,
+            //     title: "Transações",
+            //     location: "/transactions",
+            //     icon: <SwapHorizIcon sx={iconStyle} />,
+            // },
             {
                 id: 3,
                 title: "Chamados",

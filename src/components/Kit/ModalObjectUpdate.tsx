@@ -18,15 +18,8 @@ interface ModalObjectUpdateProps {
 }
 
 export const ModalObjectUpdate: React.FC<ModalObjectUpdateProps> = ({ opened, close, object, setObject }) => {
-    const [newObject, setNewObject] = useState<NewObject>({
-        name: "",
-        quantity: 1,
-        description: "",
-    })
-
     const addObject = () => {
-        setObject([...object, { ...newObject }])
-        setNewObject({ name: "", quantity: 1, description: "" })
+        setObject([...object, { name: "", quantity: 1, description: "" }])
     }
     const deleteObject = (id: number) => {
         const newObj = object.filter((_, index) => index !== id)
@@ -55,7 +48,7 @@ export const ModalObjectUpdate: React.FC<ModalObjectUpdateProps> = ({ opened, cl
             style={{}}
             title="Inserir objetos"
             styles={{
-                body: { display: "flex", flexDirection: "column", gap: "6vw" },
+                body: { display: "flex", flexDirection: "column", gap: "6vw", borderRadius: "10vw" },
                 root: { maxHeight: "75%", minHeight: "fit-content" },
                 content: { borderRadius: "6vw" },
             }}

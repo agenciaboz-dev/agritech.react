@@ -47,7 +47,6 @@ export const CardKit: React.FC<CardKitProps> = ({ kit }) => {
         console.log(kit.id)
         console.log(event.target.checked)
         kit.id && toggleKit(kit.id)
-        
     }
 
     return (
@@ -56,7 +55,7 @@ export const CardKit: React.FC<CardKitProps> = ({ kit }) => {
                 <FormControlLabel
                     checked={kit.active}
                     control={<Android12Switch />}
-                    onChange={handleChange}
+                    onChange={user?.isAdmin ? handleChange : () => {}}
                     label={
                         <Box sx={{ width: "100%" }}>
                             <p style={{ fontSize: "4vw", width: "100%" }}>{kit.name}</p>
