@@ -24,7 +24,7 @@ export const ListEmployee: React.FC<ListEmployeeProps> = ({}) => {
     })
 
     useEffect(() => {
-        setListEmployee(listUsers?.filter((users) => users.employee !== null && !users.isAdmin))
+        setListEmployee(listUsers?.filter((users) => users.employee !== null))
     }, [listUsers])
 
     return (

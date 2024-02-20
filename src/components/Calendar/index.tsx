@@ -11,6 +11,7 @@ import useDateISO from "../../hooks/useDateISO"
 import { LogsCard } from "../../pages/Calls/LogsCard"
 import { IconUser } from "@tabler/icons-react"
 import { useCall } from "../../hooks/useCall"
+import { Call } from "../../definitions/call"
 
 interface CalendarProps {}
 const dayRenderer: DatePickerProps["renderDay"] = (date) => {
@@ -30,18 +31,24 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
     const { userid } = useParams()
     const { listUsers } = useUsers()
     const findUser = listUsers?.find((user) => String(user.id) === userid)
+    const [callsDay, setCallsDay] = useState<Call[] | undefined>([])
 
     //Methods and variables Date
     const [value, setValue] = useState<Date | null>(null)
-    // const [value, setValue] = useState<string | null>(null)
     const dayCurrent = new Date().getDate()
 
     const handleFindCalls = (value: Date | null) => {
-        if (value) {
-            const callsPerDay = listCalls.filter((item) => item.forecast === new Date(value).getTime().toString())
-            // Faça a lógica para buscar os chamados com base na data ISO
-            // Atualize a lista de chamados com os chamados encontrados
+        console.log(findUser?.employee?.kits)
+        if (value && findUser?.employee?.kits?.length !== 0) {
+            const callsPerDay =
+                (findUser?.employee?.kits &&
+                    findUser?.employee?.kits[0].calls?.filter(
+                        (item) => item.forecast === new Date(value).getTime().toString()
+                    )) ||
+                []
+            setCallsDay(callsPerDay)
             console.log(callsPerDay)
+            return callsPerDay
         }
     }
 
@@ -50,6 +57,7 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
     }, [value])
 
     useEffect(() => {
+        console.log(findUser?.employee)
         header.setTitle(findUser?.name || "")
     }, [])
 
@@ -140,10 +148,11 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
                         gap: "3vw",
                     }}
                 >
-                    {value?.getDate() === 22 &&
-                        (listCalls.length !== 0
-                            ? listCalls.map((call, index) => <LogsCard key={index} review={false} call={call} />)
-                            : "Nenhum chamado aberto para esse dia")}
+                    {findUser?.office === "pilot" || findUser?.office === "copilot"
+                        ? callsDay?.length !== 0
+                            ? callsDay?.map((call, index) => <LogsCard key={index} review={false} call={call} />)
+                            : "Nenhum chamado aberto para esse dia"
+                        : "Sem compromissos"}
                 </Box>
             </Box>
         </Box>
