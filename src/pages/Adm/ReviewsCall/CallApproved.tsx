@@ -63,15 +63,10 @@ export const CallApproved: React.FC<CallApprovedProps> = ({}) => {
     const [hectare, setHectare] = useState("")
     console.log(findCall)
 
-    useEffect(() => {
-        setHectare(findCall?.producer?.hectarePrice || "")
-    }, [findCall, findCall?.producer?.hectarePrice])
-
     const initialValues: ApprovedCall = {
         open: findCall?.open || "",
         comments: findCall?.comments,
         approved: findCall?.approved,
-        stages: findCall?.stages,
 
         talhaoId: findCall?.tillageId || 0,
         producerId: findCall?.producerId,
@@ -79,7 +74,7 @@ export const CallApproved: React.FC<CallApprovedProps> = ({}) => {
 
         id: Number(callid),
         kitId: findCall?.kitId || 0,
-        hectarePrice: findCall?.producer?.hectarePrice || "",
+        hectarePrice: findCall?.tillage?.hectarePrice || "",
         forecast: findCall?.forecast || "",
     }
     const approveCall = (values: ApprovedCall) => {
