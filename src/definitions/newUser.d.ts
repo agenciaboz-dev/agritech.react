@@ -28,6 +28,7 @@ declare interface NewEmployee {
     image: string
     address: Address
     isAdmin: boolean
+    isManager: boolean
     approved: boolean
     rejected?: string
     office: string

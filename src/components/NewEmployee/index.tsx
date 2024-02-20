@@ -83,6 +83,9 @@ export const NewEmployee: React.FC<NewEmployeeProps> = ({}) => {
     const [currentStep, setCurrentStep] = useState(0)
     const [loading, setLoading] = useState(false)
 
+    const [adminStatus, setAdminStatus] = useState(false)
+    const [managerStatus, setManagerStatus] = useState(false)
+
     const formik = useFormik<NewEmployee>({
         initialValues: {
             name: "",
@@ -93,7 +96,8 @@ export const NewEmployee: React.FC<NewEmployeeProps> = ({}) => {
             phone: "",
             birth: "",
             image: "",
-            isAdmin: false,
+            isAdmin: adminStatus,
+            isManager: managerStatus,
             office: "",
             approved: true,
             rejected: "",
@@ -144,6 +148,8 @@ export const NewEmployee: React.FC<NewEmployeeProps> = ({}) => {
 
         const data = {
             ...values,
+            isAdmin: adminStatus,
+            isManager: managerStatus,
             username: values.email,
             password: "Bump2024!",
             cpf: unmask(values.cpf),
@@ -166,7 +172,7 @@ export const NewEmployee: React.FC<NewEmployeeProps> = ({}) => {
                 },
             },
         }
-        console.log(data)
+        console.log({ enviado: data })
         io.emit("user:newEmployee", data)
         setLoading(true)
     }
@@ -293,30 +299,6 @@ export const NewEmployee: React.FC<NewEmployeeProps> = ({}) => {
                                             </MenuItem>
                                         ))}
                                     </TextField>
-                                    {/* <FormGroup sx={{ width: "90%" }}>
-                                        <FormControlLabel
-                                            checked={true}
-                                            // checked={kit.active}
-                                            control={<Android12Switch />}
-                                            // onChange={handleChange}
-                                            label={
-                                                <Box sx={{ width: "100%" }}>
-                                                    <p style={{ fontSize: "4vw", width: "100%" }}>Administrador</p>
-                                                    <p
-                                                        style={{
-                                                            fontSize: "3vw",
-                                                            whiteSpace: "nowrap",
-                                                            textOverflow: "ellipsis",
-                                                            // overflow: "hidden",
-                                                            width: "100%",
-                                                        }}
-                                                    >
-                                                        Acesso total
-                                                    </p>
-                                                </Box>
-                                            }
-                                        />
-                                    </FormGroup> */}
                                 </Box>
                             </Box>
 
@@ -354,7 +336,14 @@ export const NewEmployee: React.FC<NewEmployeeProps> = ({}) => {
                                         <StepFour data={formik.values} handleChange={formik.handleChange} />
                                     )}
                                     {currentStep === 4 && (
-                                        <StepFive data={formik.values} handleChange={formik.handleChange} />
+                                        <StepFive
+                                            data={formik.values}
+                                            handleChange={formik.handleChange}
+                                            adminStatus={adminStatus}
+                                            setAdminStatus={setAdminStatus}
+                                            managerStatus={managerStatus}
+                                            setManagerStatus={setManagerStatus}
+                                        />
                                     )}
                                 </Box>
                             </Box>

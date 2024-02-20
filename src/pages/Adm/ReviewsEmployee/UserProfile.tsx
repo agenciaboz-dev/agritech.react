@@ -54,6 +54,7 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
         password: profile?.password || "",
         birth: new Date(profile?.birth || 0).toLocaleDateString("pt-br") || "",
         image: profile?.image || "",
+        isManager: profile?.isManager || false,
         address: {
             cep: profile?.address?.cep || "",
             city: profile?.address?.city || "",
