@@ -30,6 +30,7 @@ export const LogsCard: React.FC<LogsCardProps> = ({ review, call, variant }) => 
             <Box sx={{ flexDirection: "column" }}>
                 <Box sx={{ flexDirection: "row", alignItems: "center", gap: "2vw" }}>
                     <p style={{ fontSize: "3vw", color: "gray" }}>
+                        {new Date(Number(call?.forecast)).toLocaleDateString("pt-br")} -{" "}
                         {new Date(Number(call?.open)).toLocaleTimeString("pt-br")}
                     </p>
                 </Box>

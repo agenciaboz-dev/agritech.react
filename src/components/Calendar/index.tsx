@@ -33,14 +33,20 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
 
     //Methods and variables Date
     const [value, setValue] = useState<Date | null>(null)
+    // const [value, setValue] = useState<string | null>(null)
     const dayCurrent = new Date().getDate()
 
-    const handleFindCall = (value: Date | null) => {
-        const dateIso = useDateISO(value)
+    const handleFindCalls = (value: Date | null) => {
+        if (value) {
+            const callsPerDay = listCalls.filter((item) => item.forecast === new Date(value).getTime().toString())
+            // Faça a lógica para buscar os chamados com base na data ISO
+            // Atualize a lista de chamados com os chamados encontrados
+            console.log(callsPerDay)
+        }
     }
 
     useEffect(() => {
-        handleFindCall(value)
+        handleFindCalls(value)
     }, [value])
 
     useEffect(() => {
