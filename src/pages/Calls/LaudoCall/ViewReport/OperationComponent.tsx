@@ -23,10 +23,10 @@ export const OperationComponent: React.FC<OperationComponentProps> = ({ operatio
                 <p style={{ fontWeight: "bold" }}>Cultura:</p>
                 <p style={{ justifyContent: "space-between" }}>{operation?.culture} </p>
             </Box>
-            <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
+            {/* <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
                 <p style={{ fontWeight: "bold" }}>Área Mapeada do Talhão:</p>
                 <p style={{ justifyContent: "space-between" }}>{call?.talhao?.area} ha</p>
-            </Box>
+            </Box> */}
             <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
                 <p style={{ fontWeight: "bold" }}>Área Mapeada da Fazenda:</p>
                 <p style={{ justifyContent: "space-between" }}>{call?.talhao?.tillage?.area} ha</p>
