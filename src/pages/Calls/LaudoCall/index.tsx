@@ -193,6 +193,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
             const data = {
                 id: report?.techReport?.id,
                 ...values,
+
                 areaTrabalhada: totalSum,
                 date: new Date().getTime().toString(),
                 init: new Date(Number(initPick)).getTime().toString(),
@@ -234,6 +235,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
 
         const data = {
             reportId: report?.id,
+            totalPrice: totalSum * Number(selectedCall?.talhao?.tillage?.hectarePrice),
             areaTrabalhada: totalSum,
             materials: materialNormalize,
         }

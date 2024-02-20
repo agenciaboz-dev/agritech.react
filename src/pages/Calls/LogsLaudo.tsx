@@ -21,12 +21,14 @@ interface LogsLaudoProps {
 export const LogsLaudo: React.FC<LogsLaudoProps> = ({ report, talhao, id, tillage, setSelectedCall }) => {
     const navigate = useNavigate()
     const { user } = useUser()
-    console.log({ Relatorio: report.id })
     return (
         <Box sx={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
             <Box sx={{ flexDirection: "column" }}>
                 <Box sx={{ flexDirection: "row", alignItems: "center", gap: "2vw" }}>
-                    <p style={{ fontSize: "3vw", color: "gray" }}>{new Date().toLocaleTimeString("pt-br")}</p>
+                    <p style={{ fontSize: "3vw", color: "gray" }}>
+                        {new Date(Number(report.date)).toLocaleDateString("pt-br")} -{" "}
+                        {new Date(Number(report.hour)).toLocaleTimeString("pt-br")}
+                    </p>
                 </Box>
                 <p style={{ fontSize: "3.5vw", fontWeight: "600" }}>{`Laudo ${id}`}</p>
                 {/* <p style={{ fontSize: "3vw", color: "gray", flexDirection: "column" }}>{talhao.name}</p> */}

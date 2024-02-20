@@ -27,6 +27,12 @@ export const LogsCard: React.FC<LogsCardProps> = ({ review, call, variant, talha
     // useEffect(() => {
     //     console.log({ Call: call })
     // }, [])
+
+    const totalTrabalhado = call?.reports?.map((item) => Number(item.areaTrabalhada))
+    const sumTotal = totalTrabalhado?.reduce((prev, current) => prev + current, 0) || 0
+
+  
+
     return (
         <Box sx={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
             <Box sx={{ flexDirection: "column" }}>
@@ -36,12 +42,18 @@ export const LogsCard: React.FC<LogsCardProps> = ({ review, call, variant, talha
                     </p>
                 </Box>
                 <p style={{ fontSize: "3.5vw", fontWeight: "600" }}>
-                    {call?.approved ? `Chamado aberto` : `Chamado pendente`}
+                    {call?.approved && Number(call.talhao?.area) !== sumTotal
+                        ? `Chamado Aberto`
+                        : call?.approved && Number(call?.talhao?.area) >= sumTotal
+                        ? `Chamado Finalizado`
+                        : "Chamado Pendente"}
                 </p>
                 <p style={{ fontSize: "3vw", color: "gray", flexDirection: "column" }}>
                     {talhao.name} -{" "}
-                    {call?.approved
+                    {call?.approved && Number(call.talhao?.area) !== sumTotal
                         ? `Utilizando #Kit ${kitSelected?.name}`
+                        : call?.approved && Number(call?.talhao?.area) >= sumTotal
+                        ? `Utilizado #Kit ${kitSelected?.name}`
                         : user?.isAdmin
                         ? "Selecione um kit"
                         : "Aguarde a seleção do kit"}

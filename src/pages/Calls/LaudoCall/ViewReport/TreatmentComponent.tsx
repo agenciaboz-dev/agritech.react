@@ -1,6 +1,7 @@
 import { Box } from "@mui/material"
 import React from "react"
 import { TitleComponents } from "../../../../components/TitleComponents"
+import { Treatment } from "../../../../definitions/report"
 
 interface TreatmentComponentProps {
     treatment?: Treatment

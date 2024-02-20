@@ -1,4 +1,4 @@
-import { Accordion, AccordionSummary, Box, Tab, Tabs, Typography, styled } from "@mui/material"
+import { Accordion, AccordionSummary, Box, CircularProgress, Tab, Tabs, Typography, styled } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { colors } from "../../../../style/colors"
 import { Header } from "../../../../components/Header"
@@ -10,13 +10,18 @@ import { TreatmentComponent } from "./TreatmentComponent"
 import { TechReportComponent } from "./TechReportComponent"
 
 // import { MaterialComponent } from "./Material"
-import { ActionIcon, Group, Menu } from "@mantine/core"
+import { ActionIcon, Group, Menu, Modal } from "@mantine/core"
 import { IconDots } from "@tabler/icons-react"
 import { ButtonAgritech } from "../../../../components/ButtonAgritech"
 import MuiAccordionDetails from "@mui/material/AccordionDetails"
 import { CurrencyText } from "../../../../components/CurrencyText"
 import { formatCNPJ, formatCPF } from "../../../../hooks/useFormattedDocument.ts"
 import { MaterialComponent } from "./MaterialComponent.tsx"
+import { useUser } from "../../../../hooks/useUser.ts"
+import { useIo } from "../../../../hooks/useIo.ts"
+import { GeralReport, Report } from "../../../../definitions/report"
+import { useSnackbar } from "burgos-snackbar"
+import { useDisclosure } from "@mantine/hooks"
 
 interface ReportDetailsProps {}
 
@@ -38,22 +43,45 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
     const { callid, reportid } = useParams()
     const { listCalls } = useCall()
+    const { user } = useUser()
+    const io = useIo()
+    const { snackbar } = useSnackbar()
 
     const [expanded, setExpanded] = React.useState<string | false>("")
     const expandendChange = (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
         setExpanded(newExpanded ? panel : false)
     }
 
+    const [opened, { open, close }] = useDisclosure(false)
+
     const [tab, setTab] = React.useState("operation")
     const changeTab = (event: React.SyntheticEvent, newValue: string) => {
         setTab(newValue)
     }
 
+    const [selectedReport, setSelectedReport] = useState<Report>()
     const callSelect = listCalls.find((item) => item.id === Number(callid))
-    const selectedReport = callSelect?.reports?.find((item) => item.id === Number(reportid))
+    useEffect(() => {
+        setSelectedReport(callSelect?.reports?.find((item) => item.id === Number(reportid)))
+    }, [callSelect?.reports])
+
+    const handleApprove = async () => {
+        io.emit("report:approve", selectedReport?.id)
+        open()
+    }
 
     useEffect(() => {
-        console.log({ call_Select: selectedReport })
+        io.on("report:approved:success", (data: Report) => {
+            snackbar({ severity: "success", text: "Relatório aprovado" })
+            close()
+        })
+        io.on("report:approved:failed", (error) => {
+            console.log(error)
+        })
+        return () => {
+            io.off("report:approved:success")
+            io.off("report:approved:failed")
+        }
     }, [])
 
     return (
@@ -65,6 +93,40 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                 flexDirection: "column",
             }}
         >
+            <Modal
+                color="#000"
+                opened={opened}
+                onClose={close}
+                size={"sm"}
+                withCloseButton={false}
+                centered
+                style={{ backgroundColor: "transparent" }}
+                styles={{
+                    body: {
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "6vw",
+                        width: "100%",
+                        height: "100%",
+                        alignItems: "center",
+                        justifyContent: "center",
+                    },
+                    root: {
+                        width: "100%",
+
+                        height: "100%",
+                        maxHeight: "75%",
+                    },
+                    content: {
+                        width: "100%",
+                        height: "100%",
+                        backgroundColor: "transparent",
+                        boxShadow: "none",
+                    },
+                }}
+            >
+                <CircularProgress sx={{ color: colors.text.white, width: "15vw", height: "15vw" }} />
+            </Modal>
             <Box
                 sx={{
                     width: "100%",
@@ -103,6 +165,22 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                 >
                     <Box sx={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
                         <h3>Relatório Operacional</h3>
+
+                        {user?.isAdmin && !selectedReport?.approved && (
+                            <ButtonAgritech
+                                size="small"
+                                variant="contained"
+                                sx={{
+                                    bgcolor: colors.secondary,
+                                    textTransform: "none",
+                                    borderRadius: "5vw",
+                                    padding: "0.5vw",
+                                }}
+                                onClick={handleApprove}
+                            >
+                                Aprovar Relatório
+                            </ButtonAgritech>
+                        )}
                         <Group gap={0} justify="flex-end">
                             <Menu
                                 transitionProps={{ transition: "pop" }}
@@ -164,20 +242,25 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                         <hr />
                     </Box>
                     <Box sx={{ gap: "2vw" }}>
-                        <p>
-                            <span style={{ fontWeight: "bold" }}>Custo por hectare: </span>
+                        <Box sx={{ justifyContent: "space-between", width: "100%", flexDirection: "row" }}>
+                            <p style={{ fontWeight: "bold" }}>Custo por hectare: </p>
                             <CurrencyText value={Number(callSelect?.talhao?.tillage?.hectarePrice)} />
-                        </p>
-                        <p>
-                            <span style={{ fontWeight: "bold" }}>Área Trabalhada no dia:</span>{" "}
-                            {selectedReport?.areaTrabalhada} ha{" "}
-                        </p>
+                        </Box>
+                        <Box sx={{ justifyContent: "space-between", width: "100%", flexDirection: "row" }}>
+                            <p style={{ fontWeight: "bold" }}>Área Trabalhada no dia:</p> {selectedReport?.areaTrabalhada} ha{" "}
+                        </Box>
+                        <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
+                            <p style={{ fontWeight: "bold" }}>Custo total: </p>
+                            <p style={{ justifyContent: "space-between" }}>
+                                <CurrencyText value={Number(selectedReport?.totalPrice)} />
+                            </p>
+                        </Box>
                         <hr />
                     </Box>
 
                     <Box sx={{ gap: "0vw", justifyContent: "space-between", height: "53%" }}>
                         <Box sx={{ gap: "3vw", height: "100%" }}>
-                            <Box sx={{ gap: "1vw" }}>
+                            <Box sx={{ gap: "2vw" }}>
                                 {tab === "operation" &&
                                     selectedReport?.techReport?.flight?.map((item, index) => (
                                         <Box
@@ -192,12 +275,13 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                                             Voo {index + 1} <p>{item.performance} ha</p>
                                         </Box>
                                     ))}
-                                <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
+                                {/* <hr /> */}
+                                {/* <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
                                     <p style={{ fontWeight: "bold" }}>Custo total: </p>
                                     <p style={{ justifyContent: "space-between" }}>
-                                        <CurrencyText value={Number(callSelect?.totalPrice)} />
+                                        <CurrencyText value={Number(selectedReport?.totalPrice)} />
                                     </p>
-                                </Box>
+                                </Box> */}
                             </Box>
                             <hr />
                             <Box sx={{ gap: "1vw", height: "90%" }}>
@@ -208,8 +292,8 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                                     indicatorColor="primary"
                                     aria-label="tabs"
                                     variant="scrollable"
-                                    // scrollButtons="auto"
-                                    // allowScrollButtonsMobile
+                                    scrollButtons="auto"
+                                    allowScrollButtonsMobile
                                 >
                                     <Tab sx={{ ...tabStyle, width: "40%" }} value="operation" label="Dados de Operação" />
                                     <Tab sx={{ ...tabStyle, width: "38%" }} value="treatment" label="Tratamento" />
@@ -252,7 +336,7 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                                         : tab === "material" && "< Laudo Técnico"}
                                 </ButtonAgritech>
                             )} */}
-                            {tab !== "material" && (
+                            {tab !== "material" && !user?.isAdmin && (
                                 <ButtonAgritech
                                     variant="contained"
                                     sx={{ bgcolor: colors.button }}

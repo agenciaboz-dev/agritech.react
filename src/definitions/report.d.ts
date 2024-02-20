@@ -18,6 +18,7 @@ declare interface Report extends NewReport {
     hour: string
     approved?: boolean
     close: string
+    totalPrice?: number
 }
 declare interface GeralReport {
     id: number
