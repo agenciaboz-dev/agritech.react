@@ -8,9 +8,10 @@ import MaskedInputNando from "../../components/MaskedNando"
 interface TestProps {
     values: CreateCall
     handleChange: React.ChangeEventHandler<HTMLInputElement>
+    disabled: boolean
 }
 
-export const Test: React.FC<TestProps> = ({ values, handleChange }) => {
+export const Test: React.FC<TestProps> = ({ values, handleChange, disabled }) => {
     useEffect(() => {
         console.log({ price: values.hectarePrice })
     }, [values.hectarePrice])
@@ -30,6 +31,7 @@ export const Test: React.FC<TestProps> = ({ values, handleChange }) => {
                     inputMode: "numeric",
                 },
             }}
+            disabled={disabled}
         />
     )
 }

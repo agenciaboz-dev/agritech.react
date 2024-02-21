@@ -1,13 +1,12 @@
-import { Autocomplete, Box, Button, CircularProgress, TextField } from "@mui/material"
+import { Autocomplete, Badge, Box, Button, CircularProgress, TextField } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { colors } from "../../style/colors"
 import { Header } from "../../components/Header"
 import { useHeader } from "../../hooks/useHeader"
 import { TitleComponents } from "../../components/TitleComponents"
-import { Form, Formik, useFormik } from "formik"
+import { useFormik } from "formik"
 import { Call, CreateCall } from "../../definitions/call"
 import { textField } from "../../style/input"
-import listProducers from "../../hooks/listProducers"
 import { useUser } from "../../hooks/useUser"
 import { useKits } from "../../hooks/useKits"
 import { useProducer } from "../../hooks/useProducer"
@@ -15,20 +14,18 @@ import { useIo } from "../../hooks/useIo"
 import { useSnackbar } from "burgos-snackbar"
 import { useNavigate } from "react-router-dom"
 import { useCall } from "../../hooks/useCall"
-import dayjs from "dayjs"
+import dayjs, { Dayjs } from "dayjs"
 import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo"
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider"
 import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker"
 import { ptBR } from "@mui/x-date-pickers/locales"
-import { useCurrencyMask } from "burgos-masks"
-import MaskedInputNando from "../../components/MaskedNando"
 import { unmaskCurrency } from "../../hooks/unmaskNumber"
-import { CurrencyText } from "../../components/CurrencyText"
 import { Test } from "./Test"
 import { useUsers } from "../../hooks/useUsers"
 import { Indicator } from "@mantine/core"
-
+import { ThemeProvider, createTheme } from "@mui/material/styles"
+import { PickersDay, PickersDayProps } from "@mui/x-date-pickers"
 interface NewCallProps {
     user: User
 }
@@ -44,13 +41,26 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
     const { listTillages } = useProducer()
     const { addCall, addCallPending, addCallApprove } = useCall()
 
+    const [highlightedDays, setHighlightedDays] = React.useState()
+
     const [loading, setLoading] = useState(false)
     const [selectedProducer, setSelectedProducer] = useState<Producer | null>(null)
+    const [selectedKit, setSelectedKit] = useState<Kit | null>(null)
+    const [selectedTalhao, setSelectedTalhao] = useState<Talhao | null>(null)
+
+    const [producers, setProducers] = useState(
+        listUsers?.map((user: User) => user.producer).filter((item) => !!item) as Producer[]
+    )
+    const [kits, setKits] = useState(listKits?.filter((item) => !!item) as Kit[])
+    const [tillages, setTillages] = useState<Tillage[]>([])
+    const [talhoes, setTalhoes] = useState<Talhao[]>([])
+
     const [tillageId, setTillageId] = useState<number | null>(null)
     const [talhaoId, setTalhaoId] = useState<number | null>(null)
+    const [pickDate, setPickDate] = useState<Dayjs | null>(null)
 
-    const [kitValue, setKitValue] = useState("")
-    const [pickDate, setPickDate] = useState(null)
+    const findTillageInfo = selectedProducer?.tillage?.find((item) => item.id === tillageId)
+    const talhaoSelect = findTillageInfo?.talhao?.find((item) => item.id === talhaoId)
 
     //Render options => user.producer
     const producerTillagesList = listTillages.filter((item) => item.producerId === user.producer?.id)
@@ -61,70 +71,6 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
             call: tillage.call,
         })) || []
     )
-
-    useEffect(() => {
-        setTillagesProducer(
-            producerTillagesList.map((tillage) => ({
-                id: tillage.id,
-                name: tillage.name,
-                call: tillage.call,
-            })) || []
-        )
-    }, [listTillages])
-
-    //Render options => user.employee and user.isAdmin
-    const kits =
-        listKits?.map((item) => ({
-            id: item.id || 0,
-            name: item.name,
-        })) || []
-
-    const [producers, setProducers] = useState(
-        listUsers?.map((user: User) => user.producer).filter((item) => !!item) as Producer[]
-    )
-
-    useEffect(() => {
-        console.log(producers)
-    }, [producers])
-
-    const [tillages, setTillages] = useState<{ id: number; name: string }[]>([])
-    const [talhoes, setTalhoes] = useState<{ id: number; name: string }[]>([])
-
-    const findTillageInfo = selectedProducer?.tillage?.find((item) => item.id === tillageId)
-    const talhaoSelect = findTillageInfo?.talhao?.find((item) => item.id === talhaoId)
-
-    useEffect(() => {
-        console.log(
-            selectedProducer?.tillage?.length !== 0
-                ? selectedProducer?.tillage?.map((tillage) => ({
-                      id: tillage.id,
-                      name: tillage.name,
-                      call: tillage.call,
-                  }))
-                : undefined
-        )
-        setTillages(
-            selectedProducer?.tillage?.map((tillage) => ({
-                id: tillage.id,
-                name: tillage.name,
-                call: tillage.call,
-            })) || []
-        )
-
-        setTalhoes(
-            selectedProducer?.tillage
-                ?.find((item) => item.id === tillageId)
-                ?.talhao?.map((item) => ({
-                    id: item.id,
-                    name: item.name,
-                    call: item.calls,
-                })) || []
-        )
-    }, [selectedProducer, tillageId])
-
-    useEffect(() => {
-        console.log(findTillageInfo)
-    }, [findTillageInfo])
 
     const formik = useFormik<CreateCall>({
         initialValues: {
@@ -152,9 +98,9 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
             open: new Date().getTime().toString(),
             comments: "",
             producerId: user.producer ? user.producer.id : selectedProducer?.id,
-            talhaoId: talhaoId || 0,
+            talhaoId: selectedTalhao?.id,
             userId: Number(account?.user?.id),
-            kitId: values.kitId,
+            kitId: selectedKit?.id,
             forecast: dayjs(pickDate).valueOf().toString(),
             hectarePrice: unmaskCurrency(values.hectarePrice),
         }
@@ -162,6 +108,111 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
         io.emit(user.isAdmin ? "admin:call:create" : "call:create", data)
         setLoading(true)
     }
+
+    const newTheme = (theme: any) =>
+        createTheme({
+            ...theme,
+            components: {
+                MuiPickersToolbar: {
+                    styleOverrides: {
+                        root: {
+                            color: "#fff",
+                            // borderRadius: 5,
+                            borderWidth: 0,
+                            backgroundColor: colors.primary,
+                        },
+                    },
+                },
+                MuiPickersMonth: {
+                    styleOverrides: {
+                        monthButton: {
+                            borderRadius: 20,
+                            borderWidth: 0,
+                            border: "0px solid",
+                        },
+                    },
+                },
+                MuiPickersDay: {
+                    styleOverrides: {
+                        root: {
+                            color: colors.primary,
+                            borderRadius: 20,
+                            borderWidth: 0,
+                        },
+                    },
+                },
+            },
+        })
+
+    const ServerDay = (props: any) => {
+        const { day, outsideCurrentMonth, ...other } = props
+
+        const currentDate = dayjs()
+        const isToday = day.isSame(currentDate, "day")
+
+        const isFutureDate = day.isAfter(currentDate, "day")
+        if (!isFutureDate && !isToday) {
+            return <PickersDay {...other} outsideCurrentMonth={outsideCurrentMonth} day={day} />
+        }
+
+        const callsForDay = selectedKit?.calls?.filter((call: Call) => {
+            const callDate = new Date(Number(call.forecast))
+            return (
+                callDate.getDate() === day.date() &&
+                callDate.getMonth() === day.month() &&
+                callDate.getFullYear() === day.year()
+            )
+        })
+
+        const areaDayCalls =
+            callsForDay
+                ?.map((item: any) => Number(item.talhao?.area))
+                .reduce((prev: number, current: number) => prev + current, 0) || 0
+
+        const totalArea = areaDayCalls + Number(selectedTalhao?.area)
+
+        const indicatorColor =
+            callsForDay &&
+            callsForDay.length > 0 &&
+            selectedKit &&
+            selectedKit.hectareDay &&
+            (totalArea <= selectedKit.hectareDay ? "#88A486" : totalArea > selectedKit.hectareDay && colors.delete)
+
+        return (
+            <Badge
+                key={day.toString()}
+                overlap="circular"
+                badgeContent={<Indicator color={indicatorColor || "#88A486"} size={7} offset={5} />}
+            >
+                <PickersDay {...other} outsideCurrentMonth={outsideCurrentMonth} day={day} />
+            </Badge>
+        )
+    }
+    useEffect(() => {
+        setTillagesProducer(
+            producerTillagesList.map((tillage) => ({
+                id: tillage.id,
+                name: tillage.name,
+                call: tillage.call,
+            })) || []
+        )
+    }, [listTillages])
+
+    useEffect(() => {
+        console.log(
+            selectedProducer?.tillage?.length !== 0
+                ? selectedProducer?.tillage?.map((tillage) => ({
+                      id: tillage.id,
+                      name: tillage.name,
+                      call: tillage.call,
+                  }))
+                : undefined
+        )
+        if (selectedProducer?.tillage) setTillages(selectedProducer?.tillage)
+
+        const selectedTillage = selectedProducer?.tillage?.find((item) => item.id === tillageId)
+        if (selectedTillage?.talhao) setTalhoes(selectedTillage.talhao)
+    }, [selectedProducer, tillageId])
 
     useEffect(() => {
         io.on(user.isAdmin ? "adminCall:creation:success" : "call:creation:success", (data: Call) => {
@@ -194,16 +245,16 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
     }, [])
 
     useEffect(() => {
-        header.setTitle("Painel")
-    }, [])
-
-    useEffect(() => {
-        console.log(formik.values)
-    }, [formik.values])
-
-    useEffect(() => {
         formik.setFieldValue("producerId", selectedProducer?.id || 0)
     }, [selectedProducer])
+
+    useEffect(() => {
+        formik.setFieldValue("kitId", selectedKit?.id || 0)
+    }, [selectedKit])
+
+    useEffect(() => {
+        header.setTitle("Painel")
+    }, [])
 
     return (
         <Box
@@ -258,47 +309,6 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                 />
                 <form onSubmit={formik.handleSubmit}>
                     <Box sx={{ gap: "4vw" }}>
-                        {user.isAdmin && (
-                            <Box sx={{ gap: "1vw" }}>
-                                <Box gap="4vw">
-                                    <p style={{ color: colors.primary, fontSize: "1vw" }}>
-                                        Selecione um kit para marcar a data de visita
-                                    </p>
-                                    <Autocomplete
-                                        value={kits.find((kit) => kit.id === formik.values.kitId) || null}
-                                        getOptionLabel={(option: { id: number; name: string }) => option.name}
-                                        options={kits || []}
-                                        onChange={(event, selected) => {
-                                            if (selected) {
-                                                formik.setFieldValue("kitId", selected.id)
-                                                setKitValue(selected.name)
-                                            }
-                                        }}
-                                        renderInput={(params) => (
-                                            <TextField {...params} sx={{ ...textField }} label="Kit" required />
-                                        )}
-                                    />
-                                </Box>
-                                <LocalizationProvider
-                                    dateAdapter={AdapterDayjs}
-                                    localeText={ptBR.components.MuiLocalizationProvider.defaultProps.localeText}
-                                >
-                                    <DemoContainer components={["MobileDatePicker"]}>
-                                        <DemoItem label={"Previsão da visita"}>
-                                            <MobileDatePicker
-                                                sx={{ ...textField }}
-                                                format="DD/MM/YYYY"
-                                                value={pickDate}
-                                                onChange={(newDate) => setPickDate(newDate)}
-                                                timezone="system"
-                                                disabled={kitValue === "" ? true : false}
-                                            />
-                                        </DemoItem>
-                                    </DemoContainer>
-                                </LocalizationProvider>
-                            </Box>
-                        )}
-
                         {user.employee && (
                             <>
                                 <Autocomplete
@@ -325,23 +335,72 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                                     renderInput={(params) => (
                                         <TextField {...params} sx={{ ...textField }} label="Fazenda" required />
                                     )}
+                                    disabled={selectedProducer ? false : true}
                                 />
                                 <Autocomplete
-                                    value={talhoes.find((talhao) => talhao.id === formik.values.talhaoId) || null}
+                                    value={selectedTalhao}
                                     options={talhoes || []}
-                                    getOptionLabel={(option: { id: number; name: string }) => option.name}
-                                    onChange={(event, selected) => {
-                                        if (selected) {
-                                            formik.setFieldValue("talhaoId", selected.id)
-                                            setTalhaoId(selected.id)
-                                        }
-                                    }}
+                                    getOptionLabel={(option) => option.name}
+                                    onChange={(event, selected) => setSelectedTalhao(selected)}
                                     renderInput={(params) => (
                                         <TextField {...params} sx={{ ...textField }} label="Talhao" required />
                                     )}
+                                    disabled={tillageId ? false : true}
                                 />
-                                <Test handleChange={formik.handleChange} values={formik.values} />
+                                <Test
+                                    handleChange={formik.handleChange}
+                                    values={formik.values}
+                                    disabled={tillageId ? false : true}
+                                />
                             </>
+                        )}
+                        {user.isAdmin && (
+                            <Box sx={{ gap: "1vw" }}>
+                                <Box gap="4vw">
+                                    <p style={{ color: colors.primary, fontSize: "3.3vw" }}>
+                                        Selecione um kit para marcar a data de visita.
+                                    </p>
+                                    <Autocomplete
+                                        value={selectedKit}
+                                        options={kits || []}
+                                        getOptionLabel={(option) => option.name || ""}
+                                        // inputValue={inputValue}
+                                        onChange={(event, selected) => setSelectedKit(selected)}
+                                        isOptionEqualToValue={(option, value) => option.id == value.id}
+                                        renderInput={(params) => (
+                                            <TextField {...params} sx={{ ...textField }} label="kit" required />
+                                        )}
+                                        disabled={selectedTalhao ? false : true}
+                                    />
+                                </Box>
+                                <LocalizationProvider
+                                    dateAdapter={AdapterDayjs}
+                                    localeText={ptBR.components.MuiLocalizationProvider.defaultProps.localeText}
+                                >
+                                    <DemoContainer components={["MobileDatePicker"]}>
+                                        <DemoItem label={"Previsão da visita"}>
+                                            <ThemeProvider theme={newTheme}>
+                                                <MobileDatePicker
+                                                    sx={{ ...textField }}
+                                                    format="DD/MM/YYYY"
+                                                    value={pickDate}
+                                                    onChange={(newDate) => {
+                                                        if (newDate !== null) {
+                                                            setPickDate(newDate)
+                                                        }
+                                                    }}
+                                                    timezone="system"
+                                                    disabled={selectedKit === null ? true : false}
+                                                    slots={{
+                                                        day: ServerDay,
+                                                    }}
+                                                    disablePast
+                                                />
+                                            </ThemeProvider>
+                                        </DemoItem>
+                                    </DemoContainer>
+                                </LocalizationProvider>
+                            </Box>
                         )}
                         {/* {user.producer && (
                                     <>

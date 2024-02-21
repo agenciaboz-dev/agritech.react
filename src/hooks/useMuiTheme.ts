@@ -1,3 +1,4 @@
+
 import { createTheme } from "@mui/material"
 import { colors } from "../style/colors"
 import { deDE } from "@mui/x-date-pickers/locales"
@@ -29,7 +30,9 @@ export const useMuiTheme = () => {
                 // },
             },
         },
-        deDE
+        deDE,
+        
+           
     )
 
     return THEME
