@@ -14,14 +14,7 @@ import { useCall } from "../../hooks/useCall"
 import { Call } from "../../definitions/call"
 
 interface CalendarProps {}
-const dayRenderer: DatePickerProps["renderDay"] = (date) => {
-    const day = date.getDate()
-    return (
-        <Indicator size={7} color={"#88A486"} offset={-3} disabled={day !== 22}>
-            <div>{day}</div>
-        </Indicator>
-    )
-}
+
 export const Calendar: React.FC<CalendarProps> = ({}) => {
     const header = useHeader()
     const navigate = useNavigate()
@@ -47,9 +40,48 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
                     )) ||
                 []
             setCallsDay(callsPerDay)
-            console.log(callsPerDay)
+            // console.log(callsPerDay)
             return callsPerDay
         }
+    }
+
+    const dayRenderer: DatePickerProps["renderDay"] = (date) => {
+        const day = date.getDate()
+        const callsForDay: Call[] | undefined =
+            findUser?.employee?.kits &&
+            findUser?.employee?.kits[0].calls?.filter((call) => {
+                const callDate = new Date(Number(call.forecast))
+                return (
+                    callDate.getDate() === day &&
+                    callDate.getMonth() === date.getMonth() &&
+                    callDate.getFullYear() === date.getFullYear()
+                )
+            })
+
+        const areaDayCalls =
+            callsForDay?.map((item) => Number(item.talhao?.area)).reduce((prev, current) => prev + current, 0) || 0
+
+        useEffect(() => {
+            console.log({ por_dia_temos: areaDayCalls })
+            findUser?.employee?.kits && console.log({ limite_kit: findUser?.employee.kits[0].hectareDay })
+        }, [findUser?.employee])
+
+        const indicatorColor =
+            callsForDay &&
+            callsForDay.length > 0 &&
+            findUser?.employee?.kits &&
+            findUser?.employee?.kits[0].hectareDay &&
+            (areaDayCalls < findUser?.employee.kits[0].hectareDay && areaDayCalls !== 0
+                ? "#FFD700"
+                : areaDayCalls === findUser?.employee.kits[0].hectareDay
+                ? "red"
+                : "#88A486")
+
+        return (
+            <Indicator size={7} color={indicatorColor || "#88A486"} offset={-3}>
+                <div>{day}</div>
+            </Indicator>
+        )
     }
 
     useEffect(() => {
