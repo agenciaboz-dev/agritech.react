@@ -74,7 +74,9 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
             (areaDayCalls < findUser?.employee.kits[0].hectareDay && areaDayCalls !== 0
                 ? "#FFD700"
                 : areaDayCalls === findUser?.employee.kits[0].hectareDay
-                ? "red"
+                ? colors.delete
+                : findUser?.employee.kits[0].hectareDay - areaDayCalls <= 100
+                ? "orange"
                 : "#88A486")
 
         return (

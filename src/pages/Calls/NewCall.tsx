@@ -27,6 +27,7 @@ import { unmaskCurrency } from "../../hooks/unmaskNumber"
 import { CurrencyText } from "../../components/CurrencyText"
 import { Test } from "./Test"
 import { useUsers } from "../../hooks/useUsers"
+import { Indicator } from "@mantine/core"
 
 interface NewCallProps {
     user: User
@@ -79,7 +80,7 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
         })) || []
 
     const [producers, setProducers] = useState(
-        listUsers?.map((user) => user.producer).filter((item) => !!item) as Producer[]
+        listUsers?.map((user: User) => user.producer).filter((item) => !!item) as Producer[]
     )
 
     useEffect(() => {
@@ -91,6 +92,7 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
 
     const findTillageInfo = selectedProducer?.tillage?.find((item) => item.id === tillageId)
     const talhaoSelect = findTillageInfo?.talhao?.find((item) => item.id === talhaoId)
+
     useEffect(() => {
         console.log(
             selectedProducer?.tillage?.length !== 0
@@ -123,11 +125,6 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
     useEffect(() => {
         console.log(findTillageInfo)
     }, [findTillageInfo])
-    // useEffect(() => {
-    //     setHectare(producerSelect?.producer?.hectarePrice || "")
-    // }, [producerSelect])
-
-    //Open Call
 
     const formik = useFormik<CreateCall>({
         initialValues: {
@@ -261,22 +258,46 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                 />
                 <form onSubmit={formik.handleSubmit}>
                     <Box sx={{ gap: "4vw" }}>
-                        <LocalizationProvider
-                            dateAdapter={AdapterDayjs}
-                            localeText={ptBR.components.MuiLocalizationProvider.defaultProps.localeText}
-                        >
-                            <DemoContainer components={["MobileDatePicker"]}>
-                                <DemoItem label="Previsão da visita">
-                                    <MobileDatePicker
-                                        sx={{ ...textField }}
-                                        format="D/M/YYYY"
-                                        value={pickDate}
-                                        onChange={(newDate) => setPickDate(newDate)}
-                                        timezone="system"
+                        {user.isAdmin && (
+                            <Box sx={{ gap: "1vw" }}>
+                                <Box gap="4vw">
+                                    <p style={{ color: colors.primary, fontSize: "1vw" }}>
+                                        Selecione um kit para marcar a data de visita
+                                    </p>
+                                    <Autocomplete
+                                        value={kits.find((kit) => kit.id === formik.values.kitId) || null}
+                                        getOptionLabel={(option: { id: number; name: string }) => option.name}
+                                        options={kits || []}
+                                        onChange={(event, selected) => {
+                                            if (selected) {
+                                                formik.setFieldValue("kitId", selected.id)
+                                                setKitValue(selected.name)
+                                            }
+                                        }}
+                                        renderInput={(params) => (
+                                            <TextField {...params} sx={{ ...textField }} label="Kit" required />
+                                        )}
                                     />
-                                </DemoItem>
-                            </DemoContainer>
-                        </LocalizationProvider>
+                                </Box>
+                                <LocalizationProvider
+                                    dateAdapter={AdapterDayjs}
+                                    localeText={ptBR.components.MuiLocalizationProvider.defaultProps.localeText}
+                                >
+                                    <DemoContainer components={["MobileDatePicker"]}>
+                                        <DemoItem label={"Previsão da visita"}>
+                                            <MobileDatePicker
+                                                sx={{ ...textField }}
+                                                format="DD/MM/YYYY"
+                                                value={pickDate}
+                                                onChange={(newDate) => setPickDate(newDate)}
+                                                timezone="system"
+                                                disabled={kitValue === "" ? true : false}
+                                            />
+                                        </DemoItem>
+                                    </DemoContainer>
+                                </LocalizationProvider>
+                            </Box>
+                        )}
 
                         {user.employee && (
                             <>
@@ -319,6 +340,7 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                                         <TextField {...params} sx={{ ...textField }} label="Talhao" required />
                                     )}
                                 />
+                                <Test handleChange={formik.handleChange} values={formik.values} />
                             </>
                         )}
                         {/* {user.producer && (
@@ -419,27 +441,6 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                                         />
                                     </>
                                 )} */}
-
-                        {user.isAdmin && (
-                            <Box gap="4vw">
-                                <Autocomplete
-                                    value={kits.find((kit) => kit.id === formik.values.kitId) || null}
-                                    getOptionLabel={(option: { id: number; name: string }) => option.name}
-                                    options={kits || []}
-                                    onChange={(event, selected) => {
-                                        if (selected) {
-                                            formik.setFieldValue("kitId", selected.id)
-                                            setKitValue(selected.name)
-                                        }
-                                    }}
-                                    renderInput={(params) => (
-                                        <TextField {...params} sx={{ ...textField }} label="Kit" required />
-                                    )}
-                                />
-
-                                <Test handleChange={formik.handleChange} values={formik.values} />
-                            </Box>
-                        )}
 
                         <TextField
                             multiline
