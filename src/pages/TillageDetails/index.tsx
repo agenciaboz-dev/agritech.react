@@ -1,4 +1,15 @@
-import { Autocomplete, Avatar, Box, IconButton, Tab, Tabs, TextField } from "@mui/material"
+import {
+    Autocomplete,
+    Avatar,
+    Badge,
+    Box,
+    IconButton,
+    Tab,
+    Tabs,
+    TextField,
+    ThemeProvider,
+    createTheme,
+} from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { colors } from "../../style/colors"
 import { Header } from "../../components/Header"
@@ -21,18 +32,19 @@ import { Call, CreateCall } from "../../definitions/call"
 import { approveCall, content, openCall, progress } from "../../tools/contenModals"
 import { LogsCard } from "./LogsCard"
 import { PiPlant } from "react-icons/pi"
-import { LocalizationProvider, MobileDatePicker } from "@mui/x-date-pickers"
+import { LocalizationProvider, MobileDatePicker, PickersDay } from "@mui/x-date-pickers"
 import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo"
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import { ptBR } from "@mui/x-date-pickers/locales"
 import { textField, input } from "../../style/input"
 import "../..//style/styles.css"
-import dayjs from "dayjs"
+import dayjs, { Dayjs } from "dayjs"
 import { useKits } from "../../hooks/useKits"
 import { unmaskCurrency } from "../../hooks/unmaskNumber"
 import { useCurrencyMask } from "burgos-masks"
 import MaskedInputNando from "../../components/MaskedNando"
 import { CurrencyText } from "../../components/CurrencyText"
+import { Indicator } from "@mantine/core"
 
 interface TillageDetailsProps {}
 
@@ -56,6 +68,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
     const [selectedCall, setSelectedCall] = useState<Call | null>(null)
 
     const [selectedKit, setSelectedKit] = useState<Kit | null>(null) // Estado para o valor selecionado
+    const [kits, setKits] = useState(listKits?.filter((item) => !!item && item.active) as Kit[])
     const [kitValue, setKitValue] = useState("") // Estado para o texto do campo de entrada
 
     const handleKitChange = (event: any, selected: any) => {
@@ -65,15 +78,11 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
         }
     }
     const getOptionSelected = (option: any, value: any) => option.id === value.id
-    const kits =
-        listKits?.map((item) => ({
-            id: item.id || 0,
-            name: item.name,
-        })) || []
 
     const [selectedTalhao, setSelectedTalhao] = useState<Talhao>()
     const [selectedAvatar, setSelectedAvatar] = useState(0)
-    const [pickDate, setPickDate] = useState(null)
+    const [pickDate, setPickDate] = useState<Dayjs | null>(null)
+
     const [pickHectarePrice, setPickHectarePrice] = useState<string>("")
     const [weatherData, setWeatherData] = useState<CurrentConditions>()
     const [icon, setIcon] = useState<string>("")
@@ -149,6 +158,94 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
         console.log(data)
         io.emit(user?.isAdmin ? "admin:call:create" : "call:create", data)
         setLoading(true)
+    }
+
+    const newTheme = (theme: any) =>
+        createTheme({
+            ...theme,
+            components: {
+                MuiPickersToolbar: {
+                    styleOverrides: {
+                        root: {
+                            color: "#fff",
+                            // borderRadius: 5,
+                            borderWidth: 0,
+                            backgroundColor: colors.primary,
+                        },
+                    },
+                },
+                MuiPickersMonth: {
+                    styleOverrides: {
+                        monthButton: {
+                            borderRadius: 20,
+                            borderWidth: 0,
+                            border: "0px solid",
+                        },
+                    },
+                },
+                MuiPickersDay: {
+                    styleOverrides: {
+                        root: {
+                            color: colors.primary,
+                            borderRadius: 20,
+                            borderWidth: 0,
+                        },
+                    },
+                },
+            },
+        })
+
+    const ServerDay = (props: any) => {
+        const { day, outsideCurrentMonth, ...other } = props
+
+        const currentDate = dayjs()
+        const isToday = day.isSame(currentDate, "day")
+        const isFutureDate = day.isAfter(currentDate, "day")
+
+        if (!isFutureDate && !isToday) {
+            return <PickersDay {...other} outsideCurrentMonth={outsideCurrentMonth} day={day} />
+        }
+
+        // Retorna null se selectedKit não estiver definido ainda
+        if (!selectedKit) {
+            return null
+        }
+        useEffect(() => {
+            console.log(selectedKit)
+        }, [selectedKit])
+
+        // Lógica para determinar a cor do indicador
+        const callsForDay = selectedKit.calls?.filter((call: Call) => {
+            const callDate = new Date(Number(call.forecast))
+            return (
+                callDate.getDate() === day.date() &&
+                callDate.getMonth() === day.month() &&
+                callDate.getFullYear() === day.year()
+            )
+        })
+
+        const areaDayCalls =
+            callsForDay
+                ?.map((item: any) => Number(item.talhao?.area))
+                .reduce((prev: number, current: number) => prev + current, 0) || 0
+
+        const totalArea = areaDayCalls + Number(selectedTalhao?.area)
+
+        const indicatorColor =
+            callsForDay &&
+            callsForDay.length > 0 &&
+            selectedKit.hectareDay &&
+            (totalArea <= selectedKit.hectareDay ? "#88A486" : colors.delete) // Cor vermelha
+
+        return (
+            <Badge
+                key={day.toString()}
+                overlap="circular"
+                badgeContent={<Indicator color={indicatorColor || "#88A486"} size={7} offset={5} />}
+            >
+                <PickersDay {...other} outsideCurrentMonth={outsideCurrentMonth} day={day} />
+            </Badge>
+        )
     }
 
     useEffect(() => {
@@ -392,31 +489,13 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                                 data={openCall}
                                 children={
                                     <Box sx={{ gap: "3vw" }}>
-                                        <LocalizationProvider
-                                            dateAdapter={AdapterDayjs}
-                                            localeText={ptBR.components.MuiLocalizationProvider.defaultProps.localeText}
-                                        >
-                                            <DemoContainer components={["MobileDatePicker"]} sx={{ color: "#fff" }}>
-                                                <DemoItem label="Previsão da visita">
-                                                    <MobileDatePicker
-                                                        sx={{ ...textField }}
-                                                        format="D/M/YYYY"
-                                                        value={pickDate}
-                                                        onChange={(newDate) => setPickDate(newDate)}
-                                                        timezone="system"
-                                                        className="qzy322-MuiFormControl-root-MuiTextField-root MuiOutlinedInput-input custom-datepicker"
-                                                    />
-                                                </DemoItem>
-                                            </DemoContainer>
-                                        </LocalizationProvider>
-
                                         {user?.isAdmin && (
                                             <Box sx={{ gap: "2vw" }}>
                                                 <Autocomplete
                                                     value={selectedKit}
                                                     getOptionLabel={(option) => option.name}
                                                     options={kits || []}
-                                                    onChange={handleKitChange}
+                                                    onChange={(event, selected) => setSelectedKit(selected)}
                                                     isOptionEqualToValue={getOptionSelected}
                                                     renderInput={(params) => (
                                                         <TextField
@@ -428,6 +507,35 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                                                         />
                                                     )}
                                                 />
+                                                <LocalizationProvider
+                                                    dateAdapter={AdapterDayjs}
+                                                    localeText={
+                                                        ptBR.components.MuiLocalizationProvider.defaultProps.localeText
+                                                    }
+                                                >
+                                                    <DemoContainer components={["MobileDatePicker"]} sx={{ color: "#fff" }}>
+                                                        <DemoItem label="Previsão da visita">
+                                                            <ThemeProvider theme={newTheme}>
+                                                                <MobileDatePicker
+                                                                    sx={{ ...textField }}
+                                                                    format="DD/MM/YYYY"
+                                                                    value={pickDate}
+                                                                    onChange={(newDate) => {
+                                                                        if (newDate !== null) {
+                                                                            setPickDate(newDate)
+                                                                        }
+                                                                    }}
+                                                                    timezone="system"
+                                                                    disabled={selectedKit === null ? true : false}
+                                                                    slots={{
+                                                                        day: ServerDay,
+                                                                    }}
+                                                                    disablePast
+                                                                />
+                                                            </ThemeProvider>
+                                                        </DemoItem>
+                                                    </DemoContainer>
+                                                </LocalizationProvider>
                                                 <Box sx={{ flexDirection: "row", gap: "2vw", color: colors.text.white }}>
                                                     <p style={{ fontSize: "4vw" }}>Custo por hectare: </p>
                                                     {"  "}
