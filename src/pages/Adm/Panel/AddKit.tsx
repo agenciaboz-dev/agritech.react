@@ -24,6 +24,7 @@ export const AddKit: React.FC<AddKitProps> = ({}) => {
     const { snackbar } = useSnackbar()
     const { listKits, setListKits, addKit } = useKits()
 
+    const [image, setImage] = useState<File>()
     const [opened, { open, close }] = useDisclosure(false)
     const [loading, setLoading] = useState(false)
 
@@ -31,12 +32,15 @@ export const AddKit: React.FC<AddKitProps> = ({}) => {
     const [allEmployees, setAllEmployees] = useState<User[] | undefined>([])
     const [listObjects, setListObjects] = useState<NewObject[]>([])
     const [team, setListEmployees] = useState<User[]>([])
+
     const data = {
         list: allEmployees,
         listObjects: listObjects,
         setListObjects: setListObjects,
         team: team,
         setListEmployees: setListEmployees,
+        image: image,
+        setImage: setImage,
     }
 
     const employeesIds = team
@@ -47,7 +51,7 @@ export const AddKit: React.FC<AddKitProps> = ({}) => {
     const initalValues: NewKit = {
         name: "",
         description: "",
-        image: "",
+        image: null,
         hectareDay: undefined,
         objects: [],
         employees: [],
@@ -64,6 +68,12 @@ export const AddKit: React.FC<AddKitProps> = ({}) => {
             hectareDay: unmaskNumber(String(values.hectareDay)),
             objects: objects,
             employees: employeesIds,
+            image: image
+                ? {
+                      file: image,
+                      name: image.name,
+                  }
+                : undefined,
         }
         console.log({ dados_formatados: data })
         io.emit("kit:create", data)
@@ -226,7 +236,6 @@ export const AddKit: React.FC<AddKitProps> = ({}) => {
                             >
                                 <Box sx={{ overflowX: "hidden", overflowY: "auto", height: "95%", p: "0 2vw" }}>
                                     <ContentKit edit values={values} handleChange={handleChange} data={data} />
-                                    
                                 </Box>
                             </Box>
                         </Box>

@@ -1,4 +1,4 @@
-import { Box, TextField } from "@mui/material"
+import { Box, TextField, Avatar as KitImage } from "@mui/material"
 import React, { ChangeEvent, ChangeEventHandler, useEffect, useState } from "react"
 import { Avatar } from "@files-ui/react"
 import { TitleComponents } from "../../../components/TitleComponents"
@@ -26,6 +26,8 @@ interface UpdateContentKitProps {
         team: User[]
         setListEmployees: (value: User[]) => void
         dataEmployee: User[] | undefined
+        image: File | undefined
+        setImage: React.Dispatch<React.SetStateAction<File | undefined>>
     }
 }
 
@@ -35,7 +37,6 @@ const style_p = {
 }
 
 export const UpdateContentKit: React.FC<UpdateContentKitProps> = ({ edit, values, handleChange, data, kitId }) => {
-    const [image, setImage] = useState<File>()
     const io = useIo()
     const floatMask = useNumberMask({ allowDecimal: true, allowLeadingZeroes: true })
     const [openedModalObjects, { open, close }] = useDisclosure(false)
@@ -65,19 +66,34 @@ export const UpdateContentKit: React.FC<UpdateContentKitProps> = ({ edit, values
             <Box sx={{ gap: "3vw", height: "30%" }}>
                 <TitleComponents title="Informações Básicas" />
                 <Box sx={{ flexDirection: "row", gap: "2vw", width: "100%" }}>
-                    <Avatar
-                        src={image}
-                        onChange={(file) => setImage(file)}
-                        changeLabel="Trocar foto"
-                        emptyLabel="Adicionar foto"
-                        variant="square"
-                        style={{
-                            width: "38vw",
-                            height: "38vw",
-                            fontSize: "4vw",
-                            fontFamily: "MalgunGothic2",
-                        }}
-                    />
+                    {edit ? (
+                        <Avatar
+                            src={data.image || values.image || null}
+                            onChange={(file) => data.setImage(file)}
+                            changeLabel="Trocar foto"
+                            emptyLabel="Adicionar foto"
+                            variant="square"
+                            style={{
+                                width: "38vw",
+                                height: "38vw",
+                                fontSize: "4vw",
+                                fontFamily: "MalgunGothic2",
+                            }}
+                        />
+                    ) : (
+                        <Avatar
+                            src={data.image || values.image || null}
+                            // onChange={(file) => data.setImage(file)}
+                            changeLabel="Trocar foto"
+                            variant="square"
+                            style={{
+                                width: "38vw",
+                                height: "38vw",
+                                fontSize: "4vw",
+                                fontFamily: "MalgunGothic2",
+                            }}
+                        />
+                    )}
                     <Box sx={{ flexDirection: "column", gap: "2vw", width: "70%" }}>
                         {edit ? (
                             <>

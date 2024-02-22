@@ -1,5 +1,5 @@
 declare interface NewKit {
-    image: string
+    image?: string | ImageUpload | null
     name: string
     description: string
     active?: boolean

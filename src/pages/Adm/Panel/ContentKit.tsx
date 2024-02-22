@@ -23,11 +23,12 @@ interface ContentKitProps {
         setListObjects: (value: NewObject[]) => void
         team: User[]
         setListEmployees: (value: User[]) => void
+        image: File | undefined
+        setImage: React.Dispatch<React.SetStateAction<File | undefined>>
     }
 }
 
 export const ContentKit: React.FC<ContentKitProps> = ({ edit, values, handleChange, data }) => {
-    const [image, setImage] = useState<File>()
     const header = useHeader()
     const floatMask = useNumberMask({ allowDecimal: true, allowLeadingZeroes: true })
 
@@ -63,8 +64,8 @@ export const ContentKit: React.FC<ContentKitProps> = ({ edit, values, handleChan
                 <TitleComponents title="Informações Básicas" />
                 <Box sx={{ flexDirection: "row", gap: "2vw", width: "100%" }}>
                     <Avatar
-                        src={image}
-                        onChange={(file) => setImage(file)}
+                        src={data.image}
+                        onChange={(file) => data.setImage(file)}
                         changeLabel="Trocar foto"
                         emptyLabel="Adicionar foto"
                         variant="square"

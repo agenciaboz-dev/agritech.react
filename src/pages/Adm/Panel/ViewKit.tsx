@@ -32,6 +32,7 @@ export const ViewKit: React.FC<ViewKitProps> = ({}) => {
 
     const kit = listKits.find((item) => item.id === Number(kitid))
 
+    const [image, setImage] = useState<File>()
     const [opened, { open, close }] = useDisclosure(false)
     const [loading, setLoading] = useState(false)
     const [edit, setEdit] = useState(false)
@@ -40,7 +41,7 @@ export const ViewKit: React.FC<ViewKitProps> = ({}) => {
         id: kit?.id,
         name: kit?.name || "",
         description: kit?.description || "",
-        image: kit?.image || "",
+        image: kit?.image || null,
         hectareDay: kit?.hectareDay,
         objects: kit?.objects,
         employees: kit?.employees,
@@ -65,6 +66,8 @@ export const ViewKit: React.FC<ViewKitProps> = ({}) => {
         team: team,
         setListEmployees: setListEmployees,
         dataEmployee: dataEmployee,
+        image: image,
+        setImage: setImage,
     }
 
     const employeesIds = team
@@ -82,6 +85,12 @@ export const ViewKit: React.FC<ViewKitProps> = ({}) => {
             hectareDay: unmaskNumber(String(values.hectareDay)),
             objects: objects,
             employees: employeesIds,
+            image: image
+                ? {
+                      file: image,
+                      name: image.name,
+                  }
+                : undefined,
         }
 
         setEdit(!edit)
