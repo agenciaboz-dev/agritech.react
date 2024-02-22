@@ -17,6 +17,8 @@ import { CepAbertoApi } from "../../../../definitions/cepabertoApi"
 import { NewLavoura } from "../../../../definitions/newTillage"
 import MaskedInputNando from "../../../../components/MaskedNando"
 import { useNumberMask } from "burgos-masks"
+import { ButtonAgritech } from "../../../../components/ButtonAgritech"
+import { TitleComponents } from "../../../../components/TitleComponents"
 
 interface FormTalhaoProps {
     data: NewTalhao
@@ -31,7 +33,8 @@ export const FormTalhao: React.FC<FormTalhaoProps> = ({ data, change, setCurrent
     const { user } = useUser()
     const [image, setImage] = useState<File>()
     const navigate = useNavigate()
-    const listGallery = useArray().newArray(3)
+    const [galleries, setGalleries] = useState<Gallery[]>()
+
     const floatMask = useNumberMask({ allowDecimal: true, allowLeadingZeroes: true })
 
     const [tab, setTab] = React.useState("gallery")
@@ -113,14 +116,15 @@ export const FormTalhao: React.FC<FormTalhaoProps> = ({ data, change, setCurrent
                         <p>Adicionar nova Galeria</p>
                         <TextField
                             label={"Nome da Galeria"}
-                            name="name_gallery"
+                            name="gallery.name"
                             value={""}
                             sx={textField}
                             onChange={change}
                             disabled
                         />
+                        <TitleComponents title="Adicionar Galeria" button textButton="Adicionar" click={() => {}} />
                         <Box sx={{ width: "100%", height: "100%", overflowY: "auto", gap: "1vw" }}>
-                            {listGallery.map((item, index) => (
+                            {galleries?.map((item, index) => (
                                 <Gallery key={index} id={index + 1} />
                             ))}
                         </Box>
