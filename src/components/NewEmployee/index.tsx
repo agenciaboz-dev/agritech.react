@@ -156,6 +156,13 @@ export const NewEmployee: React.FC<NewEmployeeProps> = ({}) => {
             cpf: unmask(values.cpf),
             phone: unmask(values.phone),
             approved: true,
+            image: image
+                ? {
+                      file: image,
+                      name: image.name,
+                  }
+                : undefined,
+
             employee: {
                 rg: values.employee?.rg,
                 gender: gender.find((gender) => gender.id == String(values.employee?.gender))?.value || "",
@@ -254,7 +261,7 @@ export const NewEmployee: React.FC<NewEmployeeProps> = ({}) => {
                                     variant="circle"
                                     emptyLabel="enviar imagem"
                                     changeLabel="trocar imagem"
-                                    style={{ width: "27vw", height: "27vw" }}
+                                    style={{ width: "40vw", height: "30vw" }}
                                 />
                                 <Box sx={{ flexDirection: "column", gap: "2vw", width: "80%" }}>
                                     <TextField

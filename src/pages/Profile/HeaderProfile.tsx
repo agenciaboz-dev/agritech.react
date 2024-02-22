@@ -98,8 +98,8 @@ export const HeaderProfile: React.FC<HeaderProfileProps> = ({ values, handleChan
                 ...style,
             }}
         >
-            {!view && values === user ? (
-                <ProfileImage src={values.image} style={{ width: "6vw", height: "6vw" }} />
+            {view && values !== user ? (
+                <ProfileImage src={values.image} style={{ width: "40vw", height: "40vw" }} />
             ) : (
                 <Avatar
                     src={image || values.image || null}
@@ -159,25 +159,15 @@ export const HeaderProfile: React.FC<HeaderProfileProps> = ({ values, handleChan
                         </FormGroup>
                     </Box>
                 )}
-                {/* {values.producer && (
-                    <TextField
-                        label={"Custo por Hectare"}
-                        name="hectarePrice"
-                        value={values.producer?.hectarePrice}
-                        onChange={handleChange}
-                        sx={textField}
-                        InputProps={{ readOnly: true, startAdornment: "R$" }}
-                    />
-                )} */}
+
                 {view && (
-                    // <Button
-                    //     size="small"
-                    //     variant="contained"
-                    //     sx={{ bgcolor: colors.button, textTransform: "none", borderRadius: "5vw" }}
-                    // >
-                    //     Iniciar conversa
-                    // </Button>
-                    <></>
+                    <Button
+                        size="small"
+                        variant="contained"
+                        sx={{ bgcolor: colors.button, textTransform: "none", borderRadius: "5vw" }}
+                    >
+                        Iniciar conversa
+                    </Button>
                 )}
             </Box>
         </Box>

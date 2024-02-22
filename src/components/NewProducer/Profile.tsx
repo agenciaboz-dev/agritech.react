@@ -2,20 +2,18 @@ import { Avatar } from "@files-ui/react"
 import { Box, Button, TextField } from "@mui/material"
 import React, { ChangeEventHandler, useState } from "react"
 import { textField } from "../../style/input"
-import MaskedInput from "../MaskedInput"
-import { colors } from "../../style/colors"
-import { useNavigate } from "react-router-dom"
+
 import { useCnpjMask, useCpfMask, usePhoneMask } from "burgos-masks"
 import MaskedInputNando from "../MaskedNando"
 
 interface ProfileProps {
     values: NewProducer
     handleChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
+    image: File | undefined
+    setImage: React.Dispatch<React.SetStateAction<File | undefined>>
 }
 
-export const Profile: React.FC<ProfileProps> = ({ values, handleChange }) => {
-    const [image, setImage] = useState<File>()
-
+export const Profile: React.FC<ProfileProps> = ({ values, handleChange, image, setImage }) => {
     return (
         <Box sx={{ p: "4vw", gap: "4vw", height: "80%" }}>
             <p

@@ -58,6 +58,7 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
     const [producer, setProducer] = useState<User>()
     const [tillage, setTilllage] = useState<Tillage>()
     const estados = useEstadosBrasil()
+    const [image, setImage] = useState<File>()
 
     useEffect(() => {
         header.setTitle(producer ? `${producer?.name}` : "Novo Cliente")
@@ -104,6 +105,12 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
             cpf: unmask(values.cpf),
             phone: unmask(values.phone),
             approved: true,
+            image: image
+                ? {
+                      file: image,
+                      name: image.name,
+                  }
+                : undefined,
             address: {
                 street: values.address.street,
                 district: values.address.district,
@@ -301,7 +308,12 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
                                         <Box
                                             sx={{ justifyContent: "space-between", flexDirection: "column", height: "90%" }}
                                         >
-                                            <Profile values={values} handleChange={handleChange} />
+                                            <Profile
+                                                values={values}
+                                                handleChange={handleChange}
+                                                image={image}
+                                                setImage={setImage}
+                                            />
                                             <Box sx={{ flexDirection: "column", p: "4vw", gap: "2vw" }}>
                                                 <Button
                                                     variant="outlined"
