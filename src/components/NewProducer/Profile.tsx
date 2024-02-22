@@ -38,7 +38,7 @@ export const Profile: React.FC<ProfileProps> = ({ values, handleChange }) => {
                 }}
             >
                 <Avatar
-                    src={image}
+                    src={image || values.image}
                     onChange={(file) => setImage(file)}
                     changeLabel="Trocar foto"
                     emptyLabel="Adicionar foto"

@@ -1,13 +1,12 @@
 import { Avatar } from "@files-ui/react"
+import { Avatar as ProfileImage } from "@mui/material"
 import { Box, TextField, SxProps, Button, FormGroup, FormControlLabel, styled, Switch } from "@mui/material"
 import React, { ChangeEventHandler, useEffect, useState } from "react"
 import { textField } from "../../style/input"
 import MaskedInput from "../../components/MaskedInput"
 import { colors } from "../../style/colors"
-import avatar from "../../assets/logo/Avatar.png"
 import { useIo } from "../../hooks/useIo"
 import { useUser } from "../../hooks/useUser"
-import { profile } from "console"
 import { useSnackbar } from "burgos-snackbar"
 
 interface HeaderProfileProps {
@@ -15,10 +14,11 @@ interface HeaderProfileProps {
     handleChange?: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
     style?: SxProps
     view?: boolean
+    image: File | undefined
+    setImage: React.Dispatch<React.SetStateAction<File | undefined>>
 }
 
-export const HeaderProfile: React.FC<HeaderProfileProps> = ({ values, handleChange, style, view }) => {
-    const [image, setImage] = useState<File>()
+export const HeaderProfile: React.FC<HeaderProfileProps> = ({ values, handleChange, style, view, image, setImage }) => {
     // const [adminStatus, setAdminStatus] = useState(false)
     // const [managerStatus, setManagerStatus] = useState(false)
     const { snackbar } = useSnackbar()
@@ -98,19 +98,18 @@ export const HeaderProfile: React.FC<HeaderProfileProps> = ({ values, handleChan
                 ...style,
             }}
         >
-            <Avatar
-                src={avatar}
-                onChange={(file) => setImage(file)}
-                changeLabel="Trocar foto"
-                emptyLabel="Adicionar foto"
-                variant="circle"
-                style={{
-                    width: "37vw",
-                    height: "36vw",
-                    fontSize: "4vw",
-                    fontFamily: "MalgunGothic2",
-                }}
-            />
+            {!view && values === user ? (
+                <ProfileImage src={values.image} style={{ width: "6vw", height: "6vw" }} />
+            ) : (
+                <Avatar
+                    src={image || values.image || null}
+                    onChange={(file) => setImage(file)}
+                    variant="circle"
+                    style={{ width: "52vw", height: "43vw", alignSelf: "center" }}
+                    emptyLabel="enviar imagem"
+                    changeLabel="trocar imagem"
+                />
+            )}
             <Box sx={{ flexDirection: "column", gap: "3vw", width: "60%" }}>
                 <TextField
                     label={"Nome Completo"}
@@ -121,13 +120,17 @@ export const HeaderProfile: React.FC<HeaderProfileProps> = ({ values, handleChan
                     InputProps={{ readOnly: true }}
                 />
                 <TextField
-                    label={"E-mail"}
-                    name="email"
-                    value={values.email}
+                    label={"Telefone"}
+                    name="phone"
+                    value={values.phone}
                     onChange={handleChange}
                     sx={textField}
-                    InputProps={{ readOnly: true }}
+                    InputProps={{
+                        inputComponent: MaskedInput,
+                        inputProps: { mask: "(00) 0 0000-0000" },
+                    }}
                 />
+
                 {user?.isAdmin && values.employee?.id !== undefined && (
                     <Box sx={{ flexDirection: "column", justifyContent: "space-between" }}>
                         <FormGroup sx={{ width: "90%" }}>
@@ -137,7 +140,7 @@ export const HeaderProfile: React.FC<HeaderProfileProps> = ({ values, handleChan
                                 onChange={handleChangeAdmin}
                                 label={
                                     <Box sx={{ width: "100%" }}>
-                                        <p style={{ fontSize: "4vw", width: "100%" }}>Administrador</p>
+                                        <p style={{ fontSize: "3.5vw", width: "100%" }}>Administrador</p>
                                     </Box>
                                 }
                             />
@@ -149,7 +152,7 @@ export const HeaderProfile: React.FC<HeaderProfileProps> = ({ values, handleChan
                                 onChange={handleChangeManager}
                                 label={
                                     <Box sx={{ width: "100%" }}>
-                                        <p style={{ fontSize: "4vw", width: "100%" }}>Gerente</p>
+                                        <p style={{ fontSize: "3.5vw", width: "100%" }}>Gerente</p>
                                     </Box>
                                 }
                             />
@@ -166,7 +169,7 @@ export const HeaderProfile: React.FC<HeaderProfileProps> = ({ values, handleChan
                         InputProps={{ readOnly: true, startAdornment: "R$" }}
                     />
                 )} */}
-                {view ? (
+                {view && (
                     // <Button
                     //     size="small"
                     //     variant="contained"
@@ -175,20 +178,6 @@ export const HeaderProfile: React.FC<HeaderProfileProps> = ({ values, handleChan
                     //     Iniciar conversa
                     // </Button>
                     <></>
-                ) : (
-                    <>
-                        <TextField
-                            label={"Telefone"}
-                            name="phone"
-                            value={values.phone}
-                            onChange={handleChange}
-                            sx={textField}
-                            InputProps={{
-                                inputComponent: MaskedInput,
-                                inputProps: { mask: "(00) 0 0000-0000" },
-                            }}
-                        />
-                    </>
                 )}
             </Box>
         </Box>

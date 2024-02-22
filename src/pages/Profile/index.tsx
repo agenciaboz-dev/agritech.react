@@ -27,6 +27,7 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
 
     const { unmask } = useDataHandler()
     const { snackbar } = useSnackbar()
+    const [image, setImage] = useState<File>()
 
     const estados = useEstadosBrasil()
     const gender = useGender()
@@ -42,7 +43,7 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
         username: user.username || "",
         password: user.password || "",
         birth: new Date(user.birth || 0).toLocaleDateString("pt-br") || "",
-        image: user.image || "",
+        image: user.image || null,
         address: {
             cep: user.address?.cep || "",
             city: user.address?.city || "",
@@ -98,6 +99,12 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
                 isAdmin: values.isAdmin,
                 approved: values.approved,
                 rejected: values.rejected,
+                image: image
+                    ? {
+                          file: image,
+                          name: image.name,
+                      }
+                    : undefined,
                 address: {
                     cep: unmask(values.address?.cep || ""),
                     city: values.address?.city,
@@ -235,13 +242,15 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
                                             height: "100%",
                                             alignItems: "center",
                                         }}
+                                        image={image}
+                                        setImage={setImage}
                                     />
                                     <InfoProfile values={values} handleChange={handleChange} review={false} />
-                                    {/* <Button
+                                    <Button
                                         variant="contained"
                                         type="submit"
                                         sx={{
-                                            fontSize: "5vw",
+                                            fontSize: "4vw",
                                             color: colors.text.white,
                                             width: "100%",
                                             backgroundColor: colors.button,
@@ -257,7 +266,7 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
                                         ) : (
                                             "Salvar"
                                         )}
-                                    </Button> */}
+                                    </Button>
                                 </Box>
                             </Form>
                         )}

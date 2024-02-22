@@ -7,7 +7,7 @@ declare interface User {
     cpf: string
     birth: string
     phone: string
-    image?: string
+    image?: string | ImageUpload | null
     isAdmin: boolean
     isManager: boolean
     approved: boolean
@@ -33,7 +33,7 @@ interface UserForm {
     cpf: string
     birth: string
     phone: string
-    image: string
+    image?: string | ImageUpload | null
     isAdmin: boolean
     approved: boolean
     rejected?: string

@@ -76,7 +76,7 @@ export const MenuDrawer: React.FC<MenuDrawerProps> = ({}) => {
                     </IconButton>
                     <Box sx={{ alignItems: "center", gap: "6vw" }}>
                         {/* <Avatar src={user?.image} sx={{ width: "50vw", height: "50vw", alignSelf: "center" }} /> */}
-                        <Avatar src={avatar} sx={{ width: "50vw", height: "50vw", alignSelf: "center" }} />
+                        <Avatar src={user?.image} sx={{ width: "50vw", height: "50vw", alignSelf: "center" }} />
                         <p style={{ color: "#fff", fontSize: "5vw" }}>{user?.name}</p>
                     </Box>
                 </Box>

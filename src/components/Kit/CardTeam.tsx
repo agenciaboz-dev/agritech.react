@@ -11,7 +11,7 @@ interface CardTeamProps {
 export const CardTeam: React.FC<CardTeamProps> = ({ employee }) => {
     return (
         <Box sx={{ p: "1vw", pt: 0, pb: 0, pl: "2vw", flexDirection: "row", gap: "3vw" }}>
-            <Avatar src={""} sx={{ width: "10vw", height: "10vw" }} />
+            <Avatar src={employee.image} sx={{ width: "10vw", height: "10vw" }} />
             <Box sx={{ flexDirection: "column" }}>
                 {employee?.isAdmin ? (
                     <Box sx={{ flexDirection: "row", alignItems: "center", gap: "2vw" }}>

@@ -14,12 +14,14 @@ interface StepOneProps {
     handleChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
     setCurrentStep: (value: React.SetStateAction<number>) => void
     typeUser: string
+    image: File | undefined
+    setImage: React.Dispatch<React.SetStateAction<File | undefined>>
 }
 
-export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, typeUser, setCurrentStep }) => {
+export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, image, setImage }) => {
     const gender = useGender()
     const typeRelationship = useRelationship()
-    const [image, setImage] = useState<File>()
+
     return (
         <Box sx={{ width: "100%", height: "100%", gap: "4vw", flexDirection: "column" }}>
             <p style={{ fontSize: "4.5vw", fontFamily: "MalgunGothic2", textAlign: "left", fontWeight: "800" }}>
@@ -27,7 +29,7 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, typeUser, 
             </p>
             <Box sx={{ flexDirection: "row", gap: "5vw", width: "100%", height: "23%", alignItems: "center" }}>
                 <Avatar
-                    src={image}
+                    src={image || undefined}
                     onChange={(file) => setImage(file)}
                     changeLabel="Trocar foto"
                     emptyLabel="Adicionar foto"

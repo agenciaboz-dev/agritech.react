@@ -6,7 +6,7 @@ declare interface SignupValues {
     cpf: string
     birth: string
     phone: string
-    image: string
+    image?: string | ImageUpload | null
     address: Address
     isAdmin: boolean
     approved: boolean

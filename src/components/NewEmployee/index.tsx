@@ -1,5 +1,4 @@
 import {
-    Avatar,
     Box,
     Button,
     CircularProgress,
@@ -36,6 +35,7 @@ import { PiCpuFill } from "react-icons/pi"
 import { unmaskCurrency } from "../../hooks/unmaskNumber"
 import { useIo } from "../../hooks/useIo"
 import { useUsers } from "../../hooks/useUsers"
+import { Avatar } from "@files-ui/react"
 
 interface NewEmployeeProps {}
 
@@ -82,6 +82,7 @@ export const NewEmployee: React.FC<NewEmployeeProps> = ({}) => {
     const [typeOffice, setTypeOffice] = useState("")
     const [currentStep, setCurrentStep] = useState(0)
     const [loading, setLoading] = useState(false)
+    const [image, setImage] = useState<File>()
 
     const [adminStatus, setAdminStatus] = useState(false)
     const [managerStatus, setManagerStatus] = useState(false)
@@ -247,7 +248,14 @@ export const NewEmployee: React.FC<NewEmployeeProps> = ({}) => {
                     <Box sx={{ width: "100%", height: "100%", gap: "5vw", flexDirection: "column", p: "1vw" }}>
                         <form onChange={formik.handleChange} onSubmit={formik.handleSubmit}>
                             <Box sx={{ flexDirection: "row", gap: "3vw", alignItems: "center", width: "100%" }}>
-                                <Avatar sx={{ width: "27vw", height: "27vw" }} />
+                                <Avatar
+                                    src={image}
+                                    onChange={(file) => setImage(file)}
+                                    variant="circle"
+                                    emptyLabel="enviar imagem"
+                                    changeLabel="trocar imagem"
+                                    style={{ width: "27vw", height: "27vw" }}
+                                />
                                 <Box sx={{ flexDirection: "column", gap: "2vw", width: "80%" }}>
                                     <TextField
                                         label={"Nome"}

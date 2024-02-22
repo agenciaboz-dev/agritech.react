@@ -36,6 +36,8 @@ export const Signup: React.FC<SignupProps> = ({}) => {
     const [currentStep, setCurrentStep] = useState(0)
     const [loading, setLoading] = useState(false)
 
+    const [image, setImage] = useState<File>()
+
     const initialValues: SignupValues = {
         name: "",
         email: "",
@@ -44,7 +46,7 @@ export const Signup: React.FC<SignupProps> = ({}) => {
         cpf: "",
         birth: "",
         phone: "",
-        image: "",
+        image: null,
 
         //address
         address: {
@@ -105,6 +107,12 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                 uf: estados.find((estado) => estado.value == values.address.uf)?.value || "",
                 adjunct: values.address.adjunct,
             },
+            image: image
+                ? {
+                      file: image,
+                      name: image.name,
+                  }
+                : undefined,
         }
         if (typeUser === "employee") {
             io.emit("user:signup", {
@@ -124,7 +132,7 @@ export const Signup: React.FC<SignupProps> = ({}) => {
             console.log(data)
         } else if (typeUser === "producer") {
             console.log(data)
-            io.emit("user:signup", { ...data, producer: { cnpj: unmask(data.producer?.cnpj || "")} })
+            io.emit("user:signup", { ...data, producer: { cnpj: unmask(data.producer?.cnpj || "") } })
         }
         setLoading(true)
     }
@@ -270,6 +278,8 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                                         <StepOne
                                             data={values}
                                             handleChange={handleChange}
+                                            image={image}
+                                            setImage={setImage}
                                             typeUser={typeUser}
                                             setCurrentStep={setCurrentStep}
                                         />

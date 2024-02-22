@@ -32,6 +32,7 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
     const { snackbar } = useSnackbar()
 
     const [profile, setProfile] = useState<User>()
+    const [image, setImage] = useState<File>()
     const [loadingApprove, setLoadingApprove] = useState(false)
     const [loadingReject, setLoadingReject] = useState(false)
 
@@ -53,7 +54,7 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
         username: profile?.username || "",
         password: profile?.password || "",
         birth: new Date(profile?.birth || 0).toLocaleDateString("pt-br") || "",
-        image: profile?.image || "",
+        image: profile?.image || null,
         isManager: profile?.isManager || false,
         address: {
             cep: profile?.address?.cep || "",
@@ -207,7 +208,13 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
                         </Button>
                     )}
                 </Box>
-                <HeaderProfile values={valuesUser} style={{ flexDirection: "row", gap: "5vw" }} view />
+                <HeaderProfile
+                    values={valuesUser}
+                    image={image}
+                    setImage={setImage}
+                    style={{ flexDirection: "row", gap: "5vw" }}
+                    view
+                />
                 <InfoProfile values={valuesUser} review />
 
                 {!view && (

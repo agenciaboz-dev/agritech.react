@@ -1,4 +1,3 @@
-import { Avatar, ExtFile } from "@files-ui/react"
 import { Box, Button, TextField, MenuItem } from "@mui/material"
 import React, { ChangeEventHandler, useEffect, useState } from "react"
 import { colors } from "../../style/colors"
@@ -17,7 +16,6 @@ interface StepOneProps {
 export const StepOne: React.FC<StepOneProps> = ({ data, handleChange }) => {
     const gender = useGender()
     const typeRelationship = useRelationship()
-    const [image, setImage] = useState<File>()
     return (
         <Box sx={{ width: "100%", height: "100%", gap: "4vw", flexDirection: "column" }}>
             <Box sx={{ gap: "2vw", width: "100%", height: "100%" }}>

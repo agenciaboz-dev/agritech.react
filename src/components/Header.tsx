@@ -1,4 +1,4 @@
-import { Box, IconButton, Paper, SxProps } from "@mui/material"
+import { Avatar, Box, IconButton, Paper, SxProps } from "@mui/material"
 import NotificationsIcon from "@mui/icons-material/Notifications"
 import { useHeader } from "../hooks/useHeader"
 import { useMenuDrawer } from "../hooks/useMenuDrawer"
@@ -10,6 +10,8 @@ import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone"
 import Logo from "../assets/logo/Avatar.png"
 import drone from "../assets/logo/droneIcon.png"
 import { useNotificationDrawer } from "../hooks/useNotificationDrawer"
+import { useUser } from "../hooks/useUser"
+import { useScrollIntoView } from "@mantine/hooks"
 
 interface HeaderProps {
     back?: boolean
@@ -22,6 +24,7 @@ export const Header: React.FC<HeaderProps> = ({ back, location, style }) => {
     const menuDrawer = useMenuDrawer()
     const notificationDrawer = useNotificationDrawer()
     const navigate = useNavigate()
+    const { user } = useUser()
 
     const iconStyle: SxProps = {
         width: "7vw",
@@ -54,7 +57,7 @@ export const Header: React.FC<HeaderProps> = ({ back, location, style }) => {
                 <p style={{ color: "#fff" }}>{header.title}</p>
             </Box>
             {/* <IconButton color="primary" onClick={notifications.toggle}> */}
-            <Box style={{ flexDirection: "row", gap: "4vw" }}>
+            <Box style={{ flexDirection: "row", gap: "4vw", alignItems: "center" }}>
                 <SearchIcon sx={{ color: "#fff" }} />
                 <NotificationsNoneIcon
                     sx={{ color: "#fff" }}
@@ -63,9 +66,9 @@ export const Header: React.FC<HeaderProps> = ({ back, location, style }) => {
                         console.log("tem qe abrir")
                     }}
                 />
-                <img
-                    src={Logo}
-                    style={{ color: "#fff", width: "6vw", height: "6vw" }}
+                <Avatar
+                    src={user?.image}
+                    style={{ color: "#fff", width: "8vw", height: "8vw" }}
                     onClick={() => {
                         menuDrawer.toggle()
                         console.log("abriu")

@@ -1,4 +1,4 @@
-import { Box, Button, IconButton } from "@mui/material"
+import { Avatar, Box, Button, IconButton } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { colors } from "../../../style/colors"
 import drone from "../../../assets/logo/droneIcon.png"
@@ -85,9 +85,9 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                             console.log("opa")
                         }}
                     />
-                    <img
-                        src={Logo}
-                        style={{ color: "#fff", width: "6vw", height: "6vw" }}
+                    <Avatar
+                        src={user.image}
+                        style={{ color: "#fff", width: "8vw", height: "8vw" }}
                         onClick={() => {
                             menu.toggle()
                             console.log("abriu")
