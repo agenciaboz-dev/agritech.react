@@ -5,6 +5,7 @@ declare interface NewTalhao {
     gallery: Gallery[]
     calls: Call[]
     tillageId: number
+    cover?: string
 }
 declare interface Talhao extends NewTalhao {
     id: number

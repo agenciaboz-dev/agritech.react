@@ -429,6 +429,9 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
                                                 change={handleChange}
                                                 producerUser={producer}
                                                 addressApi={infoCep}
+                                                setCoordinates={setCoordinates}
+                                                setCurrentStep={ setCurrentStep }
+                                                
                                             />
                                             <Box sx={{ flexDirection: "column", gap: "2vw", p: "0 4vw" }}>
                                                 <Button

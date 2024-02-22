@@ -1,7 +1,6 @@
-import { Box, Button, Tab, Tabs, TextField } from "@mui/material"
+import { Avatar, Box, Button, Tab, Tabs, TextField } from "@mui/material"
 import React, { ChangeEventHandler, useEffect, useState } from "react"
 import { useHeader } from "../../../../hooks/useHeader"
-import { Avatar } from "@files-ui/react"
 import { textField } from "../../../../style/input"
 import { colors } from "../../../../style/colors"
 import { useNavigate } from "react-router-dom"
@@ -23,9 +22,11 @@ interface FormTalhaoProps {
     data: NewTalhao
     change: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
     producerUser?: User
+    setCurrentStep: React.Dispatch<React.SetStateAction<number>>
+    setCoordinates: React.Dispatch<React.SetStateAction<LatLngTuple[]>>
 }
 
-export const FormTalhao: React.FC<FormTalhaoProps> = ({ data, change }) => {
+export const FormTalhao: React.FC<FormTalhaoProps> = ({ data, change, setCurrentStep, setCoordinates }) => {
     const header = useHeader()
     const { user } = useUser()
     const [image, setImage] = useState<File>()
@@ -42,7 +43,9 @@ export const FormTalhao: React.FC<FormTalhaoProps> = ({ data, change }) => {
         console.log(values)
     }
 
-    useEffect(() => {}, [])
+    useEffect(() => {
+        console.log(data.cover)
+    }, [])
     return (
         <Box sx={{ width: "100%", height: "74%", gap: "3vw", flexDirection: "column", p: "4vw" }}>
             <p>Informações do Talhão</p>
@@ -57,14 +60,11 @@ export const FormTalhao: React.FC<FormTalhaoProps> = ({ data, change }) => {
                 }}
             >
                 <Avatar
-                    src={GeoImage}
-                    onChange={(file) => setImage(file)}
-                    changeLabel="Trocar foto"
-                    emptyLabel="Adicionar foto"
-                    variant="square"
+                    src={data.cover}
+                    variant="rounded"
                     style={{
-                        width: "30vw",
-                        height: "30vw",
+                        width: "34vw",
+                        height: "34vw",
                         fontSize: "4vw",
                         fontFamily: "MalgunGothic2",
                     }}

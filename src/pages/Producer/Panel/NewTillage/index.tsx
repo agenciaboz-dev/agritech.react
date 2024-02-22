@@ -72,6 +72,7 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
             uf: infoCep?.estado.sigla || "",
             adjunct: "",
         },
+        cover: "",
         gallery: [],
         location: [],
 
@@ -95,7 +96,7 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
             hectarePrice: unmaskNumber(values.hectarePrice || 0),
         }
         io.emit("tillage:create", data)
-        console.log(data)
+        // console.log(data)
         setLoadingTillage(true)
     }
 
@@ -233,32 +234,19 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
                                                 infoCep={infoCep}
                                                 coordinates={coordinates}
                                                 setCoordinates={setCoordinates}
+                                                setCurrentStep={setCurrentStep}
                                             />
-                                            <Button
-                                                variant="contained"
-                                                sx={{
-                                                    fontSize: 17,
-                                                    color: colors.text.white,
-                                                    width: "90%",
-                                                    backgroundColor: colors.primary,
-                                                    borderRadius: "5vw",
-                                                    textTransform: "none",
-                                                    margin: "0 5vw",
-                                                    position: "absolute",
-                                                    zIndex: 1,
-                                                    bottom: "25vw",
-                                                }}
-                                                onClick={() => {
-                                                    setCurrentStep(2)
-                                                }}
-                                            >
-                                                Próximo
-                                            </Button>
                                         </>
                                     )}
                                     {currentStep === 2 && (
                                         <Box sx={{ height: "100%", justifyContent: "space-between" }}>
-                                            <FormTillage data={values} addressApi={infoCep} change={handleChange} />
+                                            <FormTillage
+                                                data={values}
+                                                addressApi={infoCep}
+                                                change={handleChange}
+                                                setCurrentStep={setCurrentStep}
+                                                setCoordinates={setCoordinates}
+                                            />
                                             <Box sx={{ flexDirection: "column", gap: "2vw", p: "0 4vw" }}>
                                                 <Button
                                                     variant="outlined"
@@ -273,7 +261,8 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
                                                         height: "10vw",
                                                     }}
                                                     onClick={() => {
-                                                        setCurrentStep(0)
+                                                        setCurrentStep(1)
+                                                        setCoordinates([])
                                                     }}
                                                 >
                                                     Voltar

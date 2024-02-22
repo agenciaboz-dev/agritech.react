@@ -1,7 +1,6 @@
-import { Box, Button, Tab, Tabs, TextField } from "@mui/material"
+import { Avatar, Box, Button, Tab, Tabs, TextField } from "@mui/material"
 import React, { ChangeEventHandler, useEffect, useState } from "react"
 import { useHeader } from "../../../../hooks/useHeader"
-import { Avatar } from "@files-ui/react"
 import { textField } from "../../../../style/input"
 import { colors } from "../../../../style/colors"
 import { useNavigate } from "react-router-dom"
@@ -24,9 +23,18 @@ interface FormTillageProps {
     change: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
     addressApi?: CepAbertoApi
     producerUser?: User
+    setCurrentStep: React.Dispatch<React.SetStateAction<number>>
+    setCoordinates: React.Dispatch<React.SetStateAction<LatLngTuple[]>>
 }
 
-export const FormTillage: React.FC<FormTillageProps> = ({ data, change, addressApi, producerUser }) => {
+export const FormTillage: React.FC<FormTillageProps> = ({
+    data,
+    change,
+    addressApi,
+    producerUser,
+    setCurrentStep,
+    setCoordinates,
+}) => {
     const header = useHeader()
     const { user } = useUser()
     const [image, setImage] = useState<File>()
@@ -45,7 +53,6 @@ export const FormTillage: React.FC<FormTillageProps> = ({ data, change, addressA
 
     useEffect(() => {
         header.setTitle(producerUser ? producerUser.name : "Nova Fazenda")
-        console.log(producerUser)
     }, [])
     return (
         <Box sx={{ width: "100%", height: "74%", gap: "6vw", flexDirection: "column", p: "4vw" }}>
@@ -61,14 +68,16 @@ export const FormTillage: React.FC<FormTillageProps> = ({ data, change, addressA
                 }}
             >
                 <Avatar
-                    src={GeoImage}
-                    onChange={(file) => setImage(file)}
-                    changeLabel="Trocar foto"
-                    emptyLabel="Adicionar foto"
-                    variant="square"
+                    src={data.cover}
+                    // onChange={(file) => setImage(file)}
+                    onClick={() => {
+                        setCurrentStep(1)
+                        setCoordinates([])
+                    }}
+                    variant="rounded"
                     style={{
-                        width: "40vw",
-                        height: "40vw",
+                        width: "38vw",
+                        height: "38vw",
                         fontSize: "4vw",
                         fontFamily: "MalgunGothic2",
                     }}

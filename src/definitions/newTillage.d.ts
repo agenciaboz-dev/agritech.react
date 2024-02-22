@@ -12,6 +12,7 @@ declare interface NewLavoura {
     others?: string
     comments?: string
     address: Address
+    cover?: string
     location?: NewCoordinate[]
     gallery?: Gallery[]
     hectarePrice?: string

@@ -52,6 +52,7 @@ export const NewTalhao: React.FC<NewTalhaoProps> = ({}) => {
     const initialValues: NewTalhao = {
         name: "",
         area: "",
+        cover: "",
         calls: [],
         gallery: [],
         location: [],
@@ -67,6 +68,7 @@ export const NewTalhao: React.FC<NewTalhaoProps> = ({}) => {
             gallery: values.gallery,
             location: values.location,
             tillageId: values.tillageId,
+            cover: values.cover,
         }
         io.emit("talhao:create", data)
         console.log(data)
@@ -161,36 +163,24 @@ export const NewTalhao: React.FC<NewTalhaoProps> = ({}) => {
                                         ) : (
                                             <>
                                                 <GeolocalTalhao
+                                                    data={values}
                                                     origin={origin}
                                                     infoCep={infoCep}
+                                                    handleChange={handleChange}
                                                     coordinates={coordinates}
                                                     setCoordinates={setCoordinates}
+                                                    setCurrentStep={setCurrentStep}
                                                 />
-                                                <Button
-                                                    variant="contained"
-                                                    sx={{
-                                                        fontSize: 17,
-                                                        color: colors.text.white,
-                                                        width: "90%",
-                                                        backgroundColor: colors.primary,
-                                                        borderRadius: "5vw",
-                                                        textTransform: "none",
-                                                        margin: "0 5vw",
-                                                        position: "absolute",
-                                                        zIndex: 1,
-                                                        bottom: "25vw",
-                                                    }}
-                                                    onClick={() => {
-                                                        setCurrentStep(2)
-                                                    }}
-                                                >
-                                                    Próximo
-                                                </Button>
                                             </>
                                         ))}
                                     {currentStep === 2 && (
                                         <Box sx={{ height: "100%", justifyContent: "space-between" }}>
-                                            <FormTalhao data={values} change={handleChange} />
+                                            <FormTalhao
+                                                data={values}
+                                                change={handleChange}
+                                                setCoordinates={setCoordinates}
+                                                setCurrentStep={setCurrentStep}
+                                            />
                                             <Box sx={{ flexDirection: "column", gap: "2vw", p: "0 4vw" }}>
                                                 <Button
                                                     variant="outlined"
@@ -205,7 +195,8 @@ export const NewTalhao: React.FC<NewTalhaoProps> = ({}) => {
                                                         height: "10vw",
                                                     }}
                                                     onClick={() => {
-                                                        setCurrentStep(0)
+                                                        setCurrentStep(1)
+                                                        setCoordinates([])
                                                     }}
                                                 >
                                                     Voltar

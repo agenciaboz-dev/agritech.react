@@ -19,31 +19,6 @@ export const Additional: React.FC<AdditionalProps> = ({ data, handleChange }) =>
                 sx={{ ...textField, width: "100%" }}
                 onChange={handleChange}
             />
-
-            <Box sx={{ gap: "3vw", flexDirection: "column", width: "100%" }}>
-                <p style={{ fontSize: "4vw" }}>Adicionar novos campos</p>
-                <TextField
-                    label={"Observações Adicionais"}
-                    name="coisinhas"
-                    value={""}
-                    sx={{ ...textField, width: "100%" }}
-                    onChange={handleChange}
-                />
-                <Button
-                    variant="contained"
-                    sx={{
-                        fontSize: "3vw",
-                        color: colors.text.white,
-                        width: "30%",
-                        backgroundColor: colors.button,
-                        borderRadius: "5vw",
-                        textTransform: "none",
-                    }}
-                >
-                    {" "}
-                    Novo campo
-                </Button>
-            </Box>
         </Box>
     )
 }

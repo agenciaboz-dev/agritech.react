@@ -4,21 +4,13 @@ import { colors } from "../../../style/colors"
 import { Header } from "../../../components/Header"
 import { useHeader } from "../../../hooks/useHeader"
 import { useParams } from "react-router"
-import GeoImage from "../../../assets/geo.svg"
-import { useArray } from "burgos-array"
+import GeoImage from "../../../assets/default.png"
 import { tabStyle } from "../../../style/tabStyle"
 import { WeatherComponent } from "../../../components/WeatherComponent"
-import { DialogConfirm } from "../../../components/DialogConfirm"
 import { useNavigate } from "react-router-dom"
-import { LaudoCall, OpenCallBox, ProgressCall } from "../../../components/OpenCallBox"
 import { useUser } from "../../../hooks/useUser"
 import { useProducer } from "../../../hooks/useProducer"
-import findProducer from "../../../hooks/filterProducer"
 import { useIo } from "../../../hooks/useIo"
-import { useSnackbar } from "burgos-snackbar"
-import { useCall } from "../../../hooks/useCall"
-import { Call, CreateCall } from "../../../definitions/call"
-import { approveCall, content, openCall, progress } from "../../../tools/contenModals"
 import { PiPlant } from "react-icons/pi"
 
 interface TillageProps {}
@@ -31,15 +23,8 @@ export const Tillage: React.FC<TillageProps> = ({}) => {
 
     const { user } = useUser()
     const { tillageid } = useParams()
-    const { snackbar } = useSnackbar()
-
-    const [open, setOpen] = useState(false)
-    const [openApproved, setOpenApproved] = useState(false)
-    const [loading, setLoading] = useState(false)
-    const [variant, setVariant] = useState(false)
-
     const findTillage = listTillages.find((item) => item.id === Number(tillageid))
-    console.log(findTillage)
+
     const [tab, setTab] = React.useState("calls")
     const changeTab = (event: React.SyntheticEvent, newValue: string) => {
         setTab(newValue)
@@ -131,7 +116,7 @@ export const Tillage: React.FC<TillageProps> = ({}) => {
                             findTillage.talhao.map((item, index) => (
                                 <Box sx={{ alignItems: "center" }} key={index}>
                                     <Avatar
-                                        src={GeoImage}
+                                        src={item.cover || GeoImage}
                                         style={{
                                             width: "28vw",
                                             height: "38vw",
@@ -167,7 +152,7 @@ export const Tillage: React.FC<TillageProps> = ({}) => {
                         height: "100%",
                     }}
                 >
-                    <WeatherComponent />
+                    <WeatherComponent icon="" dataWeather={undefined} />
                     {selectedAvatar === 0 && findTillage?.talhao?.length !== 0 ? (
                         <p>Selecione um talhão</p>
                     ) : (
