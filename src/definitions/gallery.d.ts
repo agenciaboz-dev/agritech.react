@@ -1,17 +1,30 @@
 declare interface Gallery {
     id?: number
-    images: GalleryImage[]
+    images?: Image[]
 
     talhao?: Talhao
-    talhaoId: number
+    talhaoId?: number
 
     tillage?: Tillage
-    tillageId: number
+    tillageId?: number
 }
 declare interface GalleryImage {
     id?: number
     url: string
     gallery?: Gallery
-    galleryId: number
+    galleryId?: number
+    isDeleting?: boolean
+}
+declare interface NewGallery {
+    id?: int
+    images?: Image[]
+    urls?: string[]
+    tillageId?: number
+    talhaoId?: number
+}
+
+declare interface Image {
+    file: ArrayBuffer
+    name: string
     isDeleting?: boolean
 }

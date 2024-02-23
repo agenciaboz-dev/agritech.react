@@ -1,4 +1,4 @@
-import { Box, Button, CircularProgress, SxProps, TextField } from "@mui/material"
+import { Box, Button, CircularProgress } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { useHeader } from "../../../../hooks/useHeader.ts"
 import { colors } from "../../../../style/colors.ts"
@@ -11,24 +11,13 @@ import { useDataHandler } from "../../../../hooks/useDataHandler.ts"
 import { useIo } from "../../../../hooks/useIo.ts"
 import { CepAbertoApi } from "../../../../definitions/cepabertoApi"
 import { LatLngExpression, LatLngTuple } from "leaflet"
-import { DialogConfirm } from "../../../../components/DialogConfirm.tsx"
-import { textField, input } from "../../../../style/input.ts"
 import { useNavigate, useParams } from "react-router-dom"
 import { useSnackbar } from "burgos-snackbar"
-import MaskedInput from "../../../../components/MaskedInput.tsx"
-import { useProducer } from "../../../../hooks/useProducer.ts"
 import { unmaskNumber } from "../../../../hooks/unmaskNumber.ts"
 import { useDisclosure } from "@mantine/hooks"
 import { ModalGallery } from "../../ModalGallery.tsx"
 
 interface NewTalhaoProps {}
-
-const openCall = {
-    title: "Adicione um CEP",
-    content: "Insira o cep da sua Fazenda. Caso não tenha, insira o cep mais próximo.",
-    submitTitle: "Continuar",
-    cancelTitle: "Cancelar",
-}
 
 export const NewTalhao: React.FC<NewTalhaoProps> = ({}) => {
     const io = useIo()
@@ -49,7 +38,7 @@ export const NewTalhao: React.FC<NewTalhaoProps> = ({}) => {
     const [infoCep, setInfoCep] = useState<CepAbertoApi>()
     const [origin, setOrigin] = useState<LatLngExpression>()
     const [coordinates, setCoordinates] = useState<LatLngTuple[]>([])
-    const [images, setImages] = useState<{ id: number; url: string }[]>([])
+    const [images, setImages] = useState<{ id: number; url: string; name: string; file: File }[]>([])
 
     const initialValues: NewTalhao = {
         name: "",
@@ -60,20 +49,36 @@ export const NewTalhao: React.FC<NewTalhaoProps> = ({}) => {
         location: [],
         tillageId: findTillage?.id || 0,
     }
+
+    const [formatted, setFormatted] = useState<any>()
+    useEffect(() => {
+        console.log(formatted)
+        setFormatted(
+            images.map((item) => ({
+                name: item.name,
+                file: item.file,
+            }))
+        )
+    }, [images])
+
     const handleSubmit = (values: NewTalhao) => {
-        console.log({ enviados: values })
+        const folder = {
+            images: formatted,
+            tillageId: values.tillageId,
+        }
+        const galleries: NewGallery[] = [folder]
 
         const data = {
             name: values.name,
             area: unmaskNumber(values.area),
             call: values.calls,
-            gallery: values.gallery,
             location: values.location,
             tillageId: values.tillageId,
             cover: values.cover,
+            gallery: galleries,
         }
         io.emit("talhao:create", data)
-        console.log(data)
+        console.log({ enviado: data })
         setLoadingTalhao(true)
     }
 

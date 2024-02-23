@@ -27,7 +27,7 @@ interface FormTalhaoProps {
     setCurrentStep: React.Dispatch<React.SetStateAction<number>>
     setCoordinates: React.Dispatch<React.SetStateAction<LatLngTuple[]>>
     open: () => void
-    images: { id: number; url: string }[]
+    images: { id: number; file: File; name: string }[]
 }
 
 export const FormTalhao: React.FC<FormTalhaoProps> = ({ data, change, setCurrentStep, setCoordinates, open, images }) => {
@@ -116,9 +116,6 @@ export const FormTalhao: React.FC<FormTalhaoProps> = ({ data, change, setCurrent
             <Box sx={{ width: "100%", height: "60%", gap: "1vw", pt: "2vw" }}>
                 <TitleComponents title="Adicionar Galeria" button textButton="Adicionar" click={open} />
                 <Box sx={{ width: "100%", overflowY: "auto", gap: "1vw" }}>
-                    <Gallery key={1} id={2 + 1} images={images} />
-                    <Gallery key={1} id={2 + 1} images={images} />
-                    <Gallery key={1} id={2 + 1} images={images} />
                     <Gallery key={1} id={2 + 1} images={images} />
                 </Box>
             </Box>

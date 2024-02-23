@@ -9,19 +9,19 @@ import classes from "../../style/DropzoneButton.module.css"
 import { RxUpload } from "react-icons/rx"
 
 interface ModalGalleryProps {
-    images: { id: number; url: string }[]
-    setImages: React.Dispatch<React.SetStateAction<{ id: number; url: string }[]>>
+    images: { id: number; name: string; file: File }[]
+    setImages: React.Dispatch<React.SetStateAction<{ id: number; file: File; name: string }[]>>
     opened: boolean
     close: () => void
+    tillageId?: number
 }
 
 export const ModalGallery: React.FC<ModalGalleryProps> = ({ opened, close, images, setImages }) => {
     const openRef = useRef<() => void>(null)
 
     const handleUpload = (files: File[]) => {
-        const newImages: { id: number; url: string }[] = files.map((file) => {
-            const url = URL.createObjectURL(file)
-            return { id: Math.random(), url, isDeleting: false }
+        const newImages: { id: number; file: File; name: string }[] = files.map((file) => {
+            return { id: Math.random(), file: file, name: file.name, isDeleting: false }
         })
 
         setImages((currentImages) => [...currentImages, ...newImages])
@@ -45,14 +45,14 @@ export const ModalGallery: React.FC<ModalGalleryProps> = ({ opened, close, image
         setSelectedForDeletion(null)
     }
 
+    const saveGallery = () => {
+        console.log("Galeria salva", images)
+
+        close()
+    }
     useEffect(() => {
         console.log({ ImagensSelecionadas: images })
     }, [images])
-
-    const saveGallery = () => {
-        console.log("Galeria salva", images)
-        close()
-    }
     return (
         <Modal
             size={"sm"}
@@ -81,7 +81,7 @@ export const ModalGallery: React.FC<ModalGalleryProps> = ({ opened, close, image
                         onDrop={handleUpload}
                         className={classes.dropzone}
                         radius="md"
-                        accept={[MIME_TYPES.jpeg, MIME_TYPES.png, MIME_TYPES.webp, MIME_TYPES.svg]}
+                        accept={[MIME_TYPES.jpeg, MIME_TYPES.png]}
                     />
                     <Box
                         sx={{
@@ -104,7 +104,7 @@ export const ModalGallery: React.FC<ModalGalleryProps> = ({ opened, close, image
                                     <Avatar
                                         variant="rounded"
                                         key={image.id}
-                                        src={image.url}
+                                        src={image.name}
                                         sx={{
                                             width: "18vw",
                                             height: "18vw",

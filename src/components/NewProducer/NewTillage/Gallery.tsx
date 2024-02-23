@@ -1,16 +1,12 @@
 import { Avatar, Box } from "@mui/material"
 import React from "react"
-import Lavoura1 from "../../../assets/lavoura.jpg"
-import Lavoura2 from "../../../assets/lavoura2.jpg"
-import Lavoura3 from "../../../assets/lavoura3.jpg"
-import CameraIcon from "../../../assets/icons/camera.svg"
 import GalleryIcon from "../../../assets/icons/addphoto.svg"
 import { ModalGallery } from "../../../pages/Producer/ModalGallery"
 import { useDisclosure } from "@mantine/hooks"
 
 interface GalleryProps {
     id: number
-    images: { id: number; url: string }[]
+    images: { id: number; name: string; file: File }[]
 }
 
 export const Gallery: React.FC<GalleryProps> = ({ id, images }) => {
@@ -25,7 +21,7 @@ export const Gallery: React.FC<GalleryProps> = ({ id, images }) => {
             </Box>
             <Box sx={{ flexDirection: "row", gap: "2vw", overflowX: "auto", height: "80%" }}>
                 {images.map((item, index) => (
-                    <Avatar key={index} variant="rounded" src={item.url} sx={{ width: "20vw", height: "20vw" }} />
+                    <Avatar key={index} variant="rounded" src={item.name} sx={{ width: "20vw", height: "20vw" }} />
                 ))}
             </Box>
         </Box>
