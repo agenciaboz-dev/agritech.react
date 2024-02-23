@@ -26,9 +26,11 @@ interface FormTalhaoProps {
     producerUser?: User
     setCurrentStep: React.Dispatch<React.SetStateAction<number>>
     setCoordinates: React.Dispatch<React.SetStateAction<LatLngTuple[]>>
+    open: () => void
+    images: { id: number; url: string }[]
 }
 
-export const FormTalhao: React.FC<FormTalhaoProps> = ({ data, change, setCurrentStep, setCoordinates }) => {
+export const FormTalhao: React.FC<FormTalhaoProps> = ({ data, change, setCurrentStep, setCoordinates, open, images }) => {
     const header = useHeader()
     const { user } = useUser()
     const [image, setImage] = useState<File>()
@@ -50,7 +52,7 @@ export const FormTalhao: React.FC<FormTalhaoProps> = ({ data, change, setCurrent
         console.log(data.cover)
     }, [])
     return (
-        <Box sx={{ width: "100%", height: "74%", gap: "3vw", flexDirection: "column", p: "4vw" }}>
+        <Box sx={{ width: "100%", height: "90%", gap: "3vw", flexDirection: "column", p: "4vw" }}>
             <p>Informações do Talhão</p>
 
             <Box
@@ -58,7 +60,7 @@ export const FormTalhao: React.FC<FormTalhaoProps> = ({ data, change, setCurrent
                     flexDirection: "row",
                     gap: "3vw",
                     width: "100%",
-                    height: "23%",
+                    height: "20%",
                     alignItems: "center",
                 }}
             >
@@ -97,39 +99,28 @@ export const FormTalhao: React.FC<FormTalhaoProps> = ({ data, change, setCurrent
                     />
                 </Box>
             </Box>
-            <Box>
-                <Tabs
-                    value={tab}
-                    onChange={changeTab}
-                    textColor="primary"
-                    indicatorColor="primary"
-                    aria-label="tabs"
-                    variant="scrollable"
-                    scrollButtons="auto"
-                    allowScrollButtonsMobile
-                >
-                    <Tab sx={tabStyle} value="gallery" label="Imagens" />
-                </Tabs>
-                {/* {tab === "additional" && <Additional data={data} handleChange={change} />} */}
-                {tab === "gallery" && (
-                    <Box sx={{ width: "100%", height: "66%", gap: "2vw", pt: "2vw" }}>
-                        <p>Adicionar nova Galeria</p>
-                        <TextField
-                            label={"Nome da Galeria"}
-                            name="gallery.name"
-                            value={""}
-                            sx={textField}
-                            onChange={change}
-                            disabled
-                        />
-                        <TitleComponents title="Adicionar Galeria" button textButton="Adicionar" click={() => {}} />
-                        <Box sx={{ width: "100%", height: "100%", overflowY: "auto", gap: "1vw" }}>
-                            {galleries?.map((item, index) => (
-                                <Gallery key={index} id={index + 1} />
-                            ))}
-                        </Box>
-                    </Box>
-                )}
+
+            <Tabs
+                value={tab}
+                onChange={changeTab}
+                textColor="primary"
+                indicatorColor="primary"
+                aria-label="tabs"
+                variant="scrollable"
+                scrollButtons="auto"
+                allowScrollButtonsMobile
+            >
+                <Tab sx={tabStyle} value="gallery" label="Imagens" />
+            </Tabs>
+
+            <Box sx={{ width: "100%", height: "60%", gap: "1vw", pt: "2vw" }}>
+                <TitleComponents title="Adicionar Galeria" button textButton="Adicionar" click={open} />
+                <Box sx={{ width: "100%", overflowY: "auto", gap: "1vw" }}>
+                    <Gallery key={1} id={2 + 1} images={images} />
+                    <Gallery key={1} id={2 + 1} images={images} />
+                    <Gallery key={1} id={2 + 1} images={images} />
+                    <Gallery key={1} id={2 + 1} images={images} />
+                </Box>
             </Box>
         </Box>
     )

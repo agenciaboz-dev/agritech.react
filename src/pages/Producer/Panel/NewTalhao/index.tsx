@@ -18,6 +18,8 @@ import { useSnackbar } from "burgos-snackbar"
 import MaskedInput from "../../../../components/MaskedInput.tsx"
 import { useProducer } from "../../../../hooks/useProducer.ts"
 import { unmaskNumber } from "../../../../hooks/unmaskNumber.ts"
+import { useDisclosure } from "@mantine/hooks"
+import { ModalGallery } from "../../ModalGallery.tsx"
 
 interface NewTalhaoProps {}
 
@@ -40,14 +42,14 @@ export const NewTalhao: React.FC<NewTalhaoProps> = ({}) => {
     const findTillage = user?.producer?.tillage?.find((item) => item.id === Number(tillageid))
     //controls view
     const [currentStep, setCurrentStep] = useState(1)
-    const [loadingCoordinate, setLoadingCoordinate] = useState(false)
     const [loadingTalhao, setLoadingTalhao] = useState(false)
-    const [open, setOpen] = useState(true)
+    const [opened, { open, close }] = useDisclosure()
 
     //control map
     const [infoCep, setInfoCep] = useState<CepAbertoApi>()
     const [origin, setOrigin] = useState<LatLngExpression>()
     const [coordinates, setCoordinates] = useState<LatLngTuple[]>([])
+    const [images, setImages] = useState<{ id: number; url: string }[]>([])
 
     const initialValues: NewTalhao = {
         name: "",
@@ -155,6 +157,7 @@ export const NewTalhao: React.FC<NewTalhaoProps> = ({}) => {
                         <Formik initialValues={initialValues} onSubmit={handleSubmit}>
                             {({ values, handleChange }) => (
                                 <Form>
+                                    <ModalGallery images={images} close={close} opened={opened} setImages={setImages} />
                                     {currentStep === 1 &&
                                         (!origin ? (
                                             <Box sx={{ height: "100%", alignItems: "center", justifyContent: "center" }}>
@@ -180,6 +183,8 @@ export const NewTalhao: React.FC<NewTalhaoProps> = ({}) => {
                                                 change={handleChange}
                                                 setCoordinates={setCoordinates}
                                                 setCurrentStep={setCurrentStep}
+                                                open={open}
+                                                images={images}
                                             />
                                             <Box sx={{ flexDirection: "column", gap: "2vw", p: "0 4vw" }}>
                                                 <Button

@@ -13,4 +13,5 @@ declare interface GalleryImage {
     url: string
     gallery?: Gallery
     galleryId: number
+    isDeleting?: boolean
 }

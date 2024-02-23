@@ -5,31 +5,28 @@ import Lavoura2 from "../../../assets/lavoura2.jpg"
 import Lavoura3 from "../../../assets/lavoura3.jpg"
 import CameraIcon from "../../../assets/icons/camera.svg"
 import GalleryIcon from "../../../assets/icons/addphoto.svg"
+import { ModalGallery } from "../../../pages/Producer/ModalGallery"
+import { useDisclosure } from "@mantine/hooks"
 
 interface GalleryProps {
     id: number
+    images: { id: number; url: string }[]
 }
 
-export const Gallery: React.FC<GalleryProps> = ({ id }) => {
-    const icon_Style = {
-        width: "5vw",
-        height: "5vw",
-    }
+export const Gallery: React.FC<GalleryProps> = ({ id, images }) => {
+    const [opened, { open, close }] = useDisclosure()
     return (
-        <Box sx={{ width: "100%", flexDirection: "column", gap: "2vw", height: "100%" }}>
-            <Box sx={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
+        <Box sx={{ width: "100%", flexDirection: "column", gap: "3vw", height: "100%" }}>
+            <ModalGallery opened={opened} close={close} images={images} setImages={() => {}} />
+            <Box sx={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", pt: "2vw" }}>
                 <p>Galeria {id}</p>
-                <Box sx={{ alignItems: "center", flexDirection: "row", gap: "2vw", mr: "4vw" }}>
-                    <img src={CameraIcon} alt="" style={{ width: "11vw", height: "11vw" }} onClick={() => {}} />
-                    <img src={GalleryIcon} alt="" style={{ width: "5vw", height: "4.9vw" }} onClick={() => {}} />
-                </Box>
+
+                <img src={GalleryIcon} alt="" style={{ width: "5vw", height: "4.9vw" }} onClick={open} />
             </Box>
-            <Box sx={{ flexDirection: "row", gap: "2vw", overflowX: "auto" }}>
-                <Avatar variant="rounded" src={Lavoura2} sx={{ width: "20vw", height: "20vw" }} />
-                <Avatar variant="rounded" src={Lavoura3} sx={{ width: "20vw", height: "20vw" }} />
-                <Avatar variant="rounded" src={Lavoura1} sx={{ width: "20vw", height: "20vw" }} />
-                <Avatar variant="rounded" src={Lavoura2} sx={{ width: "20vw", height: "20vw" }} />
-                <Avatar variant="rounded" src={Lavoura3} sx={{ width: "20vw", height: "20vw" }} />
+            <Box sx={{ flexDirection: "row", gap: "2vw", overflowX: "auto", height: "80%" }}>
+                {images.map((item, index) => (
+                    <Avatar key={index} variant="rounded" src={item.url} sx={{ width: "20vw", height: "20vw" }} />
+                ))}
             </Box>
         </Box>
     )
