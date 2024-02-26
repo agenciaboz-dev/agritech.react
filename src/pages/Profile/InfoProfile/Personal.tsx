@@ -5,6 +5,8 @@ import { useGender } from "../../../hooks/useGender"
 import { useRelationship } from "../../../hooks/useRelationship"
 import MaskedInput from "../../../components/MaskedInput"
 import { useUser } from "../../../hooks/useUser"
+import MaskedInputNando from "../../../components/MaskedNando"
+import { useCnpjMask } from "burgos-masks"
 
 interface PersonalProps {
     values: User
@@ -43,18 +45,27 @@ export const Personal: React.FC<PersonalProps> = ({ values, handleChange }) => {
                 />
             )}
             {values.employee?.id === undefined && (
-                <TextField
-                    label={"CNPJ"}
-                    name={"producer.cnpj"}
-                    sx={textField}
-                    value={values.producer?.cnpj}
-                    onChange={handleChange}
-                    InputProps={{
-                        inputComponent: MaskedInput,
-                        inputProps: { mask: "000.000.000/0000-0" },
-                        readOnly: true,
-                    }}
-                />
+                <>
+                    <TextField
+                        label={"CNPJ"}
+                        name={"producer.cnpj"}
+                        sx={textField}
+                        value={values.producer?.cnpj}
+                        onChange={handleChange}
+                        InputProps={{
+                            inputComponent: MaskedInputNando,
+                            inputProps: { mask: useCnpjMask, inputMode: "numeric" },
+                            readOnly: true,
+                        }}
+                    />
+                    <TextField
+                        label={"Inscrição Estadual"}
+                        name={"producer.inscricaoEstadual"}
+                        sx={textField}
+                        value={values.producer?.inscricaoEstadual}
+                        onChange={handleChange}
+                    />
+                </>
             )}
             {values.employee?.id !== undefined && (
                 <>

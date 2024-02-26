@@ -18,6 +18,33 @@ interface HeaderProfileProps {
     setImage: React.Dispatch<React.SetStateAction<File | undefined>>
 }
 
+const Android12Switch = styled(Switch)(({ theme }) => ({
+    padding: 8,
+    "& .MuiSwitch-track": {
+        borderRadius: 22 / 2,
+        "&:before, &:after": {
+            content: '""',
+            position: "absolute",
+            top: "50%",
+            transform: "translateY(-50%)",
+            width: 16,
+            height: 16,
+        },
+        "&:before": {
+            left: 12,
+        },
+        "&:after": {
+            right: 12,
+        },
+    },
+    "& .MuiSwitch-thumb": {
+        boxShadow: "none",
+        width: 16,
+        height: 16,
+        margin: 2,
+    },
+}))
+
 export const HeaderProfile: React.FC<HeaderProfileProps> = ({ values, handleChange, style, view, image, setImage }) => {
     // const [adminStatus, setAdminStatus] = useState(false)
     // const [managerStatus, setManagerStatus] = useState(false)
@@ -66,32 +93,6 @@ export const HeaderProfile: React.FC<HeaderProfileProps> = ({ values, handleChan
         })
     }, [])
 
-    const Android12Switch = styled(Switch)(({ theme }) => ({
-        padding: 8,
-        "& .MuiSwitch-track": {
-            borderRadius: 22 / 2,
-            "&:before, &:after": {
-                content: '""',
-                position: "absolute",
-                top: "50%",
-                transform: "translateY(-50%)",
-                width: 16,
-                height: 16,
-            },
-            "&:before": {
-                left: 12,
-            },
-            "&:after": {
-                right: 12,
-            },
-        },
-        "& .MuiSwitch-thumb": {
-            boxShadow: "none",
-            width: 16,
-            height: 16,
-            margin: 2,
-        },
-    }))
     return (
         <Box
             sx={{
@@ -160,7 +161,7 @@ export const HeaderProfile: React.FC<HeaderProfileProps> = ({ values, handleChan
                     </Box>
                 )}
 
-                {view && (
+                {/* {values.employee === null && (
                     <Button
                         size="small"
                         variant="contained"
@@ -168,7 +169,7 @@ export const HeaderProfile: React.FC<HeaderProfileProps> = ({ values, handleChan
                     >
                         Iniciar conversa
                     </Button>
-                )}
+                )} */}
             </Box>
         </Box>
     )

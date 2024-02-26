@@ -81,6 +81,7 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                 ? {
                       cnpj: "",
                       contract: false,
+                      inscricaoEstadual: "",
                       tillage: [],
                   }
                 : undefined,
@@ -132,7 +133,13 @@ export const Signup: React.FC<SignupProps> = ({}) => {
             console.log(data)
         } else if (typeUser === "producer") {
             console.log(data)
-            io.emit("user:signup", { ...data, producer: { cnpj: unmask(data.producer?.cnpj || "") } })
+            io.emit("user:signup", {
+                ...data,
+                producer: {
+                    cnpj: unmask(data.producer?.cnpj || ""),
+                    inscricaoEstadual: unmask(data.producer?.inscricaoEstadual || ""),
+                },
+            })
         }
         setLoading(true)
     }

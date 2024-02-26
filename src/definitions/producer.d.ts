@@ -1,6 +1,7 @@
 declare interface Producer {
     id?: number
     cnpj: string
+    inscricaoEstadual: string
     contract: boolean
     tillage?: Tillage[]
     employeeId?: number

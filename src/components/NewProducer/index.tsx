@@ -96,6 +96,7 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
         producer: {
             cnpj: "",
             contract: true,
+            inscricaoEstadual: "",
             employeeId: user?.employee?.id,
         },
     }
@@ -126,6 +127,7 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
             },
             producer: {
                 cnpj: unmask(values.producer?.cnpj || ""),
+                inscricaoEstadual: unmask(values.producer.inscricaoEstadual || ""),
                 contract: values.producer.contract,
                 tillage: values.producer.tillage,
                 employeeId: user?.employee?.id,

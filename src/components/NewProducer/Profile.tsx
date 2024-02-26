@@ -115,6 +115,15 @@ export const Profile: React.FC<ProfileProps> = ({ values, handleChange, image, s
                     required
                 />
                 <TextField
+                    label={"Inscrição Estadual"}
+                    name="producer.inscricaoEstadual"
+                    value={values.producer?.inscricaoEstadual}
+                    sx={{ ...textField, width: "100%" }}
+                    inputMode="numeric"
+                    onChange={handleChange}
+                    required
+                />
+                <TextField
                     label={"Telefone"}
                     name="phone"
                     value={values.phone}

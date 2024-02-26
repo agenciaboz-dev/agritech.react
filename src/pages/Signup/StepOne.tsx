@@ -62,18 +62,20 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, image, set
                         required
                     />
                     {data.producer && (
-                        <TextField
-                            label={"CNPJ"}
-                            name="producer.cnpj"
-                            value={data.producer?.cnpj}
-                            sx={{ ...textField, width: "50%" }}
-                            InputProps={{
-                                inputComponent: MaskedInputNando,
-                                inputProps: { mask: useCnpjMask, inputMode: "numeric" },
-                            }}
-                            onChange={handleChange}
-                            required
-                        />
+                        <>
+                            <TextField
+                                label={"CNPJ"}
+                                name="producer.cnpj"
+                                value={data.producer?.cnpj}
+                                sx={{ ...textField, width: "50%" }}
+                                InputProps={{
+                                    inputComponent: MaskedInputNando,
+                                    inputProps: { mask: useCnpjMask, inputMode: "numeric" },
+                                }}
+                                onChange={handleChange}
+                                required
+                            />
+                        </>
                     )}
                     {data.employee && (
                         <TextField
@@ -91,6 +93,18 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, image, set
                     )}
                 </Box>
 
+                {data.producer && (
+                    <>
+                        <TextField
+                            label={"Inscrição Estadual"}
+                            name="producer.inscricaoEstadual"
+                            value={data.producer?.inscricaoEstadual}
+                            sx={{ ...textField, width: "100%" }}
+                            onChange={handleChange}
+                            required
+                        />
+                    </>
+                )}
                 <Box sx={{ flexDirection: "row", gap: "2vw" }}>
                     <TextField
                         label={"Data de Nascimento"}

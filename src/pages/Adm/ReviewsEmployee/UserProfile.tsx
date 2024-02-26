@@ -96,6 +96,7 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
         producer: {
             cnpj: profile?.producer?.cnpj || "",
             contract: profile?.producer?.contract || false,
+            inscricaoEstadual: profile?.producer?.inscricaoEstadual || "",
             id: profile?.producer?.id,
             employeeId: profile?.producer?.employeeId,
         },
@@ -204,7 +205,7 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
                                 }
                             }}
                         >
-                            Acessar cadastro
+                            Acessar Fazendas
                         </Button>
                     )}
                 </Box>

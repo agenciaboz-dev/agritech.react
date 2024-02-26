@@ -82,11 +82,13 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
         producer: user.producer
             ? {
                   cnpj: user.producer?.cnpj || "",
+                  inscricaoEstadual: user.producer.inscricaoEstadual || "",
                   contract: user.producer?.contract,
                   id: user.producer?.id,
               }
             : undefined,
     }
+    console.log({ initialValues: initialValues })
 
     const handleSubmit = async (values: User) => {
         console.log({ approved: values.approved })
@@ -146,7 +148,13 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
                 console.log({ dados_employee: data })
             } else if (data.producer) {
                 console.log(data)
-                io.emit("user:update", { ...data, producer: { cnpj: unmask(data.producer?.cnpj) } })
+                io.emit("user:update", {
+                    ...data,
+                    producer: {
+                        cnpj: unmask(data.producer?.cnpj),
+                        inscricaoEstadual: unmask(data.producer.inscricaoEstadual),
+                    },
+                })
             }
         } catch (error) {
             console.log("O erro é: ", error)
@@ -187,6 +195,10 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
             io.off("user:find:success")
             io.off("user:find:failed")
         }
+    }, [])
+
+    useEffect(() => {
+        console.log()
     }, [])
 
     return (
