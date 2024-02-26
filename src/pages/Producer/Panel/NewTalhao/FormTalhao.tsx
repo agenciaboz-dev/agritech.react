@@ -126,7 +126,7 @@ export const FormTalhao: React.FC<FormTalhaoProps> = ({
                     <TitleComponents title="Adicionar Galeria" button textButton="Adicionar" click={open} />
                 )}
                 <Box sx={{ width: "100%", overflowY: "auto", gap: "1vw" }}>
-                    <Gallery key={1} id={0} images={images} open={open} opened={opened} />
+                    <Gallery key={1} id={0} images={images} open={open} />
                 </Box>
             </Box>
         </Box>

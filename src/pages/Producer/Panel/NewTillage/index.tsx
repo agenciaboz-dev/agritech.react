@@ -21,6 +21,8 @@ import { useProducer } from "../../../../hooks/useProducer.ts"
 import { unmaskNumber } from "../../../../hooks/unmaskNumber.ts"
 import MaskedInputNando from "../../../../components/MaskedNando.tsx"
 import { useCepMask } from "burgos-masks"
+import { useDisclosure } from "@mantine/hooks"
+import { ModalGallery } from "../../ModalGallery.tsx"
 
 interface NewTillageProps {}
 
@@ -50,6 +52,8 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
     const [infoCep, setInfoCep] = useState<CepAbertoApi>()
     const [origin, setOrigin] = useState<LatLngExpression>([0, 0])
     const [coordinates, setCoordinates] = useState<LatLngTuple[]>([])
+    const [images, setImages] = useState<{ id: number; name: string; file: File; url: string }[]>([])
+    const [opened, { open: openModal, close }] = useDisclosure()
 
     const initialValues: NewLavoura = {
         name: "",
@@ -78,8 +82,23 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
 
         producerId: user?.producer?.id,
     }
+
+    const [formatted, setFormatted] = useState<any>()
+    useEffect(() => {
+        console.log(formatted)
+        setFormatted(
+            images.map((item) => ({
+                name: item.name,
+                file: item.file,
+            }))
+        )
+    }, [images])
     const handleSubmit = (values: NewLavoura) => {
         console.log({ enviados: values })
+        const folder = {
+            images: formatted,
+        }
+        const galleries: NewGallery[] = [folder]
 
         const data = {
             ...values,
@@ -94,6 +113,7 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
             },
             area: unmaskNumber(values.area),
             hectarePrice: unmaskNumber(values.hectarePrice || 0),
+            gallery: galleries,
         }
         io.emit("tillage:create", data)
         // console.log(data)
@@ -191,6 +211,8 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
                     }}
                 >
                     <Box sx={{ width: "100%", height: "90%", gap: "4vw", flexDirection: "column" }}>
+                        <ModalGallery images={images} close={close} opened={opened} setImages={setImages} />
+
                         <Formik initialValues={initialValues} onSubmit={handleSubmit}>
                             {({ values, handleChange }) => (
                                 <Form>
@@ -246,6 +268,9 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
                                                 change={handleChange}
                                                 setCurrentStep={setCurrentStep}
                                                 setCoordinates={setCoordinates}
+                                                open={openModal}
+                                                opened={opened}
+                                                images={images}
                                             />
                                             <Box sx={{ flexDirection: "column", gap: "2vw", p: "0 4vw" }}>
                                                 <Button

@@ -17,6 +17,7 @@ import { CepAbertoApi } from "../../../../definitions/cepabertoApi"
 import { NewLavoura } from "../../../../definitions/newTillage"
 import { useNumberMask } from "burgos-masks"
 import MaskedInputNando from "../../../../components/MaskedNando"
+import { TitleComponents } from "../../../../components/TitleComponents"
 
 interface FormTillageProps {
     data: NewLavoura
@@ -25,6 +26,9 @@ interface FormTillageProps {
     producerUser?: User
     setCurrentStep: React.Dispatch<React.SetStateAction<number>>
     setCoordinates: React.Dispatch<React.SetStateAction<LatLngTuple[]>>
+    open: () => void
+    opened: boolean
+    images: { id: number; file: File; name: string; url: string }[]
 }
 
 export const FormTillage: React.FC<FormTillageProps> = ({
@@ -34,6 +38,9 @@ export const FormTillage: React.FC<FormTillageProps> = ({
     producerUser,
     setCurrentStep,
     setCoordinates,
+    open,
+    opened,
+    images,
 }) => {
     const header = useHeader()
     const { user } = useUser()
@@ -135,19 +142,12 @@ export const FormTillage: React.FC<FormTillageProps> = ({
             {tab === "gallery" && (
                 <Box sx={{ width: "100%", height: "52%", gap: "3vw" }}>
                     <Box sx={{ width: "100%", height: "66%", overflowY: "auto", gap: "2vw" }}>
-                        {listGallery.map((item, index) => (
-                            <Gallery key={index} id={index + 1} />
-                        ))}
+                        {images.length === 0 ? (
+                            <TitleComponents title="Adicionar Galeria" button textButton="Adicionar" click={open} />
+                        ) : (
+                            <Gallery key={1} id={0} images={images} open={open} />
+                        )}
                     </Box>
-                    <p>Adicionar nova Galeria</p>
-                    <TextField
-                        label={"Nome da Galeria"}
-                        name="name_gallery"
-                        value={""}
-                        sx={textField}
-                        onChange={change}
-                        required
-                    />
                 </Box>
             )}
         </Box>
