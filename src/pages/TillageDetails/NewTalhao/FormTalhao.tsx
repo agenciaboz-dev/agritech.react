@@ -18,14 +18,18 @@ import { CepAbertoApi } from "../../../definitions/cepabertoApi"
 import { NewLavoura } from "../../../definitions/newTillage"
 import { useNumberMask } from "burgos-masks"
 import MaskedInputNando from "../../../components/MaskedNando"
+import { TitleComponents } from "../../../components/TitleComponents"
 
 interface FormTalhaoProps {
     data: NewTalhao
     change: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
     producerUser?: User
+    open: () => void
+    opened: boolean
+    images: { id: number; file: File; name: string; url: string }[]
 }
 
-export const FormTalhao: React.FC<FormTalhaoProps> = ({ data, change }) => {
+export const FormTalhao: React.FC<FormTalhaoProps> = ({ data, change, images, open }) => {
     const header = useHeader()
     const { user } = useUser()
     const [image, setImage] = useState<File>()
@@ -109,21 +113,14 @@ export const FormTalhao: React.FC<FormTalhaoProps> = ({ data, change }) => {
                 </Tabs>
                 {/* {tab === "additional" && <Additional data={data} handleChange={change} />} */}
                 {tab === "gallery" && (
-                    <Box sx={{ width: "100%", height: "66%", gap: "2vw", pt: "2vw" }}>
-                        <p>Adicionar nova Galeria</p>
-                        <TextField
-                            label={"Nome da Galeria"}
-                            name="name_gallery"
-                            value={""}
-                            sx={textField}
-                            onChange={change}
-                            disabled
-                        />
-                        <Box sx={{ width: "100%", height: "100%", overflowY: "auto", gap: "1vw" }}>
-                            {listGallery.map((item, index) => (
-                                <Gallery key={index} id={index + 1} />
-                            ))}
-                        </Box>
+                    <Box sx={{ width: "100%", height: "80%", gap: "2vw", pt: "2vw" }}>
+                        {images.length === 0 ? (
+                            <TitleComponents title="Adicionar Galeria" button textButton="Adicionar" click={open} />
+                        ) : (
+                            <Box sx={{ width: "100%", overflowY: "auto", gap: "1vw" }}>
+                                <Gallery key={1} id={0} images={images} open={open} />
+                            </Box>
+                        )}
                     </Box>
                 )}
             </Box>

@@ -12,7 +12,6 @@ import { useIo } from "../../hooks/useIo"
 import { CepAbertoApi } from "../../definitions/cepabertoApi"
 import { LatLngExpression, LatLngTuple } from "leaflet"
 import { DialogConfirm } from "../DialogConfirm"
-import MaskedInput from "../MaskedInput"
 import { textField, input } from "../../style/input.ts"
 import { NewLavoura } from "../../definitions/newTillage"
 import { useSnackbar } from "burgos-snackbar"
@@ -24,6 +23,8 @@ import { useEstadosBrasil } from "../../hooks/useEstadosBrasil.ts"
 import { useCepMask } from "burgos-masks"
 import MaskedInputNando from "../MaskedNando.tsx"
 import { unmaskNumber } from "../../hooks/unmaskNumber.ts"
+import { useDisclosure } from "@mantine/hooks"
+import { ModalGallery } from "../../pages/Producer/ModalGallery.tsx"
 
 interface NewProducerProps {}
 
@@ -59,6 +60,8 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
     const [tillage, setTilllage] = useState<Tillage>()
     const estados = useEstadosBrasil()
     const [image, setImage] = useState<File>()
+    const [images, setImages] = useState<{ id: number; name: string; file: File; url: string }[]>([])
+    const [opened, { open: openModal, close }] = useDisclosure()
 
     useEffect(() => {
         header.setTitle(producer ? `${producer?.name}` : "Novo Cliente")
@@ -184,14 +187,33 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
             uf: infoCep?.estado.sigla || "",
             adjunct: "",
         },
+        cover: "",
         gallery: [],
         location: [],
     }
+
+    const [formatted, setFormatted] = useState<any>()
+    useEffect(() => {
+        console.log(formatted)
+        setFormatted(
+            images.map((item) => ({
+                name: item.name,
+                file: item.file,
+            }))
+        )
+    }, [images])
+
     const submitTillage = async (values: NewLavoura) => {
         console.log(values)
+        console.log({ enviados: values })
+        const folder = {
+            images: formatted,
+        }
+        const galleries: NewGallery[] = [folder]
 
         const data = {
             ...values,
+            cover: values.cover,
             address: {
                 street: infoCep?.logradouro,
                 district: infoCep?.bairro,
@@ -203,6 +225,7 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
             },
             area: unmaskNumber(values.area),
             producerId: producer?.producer?.id,
+            gallery: galleries,
         }
         io.emit("tillage:create", data)
         console.log(data)
@@ -301,6 +324,8 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
                     }}
                 >
                     <Box sx={{ width: "100%", height: "100%", gap: "4vw", flexDirection: "column" }}>
+                        <ModalGallery images={images} close={close} opened={opened} setImages={setImages} />
+
                         <Formik initialValues={valuesProducer} onSubmit={submitProducer}>
                             {({ values, handleChange }) => (
                                 <Form>
@@ -399,27 +424,8 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
                                                 handleChange={handleChange}
                                                 origin={origin}
                                                 infoCep={infoCep}
+                                                setCurrentStep={setCurrentStep}
                                             />
-                                            <Button
-                                                variant="contained"
-                                                sx={{
-                                                    fontSize: 17,
-                                                    color: colors.text.white,
-                                                    width: "90%",
-                                                    backgroundColor: colors.primary,
-                                                    borderRadius: "5vw",
-                                                    textTransform: "none",
-                                                    margin: "0 5vw",
-                                                    position: "absolute",
-                                                    zIndex: 1,
-                                                    bottom: "25vw",
-                                                }}
-                                                onClick={() => {
-                                                    setCurrentStep(3)
-                                                }}
-                                            >
-                                                Próximo
-                                            </Button>
                                         </>
                                     )}
                                     {currentStep === 3 && (
@@ -430,8 +436,10 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
                                                 producerUser={producer}
                                                 addressApi={infoCep}
                                                 setCoordinates={setCoordinates}
-                                                setCurrentStep={ setCurrentStep }
-                                                
+                                                setCurrentStep={setCurrentStep}
+                                                images={images}
+                                                open={openModal}
+                                                opened={opened}
                                             />
                                             <Box sx={{ flexDirection: "column", gap: "2vw", p: "0 4vw" }}>
                                                 <Button

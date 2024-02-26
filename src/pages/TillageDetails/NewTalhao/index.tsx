@@ -19,15 +19,10 @@ import MaskedInput from "../../../components/MaskedInput.tsx"
 import { useProducer } from "../../../hooks/useProducer.ts"
 import { useUsers } from "../../../hooks/useUsers.ts"
 import { unmaskNumber } from "../../../hooks/unmaskNumber.ts"
+import { useDisclosure } from "@mantine/hooks"
+import { ModalGallery } from "../../Producer/ModalGallery.tsx"
 
 interface NewTalhaoProps {}
-
-const openCall = {
-    title: "Adicione um CEP",
-    content: "Insira o cep da sua Fazenda. Caso não tenha, insira o cep mais próximo.",
-    submitTitle: "Continuar",
-    cancelTitle: "Cancelar",
-}
 
 export const NewTalhao: React.FC<NewTalhaoProps> = ({}) => {
     const io = useIo()
@@ -47,27 +42,48 @@ export const NewTalhao: React.FC<NewTalhaoProps> = ({}) => {
     const [currentStep, setCurrentStep] = useState(1)
     const [loadingCoordinate, setLoadingCoordinate] = useState(false)
     const [loadingTalhao, setLoadingTalhao] = useState(false)
-    const [open, setOpen] = useState(true)
 
     //control map
     const [infoCep, setInfoCep] = useState<CepAbertoApi>()
     const [origin, setOrigin] = useState<LatLngExpression>()
     const [coordinates, setCoordinates] = useState<LatLngTuple[]>([])
+    const [images, setImages] = useState<{ id: number; name: string; file: File; url: string }[]>([])
+    const [opened, { open, close }] = useDisclosure()
+
     const initialValues: NewTalhao = {
         name: "",
         area: "",
+        cover: "",
         calls: [],
         gallery: [],
         location: [],
         tillageId: findTillage?.id || 0,
     }
+
+    const [formatted, setFormatted] = useState<any>()
+    useEffect(() => {
+        console.log(formatted)
+        setFormatted(
+            images.map((item) => ({
+                name: item.name,
+                file: item.file,
+            }))
+        )
+    }, [images])
+
     const handleSubmit = (values: NewTalhao) => {
         console.log({ enviados: values })
-
+        const folder = {
+            images: formatted,
+            tillageId: values.tillageId,
+        }
+        const galleries: NewGallery[] = [folder]
         const data = {
             ...values,
             area: unmaskNumber(values.area),
             tillageId: findTillage?.id,
+            cover: values.cover,
+            gallery: galleries,
         }
         io.emit("talhao:create", data)
         console.log(data)
@@ -163,6 +179,7 @@ export const NewTalhao: React.FC<NewTalhaoProps> = ({}) => {
                     }}
                 >
                     <Box sx={{ width: "100%", height: "90%", gap: "4vw", flexDirection: "column" }}>
+                        <ModalGallery images={images} close={close} opened={opened} setImages={setImages} />
                         <Formik initialValues={initialValues} onSubmit={handleSubmit}>
                             {({ values, handleChange }) => (
                                 <Form>
@@ -178,32 +195,21 @@ export const NewTalhao: React.FC<NewTalhaoProps> = ({}) => {
                                                     infoCep={infoCep}
                                                     coordinates={coordinates}
                                                     setCoordinates={setCoordinates}
+                                                    data={values}
+                                                    handleChange={handleChange}
+                                                    setCurrentStep={setCurrentStep}
                                                 />
-                                                <Button
-                                                    variant="contained"
-                                                    sx={{
-                                                        fontSize: 17,
-                                                        color: colors.text.white,
-                                                        width: "90%",
-                                                        backgroundColor: colors.primary,
-                                                        borderRadius: "5vw",
-                                                        textTransform: "none",
-                                                        margin: "0 5vw",
-                                                        position: "absolute",
-                                                        zIndex: 1,
-                                                        bottom: "25vw",
-                                                    }}
-                                                    onClick={() => {
-                                                        setCurrentStep(2)
-                                                    }}
-                                                >
-                                                    Próximo
-                                                </Button>
                                             </>
                                         ))}
                                     {currentStep === 2 && (
                                         <Box sx={{ height: "100%", justifyContent: "space-between" }}>
-                                            <FormTalhao data={values} change={handleChange} />
+                                            <FormTalhao
+                                                data={values}
+                                                change={handleChange}
+                                                images={images}
+                                                open={open}
+                                                opened={opened}
+                                            />
                                             <Box sx={{ flexDirection: "column", gap: "2vw", p: "0 4vw" }}>
                                                 <Button
                                                     variant="outlined"
