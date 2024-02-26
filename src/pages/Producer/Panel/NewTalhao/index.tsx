@@ -38,7 +38,7 @@ export const NewTalhao: React.FC<NewTalhaoProps> = ({}) => {
     const [infoCep, setInfoCep] = useState<CepAbertoApi>()
     const [origin, setOrigin] = useState<LatLngExpression>()
     const [coordinates, setCoordinates] = useState<LatLngTuple[]>([])
-    const [images, setImages] = useState<{ id: number; url: string; name: string; file: File }[]>([])
+    const [images, setImages] = useState<{ id: number; name: string; file: File; url: string }[]>([])
 
     const initialValues: NewTalhao = {
         name: "",
@@ -190,6 +190,7 @@ export const NewTalhao: React.FC<NewTalhaoProps> = ({}) => {
                                                 setCurrentStep={setCurrentStep}
                                                 open={open}
                                                 images={images}
+                                                opened={opened}
                                             />
                                             <Box sx={{ flexDirection: "column", gap: "2vw", p: "0 4vw" }}>
                                                 <Button

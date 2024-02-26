@@ -9,8 +9,8 @@ import classes from "../../style/DropzoneButton.module.css"
 import { RxUpload } from "react-icons/rx"
 
 interface ModalGalleryProps {
-    images: { id: number; name: string; file: File }[]
-    setImages: React.Dispatch<React.SetStateAction<{ id: number; file: File; name: string }[]>>
+    images: { id: number; name: string; file: File; url: string }[]
+    setImages: React.Dispatch<React.SetStateAction<{ id: number; file: File; name: string; url: string }[]>>
     opened: boolean
     close: () => void
     tillageId?: number
@@ -20,8 +20,9 @@ export const ModalGallery: React.FC<ModalGalleryProps> = ({ opened, close, image
     const openRef = useRef<() => void>(null)
 
     const handleUpload = (files: File[]) => {
-        const newImages: { id: number; file: File; name: string }[] = files.map((file) => {
-            return { id: Math.random(), file: file, name: file.name, isDeleting: false }
+        const newImages: { id: number; file: File; name: string; url: string }[] = files.map((file) => {
+            const urlImage = URL.createObjectURL(file)
+            return { id: Math.random(), file: file, name: file.name, url: urlImage, isDeleting: false }
         })
 
         setImages((currentImages) => [...currentImages, ...newImages])
@@ -98,47 +99,53 @@ export const ModalGallery: React.FC<ModalGalleryProps> = ({ opened, close, image
                             overflowY: "scroll",
                         }}
                     >
-                        <Grid container spacing={2}>
-                            {images.map((image) => (
-                                <Grid item xs={2.9} md={7} sx={{ position: "relative", display: "inline-block" }}>
-                                    <Avatar
-                                        variant="rounded"
-                                        key={image.id}
-                                        src={image.name}
-                                        sx={{
-                                            width: "18vw",
-                                            height: "18vw",
-                                            opacity: selectedForDeletion === image.id ? 0.5 : 1,
-                                        }}
-                                        onClick={() => image.id && toggleSelectionForDeletion(image.id)}
-                                    />
-                                    {selectedForDeletion === image.id && (
-                                        <ButtonAgritech
-                                            onClick={() => image.id && handleRemove(image.id)}
-                                            style={{
-                                                borderRadius: 0,
-                                                position: "absolute",
-                                                top: "4vw",
-                                                left: "4vw",
-                                                right: 0,
-                                                bottom: 0,
+                        {images.length !== 0 ? (
+                            <Grid container spacing={2}>
+                                {images.map((image) => (
+                                    <Grid item xs={2.9} md={7} sx={{ position: "relative", display: "inline-block" }}>
+                                        <Avatar
+                                            variant="rounded"
+                                            key={image.id}
+                                            src={image.url}
+                                            sx={{
                                                 width: "18vw",
                                                 height: "18vw",
-                                                opacity: 0.5,
-                                                backgroundColor: "rgba(0,0,0,0.6)",
-                                                color: "white",
-                                                display: "flex",
-                                                alignItems: "center",
-                                                justifyContent: "center",
-                                                cursor: "pointer",
+                                                opacity: selectedForDeletion === image.id ? 0.5 : 1,
                                             }}
-                                        >
-                                            <AiOutlineDelete size="20" style={{ color: "white" }} />
-                                        </ButtonAgritech>
-                                    )}
-                                </Grid>
-                            ))}
-                        </Grid>
+                                            onClick={() => image.id && toggleSelectionForDeletion(image.id)}
+                                        />
+                                        {selectedForDeletion === image.id && (
+                                            <ButtonAgritech
+                                                onClick={() => image.id && handleRemove(image.id)}
+                                                style={{
+                                                    borderRadius: 0,
+                                                    position: "absolute",
+                                                    top: "4vw",
+                                                    left: "4vw",
+                                                    right: 0,
+                                                    bottom: 0,
+                                                    width: "18vw",
+                                                    height: "18vw",
+                                                    opacity: 0.5,
+                                                    backgroundColor: "rgba(0,0,0,0.6)",
+                                                    color: "white",
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                    justifyContent: "center",
+                                                    cursor: "pointer",
+                                                }}
+                                            >
+                                                <AiOutlineDelete size="20" style={{ color: "white" }} />
+                                            </ButtonAgritech>
+                                        )}
+                                    </Grid>
+                                ))}
+                            </Grid>
+                        ) : (
+                            <Box sx={{ width: "100%", alignItems: "center", color: colors.primary }}>
+                                <p>Selecione as imagens</p>
+                            </Box>
+                        )}
                     </Box>
                 </Box>
             </Box>

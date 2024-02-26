@@ -27,15 +27,23 @@ interface FormTalhaoProps {
     setCurrentStep: React.Dispatch<React.SetStateAction<number>>
     setCoordinates: React.Dispatch<React.SetStateAction<LatLngTuple[]>>
     open: () => void
-    images: { id: number; file: File; name: string }[]
+    opened: boolean
+    images: { id: number; file: File; name: string; url: string }[]
 }
 
-export const FormTalhao: React.FC<FormTalhaoProps> = ({ data, change, setCurrentStep, setCoordinates, open, images }) => {
+export const FormTalhao: React.FC<FormTalhaoProps> = ({
+    data,
+    change,
+    setCurrentStep,
+    setCoordinates,
+    open,
+    images,
+    opened,
+}) => {
     const header = useHeader()
     const { user } = useUser()
     const [image, setImage] = useState<File>()
     const navigate = useNavigate()
-    const [galleries, setGalleries] = useState<Gallery[]>()
 
     const floatMask = useNumberMask({ allowDecimal: true, allowLeadingZeroes: true })
 
@@ -114,9 +122,11 @@ export const FormTalhao: React.FC<FormTalhaoProps> = ({ data, change, setCurrent
             </Tabs>
 
             <Box sx={{ width: "100%", height: "60%", gap: "1vw", pt: "2vw" }}>
-                <TitleComponents title="Adicionar Galeria" button textButton="Adicionar" click={open} />
+                {images.length === 0 && (
+                    <TitleComponents title="Adicionar Galeria" button textButton="Adicionar" click={open} />
+                )}
                 <Box sx={{ width: "100%", overflowY: "auto", gap: "1vw" }}>
-                    <Gallery key={1} id={2 + 1} images={images} />
+                    <Gallery key={1} id={0} images={images} open={open} opened={opened} />
                 </Box>
             </Box>
         </Box>
