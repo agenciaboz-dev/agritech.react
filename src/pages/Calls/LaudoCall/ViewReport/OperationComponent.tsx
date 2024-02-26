@@ -5,8 +5,8 @@ import { CurrencyText } from "../../../../components/CurrencyText"
 import { Operation } from "../../../../definitions/report"
 
 interface OperationComponentProps {
-    operation?: Operation
-    call?: Call
+    operation: Operation
+    call: Call
 }
 
 export const OperationComponent: React.FC<OperationComponentProps> = ({ operation, call }) => {
@@ -17,11 +17,11 @@ export const OperationComponent: React.FC<OperationComponentProps> = ({ operatio
         <Box sx={{ gap: "2vw" }}>
             <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
                 <p style={{ fontWeight: "bold" }}>Tipo de Serviço:</p>
-                <p style={{ justifyContent: "space-between" }}>{operation?.service} </p>
+                <p style={{ justifyContent: "space-between" }}>{operation["service"]} </p>
             </Box>
             <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
                 <p style={{ fontWeight: "bold" }}>Cultura:</p>
-                <p style={{ justifyContent: "space-between" }}>{operation?.culture} </p>
+                <p style={{ justifyContent: "space-between" }}>{operation["culture"]} </p>
             </Box>
             {/* <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
                 <p style={{ fontWeight: "bold" }}>Área Mapeada do Talhão:</p>
@@ -29,31 +29,32 @@ export const OperationComponent: React.FC<OperationComponentProps> = ({ operatio
             </Box> */}
             <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
                 <p style={{ fontWeight: "bold" }}>Área Mapeada da Fazenda:</p>
-                <p style={{ justifyContent: "space-between" }}>{call?.talhao?.tillage?.area} ha</p>
+                <p style={{ justifyContent: "space-between" }}>
+                    {call.talhao?.tillage && call["talhao"]["tillage"]["area"]} ha
+                </p>
             </Box>
             <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
                 <p style={{ fontWeight: "bold" }}>Equipamento:</p>
-                <p style={{ justifyContent: "space-between" }}>{operation?.equipment} </p>
+                <p style={{ justifyContent: "space-between" }}>{operation["equipment"]} </p>
             </Box>
             <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
                 <p style={{ fontWeight: "bold" }}>Modelo:</p>
-                <p style={{ justifyContent: "space-between" }}>{operation?.model} </p>
+                <p style={{ justifyContent: "space-between" }}>{operation["model"]} </p>
             </Box>
 
             <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
                 <p style={{ fontWeight: "bold" }}>Piloto/Copiloto:</p>
                 <p style={{ justifyContent: "space-between" }}>
                     {call?.kit?.employees &&
-                        call?.kit?.employees?.length !== 0 &&
-                        (call?.kit?.employees[0].user?.office === "pilot"
-                            ? call?.kit?.employees[0].user?.name
-                            : call?.kit?.employees && call?.kit?.employees[1].user?.name)}
+                        call.kit.employees.length !== 0 && call.kit.employees[0].user &&
+                        (call.kit.employees[0].user.office === "pilot"
+                            ? call['kit']['employees'][0]['user']['name'] : call.kit.employees && call.kit.employees[1].user?.name)}
                     /
                     {call?.kit?.employees &&
-                        call?.kit?.employees?.length !== 0 &&
+                        call?.kit?.employees?.length !== 0 && call.kit.employees[0].user &&
                         (call.kit.employees[0].user?.office === "copilot"
-                            ? call?.kit?.employees[0].user?.name
-                            : call?.kit?.employees && call?.kit?.employees[1].user?.name)}
+                            ? call['kit']['employees'][0]['user']['name']
+                            : call.kit && call.kit.employees[1].user && call['kit']['employees'][1]['user']['name'])}
                 </p>
             </Box>
         </Box>

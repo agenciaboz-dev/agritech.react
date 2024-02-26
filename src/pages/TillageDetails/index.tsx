@@ -376,7 +376,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                         {tillageSelect?.talhao?.map((item, index) => (
                             <Box sx={{ alignItems: "center" }} key={index}>
                                 <Avatar
-                                    src={GeoImage}
+                                    src={item.cover}
                                     style={{
                                         width: "28vw",
                                         height: "38vw",
@@ -567,29 +567,28 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                                     }}
                                 />
                             )}
-
-                            <IconButton
-                                sx={{
-                                    bgcolor: colors.button,
-                                    width: "12vw",
-                                    height: "12vw",
-                                    borderRadius: "10vw",
-                                    position: "absolute",
-                                    bottom: "20vw",
-                                    right: "8vw",
-                                }}
-                                onClick={() =>
-                                    navigate(
-                                        user?.isAdmin
-                                            ? `/adm/producer/${tillageSelect?.producerId}/${tillageSelect?.id}/new_talhao`
-                                            : `/employee/producer/${tillageSelect?.producerId}/${tillageSelect?.id}/new_talhao`
-                                    )
-                                }
-                            >
-                                <PiPlant color={"#fff"} sx={{ width: "6vw", height: "6vw" }} />
-                            </IconButton>
                         </>
                     )}
+                    <IconButton
+                        sx={{
+                            bgcolor: colors.button,
+                            width: "12vw",
+                            height: "12vw",
+                            borderRadius: "10vw",
+                            position: "absolute",
+                            bottom: "22vw",
+                            right: "5vw",
+                        }}
+                        onClick={() =>
+                            navigate(
+                                user?.isAdmin
+                                    ? `/adm/producer/${tillageSelect?.producerId}/${tillageSelect?.id}/new_talhao`
+                                    : `/employee/producer/${tillageSelect?.producerId}/${tillageSelect?.id}/new_talhao`
+                            )
+                        }
+                    >
+                        <PiPlant color={"#fff"} sx={{ width: "6vw", height: "6vw" }} />
+                    </IconButton>
                 </Box>
             </Box>
         </Box>

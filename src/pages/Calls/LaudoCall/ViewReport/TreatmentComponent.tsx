@@ -17,9 +17,9 @@ export const TreatmentComponent: React.FC<TreatmentComponentProps> = ({ treatmen
                 </Box>
                 {treatment?.products.map((item, index) => (
                     <Box key={index} sx={{ flexDirection: "row", justifyContent: "space-between" }}>
-                        <p>{item.name}</p>
+                        <p>{item["name"]}</p>
                         <p>
-                            {item.dosage} {item.unit}
+                            {item["dosage"]} {item["unit"]}
                         </p>
                     </Box>
                 ))}

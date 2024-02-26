@@ -2,6 +2,7 @@ import { Accordion, AccordionSummary, Box, Typography, styled } from "@mui/mater
 import React from "react"
 import { TitleComponents } from "../../../../components/TitleComponents"
 import MuiAccordionDetails from "@mui/material/AccordionDetails"
+import { TechReport } from "../../../../definitions/report"
 
 interface TechReportComponentProps {
     tech?: TechReport
@@ -35,39 +36,39 @@ export const TechReportComponent: React.FC<TechReportComponentProps> = ({ tech }
                                 <Box key={index}>
                                     <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
                                         <p>Temperatura</p>
-                                        <p>{item.temperature} °C</p>
+                                        <p>{item["temperature"]} °C</p>
                                     </Box>
                                     <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
                                         <p>Umidade Relativa</p>
-                                        <p>{item.humidity} %</p>
+                                        <p>{item["humidity"]} %</p>
                                     </Box>
                                     <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
                                         <p>Veloc. Vento</p>
-                                        <p>{item.wind_velocity} km/h</p>
+                                        <p>{item["wind_velocity"]} km/h</p>
                                     </Box>
                                     <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
                                         <p>Altura de voo</p>
-                                        <p>{item.height} m</p>
+                                        <p>{item["height"]} m</p>
                                     </Box>
                                     <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
                                         <p>Faixa de aplicação </p>
-                                        <p>{item.faixa} m</p>
+                                        <p>{item["faixa"]} m</p>
                                     </Box>
                                     <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
                                         <p>Velocidade de voo </p>
-                                        <p>{item.flight_velocity} km/h</p>
+                                        <p>{item["flight_velocity"]} km/h</p>
                                     </Box>
                                     <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
                                         <p>Volume de tanque </p>
-                                        <p>{item.tank_volume} L</p>
+                                        <p>{item["tank_volume"]} L</p>
                                     </Box>
                                     <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
                                         <p>Taxa de aplicação</p>
-                                        <p>{item.rate} L</p>
+                                        <p>{item["rate"]} L</p>
                                     </Box>
                                     <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
                                         <p>Área Sobrevoada </p>
-                                        <p>{item.performance} ha</p>
+                                        <p>{item["performance"]} ha</p>
                                     </Box>
                                 </Box>
                             </AccordionDetails>

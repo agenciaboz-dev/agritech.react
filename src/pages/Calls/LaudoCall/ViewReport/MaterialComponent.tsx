@@ -36,39 +36,39 @@ export const MaterialComponent: React.FC<MaterialComponentProps> = ({ material }
                                 <Box key={index}>
                                     <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
                                         <p>Talhão</p>
-                                        <p>{item.talhao}</p>
+                                        <p>{item["talhao"]}</p>
                                     </Box>
                                     <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
                                         <p>Área</p>
-                                        <p>{item.area} ha</p>
+                                        <p>{item["area"]} ha</p>
                                     </Box>
                                     <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
                                         <p>Produto</p>
-                                        <p>{item.product} </p>
+                                        <p>{item["product"]} </p>
                                     </Box>
                                     <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
                                         <p>Dose/ha</p>
-                                        <p>{item.dosage}L</p>
+                                        <p>{item["dosage"]}L</p>
                                     </Box>
                                     <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
                                         <p>Classificação</p>
-                                        <p>{item.classification}</p>
+                                        <p>{item["classification"]}</p>
                                     </Box>
                                     <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
                                         <p>Total</p>
-                                        <p>{item.total}L</p>
+                                        <p>{item["total"]}L</p>
                                     </Box>
                                     <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
                                         <p>Retirado</p>
-                                        <p>{item.removed}L</p>
+                                        <p>{item["removed"]}L</p>
                                     </Box>
                                     <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
                                         <p>Aplicado</p>
-                                        <p>{item.applied}L</p>
+                                        <p>{item["applied"]}L</p>
                                     </Box>
                                     <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
                                         <p>Devolvido</p>
-                                        <p>{item.returned}L</p>
+                                        <p>{item["returned"]}L</p>
                                     </Box>
                                 </Box>
                             </AccordionDetails>

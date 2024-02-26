@@ -165,6 +165,7 @@ export const PanelUser: React.FC<PanelUserProps> = ({ user }) => {
                             </Box>
                         )}
                     </Box>
+
                     <IconButton
                         sx={{
                             bgcolor: colors.button,
@@ -172,8 +173,8 @@ export const PanelUser: React.FC<PanelUserProps> = ({ user }) => {
                             height: "12vw",
                             borderRadius: "10vw",
                             position: "absolute",
-                            bottom: "26vw",
-                            right: "8vw",
+                            bottom: "22vw",
+                            right: "5vw",
                         }}
                         onClick={() => navigate("/call/new")}
                     >

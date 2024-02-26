@@ -61,7 +61,7 @@ export const FormTalhao: React.FC<FormTalhaoProps> = ({ data, change, images, op
                 }}
             >
                 <Avatar
-                    src={GeoImage}
+                    src={data.cover}
                     onChange={(file) => setImage(file)}
                     changeLabel="Trocar foto"
                     emptyLabel="Adicionar foto"
