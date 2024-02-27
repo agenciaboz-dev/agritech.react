@@ -88,10 +88,9 @@ export const ReviewsReports: React.FC<ReviewsReportsProps> = ({ user }) => {
                     flexDirection: "column",
                 }}
             >
-               
                 <Box sx={{ alignItems: "center", width: "100%", justifyContent: "space-between", flexDirection: "row" }}>
                     <p style={{ padding: "0 2vw", fontSize: "4.55vw" }}></p>
-                    <Button
+                    {/* <Button
                         size="small"
                         variant="contained"
                         sx={{
@@ -109,7 +108,7 @@ export const ReviewsReports: React.FC<ReviewsReportsProps> = ({ user }) => {
                         onClick={() => {}}
                     >
                         Ações em massa
-                    </Button>
+                    </Button> */}
                 </Box>
                 <Box sx={{ position: "relative", zIndex: 0, bottom: "11vw", gap: "3vw", height: "92%" }}>
                     <Tabs

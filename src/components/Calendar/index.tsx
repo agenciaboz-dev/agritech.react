@@ -47,43 +47,46 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
 
     const dayRenderer: DatePickerProps["renderDay"] = (date) => {
         const day = date.getDate()
-        const callsForDay: Call[] | undefined =
-            findUser?.employee?.kits &&
-            findUser?.employee?.kits[0].calls?.filter((call) => {
-                const callDate = new Date(Number(call.forecast))
-                return (
-                    callDate.getDate() === day &&
-                    callDate.getMonth() === date.getMonth() &&
-                    callDate.getFullYear() === date.getFullYear()
-                )
-            })
+        if (findUser && findUser?.employee?.kits && findUser?.employee?.kits[0].calls) {
+            const callsForDay: Call[] | undefined =
+                findUser?.employee?.kits &&
+                findUser?.employee?.kits[0].calls?.filter((call) => {
+                    const callDate = new Date(Number(call.forecast))
+                    return (
+                        callDate.getDate() === day &&
+                        callDate.getMonth() === date.getMonth() &&
+                        callDate.getFullYear() === date.getFullYear()
+                    )
+                })
 
-        const areaDayCalls =
-            callsForDay?.map((item) => Number(item.talhao?.area)).reduce((prev, current) => prev + current, 0) || 0
+            const areaDayCalls =
+                callsForDay?.map((item) => Number(item.talhao?.area)).reduce((prev, current) => prev + current, 0) || 0
 
-        useEffect(() => {
-            console.log({ por_dia_temos: areaDayCalls })
-            findUser?.employee?.kits && console.log({ limite_kit: findUser?.employee.kits[0].hectareDay })
-        }, [findUser?.employee])
+            useEffect(() => {
+                console.log({ por_dia_temos: areaDayCalls })
+                findUser?.employee?.kits && console.log({ limite_kit: findUser?.employee.kits[0].hectareDay })
+            }, [findUser?.employee])
 
-        const indicatorColor =
-            callsForDay &&
-            callsForDay.length > 0 &&
-            findUser?.employee?.kits &&
-            findUser?.employee?.kits[0].hectareDay &&
-            (areaDayCalls < findUser?.employee.kits[0].hectareDay && areaDayCalls !== 0
-                ? "#FFD700"
-                : areaDayCalls === findUser?.employee.kits[0].hectareDay
-                ? colors.delete
-                : findUser?.employee.kits[0].hectareDay - areaDayCalls <= 100
-                ? "orange"
-                : "#88A486")
+            const indicatorColor =
+                callsForDay &&
+                callsForDay.length > 0 &&
+                findUser?.employee?.kits &&
+                findUser?.employee?.kits[0].hectareDay &&
+                (areaDayCalls < findUser?.employee.kits[0].hectareDay && areaDayCalls !== 0
+                    ? "#FFD700"
+                    : areaDayCalls === findUser?.employee.kits[0].hectareDay
+                    ? colors.delete
+                    : findUser?.employee.kits[0].hectareDay - areaDayCalls <= 100
+                    ? "orange"
+                    : "#88A486")
 
-        return (
-            <Indicator size={7} color={indicatorColor || "#88A486"} offset={-3}>
-                <div>{day}</div>
-            </Indicator>
-        )
+            return (
+                <Indicator size={7} color={indicatorColor || "#88A486"} offset={-3}>
+                    <div>{day}</div>
+                </Indicator>
+            )
+        } else if (findUser?.employee?.kits?.length === 0) {
+        }
     }
 
     useEffect(() => {
@@ -152,7 +155,7 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
                 </Button>
                 <DatePicker
                     locale="pt-br"
-                    renderDay={dayRenderer}
+                    renderDay={findUser?.employee?.kits?.length !== 0 ? dayRenderer : undefined}
                     weekendDays={[0]}
                     styles={{
                         day: { borderRadius: "100%" },
