@@ -51,7 +51,7 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
     const [producers, setProducers] = useState(
         listUsers?.map((user: User) => user.producer).filter((item) => !!item) as Producer[]
     )
-    const [kits, setKits] = useState(listKits?.filter((item) => !!item) as Kit[])
+    const [kits, setKits] = useState(listKits?.filter((item) => !!item && item.active) as Kit[])
     const [tillages, setTillages] = useState<Tillage[]>([])
     const [talhoes, setTalhoes] = useState<Talhao[]>([])
 

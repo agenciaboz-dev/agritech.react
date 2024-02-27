@@ -137,7 +137,7 @@ export const ListTillages: React.FC<ListTillagesProps> = ({}) => {
                                 />
                             ))
                         ) : (
-                            <p>Nenhuma lavoura encontrada.</p>
+                            <p>Nenhuma fazenda encontrada.</p>
                         )}
 
                         <Box style={{ width: "100%", height: "80%", overflow: "auto" }}></Box>
