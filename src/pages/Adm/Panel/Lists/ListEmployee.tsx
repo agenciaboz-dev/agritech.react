@@ -7,25 +7,32 @@ import { useNavigationList } from "../../../../hooks/useNavigationList"
 import { useHeader } from "../../../../hooks/useHeader"
 import { useUsers } from "../../../../hooks/useUsers"
 import { CardUser } from "../../../../components/CardUser"
+import { SearchField } from "../../../../components/SearchField"
 
 interface ListEmployeeProps {}
 
 export const ListEmployee: React.FC<ListEmployeeProps> = ({}) => {
-    const navigate = useNavigate()
-    const bottomMenu = useNavigationList()
+  
     const header = useHeader()
 
     const { listUsers } = useUsers()
-    const [listEmployee, setListEmployee] = useState<User[]>()
+    const [listEmployee, setListEmployee] = useState<User[]>(listUsers?.filter((users) => users.employee !== null))
 
-    useEffect(() => {
-        // header.setTitle(`${title}`)
-        header.setTitle("Colaboradores")
-    })
+    const [searchText, setSearchText] = useState("") // Estado para controlar a entrada de pesquisa
 
     useEffect(() => {
         setListEmployee(listUsers?.filter((users) => users.employee !== null))
     }, [listUsers])
+    useEffect(() => {
+        const filteredList = listUsers?.filter(
+            (user) => user.employee !== null && user.name.toLowerCase().includes(searchText.toLowerCase())
+        )
+        setListEmployee(filteredList || [])
+    }, [listUsers, searchText])
+
+    useEffect(() => {
+        header.setTitle("Colaboradores")
+    })
 
     return (
         <Box
@@ -68,8 +75,16 @@ export const ListEmployee: React.FC<ListEmployeeProps> = ({}) => {
                         borderTopLeftRadius: "7vw",
                         borderTopRightRadius: "7vw",
                         overflow: "hidden",
+                        gap: "3vw",
                     }}
                 >
+                    {listEmployee && (
+                        <SearchField
+                            searchText={searchText}
+                            setSearchText={setSearchText} // Passa setSearchText para poder atualizar o estado de pesquisa
+                            placeholder="colaborador"
+                        />
+                    )}
                     <Box sx={{ gap: "2vw", height: "90%", overflow: "auto" }}>
                         {listEmployee?.length !== 0
                             ? listEmployee?.map((user) => (

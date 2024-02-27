@@ -1,5 +1,5 @@
 import { Box, Button } from "@mui/material"
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { Header } from "../../../components/Header"
 import { colors } from "../../../style/colors"
 import { useHeader } from "../../../hooks/useHeader"
@@ -8,6 +8,7 @@ import addIcon from "../../../assets/icons/square_plus.svg"
 import { useNavigate } from "react-router-dom"
 import { useKits } from "../../../hooks/useKits"
 import { useUser } from "../../../hooks/useUser"
+import { SearchField } from "../../../components/SearchField"
 
 interface SettingsKitProps {}
 
@@ -18,6 +19,19 @@ export const SettingsKit: React.FC<SettingsKitProps> = ({}) => {
     const { user } = useUser()
 
     const kitsEmployee = listKits.filter((kit) => kit.employees?.some((employee) => employee.id === user?.employee?.id))
+    const [kits, setKits] = useState<Kit[]>(listKits)
+    const [searchText, setSearchText] = useState("") // Estado para controlar a entrada de pesquisa
+
+    useEffect(() => {
+        setKits(listKits)
+    }, [listKits])
+
+    useEffect(() => {
+        const filteredList = listKits?.filter(
+            (kit) => kit.name !== null && kit.name.toLowerCase().includes(searchText.toLowerCase())
+        )
+        setKits(filteredList || [])
+    }, [listKits, searchText])
 
     useEffect(() => {
         header.setTitle("Painel")
@@ -98,13 +112,20 @@ export const SettingsKit: React.FC<SettingsKitProps> = ({}) => {
                         borderTopLeftRadius: "7vw",
                         borderTopRightRadius: "7vw",
                         height: "100%",
-                        gap: "1vw",
+                        gap: "3vw",
                     }}
                 >
+                    {listKits && (
+                        <SearchField
+                            searchText={searchText}
+                            setSearchText={setSearchText} // Passa setSearchText para poder atualizar o estado de pesquisa
+                            placeholder="kit"
+                        />
+                    )}
                     <Box sx={{ overflowY: "auto", height: "72%" }}>
                         {user?.isAdmin
-                            ? listKits.length !== 0
-                                ? listKits.map((kit, index) => <CardKit key={index} kit={kit} />)
+                            ? kits.length !== 0
+                                ? kits.map((kit, index) => <CardKit key={index} kit={kit} />)
                                 : "Nenhum kit encontrado."
                             : kitsEmployee.length !== 0
                             ? kitsEmployee.map((kit, index) => <CardKit key={index} kit={kit} />)

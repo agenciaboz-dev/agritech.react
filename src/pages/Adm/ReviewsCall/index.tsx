@@ -14,8 +14,10 @@ interface ReviewsCallProps {
 
 export const ReviewsCall: React.FC<ReviewsCallProps> = ({ user }) => {
     const header = useHeader()
-    const io = useIo()
     const { listCallsPending, listCalls } = useCall()
+
+    const sortedPendingCalls = listCallsPending.sort((a, b) => Number(a.open) - Number(b.open))
+    const sortedApprovedCalls = listCalls.sort((a, b) => Number(a.open) - Number(b.open))
 
     const [tab, setTab] = useState("pending")
     const changeTab = (event: React.SyntheticEvent, newValue: string) => {
@@ -100,10 +102,10 @@ export const ReviewsCall: React.FC<ReviewsCallProps> = ({ user }) => {
                     </Tabs>
                     <Box sx={{ width: "100%", height: "100%", overflow: "auto", gap: "1vw" }}>
                         {tab === "pending" && listCallsPending.length !== 0
-                            ? listCallsPending?.map((call, index) => <LogsCard key={index} call={call} review />)
+                            ? sortedPendingCalls?.map((call, index) => <LogsCard key={index} call={call} review />)
                             : tab === "pending" && "Nenhum chamado pendente"}
                         {tab === "calls" && listCalls.length !== 0
-                            ? listCalls?.map((call, index) => <LogsCard key={index} call={call} />)
+                            ? sortedApprovedCalls?.map((call, index) => <LogsCard key={index} call={call} />)
                             : tab === "calls" && "Nenhum chamado aberto"}
                     </Box>
                 </Box>

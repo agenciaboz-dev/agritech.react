@@ -31,13 +31,12 @@ export const LogsCard: React.FC<LogsCardProps> = ({ review, call, variant, talha
     const totalTrabalhado = call?.reports?.map((item) => Number(item.areaTrabalhada))
     const sumTotal = totalTrabalhado?.reduce((prev, current) => prev + current, 0) || 0
 
-  
-
     return (
         <Box sx={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
             <Box sx={{ flexDirection: "column" }}>
                 <Box sx={{ flexDirection: "row", alignItems: "center", gap: "2vw" }}>
                     <p style={{ fontSize: "3vw", color: "gray" }}>
+                        {new Date(Number(call?.open)).toLocaleDateString("pt-br")}-{" "}
                         {new Date(Number(call?.open)).toLocaleTimeString("pt-br")}
                     </p>
                 </Box>

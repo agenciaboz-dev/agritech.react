@@ -7,8 +7,9 @@ import { tabStyle } from "../../../style/tabStyle"
 import { LogsCard } from "../../Calls/LogsCard"
 import { useCall } from "../../../hooks/useCall"
 import { useIo } from "../../../hooks/useIo"
-import { Report } from "../../../definitions/report"
+import { NewReport, Report } from "../../../definitions/report"
 import { LogsReport } from "./LogsReport"
+import { SearchField } from "../../../components/SearchField"
 
 interface ReviewsReportsProps {
     user: User
@@ -30,8 +31,16 @@ export const ReviewsReports: React.FC<ReviewsReportsProps> = ({ user }) => {
         io.emit("report:list")
 
         io.on("report:list:success", (data: Report[]) => {
-            setReports(data.filter((item) => item.approved && item.stage === "STAGE4"))
-            setReportsPending(data.filter((item) => !item.approved && item.stage! === "STAGE4"))
+            setReports(
+                data
+                    .filter((item) => item.approved && item.stage === "STAGE4")
+                    .sort((a, b) => Number(a.date) - Number(b.date))
+            )
+            setReportsPending(
+                data
+                    .filter((item) => !item.approved && item.stage! === "STAGE4")
+                    .sort((a, b) => Number(a.date) - Number(b.date))
+            )
         })
 
         return () => {
@@ -79,6 +88,7 @@ export const ReviewsReports: React.FC<ReviewsReportsProps> = ({ user }) => {
                     flexDirection: "column",
                 }}
             >
+               
                 <Box sx={{ alignItems: "center", width: "100%", justifyContent: "space-between", flexDirection: "row" }}>
                     <p style={{ padding: "0 2vw", fontSize: "4.55vw" }}></p>
                     <Button

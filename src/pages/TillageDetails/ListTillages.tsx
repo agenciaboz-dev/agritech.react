@@ -1,5 +1,5 @@
 import { Box } from "@mui/material"
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { Header } from "../../components/Header"
 import { colors } from "../../style/colors"
 import { useParams } from "react-router-dom"
@@ -9,6 +9,7 @@ import { useUser } from "../../hooks/useUser"
 import { CardTillage } from "../../components/CardTillage"
 import findProducer from "../../hooks/filterProducer"
 import { useUsers } from "../../hooks/useUsers"
+import { SearchField } from "../../components/SearchField"
 
 interface ListTillagesProps {}
 
@@ -23,10 +24,38 @@ export const ListTillages: React.FC<ListTillagesProps> = ({}) => {
     const producerEncontrado = listUsers?.filter((item) => String(item.producer?.id) === producerid) || []
     const { listTillages, tillageUpdate, setProducerid } = useProducer()
 
+    const [tillages, setTillages] = useState<Tillage[]>(listTillages)
+    const [tillagesProducer, setTillagesProducer] = useState<Tillage[]>(producerEncontrado[0].producer?.tillage || [])
+    // console.log(tillagesProducer)
+    const [searchText, setSearchText] = useState("")
+
+    useEffect(() => {
+        setTillagesProducer(producerEncontrado[0].producer?.tillage || [])
+    }, [producerEncontrado[0].producer?.tillage])
+
+    useEffect(() => {
+        const filteredList = tillagesProducer?.filter(
+            (item) => item !== null && item.name.toLowerCase().includes(searchText.toLowerCase())
+        )
+
+        setTillagesProducer(filteredList || [])
+    }, [producerEncontrado[0].producer?.tillage, searchText])
+
+    useEffect(() => {
+        setTillages(listTillages)
+    }, [listTillages])
+    useEffect(() => {
+        const filteredList = tillages?.filter(
+            (item) => item !== null && item.name.toLowerCase().includes(searchText.toLowerCase())
+        )
+        setTillages(filteredList || [])
+    }, [listTillages, searchText])
+
     useEffect(() => {
         header.setTitle(user?.producer !== null ? "Minhas Fazendas" : "Fazendas")
         user?.employee && setProducerid(Number(producerid))
     }, [])
+
     return (
         <Box
             sx={{
@@ -77,19 +106,26 @@ export const ListTillages: React.FC<ListTillagesProps> = ({}) => {
                         borderTopLeftRadius: "7vw",
                         borderTopRightRadius: "7vw",
                         overflow: "hidden",
+                        gap: "3vw",
                     }}
                 >
+                    {/* <SearchField
+                            searchText={searchText}
+                            setSearchText={setSearchText} // Passa setSearchText para poder atualizar o estado de pesquisa
+                            placeholder="fazendas do produtor"
+                        />
+                 */}
                     <Box sx={{ gap: "2vw", height: "90%", overflow: "auto" }}>
-                        {tillageUpdate && user?.producer !== null ? (
-                            listTillages.length !== 0 ? (
-                                listTillages?.map((item, index) => (
+                        {tillages && user?.producer !== null ? (
+                            tillages.length !== 0 ? (
+                                tillages?.map((item, index) => (
                                     <CardTillage key={index} tillage={item} location={`/producer/tillage/${item.id}`} />
                                 ))
                             ) : (
-                                listTillages.length === 0 && <p>Nenhuma lavoura encontrada.</p>
+                                tillages.length === 0 && <p>Nenhuma lavoura encontrada.</p>
                             )
-                        ) : producerEncontrado[0].producer?.tillage?.length !== 0 ? (
-                            producerEncontrado[0].producer?.tillage?.map((tillage, index) => (
+                        ) : tillagesProducer.length !== 0 ? (
+                            tillagesProducer?.map((tillage, index) => (
                                 <CardTillage
                                     key={index}
                                     tillage={tillage}

@@ -17,6 +17,7 @@ export const ListLaudos: React.FC<ListLaudosProps> = ({ user }) => {
 
     const { listCalls } = useCall()
     const selectedCall = listCalls.find((item) => item.id === Number(callid))
+    const sortedReports = selectedCall?.reports?.sort((a, b) => Number(a.date) - Number(b.date))
 
     useEffect(() => {
         console.log(selectedCall)
@@ -80,7 +81,7 @@ export const ListLaudos: React.FC<ListLaudosProps> = ({ user }) => {
                     variant
                 />
                 <Box>
-                    {selectedCall?.reports?.map((item, index) => (
+                    {sortedReports?.map((item, index) => (
                         <LogsLaudo key={index} id={index + 1} report={item} talhao={item.talhao} />
                     ))}
                 </Box>
