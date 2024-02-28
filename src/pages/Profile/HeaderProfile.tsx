@@ -10,7 +10,7 @@ import { useUser } from "../../hooks/useUser"
 import { useSnackbar } from "burgos-snackbar"
 
 interface HeaderProfileProps {
-    values: User
+    values: Partial<Omit<User, "producer"> & { producer: Partial<Producer> }>
     handleChange?: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
     style?: SxProps
     view?: boolean

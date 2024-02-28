@@ -4,7 +4,7 @@ import { textField } from "../../../style/input"
 import { useBankAccount } from "../../../hooks/useBankAccount"
 
 interface BankProps {
-    values: User
+    values: Partial<Omit<User, "producer"> & { producer: Partial<Producer> }>
     handleChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
 }
 

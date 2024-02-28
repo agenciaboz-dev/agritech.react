@@ -33,7 +33,6 @@ export const Login: React.FC<LoginProps> = ({}) => {
     }
 
     const handleLogin = async (values: LoginValues) => {
-        io.emit("client:sync", user)
         if (user?.isAdmin) {
             io.emit("admin:login", values)
         } else {
@@ -64,7 +63,7 @@ export const Login: React.FC<LoginProps> = ({}) => {
             io.off("user:login:success")
             io.off("user:login:failed")
         }
-    }, [user])
+    }, [])
 
     return (
         <Box

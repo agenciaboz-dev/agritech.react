@@ -99,6 +99,8 @@ export const Signup: React.FC<SignupProps> = ({}) => {
             cpf: unmask(values.cpf),
             phone: unmask(values.phone),
             approved: typeUser === "employee" ? false : true,
+            birth: values.birth ? new Date(values.birth).getTime().toString() : undefined,
+
             address: {
                 street: values.address.street,
                 district: values.address.district,

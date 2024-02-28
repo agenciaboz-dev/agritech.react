@@ -33,7 +33,6 @@ export const UsersProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     }, [listUsers])
 
     useEffect(() => {
-        io.emit("user:pendingApproval")
         // Atualiza a lista quando um novo usuário é adicionado à lista de pendentes e transmitido via broadcast
         const handleNewUserBroadcast = (newUser: User) => {
             setPendingUsers((prevUsers) => [...prevUsers, newUser])

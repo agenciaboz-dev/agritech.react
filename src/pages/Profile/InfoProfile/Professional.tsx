@@ -3,7 +3,7 @@ import React, { ChangeEventHandler } from "react"
 import { textField } from "../../../style/input"
 
 interface ProfessionalProps {
-    values: User
+    values: Partial<Omit<User, "producer"> & { producer: Partial<Producer> }>
     handleChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
 }
 

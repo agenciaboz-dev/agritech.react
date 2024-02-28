@@ -9,7 +9,7 @@ import MaskedInputNando from "../../../components/MaskedNando"
 import { useCnpjMask } from "burgos-masks"
 
 interface PersonalProps {
-    values: User
+    values: Partial<Omit<User, "producer"> & { producer: Partial<Producer> }>
     handleChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
 }
 

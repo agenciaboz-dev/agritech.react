@@ -5,7 +5,7 @@ import MaskedInput from "../../../components/MaskedInput"
 import { colors } from "../../../style/colors"
 
 interface DocumentationProps {
-    values: User
+    values: Partial<Omit<User, "producer"> & { producer: Partial<Producer> }>
     handleChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
 }
 

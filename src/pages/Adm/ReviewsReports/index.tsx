@@ -90,7 +90,7 @@ export const ReviewsReports: React.FC<ReviewsReportsProps> = ({ user }) => {
             >
                 <Box sx={{ alignItems: "center", width: "100%", justifyContent: "space-between", flexDirection: "row" }}>
                     <p style={{ padding: "0 2vw", fontSize: "4.55vw" }}></p>
-                    {/* <Button
+                    <Button
                         size="small"
                         variant="contained"
                         sx={{
@@ -108,7 +108,7 @@ export const ReviewsReports: React.FC<ReviewsReportsProps> = ({ user }) => {
                         onClick={() => {}}
                     >
                         Ações em massa
-                    </Button> */}
+                    </Button>
                 </Box>
                 <Box sx={{ position: "relative", zIndex: 0, bottom: "11vw", gap: "3vw", height: "92%" }}>
                     <Tabs
@@ -130,7 +130,7 @@ export const ReviewsReports: React.FC<ReviewsReportsProps> = ({ user }) => {
                             : tab === "pending" && "Nenhum relatório pendente"}
                         {tab === "reports" && reports.length !== 0
                             ? reports?.map((item, index) => <LogsReport key={index} report={item} />)
-                            : tab === "reports" && "Nenhum relatório."}
+                            : tab === "reports" && "Nenhum relatório encontrado."}
                     </Box>
                 </Box>
             </Box>

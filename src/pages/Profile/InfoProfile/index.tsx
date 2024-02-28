@@ -11,7 +11,7 @@ import { Bank } from "./Bank"
 import { Professional } from "./Professional"
 
 interface InfoProfileProps {
-    values: User
+    values: Partial<Omit<User, "producer"> & { producer: Partial<Producer> }>
     handleChange?: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
     review: boolean
 }

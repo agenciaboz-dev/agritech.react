@@ -4,7 +4,7 @@ import { textField } from "../../../style/input"
 import MaskedInput from "../../../components/MaskedInput"
 
 interface ContactProps {
-    values: User
+    values: Partial<Omit<User, "producer"> & { producer: Partial<Producer> }>
     handleChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
 }
 

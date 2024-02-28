@@ -5,7 +5,7 @@ import { textField } from "../../../style/input"
 import { useEstadosBrasil } from "../../../hooks/useEstadosBrasil"
 
 interface AddressProps {
-    values: User
+    values: Partial<Omit<User, "producer"> & { producer: Partial<Producer> }>
     handleChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
 }
 

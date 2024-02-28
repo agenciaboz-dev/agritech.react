@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { useUser } from "./hooks/useUser"
 import { Route, Routes as ReactRoutes } from "react-router-dom"
 import { Signup } from "./pages/Signup"
@@ -17,53 +17,77 @@ import { Calls } from "./pages/Calls"
 
 interface RoutesProps {}
 
+const AdminRoutes: React.FC<{ user: User }> = ({ user }) => {
+    const bottomMenu = useNavigationList()
+
+    return (
+        <>
+            <BottomNavigation section={bottomMenu.admin} />
+            <ReactRoutes>
+                <Route path="/" element={<Panel user={user} />} />
+                <Route path="/adm/*" element={<Adm user={user} />} />
+            </ReactRoutes>
+        </>
+    )
+}
+
+const ReprovedRoutes: React.FC<{ user: User }> = ({ user }) => (
+    <ReactRoutes>
+        <Route path="/*" element={<Analysis user={user} />} />
+        <Route index element={<Analysis user={user} />} />
+    </ReactRoutes>
+)
+
+const UserRoutes: React.FC<{ user: User }> = ({ user }) => {
+    const bottomMenu = useNavigationList()
+    return (
+        <>
+            <BottomNavigation section={user.employee ? bottomMenu.employee : bottomMenu.producer} />
+            <ReactRoutes>
+                {user.employee ? (
+                    <>
+                        <Route path="/employee/*" element={<Employee user={user} />} />
+                        {/* <Route path="/producer/:producerid/:tillageid" element={<TillageDetails />} /> */}
+                    </>
+                ) : (
+                    <>
+                        <Route path="/producer/*" element={<Producer user={user} />} />
+                        {/* <Route path="/producer/:tillageid" element={<TillageDetails />} /> */}
+                    </>
+                )}
+
+                <Route path="/profile" element={<Profile user={user} />} />
+                <Route path="/profile/:userId" element={<Userprofile view />} />
+                <Route path="/call/*" element={<Calls user={user} />} />
+            </ReactRoutes>
+        </>
+    )
+}
+
+const UnauthenticatedRoutes = () => (
+    <ReactRoutes>
+        <Route index element={<Home />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/*" element={<Home />} />
+    </ReactRoutes>
+)
+
 export const Routes: React.FC<RoutesProps> = ({}) => {
     const { user } = useUser()
-    const bottomMenu = useNavigationList()
+
+
 
     return user ? (
         user.isAdmin ? (
-            <>
-                <BottomNavigation section={bottomMenu.admin} />
-                <ReactRoutes>
-                    <Route path="/" element={<Panel user={user} />} />
-                    <Route path="/adm/*" element={<Adm user={user} />} />
-                </ReactRoutes>
-            </>
-        ) : !user.approved ? (
-            <ReactRoutes>
-                <Route path="/*" element={<Analysis user={user} />} />
-                <Route index element={<Analysis user={user} />} />
-            </ReactRoutes>
+            <AdminRoutes user={user} />
+        ) : user.approved === false ? (
+            <ReprovedRoutes user={user} />
         ) : (
-            <>
-                <BottomNavigation section={user.employee ? bottomMenu.employee : bottomMenu.producer} />
-                <ReactRoutes>
-                    {user.employee ? (
-                        <>
-                            <Route path="/employee/*" element={<Employee user={user} />} />
-                            {/* <Route path="/producer/:producerid/:tillageid" element={<TillageDetails />} /> */}
-                        </>
-                    ) : (
-                        <>
-                            <Route path="/producer/*" element={<Producer user={user} />} />
-                            {/* <Route path="/producer/:tillageid" element={<TillageDetails />} /> */}
-                        </>
-                    )}
-
-                    <Route path="/profile" element={<Profile user={user} />} />
-                    <Route path="/profile/:userId" element={<Userprofile view />} />
-                    <Route path="/call/*" element={<Calls user={user} />} />
-                </ReactRoutes>
-            </>
+            <UserRoutes user={user} />
         )
     ) : (
-        <ReactRoutes>
-            <Route index element={<Home />} />
-            <Route path="/home" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/*" element={<Home />} />
-        </ReactRoutes>
+        <UnauthenticatedRoutes />
     )
 }

@@ -35,14 +35,12 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
 
     const [loading, setLoading] = useState(false)
 
-    const initialValues: User = {
-        name: user.name || "",
-        cpf: user.cpf || "",
-        phone: user.phone || "",
-        email: user.email || "",
-        username: user.username || "",
-        password: user.password || "",
-        birth: new Date(user.birth || 0).toLocaleDateString("pt-br") || "",
+    const initialValues: Partial<Omit<User, "producer"> & { producer: Partial<Producer> }> = {
+        name: user.name,
+        cpf: user.cpf,
+        phone: user.phone,
+        email: user.email,
+        birth: new Date(Number(user.birth) || 0).toLocaleDateString("pt-br"),
         image: user.image || null,
         address: {
             cep: user.address?.cep || "",
@@ -54,23 +52,17 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
             adjunct: user.address?.adjunct || "",
         },
         office: user.office,
-        isAdmin: user.isAdmin,
-        isManager: user.isManager,
-        approved: user.approved,
-        rejected: user.rejected,
-        id: user.id,
 
         employee: user.employee
             ? {
-                  id: user.employee?.id,
-                  rg: user.employee?.rg || "",
-                  gender: user.employee?.gender || "",
-                  military: user.employee?.military || "",
-                  nationality: user.employee?.nationality || "",
-                  relationship: user.employee?.relationship || "",
-                  voter_card: user.employee?.voter_card || "",
-                  work_card: user.employee?.work_card || "",
-                  residence: user.employee?.residence || "",
+                  rg: user.employee.rg,
+                  gender: user.employee.gender,
+                  military: user.employee.military,
+                  nationality: user.employee.nationality,
+                  relationship: user.employee.relationship,
+                  voter_card: user.employee.voter_card,
+                  work_card: user.employee.work_card,
+                  residence: user.employee.residence,
                   //   bank: {
                   //       account: user.employee?.bank?.account || "",
                   //       name: user.employee?.bank?.name || "",
@@ -81,85 +73,53 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
             : undefined,
         producer: user.producer
             ? {
-                  cnpj: user.producer?.cnpj || "",
-                  inscricaoEstadual: user.producer.inscricaoEstadual || "",
-                  contract: user.producer?.contract,
-                  id: user.producer?.id,
+                  cnpj: user.producer.cnpj,
+                  inscricaoEstadual: user.producer.inscricaoEstadual,
               }
             : undefined,
     }
     console.log({ initialValues: initialValues })
 
-    const handleSubmit = async (values: User) => {
-        console.log({ approved: values.approved })
+    const handleSubmit = async (values: Partial<Omit<User, "producer"> & { producer: Partial<Producer> }>) => {
         try {
             const data = {
                 ...values,
-                cpf: unmask(values.cpf),
-                phone: unmask(values.phone),
-                id: user.id,
-                isAdmin: values.isAdmin,
-                approved: values.approved,
-                rejected: values.rejected,
+                cpf: values.cpf ? unmask(values.cpf) : undefined,
+                phone: values.phone ? unmask(values.phone) : undefined,
+                birth: values.birth
+                    ? new Date(`${values.birth.split("/")[2]}-${values.birth.split("/")[1]}-${values.birth.split("/")[0]}`)
+                          .getTime()
+                          .toString()
+                    : undefined,
                 image: image
                     ? {
                           file: image,
                           name: image.name,
                       }
                     : undefined,
-                address: {
-                    cep: unmask(values.address?.cep || ""),
-                    city: values.address?.city,
-                    adjunct: values.address?.adjunct,
-                    district: values.address?.district,
-                    number: values.address?.number,
-                    street: values.address?.street,
-                    uf: estados.find((estado) => estado.value == values.address?.uf)!.value,
-                    userId: user.id,
-                },
-            }
+                address: values.address
+                    ? {
+                          ...values.address,
+                          cep: values.address.cep ? unmask(values.address.cep) : undefined,
+                      }
+                    : undefined,
 
-            if (data.employee) {
-                io.emit("user:update", {
-                    ...data,
-                    employee: {
-                        rg: data.employee?.rg,
-                        gender: gender.find((gender) => gender.value == data.employee?.gender)!.value,
-                        nationality: data.employee?.nationality,
-                        relationship:
-                            typeRelationship.find((relationship) => relationship.value == data.employee?.relationship)
-                                ?.value || 0,
-                        voter_card: data.employee?.voter_card,
-                        work_card: data.employee?.work_card,
-                        military: data.employee?.military,
-                        residence: data.employee?.residence,
-                        userid: user.id,
-
-                        // bank: {
-                        //     account: data.employee?.bank?.account,
-                        //     type: data.employee?.bank?.type,
-                        //     agency: data.employee?.bank?.agency,
-                        //     name: data.employee?.bank?.name,
-                        //     employeeId: user.employee?.id,
-                        // },
-                    },
-                    producer: null,
-                })
-                console.log({ dados_employee: data })
-            } else if (data.producer) {
-                console.log(data)
-                io.emit("user:update", {
-                    ...data,
-                    producer: {
-                        cnpj: unmask(data.producer?.cnpj),
-                        inscricaoEstadual: unmask(data.producer.inscricaoEstadual),
-                    },
-                })
+                employee: values.employee ? {} : undefined,
+                producer: values.producer
+                    ? {
+                          ...values.producer,
+                          cnpj: values.producer.cnpj ? unmask(values.producer.cnpj) : undefined,
+                          inscricaoEstadual: values.producer.inscricaoEstadual
+                              ? unmask(values.producer.inscricaoEstadual)
+                              : undefined,
+                      }
+                    : undefined,
             }
+            setLoading(true)
+            io.emit("user:update", data, user.id)
         } catch (error) {
             console.log("O erro é: ", error)
         }
-        setLoading(true)
     }
 
     useEffect(() => {
@@ -180,25 +140,10 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
             snackbar({ severity: "error", text: "Algo deu errado!" })
         })
 
-        io.on("user:find:success", (dataUser: User) => {
-            setUser(dataUser)
-        })
-
-        io.on("user:find:failed", (error) => {
-            console.error(error.error)
-        })
-
         return () => {
             io.off("user:update:success")
             io.off("user:update:failed")
-            io.off("user:find")
-            io.off("user:find:success")
-            io.off("user:find:failed")
         }
-    }, [])
-
-    useEffect(() => {
-        console.log()
     }, [])
 
     return (
