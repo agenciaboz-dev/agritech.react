@@ -40,7 +40,7 @@ export const NotificationDrawer: React.FC<NotificationDrawerProps> = ({}) => {
             PaperProps={{
                 sx: {
                     padding: "6vw 4vw",
-                    width: "85vw",
+                    width: "72vw",
                     height: "100%",
                     borderTopLeftRadius: "10vw",
                     borderBottomLeftRadius: "10vw",
@@ -61,6 +61,10 @@ export const NotificationDrawer: React.FC<NotificationDrawerProps> = ({}) => {
                         color: colors.text.white,
                         fontFamily: "MalgunGothicBold",
                         fontSize: "3.5vw",
+                    }}
+                    onClick={() => {
+                        navigate("/notifications/list")
+                        setOpen(false)
                     }}
                 >
                     Ver todas

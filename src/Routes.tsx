@@ -14,6 +14,7 @@ import { Adm } from "./pages/Adm"
 import { Employee } from "./pages/Employee"
 import { Producer } from "./pages/Producer"
 import { Calls } from "./pages/Calls"
+import { NotificationsList } from "./pages/Notifications/NotificationsList"
 
 interface RoutesProps {}
 
@@ -26,6 +27,7 @@ const AdminRoutes: React.FC<{ user: User }> = ({ user }) => {
             <ReactRoutes>
                 <Route path="/" element={<Panel user={user} />} />
                 <Route path="/adm/*" element={<Adm user={user} />} />
+                <Route path="/notifications/*" element={<NotificationsList user={user} />} />
             </ReactRoutes>
         </>
     )
@@ -59,6 +61,7 @@ const UserRoutes: React.FC<{ user: User }> = ({ user }) => {
                 <Route path="/profile" element={<Profile user={user} />} />
                 <Route path="/profile/:userId" element={<Userprofile view />} />
                 <Route path="/call/*" element={<Calls user={user} />} />
+                <Route path="/notifications" element={<NotificationsList user={user} />} />
             </ReactRoutes>
         </>
     )
@@ -76,8 +79,6 @@ const UnauthenticatedRoutes = () => (
 
 export const Routes: React.FC<RoutesProps> = ({}) => {
     const { user } = useUser()
-
-
 
     return user ? (
         user.isAdmin ? (

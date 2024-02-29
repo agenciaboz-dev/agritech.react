@@ -82,7 +82,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                         sx={{ color: "#fff" }}
                         onClick={() => {
                             notificationDrawer.toggle()
-                            console.log("opa")
+                           
                         }}
                     />
                     <Avatar

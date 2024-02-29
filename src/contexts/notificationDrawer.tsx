@@ -1,11 +1,15 @@
-import { createContext, useState } from "react"
+import { createContext, useEffect, useState } from "react"
 import React from "react"
+import { useIo } from "../hooks/useIo"
+import { useUser } from "../hooks/useUser"
 
 export interface NotificationDrawer {}
 
 interface NotificationDrawerContextValue {
     open: boolean
     setOpen: (value: boolean) => void
+    listNotifications: Notification[] | undefined
+    setListNotifications: (value: Notification[] | undefined) => void
 }
 
 interface NotificationDrawerProviderProps {
@@ -19,5 +23,17 @@ export default NotificationDrawerContext
 export const NotificationDrawerProvider: React.FC<NotificationDrawerProviderProps> = ({ children }) => {
     const [open, setOpen] = useState<boolean>(false)
 
-    return <NotificationDrawerContext.Provider value={{ open, setOpen }}>{children}</NotificationDrawerContext.Provider>
+    const io = useIo()
+    const { user } = useUser()
+    const [listNotifications, setListNotifications] = useState<Notification[] | undefined>()
+
+    useEffect(() => {
+        console.log({ Notifications: user })
+    }, [])
+
+    return (
+        <NotificationDrawerContext.Provider value={{ open, setOpen, listNotifications, setListNotifications }}>
+            {children}
+        </NotificationDrawerContext.Provider>
+    )
 }

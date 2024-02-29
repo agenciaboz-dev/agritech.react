@@ -14,7 +14,7 @@ import { useUser } from "../../../hooks/useUser"
 interface ModalStageProps {
     opened: boolean
     close: () => void
-    report?: Report
+    report: Report
 }
 
 export const ModalStage: React.FC<ModalStageProps> = ({ opened, close, report }) => {
@@ -57,6 +57,7 @@ export const ModalStage: React.FC<ModalStageProps> = ({ opened, close, report })
             finish: new Date(Number(finishPick)).getTime().toString(),
         }
         io.emit("stage:update:three", data)
+        io.emit("report:close", report.id)
         setLoading(true)
         console.log(data)
     }

@@ -85,7 +85,8 @@ export const NewTalhao: React.FC<NewTalhaoProps> = ({}) => {
             cover: values.cover,
             gallery: galleries,
         }
-        io.emit("talhao:create", data)
+        io.emit("talhao:create", data, user?.isAdmin)
+
         console.log(data)
         setLoadingTalhao(true)
     }

@@ -404,7 +404,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                 product={listProducts}
                 setproduct={setListProducts}
             />
-            <ModalStage opened={openedStageFinish} close={closeStage} report={report} />
+            {report && <ModalStage opened={openedStageFinish} close={closeStage} report={report} />}
             <ModalFlight opened={openedFlight} close={closeFlight} flight={listFlights} setFlight={setListFlights} />
             <ModalMaterial
                 opened={openedMaterials}

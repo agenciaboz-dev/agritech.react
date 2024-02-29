@@ -115,7 +115,8 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
             hectarePrice: unmaskNumber(values.hectarePrice || 0),
             gallery: galleries,
         }
-        io.emit("tillage:create", data)
+        io.emit("tillage:create", data, user?.isAdmin)
+
         // console.log(data)
         setLoadingTillage(true)
     }

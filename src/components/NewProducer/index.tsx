@@ -229,7 +229,8 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
             producerId: producer?.producer?.id,
             gallery: galleries,
         }
-        io.emit("tillage:create", data)
+        io.emit("tillage:create", data, user?.isAdmin)
+
         console.log(data)
         setLoadingTillage(true)
     }

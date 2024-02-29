@@ -14,7 +14,7 @@ import { NotificationDrawerProvider } from "../contexts/notificationDrawer"
 import { NotificationDrawer } from "./NotificationDrawer"
 import { ProducerProvider } from "../contexts/producerContext"
 import { KitProvider } from "../contexts/kitContext"
-import CallContext, { CallProvider } from "../contexts/callsContext"
+import { CallProvider } from "../contexts/callsContext"
 interface ProvidersProps {
     children: React.ReactNode
 }
