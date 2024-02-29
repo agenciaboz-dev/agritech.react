@@ -15,6 +15,8 @@ import { NotificationDrawer } from "./NotificationDrawer"
 import { ProducerProvider } from "../contexts/producerContext"
 import { KitProvider } from "../contexts/kitContext"
 import { CallProvider } from "../contexts/callsContext"
+import { ReportProvider } from "../contexts/reportsContext"
+import { TalhaoProvider } from "../contexts/talhaoContext"
 interface ProvidersProps {
     children: React.ReactNode
 }
@@ -27,25 +29,31 @@ export const Providers: React.FC<ProvidersProps> = ({ children }) => {
             <ConfirmDialogProvider>
                 <IoProvider>
                     <UserProvider>
-                        <KitProvider>
-                            <UsersProvider>
+                        <UsersProvider>
+                            <KitProvider>
                                 <ProducerProvider>
-                                    <CallProvider>
-                                        <NotificationDrawerProvider>
-                                            <MenuDrawerProvider>
-                                                <HeaderProvider>
-                                                    <Snackbar />
-                                                    <ConfirmDialog />
-                                                    <NotificationDrawer />
-                                                    <MenuDrawer />
-                                                    <MantineProvider theme={mantine_theme}>{children}</MantineProvider>
-                                                </HeaderProvider>
-                                            </MenuDrawerProvider>
-                                        </NotificationDrawerProvider>
-                                    </CallProvider>
+                                    <TalhaoProvider>
+                                        <CallProvider>
+                                            <ReportProvider>
+                                                <NotificationDrawerProvider>
+                                                    <MenuDrawerProvider>
+                                                        <HeaderProvider>
+                                                            <Snackbar />
+                                                            <ConfirmDialog />
+                                                            <NotificationDrawer />
+                                                            <MenuDrawer />
+                                                            <MantineProvider theme={mantine_theme}>
+                                                                {children}
+                                                            </MantineProvider>
+                                                        </HeaderProvider>
+                                                    </MenuDrawerProvider>
+                                                </NotificationDrawerProvider>
+                                            </ReportProvider>
+                                        </CallProvider>
+                                    </TalhaoProvider>
                                 </ProducerProvider>
-                            </UsersProvider>
-                        </KitProvider>
+                            </KitProvider>
+                        </UsersProvider>
                     </UserProvider>
                 </IoProvider>
             </ConfirmDialogProvider>

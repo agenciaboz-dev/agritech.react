@@ -1,4 +1,4 @@
-declare interface Notification {
+declare interface NotificationType {
     id: number
     action: string
     datetime: string

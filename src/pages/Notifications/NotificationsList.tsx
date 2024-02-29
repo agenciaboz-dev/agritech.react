@@ -4,6 +4,13 @@ import { Box, Button } from "@mui/material"
 import { Header } from "../../components/Header"
 import { colors } from "../../style/colors"
 import { LogNotification } from "./LogNotification"
+import { NotificationDrawer } from "../../components/NotificationDrawer"
+import { useNotification } from "../../hooks/useNotifications"
+import { useUsers } from "../../hooks/useUsers"
+import { useKits } from "../../hooks/useKits"
+import { useCall } from "../../hooks/useCall"
+import { useReports } from "../../hooks/useReports"
+import { useTalhao } from "../../hooks/useTalhao"
 
 interface NotificationsListProps {
     user: User
@@ -11,9 +18,20 @@ interface NotificationsListProps {
 
 export const NotificationsList: React.FC<NotificationsListProps> = ({ user }) => {
     const header = useHeader()
+    const { listNotifications } = useNotification()
+    const { listUsers } = useUsers()
+    const { listKits } = useKits()
+    const { listCalls } = useCall()
+    const { listReports } = useReports()
+    const { listTalhao } = useTalhao()
+
+    useEffect(() => {
+        console.log({ usuários: listUsers })
+    }, [listUsers])
 
     useEffect(() => {
         header.setTitle("Notificações")
+        console.log(listNotifications)
     }, [])
 
     return (
@@ -74,10 +92,12 @@ export const NotificationsList: React.FC<NotificationsListProps> = ({ user }) =>
                     }}
                 >
                     <Box sx={{ overflowY: "auto", height: "72%", gap: "2vw" }}>
-                        <LogNotification />
-                        <LogNotification />
-                        <LogNotification />
-                        <LogNotification />
+                        {listNotifications?.map((item) => (
+                            <LogNotification
+                                notification={item}
+                                list={item.target_key === "employee" ? listUsers : listKits}
+                            />
+                        ))}
                     </Box>
                 </Box>
             </Box>
