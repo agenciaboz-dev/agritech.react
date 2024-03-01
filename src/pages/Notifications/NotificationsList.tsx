@@ -19,15 +19,6 @@ interface NotificationsListProps {
 export const NotificationsList: React.FC<NotificationsListProps> = ({ user }) => {
     const header = useHeader()
     const { listNotifications } = useNotification()
-    const { listUsers } = useUsers()
-    const { listKits } = useKits()
-    const { listCalls } = useCall()
-    const { listReports } = useReports()
-    const { listTalhao } = useTalhao()
-
-    useEffect(() => {
-        console.log({ usuários: listUsers })
-    }, [listUsers])
 
     useEffect(() => {
         header.setTitle("Notificações")
@@ -91,12 +82,9 @@ export const NotificationsList: React.FC<NotificationsListProps> = ({ user }) =>
                         gap: "3vw",
                     }}
                 >
-                    <Box sx={{ overflowY: "auto", height: "72%", gap: "2vw" }}>
+                    <Box sx={{ overflowY: "auto", height: "60%", gap: "2vw" }}>
                         {listNotifications?.map((item) => (
-                            <LogNotification
-                                notification={item}
-                                list={item.target_key === "employee" ? listUsers : listKits}
-                            />
+                            <LogNotification notification={item} />
                         ))}
                     </Box>
                 </Box>

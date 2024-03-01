@@ -3,6 +3,7 @@ import React from "react"
 import { useIo } from "../hooks/useIo"
 import { useSnackbar } from "burgos-snackbar"
 import { useUser } from "../hooks/useUser"
+import { useNotification } from "../hooks/useNotifications"
 
 interface KitContextValue {
     listKits: Kit[]
@@ -23,6 +24,7 @@ export default KitContext
 export const KitProvider: React.FC<KitProviderProps> = ({ children }) => {
     const io = useIo()
     const [listKits, setListKits] = useState<Kit[]>([])
+    const {addNotification}=useNotification()
     const { snackbar } = useSnackbar()
     const { user } = useUser()
 
@@ -54,6 +56,7 @@ export const KitProvider: React.FC<KitProviderProps> = ({ children }) => {
     useEffect(() => {
         io.on("kit:toggle:success", (data: Kit) => {
             console.log({ veio: data })
+            // addNotification()
         })
         io.on("kit:toggle:failed", () => {})
 

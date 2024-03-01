@@ -20,9 +20,15 @@ export const TalhaoProvider: React.FC<TalhaoProviderProps> = ({ children }) => {
     const [listTalhao, setList] = useState<Talhao[] | undefined>()
 
     useEffect(() => {
-        io.emit("talhao:list", (list: Talhao[]) => {
+        io.emit("talhao:list")
+
+        io.on("talhao:list:success", (list: Talhao[]) => {
             setList(list)
         })
+
+        return () => {
+            io.off("talhaoe:list:success")
+        }
     }, [])
 
     return <TalhaoContext.Provider value={{ listTalhao, setList }}>{children}</TalhaoContext.Provider>

@@ -21,9 +21,14 @@ export const ReportProvider: React.FC<ReportsProviderProps> = ({ children }) => 
     const [listReports, setListReports] = useState<Report[] | undefined>()
 
     useEffect(() => {
-        io.emit("report:list", (reports: Report[]) => {
+        io.emit("report:list")
+        io.on("report:list:success", (reports: Report[]) => {
             setListReports(reports)
         })
+
+        return () => {
+            io.off("report:list:success")
+        }
     }, [])
 
     return <ReportsContext.Provider value={{ listReports, setListReports }}>{children}</ReportsContext.Provider>

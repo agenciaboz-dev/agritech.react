@@ -7,6 +7,7 @@ declare interface NotificationType {
     target_id: number
 
     viewed_by: number[] = []
+    status?: boolean
 
     users: number[] = []
 }

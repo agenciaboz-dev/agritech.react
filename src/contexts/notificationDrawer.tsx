@@ -8,6 +8,7 @@ interface NotificationDrawerContextValue {
     setOpen: (value: boolean) => void
     listNotifications: NotificationType[] | undefined
     setListNotifications: (value: NotificationType[] | undefined) => void
+    addNotification: (value: NotificationType) => void
 }
 
 interface NotificationDrawerProviderProps {
@@ -23,7 +24,11 @@ export const NotificationDrawerProvider: React.FC<NotificationDrawerProviderProp
 
     const io = useIo()
     const { user } = useUser()
-    const [listNotifications, setListNotifications] = useState<NotificationType[] | undefined>()
+    const [listNotifications, setListNotifications] = useState<NotificationType[]>()
+
+    const addNotification = (newValue: NotificationType) => {
+        setListNotifications((item) => [...(item ?? []), newValue])
+    }
 
     useEffect(() => {
         user?.id && io.emit("notification:list", user.id)
@@ -35,10 +40,12 @@ export const NotificationDrawerProvider: React.FC<NotificationDrawerProviderProp
             console.log(list)
         })
         console.log(listNotifications)
-    }, [])
+    }, [listNotifications])
 
     return (
-        <NotificationDrawerContext.Provider value={{ open, setOpen, listNotifications, setListNotifications }}>
+        <NotificationDrawerContext.Provider
+            value={{ open, setOpen, listNotifications, setListNotifications, addNotification }}
+        >
             {children}
         </NotificationDrawerContext.Provider>
     )
