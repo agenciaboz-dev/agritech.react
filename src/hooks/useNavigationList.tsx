@@ -215,26 +215,7 @@ export const useNavigationList = () => {
         id: 4,
         title: "Notificações",
         location: "/",
-        drawer: [
-            {
-                id: 1,
-                title: "",
-                location: "/profile",
-                icon: <CardNotification />,
-            },
-            {
-                id: 2,
-                title: "",
-                location: "/node_modules",
-                icon: <CardNotification />,
-            },
-            {
-                id: 3,
-                title: "",
-                location: "/kfj",
-                icon: <CardNotification />,
-            },
-        ],
+        drawer: [],
 
         icon: "",
         bottom: [],

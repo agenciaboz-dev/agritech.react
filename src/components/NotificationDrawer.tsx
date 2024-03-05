@@ -1,11 +1,12 @@
 import React from "react"
 import { Box, Card, Drawer, MenuItem, SxProps } from "@mui/material"
-import { useUser } from "../hooks/useUser"
 import { useNavigationList } from "../hooks/useNavigationList"
 import { useNavigate } from "react-router-dom"
 import { useNotificationDrawer } from "../hooks/useNotificationDrawer"
 import { colors } from "../style/colors"
 import { IoIosArrowDown } from "react-icons/io"
+import { useNotification } from "../hooks/useNotifications"
+import { LogNotification } from "../pages/Notifications/LogNotification"
 
 interface NotificationDrawerProps {}
 
@@ -16,6 +17,7 @@ export const NotificationDrawer: React.FC<NotificationDrawerProps> = ({}) => {
     const navigate = useNavigate()
 
     const { open, setOpen } = useNotificationDrawer()
+    const { listNotifications } = useNotification()
     // const { user, logout, setUser } = useUser()
 
     const menuItemStyle: SxProps = {
@@ -72,79 +74,9 @@ export const NotificationDrawer: React.FC<NotificationDrawerProps> = ({}) => {
             </Box>
             <Box sx={{ overflowY: "auto", gap: "8vw" }}>
                 <Box>
-                    <Box sx={{ flexDirection: "column", paddingTop: "4vw", gap: "4vw" }}>
-                        {notifications.map((menu) => (
-                            <MenuItem
-                                key={menu.location}
-                                onClick={() => {
-                                    handleClose()
-                                    navigate(menu.location)
-                                }}
-                                sx={menuItemStyle}
-                            >
-                                {menu.icon}
-                                {menu.title}
-                            </MenuItem>
-                        ))}
-                    </Box>
-                </Box>
-                <Box>
-                    <Box
-                        sx={{
-                            p: "4vw 4vw 2vw",
-                            flexDirection: "row",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                        }}
-                    >
-                        <p style={{ fontWeight: "800", color: colors.text.white, fontFamily: "MalgunGothicBold" }}>
-                            Colaboradores Fixados
-                        </p>
-                        <IoIosArrowDown color={colors.text.white} style={{ width: "6vw", height: "6vw" }} />
-                    </Box>
-                    <Box sx={{ flexDirection: "column", paddingTop: "4vw", gap: "4vw" }}>
-                        {notifications.map((menu) => (
-                            <MenuItem
-                                key={menu.location}
-                                onClick={() => {
-                                    handleClose()
-                                    navigate(menu.location)
-                                }}
-                                sx={menuItemStyle}
-                            >
-                                {menu.icon}
-                                {menu.title}
-                            </MenuItem>
-                        ))}
-                    </Box>
-                </Box>
-                <Box>
-                    <Box
-                        sx={{
-                            p: "4vw 4vw 2vw",
-                            flexDirection: "row",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                        }}
-                    >
-                        <p style={{ fontWeight: "800", color: colors.text.white, fontFamily: "MalgunGothicBold" }}>
-                            Clientes Fixados
-                        </p>
-                        <IoIosArrowDown color={colors.text.white} style={{ width: "6vw", height: "6vw" }} />
-                    </Box>
-                    <Box sx={{ flexDirection: "column", paddingTop: "4vw", gap: "4vw" }}>
-                        {notifications.map((menu) => (
-                            <MenuItem
-                                key={menu.location}
-                                onClick={() => {
-                                    handleClose()
-                                    navigate(menu.location)
-                                }}
-                                sx={menuItemStyle}
-                            >
-                                {menu.icon}
-                                {menu.title}
-                            </MenuItem>
+                    <Box sx={{ flexDirection: "column", paddingTop: "4vw", gap: "1vw" }}>
+                        {listNotifications?.map((item) => (
+                            <LogNotification notification={item} drawer />
                         ))}
                     </Box>
                 </Box>
