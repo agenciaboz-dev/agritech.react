@@ -101,6 +101,10 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, image, set
                             value={data.producer?.inscricaoEstadual}
                             sx={{ ...textField, width: "100%" }}
                             onChange={handleChange}
+                            InputProps={{
+                                inputComponent: MaskedInput,
+                                inputProps: { mask: "0000000000000", inputMode: "numeric" },
+                            }}
                             required
                         />
                     </>

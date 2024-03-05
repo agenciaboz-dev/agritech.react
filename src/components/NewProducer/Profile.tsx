@@ -5,6 +5,7 @@ import { textField } from "../../style/input"
 
 import { useCnpjMask, useCpfMask, usePhoneMask } from "burgos-masks"
 import MaskedInputNando from "../MaskedNando"
+import MaskedInput from "../MaskedInput"
 
 interface ProfileProps {
     values: NewProducer
@@ -120,6 +121,7 @@ export const Profile: React.FC<ProfileProps> = ({ values, handleChange, image, s
                     value={values.producer?.inscricaoEstadual}
                     sx={{ ...textField, width: "100%" }}
                     inputMode="numeric"
+                    InputProps={{ inputComponent: MaskedInput, inputProps: { mask: "00000000000" } }}
                     onChange={handleChange}
                     required
                 />

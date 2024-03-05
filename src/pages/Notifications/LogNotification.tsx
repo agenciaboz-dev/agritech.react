@@ -58,25 +58,51 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification }
         new: {
             employee: {
                 message: "Novo colaborador cadastrado, encaminhe-o para aprovação.",
-                onclick: () => navigate(`/adm/review/profile/${notification.target_id}`),
+                onClick: () =>
+                    navigate(
+                        !employee?.approved
+                            ? `/adm/review/profile/${notification.target_id}`
+                            : `/adm/profile/${notification.target_id}`
+                    ),
             },
-            talhao: { message: "Um novo talhão foi adicionado para você.", onclick: () => navigate(``) },
-            kit: "",
-            call: { message: "Você tem uma nova chamada pendente com ID ${target_id}.", onclick: () => navigate(``) },
+            talhao: {
+                message: "Um novo talhão foi adicionado para você.",
+                onClick: () => navigate(`/producer/tillage/${talhao?.tillageId}`),
+            },
+            kit: { onClick: () => navigate(`/adm/settings-kit/${notification.target_id}`) },
+            call: {
+                onClick: () =>
+                    navigate(
+                        user?.isAdmin
+                            ? `/adm/call/${notification.target_id}/laudos`
+                            : user?.producer
+                            ? `/employee/call/${notification.target_id}/laudos`
+                            : `/employee/call/${notification.target_id}/laudos`
+                    ),
+            },
         },
         update: {
-            kit: { message: "Verifique as atualizações", onclick: () => navigate(``) },
+            kit: {
+                message: "Verifique as atualizações",
+                onClick: () => navigate(`/adm/settings-kit/${notification.target_id}`),
+            },
         },
         toggle: {
-            kit: { message: `Seu kit foi ${kit?.active ? "ativado" : "desativado"}`, onclick: () => navigate(``) },
+            kit: {
+                message: `Seu kit foi ${kit?.active ? "ativado" : "desativado"}`,
+                onClick: () => navigate(`/adm/settings-kit/${notification.target_id}`),
+            },
         },
         approve: {
-            report: { message: "O relatório com ID ${target_id} foi aprovado.", onclick: () => navigate(``) },
+            report: {
+                message: "O relatório com ID ${target_id} foi aprovado.",
+                onClick: () => navigate(`/adm/review/profile/${notification.target_id}`),
+            },
         },
         close: {
             report: {
                 message: `O relatório do talhão ${report?.call?.talhao?.name} foi fechado.`,
-                onclick: () => navigate(``),
+                onClick: () => navigate(`/adm/review/profile/${notification.target_id}`),
             },
         },
     }
@@ -86,15 +112,15 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification }
         const actionObject = messageTemplates[notification.action]
         // Acessa o objeto de template baseado no target_key da notificação
         const templateObject = actionObject ? actionObject[notification.target_key] : null
-
+        console.log("onClick function:", templateObject.onClick)
         if (templateObject) {
             // Processa a mensagem para substituir placeholders
-            const processedMessage = templateObject.message.replace("${target_id}", notification.target_id.toString())
+            // const processedMessage = templateObject.message.replace("${target_id}", notification.target_id.toString())
             // Retorna a mensagem processada e a função onClick
-            return { message: processedMessage, onClick: templateObject.onClick }
+            return { message: templateObject.message, onClick: templateObject.onClick }
         } else {
             // Retorna valores padrão se não houver template correspondente
-            return { message: "Notificação recebida.", onClick: () => console.log("Ação padrão.") }
+            return { onClick: () => console.log("Ação padrão.") }
         }
     }
 
@@ -158,10 +184,14 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification }
                         <p style={{ fontWeight: "800", fontSize: "0.8rem" }}>Novo kit {kit?.name} disponível</p>
                     ) : notification.action === "toggle" && notification.target_key === "kit" ? (
                         <p style={{ fontWeight: "800", fontSize: "0.8rem" }}>{kit?.name}</p>
+                    ) : notification.action === "update" && notification.target_key === "kit" ? (
+                        <p style={{ fontWeight: "800", fontSize: "0.8rem" }}>Seu kit {kit?.name} foi atualizado</p>
                     ) : (
-                        notification.action === "update" &&
-                        notification.target_key === "kit" && (
-                            <p style={{ fontWeight: "800", fontSize: "0.8rem" }}>Seu kit {kit?.name} foi atualizado</p>
+                        notification.action === "new" &&
+                        notification.target_key === "call" && (
+                            <p style={{ fontWeight: "800", fontSize: "0.8rem" }}>
+                                Chamado aberto para {call?.producer?.user?.name}
+                            </p>
                         )
                     )}
                     <p
