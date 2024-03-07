@@ -18,12 +18,14 @@ import { MdUpdate } from "react-icons/md"
 import { Call } from "../../definitions/call"
 import { Report } from "../../definitions/report"
 import { useNavigate } from "react-router-dom"
+import { colors } from "../../style/colors"
 
 interface LogNotificationProps {
     notification: NotificationType
+    drawer: Boolean
 }
 
-export const LogNotification: React.FC<LogNotificationProps> = ({ notification }) => {
+export const LogNotification: React.FC<LogNotificationProps> = ({ notification, drawer }) => {
     const { user } = useUser()
     const navigate = useNavigate()
 
@@ -96,13 +98,13 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification }
         approve: {
             report: {
                 message: "O relatório com ID ${target_id} foi aprovado.",
-                onClick: () => navigate(`/adm/review/profile/${notification.target_id}`),
+                onClick: () => navigate(`/adm/review/profile/${notification.target_id}`), //rever caminho relatório
             },
         },
         close: {
             report: {
                 message: `O relatório do talhão ${report?.call?.talhao?.name} foi fechado.`,
-                onClick: () => navigate(`/adm/review/profile/${notification.target_id}`),
+                onClick: () => navigate(`/adm/review/profile/${notification.target_id}`), //rever caminho relatório
             },
         },
     }
@@ -132,7 +134,7 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification }
             sx={{
                 width: "100%",
                 height: "16vw",
-                bgcolor: "#F0F9F2",
+                bgcolor: !drawer ? "#F0F9F2" : "transparent",
                 p: "3vw",
                 borderRadius: "4vw",
                 flexDirection: "row",
@@ -140,56 +142,154 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification }
                 justifyContent: "space-between",
             }}
         >
-            <Box sx={{ flexDirection: "row", gap: "1.5vw", width: "90%", alignItems: "center" }}>
+            <Box sx={{ flexDirection: "row", gap: drawer ? "6.5vw" : "1.5vw", width: "90%", alignItems: "center" }}>
                 <Box width="13%">
                     {notification.target_key === "employee" ? (
                         <Avatar src={employee?.image} sx={{ width: "10vw", height: "10vw" }} />
                     ) : notification.target_key === "report" && notification.action === "close" ? (
                         <HiOutlineClipboardDocument
-                            style={{ width: "7vw", height: "7vw", paddingLeft: 0, paddingRight: 0 }}
+                            style={{
+                                color: drawer ? colors.text.white : colors.text.black,
+                                width: "7vw",
+                                height: "7vw",
+                                paddingLeft: 0,
+                                paddingRight: 0,
+                            }}
                         />
                     ) : notification.target_key === "report" && notification.action === "approve" ? (
                         <HiOutlineClipboardDocumentCheck
-                            style={{ width: "7vw", height: "7vw", paddingLeft: 0, paddingRight: 0 }}
+                            style={{
+                                color: drawer ? colors.text.white : colors.text.black,
+                                width: "7vw",
+                                height: "7vw",
+                                paddingLeft: 0,
+                                paddingRight: 0,
+                            }}
                         />
                     ) : notification.target_key === "call" ? (
                         <img src={Alert} style={{ width: "8.5vw" }} />
                     ) : notification.target_key === "talhao" || notification.target_key === "tillage" ? (
-                        <PiPlant style={{ width: "8.5vw", height: "7vw", paddingLeft: 0, paddingRight: 0 }} />
+                        <PiPlant
+                            style={{
+                                color: drawer ? colors.text.white : colors.text.black,
+                                width: "8.5vw",
+                                height: "7vw",
+                                paddingLeft: 0,
+                                paddingRight: 0,
+                            }}
+                        />
                     ) : notification.target_key === "kit" && notification.action === "toggle" ? (
                         kit?.active ? (
                             <PiPlugsConnectedDuotone
-                                style={{ width: "7vw", height: "7vw", paddingLeft: 0, paddingRight: 0 }}
+                                style={{
+                                    color: drawer ? colors.text.white : colors.text.black,
+                                    width: "7vw",
+                                    height: "7vw",
+                                    paddingLeft: 0,
+                                    paddingRight: 0,
+                                }}
                             />
                         ) : (
-                            <VscDebugDisconnect style={{ width: "7vw", height: "7vw", paddingLeft: 0, paddingRight: 0 }} />
+                            <VscDebugDisconnect
+                                style={{
+                                    color: drawer ? colors.text.white : colors.text.black,
+                                    width: "7vw",
+                                    height: "7vw",
+                                    paddingLeft: 0,
+                                    paddingRight: 0,
+                                }}
+                            />
                         )
                     ) : notification.target_key === "kit" && notification.action === "new" ? (
-                        <TbPlaylistAdd style={{ width: "7vw", height: "7vw", paddingLeft: 0, paddingRight: 0 }} />
+                        <TbPlaylistAdd
+                            style={{
+                                color: drawer ? colors.text.white : colors.text.black,
+                                width: "7vw",
+                                height: "7vw",
+                                paddingLeft: 0,
+                                paddingRight: 0,
+                            }}
+                        />
                     ) : (
                         notification.target_key === "kit" &&
                         notification.action === "update" && (
-                            <MdUpdate style={{ width: "7vw", height: "7vw", paddingLeft: 0, paddingRight: 0 }} />
+                            <MdUpdate
+                                style={{
+                                    color: drawer ? colors.text.white : colors.text.black,
+                                    width: "7vw",
+                                    height: "7vw",
+                                    paddingLeft: 0,
+                                    paddingRight: 0,
+                                }}
+                            />
                         )
                     )}
                 </Box>
-                <Box sx={{ flexDirection: "column", width: "80%", flexWrap: "nowrap" }}>
+                <Box sx={{ flexDirection: "column", width: "75%", flexWrap: "nowrap" }}>
                     {notification.target_key === "employee" ? (
-                        <p style={{ fontWeight: "800", fontSize: "0.8rem" }}>{employee?.name}</p>
+                        <p
+                            style={{
+                                fontWeight: "800",
+                                fontSize: "0.8rem",
+                                color: drawer ? colors.text.white : colors.text.black,
+                            }}
+                        >
+                            {employee?.name}
+                        </p>
                     ) : notification.action === "close" && notification.target_key === "report" ? (
-                        <p style={{ fontWeight: "800", fontSize: "0.8rem" }}>
+                        <p
+                            style={{
+                                color: drawer ? colors.text.white : colors.text.black,
+
+                                fontWeight: "800",
+                                fontSize: "0.8rem",
+                                textOverflow: "ellipsis",
+                                whiteSpace: "nowrap",
+                                overflowX: "hidden",
+                            }}
+                        >
                             {report?.call?.talhao?.tillage?.owner} - {report?.call?.talhao?.tillage?.name}
                         </p>
                     ) : notification.action === "new" && notification.target_key === "kit" ? (
-                        <p style={{ fontWeight: "800", fontSize: "0.8rem" }}>Novo kit {kit?.name} disponível</p>
+                        <p
+                            style={{
+                                color: drawer ? colors.text.white : colors.text.black,
+                                fontWeight: "800",
+                                fontSize: "0.8rem",
+                            }}
+                        >
+                            Novo kit {kit?.name} disponível
+                        </p>
                     ) : notification.action === "toggle" && notification.target_key === "kit" ? (
-                        <p style={{ fontWeight: "800", fontSize: "0.8rem" }}>{kit?.name}</p>
+                        <p
+                            style={{
+                                fontWeight: "800",
+                                fontSize: "0.8rem",
+                                color: drawer ? colors.text.white : colors.text.black,
+                            }}
+                        >
+                            {kit?.name}
+                        </p>
                     ) : notification.action === "update" && notification.target_key === "kit" ? (
-                        <p style={{ fontWeight: "800", fontSize: "0.8rem" }}>Seu kit {kit?.name} foi atualizado</p>
+                        <p
+                            style={{
+                                fontWeight: "800",
+                                fontSize: "0.8rem",
+                                color: drawer ? colors.text.white : colors.text.black,
+                            }}
+                        >
+                            Seu kit {kit?.name} foi atualizado
+                        </p>
                     ) : (
                         notification.action === "new" &&
                         notification.target_key === "call" && (
-                            <p style={{ fontWeight: "800", fontSize: "0.8rem" }}>
+                            <p
+                                style={{
+                                    fontWeight: "800",
+                                    fontSize: "0.8rem",
+                                    color: drawer ? colors.text.white : colors.text.black,
+                                }}
+                            >
                                 Chamado aberto para {call?.producer?.user?.name}
                             </p>
                         )
@@ -201,7 +301,7 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification }
                             textOverflow: "ellipsis",
                             overflowX: "hidden",
                             whiteSpace: "nowrap",
-                            width: "100%",
+                            color: drawer ? colors.text.white : colors.text.black,
                         }}
                     >
                         {message}
@@ -209,7 +309,7 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification }
                 </Box>
             </Box>
             <IconButton onClick={onClick}>
-                <ArrowForwardIos fontSize="small" />
+                <ArrowForwardIos fontSize="small" sx={{ color: drawer ? colors.text.white : colors.text.black }} />
             </IconButton>
         </Box>
     )
