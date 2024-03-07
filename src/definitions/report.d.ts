@@ -19,6 +19,7 @@ declare interface Report extends NewReport {
     approved?: boolean
     close: string
     totalPrice?: number
+    pdf_path: string | null
 }
 declare interface GeralReport {
     id: number

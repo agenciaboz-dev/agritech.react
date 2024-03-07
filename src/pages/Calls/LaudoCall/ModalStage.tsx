@@ -10,6 +10,7 @@ import { useIo } from "../../../hooks/useIo"
 import { useSnackbar } from "burgos-snackbar"
 import { useNavigate } from "react-router-dom"
 import { useUser } from "../../../hooks/useUser"
+import { useReports } from "../../../hooks/useReports"
 
 interface ModalStageProps {
     opened: boolean
@@ -22,6 +23,7 @@ export const ModalStage: React.FC<ModalStageProps> = ({ opened, close, report })
     const { snackbar } = useSnackbar()
     const navigate = useNavigate()
     const { user } = useUser()
+    const reports = useReports()
 
     const [initPick, setInitPick] = useState(null)
     const [finishPick, setFinishPick] = useState(null)
@@ -67,19 +69,33 @@ export const ModalStage: React.FC<ModalStageProps> = ({ opened, close, report })
             snackbar({ severity: "success", text: "Dados registrados!" })
             setLoading(false)
             console.log("Finalizado")
+        })
+        io.on("stage:updateThree:failed", (stage) => {
+            snackbar({ severity: "error", text: "Tem algo errado com os dados de volta!" })
+        })
+
+        io.on("report:closed:success", (updatedReport: Report) => {
+            reports.update(updatedReport)
+            console.log("report closed success")
+            console.log(updatedReport)
+            if (updatedReport.pdf_path) {
+                window.open(updatedReport.pdf_path, "_blank")?.focus()
+            }
             navigate(
                 user?.isAdmin
                     ? `/adm/call/${report?.callId}/report/${report?.id}`
                     : `/employee/call/${report?.callId}/report/${report?.id}`
             )
         })
-        io.on("stage:updateThree:failed", (stage) => {
-            snackbar({ severity: "error", text: "Tem algo errado com os dados de volta!" })
+        io.on("report:closed:failed", (error) => {
+            console.log(error)
         })
 
         return () => {
             io.off("stage:updateThree:success")
             io.off("stage:updateThree:failed")
+            io.off("report:closed:success")
+            io.off("report:closed:failed")
         }
     }, [])
     return (

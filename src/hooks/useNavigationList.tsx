@@ -58,12 +58,12 @@ export const useNavigationList = () => {
                 location: "/adm/new_producer",
                 icon: <img src={AddUser} style={{ width: "6vw" }} />,
             },
-            {
-                id: 4,
-                title: "Fixados",
-                location: "/adm/fixed",
-                icon: <img src={Pin} style={{ width: "6vw" }} />,
-            },
+            // {
+            //     id: 4,
+            //     title: "Fixados",
+            //     location: "/adm/fixed",
+            //     icon: <img src={Pin} style={{ width: "6vw" }} />,
+            // },
             {
                 id: 5,
                 title: "Relatórios",
@@ -132,12 +132,12 @@ export const useNavigationList = () => {
                 location: "/producer/new",
                 icon: <img src={AddEmployee} style={{ width: "6vw" }} />,
             },
-            {
-                id: 4,
-                title: "Fixados",
-                location: "/producer/fixed",
-                icon: <img src={Pin} style={{ width: "6vw" }} />,
-            },
+            // {
+            //     id: 4,
+            //     title: "Fixados",
+            //     location: "/producer/fixed",
+            //     icon: <img src={Pin} style={{ width: "6vw" }} />,
+            // },
         ],
         bottom: [
             {
@@ -186,12 +186,12 @@ export const useNavigationList = () => {
                 icon: <img src={AddUser} style={{ width: "6vw" }} />,
             },
 
-            {
-                id: 5,
-                title: "Fixados",
-                location: "/employee/fixed",
-                icon: <img src={Pin} style={{ width: "6vw" }} />,
-            },
+            // {
+            //     id: 5,
+            //     title: "Fixados",
+            //     location: "/employee/fixed",
+            //     icon: <img src={Pin} style={{ width: "6vw" }} />,
+            // },
         ],
 
         icon: <img src={GridPanel} />,

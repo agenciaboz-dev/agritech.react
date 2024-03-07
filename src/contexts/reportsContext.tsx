@@ -4,8 +4,9 @@ import { Report } from "../definitions/report"
 import { useIo } from "../hooks/useIo"
 
 interface ReportsContextValue {
-    listReports: Report[] | undefined
-    setListReports: (value: Report[] | undefined) => void
+    listReports: Report[]
+    setListReports: (value: Report[]) => void
+    update: (value:Report) => void
 }
 
 interface ReportsProviderProps {
@@ -18,7 +19,9 @@ export default ReportsContext
 
 export const ReportProvider: React.FC<ReportsProviderProps> = ({ children }) => {
     const io = useIo()
-    const [listReports, setListReports] = useState<Report[] | undefined>()
+    const [listReports, setListReports] = useState<Report[]>([])
+
+    const update = (report: Report) => setListReports((list) => [...list?.filter((item) => item.id != report.id), report])
 
     useEffect(() => {
         io.emit("report:list")
@@ -31,5 +34,5 @@ export const ReportProvider: React.FC<ReportsProviderProps> = ({ children }) => 
         }
     }, [])
 
-    return <ReportsContext.Provider value={{ listReports, setListReports }}>{children}</ReportsContext.Provider>
+    return <ReportsContext.Provider value={{ listReports, setListReports, update }}>{children}</ReportsContext.Provider>
 }

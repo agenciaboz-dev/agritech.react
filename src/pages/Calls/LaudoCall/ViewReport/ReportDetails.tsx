@@ -23,6 +23,7 @@ import { GeralReport, Report } from "../../../../definitions/report"
 import { useSnackbar } from "burgos-snackbar"
 import { useDisclosure } from "@mantine/hooks"
 import { api } from "../../../../api/index.ts"
+import { useReports } from "../../../../hooks/useReports.ts"
 
 interface ReportDetailsProps {}
 
@@ -47,6 +48,7 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
     const { user } = useUser()
     const io = useIo()
     const { snackbar } = useSnackbar()
+    const reports = useReports()
 
     const [expanded, setExpanded] = React.useState<string | false>("")
     const expandendChange = (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
@@ -63,7 +65,9 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
     const [selectedReport, setSelectedReport] = useState<Report>()
     const callSelect = listCalls.find((item) => item.id === Number(callid))
     useEffect(() => {
-        setSelectedReport(callSelect?.reports?.find((item) => item.id === Number(reportid)))
+        const call_report = callSelect?.reports?.find((item) => item.id === Number(reportid))
+        const updated_report = reports.listReports.find((item) => item.id == call_report?.id)
+        setSelectedReport(updated_report)
     }, [callSelect?.reports])
 
     const handleApprove = async () => {
@@ -72,10 +76,7 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
     }
 
     const exportPDF = async () => {
-        // setPdfLoading(true)
-        const response = await api.post("/pdf", { id: selectedReport?.id })
-        console.log({ pdf_response: response.data })
-        // setPdfLoading(false)
+        selectedReport?.pdf_path && window.open(selectedReport.pdf_path, "_blank")?.focus()
     }
 
     useEffect(() => {

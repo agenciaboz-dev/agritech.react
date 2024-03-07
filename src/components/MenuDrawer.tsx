@@ -126,8 +126,8 @@ export const MenuDrawer: React.FC<MenuDrawerProps> = ({}) => {
                 </Box>
             </Box>
 
-            <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
-                <MenuItem
+            <Box sx={{ width: "100%", alignItems: "end" }}>
+                {/* <MenuItem
                     sx={{
                         fontSize: "3.8vw",
                         height: "fit-content",
@@ -144,17 +144,18 @@ export const MenuDrawer: React.FC<MenuDrawerProps> = ({}) => {
                 >
                     <img src={Ios} style={{ width: "6vw" }} />
                     Configurações
-                </MenuItem>
+                </MenuItem> */}
                 <MenuItem
                     sx={{
                         fontSize: "3.8vw",
                         height: "fit-content",
-                        alignItems: "center",
                         padding: "0 4vw",
                         marginTop: "auto",
                         fontFamily: "MalgunGothicBold",
                         color: "#fff",
                         gap: "1.5vw",
+                        width: "100%",
+                        justifyContent: "end",
                     }}
                     onClick={() => {
                         logout()
