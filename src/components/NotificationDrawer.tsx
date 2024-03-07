@@ -41,7 +41,7 @@ export const NotificationDrawer: React.FC<NotificationDrawerProps> = ({}) => {
             onClose={handleClose}
             PaperProps={{
                 sx: {
-                    padding: "6vw 4vw",
+                    padding: "6vw 3vw",
                     width: "78vw",
                     height: "100%",
                     borderTopLeftRadius: "10vw",

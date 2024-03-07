@@ -90,9 +90,15 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                 onClick: () => navigate(`/adm/settings-kit/${notification.target_id}`),
             },
         },
-        toggle: {
+        active: {
             kit: {
-                message: `Seu kit foi ${kit?.active ? "ativado" : "desativado"}`,
+                message: `Seu kit foi ativado`,
+                onClick: () => navigate(`/adm/settings-kit/${notification.target_id}`),
+            },
+        },
+        disabled: {
+            kit: {
+                message: `Seu kit foi desativado`,
                 onClick: () => navigate(`/adm/settings-kit/${notification.target_id}`),
             },
         },
@@ -105,7 +111,7 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
         close: {
             report: {
                 message: `O relatório do talhão ${report?.call?.talhao?.name} foi fechado.`,
-                onClick: () => navigate(`/adm/call/${report?.callId}/report/${notification.target_id}`), //rever caminho relatório
+                onClick: () => navigate(`/adm/call/${report?.callId}/report/${notification.target_id}`),
             },
         },
     }
@@ -187,28 +193,26 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                                 paddingRight: 0,
                             }}
                         />
-                    ) : notification.target_key === "kit" && notification.action === "toggle" ? (
-                        kit?.active ? (
-                            <PiPlugsConnectedDuotone
-                                style={{
-                                    color: drawer ? colors.text.white : colors.text.black,
-                                    width: "7vw",
-                                    height: "7vw",
-                                    paddingLeft: 0,
-                                    paddingRight: 0,
-                                }}
-                            />
-                        ) : (
-                            <VscDebugDisconnect
-                                style={{
-                                    color: drawer ? colors.text.white : colors.text.black,
-                                    width: "7vw",
-                                    height: "7vw",
-                                    paddingLeft: 0,
-                                    paddingRight: 0,
-                                }}
-                            />
-                        )
+                    ) : notification.target_key === "kit" && notification.action === "active" ? (
+                        <PiPlugsConnectedDuotone
+                            style={{
+                                color: drawer ? colors.text.white : colors.text.black,
+                                width: "7vw",
+                                height: "7vw",
+                                paddingLeft: 0,
+                                paddingRight: 0,
+                            }}
+                        />
+                    ) : notification.target_key === "kit" && notification.action === "disabled" ? (
+                        <VscDebugDisconnect
+                            style={{
+                                color: drawer ? colors.text.white : colors.text.black,
+                                width: "7vw",
+                                height: "7vw",
+                                paddingLeft: 0,
+                                paddingRight: 0,
+                            }}
+                        />
                     ) : notification.target_key === "kit" && notification.action === "new" ? (
                         <TbPlaylistAdd
                             style={{
@@ -272,7 +276,7 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                         >
                             Novo kit {kit?.name} disponível
                         </p>
-                    ) : notification.action === "toggle" && notification.target_key === "kit" ? (
+                    ) : notification.target_key === "kit" ? (
                         <p
                             style={{
                                 fontWeight: "800",
