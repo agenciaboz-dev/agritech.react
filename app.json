@@ -1,0 +1,12 @@
+{
+  "expo": {
+    "extra": {
+      "eas": {
+        "projectId": "5b4d4307-2f07-46b1-b7cb-fe44200b75ca"
+      }
+    },
+    "android": {
+      "package": "com.tainarasn.agritech"
+    }
+  }
+}
