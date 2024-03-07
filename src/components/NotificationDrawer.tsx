@@ -42,7 +42,7 @@ export const NotificationDrawer: React.FC<NotificationDrawerProps> = ({}) => {
             PaperProps={{
                 sx: {
                     padding: "6vw 4vw",
-                    width: "72vw",
+                    width: "78vw",
                     height: "100%",
                     borderTopLeftRadius: "10vw",
                     borderBottomLeftRadius: "10vw",
@@ -74,7 +74,7 @@ export const NotificationDrawer: React.FC<NotificationDrawerProps> = ({}) => {
             </Box>
             <Box sx={{ overflowY: "auto", gap: "8vw" }}>
                 <Box>
-                    <Box sx={{ flexDirection: "column", paddingTop: "4vw", gap: "1vw" }}>
+                    <Box sx={{ flexDirection: "column", paddingTop: "2vw", gap: "0.3vw" }}>
                         {listNotifications?.map((item) => (
                             <LogNotification notification={item} drawer />
                         ))}

@@ -19,6 +19,7 @@ import { Call } from "../../definitions/call"
 import { Report } from "../../definitions/report"
 import { useNavigate } from "react-router-dom"
 import { colors } from "../../style/colors"
+import { RiCustomerServiceLine } from "react-icons/ri"
 
 interface LogNotificationProps {
     notification: NotificationType
@@ -97,14 +98,14 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
         },
         approve: {
             report: {
-                message: "O relatório com ID ${target_id} foi aprovado.",
-                onClick: () => navigate(`/adm/review/profile/${notification.target_id}`), //rever caminho relatório
+                message: `O relatório do talhão ${report?.call?.talhao?.name} foi aprovado.`,
+                onClick: () => navigate(`/adm/call/${report?.callId}/report/${notification.target_id}`),
             },
         },
         close: {
             report: {
                 message: `O relatório do talhão ${report?.call?.talhao?.name} foi fechado.`,
-                onClick: () => navigate(`/adm/review/profile/${notification.target_id}`), //rever caminho relatório
+                onClick: () => navigate(`/adm/call/${report?.callId}/report/${notification.target_id}`), //rever caminho relatório
             },
         },
     }
@@ -114,7 +115,6 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
         const actionObject = messageTemplates[notification.action]
         // Acessa o objeto de template baseado no target_key da notificação
         const templateObject = actionObject ? actionObject[notification.target_key] : null
-        console.log("onClick function:", templateObject.onClick)
         if (templateObject) {
             // Processa a mensagem para substituir placeholders
             // const processedMessage = templateObject.message.replace("${target_id}", notification.target_id.toString())
@@ -141,11 +141,12 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                 alignItems: "center",
                 justifyContent: "space-between",
             }}
+            onClick={onClick}
         >
-            <Box sx={{ flexDirection: "row", gap: drawer ? "6.5vw" : "1.5vw", width: "90%", alignItems: "center" }}>
+            <Box sx={{ flexDirection: "row", gap: drawer ? "3vw" : "1.5vw", width: "90%", alignItems: "center" }}>
                 <Box width="13%">
                     {notification.target_key === "employee" ? (
-                        <Avatar src={employee?.image} sx={{ width: "10vw", height: "10vw" }} />
+                        <Avatar src={employee?.image} sx={{ width: "8vw", height: "8vw" }} />
                     ) : notification.target_key === "report" && notification.action === "close" ? (
                         <HiOutlineClipboardDocument
                             style={{
@@ -167,7 +168,15 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                             }}
                         />
                     ) : notification.target_key === "call" ? (
-                        <img src={Alert} style={{ width: "8.5vw" }} />
+                        <RiCustomerServiceLine
+                            style={{
+                                color: drawer ? colors.text.white : colors.text.black,
+                                width: "6vw",
+                                height: "6vw",
+                                paddingLeft: 0,
+                                paddingRight: 0,
+                            }}
+                        />
                     ) : notification.target_key === "talhao" || notification.target_key === "tillage" ? (
                         <PiPlant
                             style={{
@@ -232,6 +241,9 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                                 fontWeight: "800",
                                 fontSize: "0.8rem",
                                 color: drawer ? colors.text.white : colors.text.black,
+                                textOverflow: "ellipsis",
+                                whiteSpace: "nowrap",
+                                overflowX: "hidden",
                             }}
                         >
                             {employee?.name}
@@ -278,7 +290,7 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                                 color: drawer ? colors.text.white : colors.text.black,
                             }}
                         >
-                            Seu kit {kit?.name} foi atualizado
+                            Kit {kit?.name} foi atualizado
                         </p>
                     ) : (
                         notification.action === "new" &&
@@ -288,6 +300,9 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                                     fontWeight: "800",
                                     fontSize: "0.8rem",
                                     color: drawer ? colors.text.white : colors.text.black,
+                                    textOverflow: "ellipsis",
+                                    whiteSpace: "nowrap",
+                                    overflowX: "hidden",
                                 }}
                             >
                                 Chamado aberto para {call?.producer?.user?.name}
@@ -296,7 +311,7 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                     )}
                     <p
                         style={{
-                            display: "flex",
+                            // display: "flex",
                             fontSize: "3.0vw",
                             textOverflow: "ellipsis",
                             overflowX: "hidden",
@@ -308,9 +323,11 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                     </p>
                 </Box>
             </Box>
-            <IconButton onClick={onClick}>
-                <ArrowForwardIos fontSize="small" sx={{ color: drawer ? colors.text.white : colors.text.black }} />
-            </IconButton>
+            <Box sx={{ width: "10%" }}>
+                <IconButton onClick={onClick}>
+                    <ArrowForwardIos fontSize="small" sx={{ color: drawer ? colors.text.white : colors.text.black }} />
+                </IconButton>
+            </Box>
         </Box>
     )
 }
