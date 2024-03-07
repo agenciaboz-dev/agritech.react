@@ -12,6 +12,7 @@ interface NotificationDrawerContextValue {
     recents: NotificationClass[] | undefined
     setRecents: (value: NotificationClass[]) => void
     addNotification: (value: NotificationClass) => void
+    removeNotification: (valunotificationIde: number) => void
 }
 
 interface NotificationDrawerProviderProps {
@@ -32,6 +33,11 @@ export const NotificationDrawerProvider: React.FC<NotificationDrawerProviderProp
 
     const addNotification = (newValue: NotificationClass) => {
         setListNotifications((item) => [...(item ?? []), newValue])
+    }
+    const removeNotification = (notificationId: number) => {
+        setListNotifications((currentNotifications) =>
+            currentNotifications?.filter((notification) => notification.id !== notificationId)
+        )
     }
 
     useEffect(() => {
@@ -65,7 +71,16 @@ export const NotificationDrawerProvider: React.FC<NotificationDrawerProviderProp
 
     return (
         <NotificationDrawerContext.Provider
-            value={{ open, setOpen, listNotifications, setListNotifications, addNotification, recents, setRecents }}
+            value={{
+                open,
+                setOpen,
+                listNotifications,
+                setListNotifications,
+                addNotification,
+                recents,
+                setRecents,
+                removeNotification,
+            }}
         >
             {children}
         </NotificationDrawerContext.Provider>

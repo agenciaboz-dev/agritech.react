@@ -19,6 +19,8 @@ import { colors } from "../../style/colors"
 import { RiCustomerServiceLine } from "react-icons/ri"
 import { useIo } from "../../hooks/useIo"
 import { NotificationClass } from "../../types/server/class/Notification"
+import { useNotification } from "../../hooks/useNotifications"
+import { useMenuDrawer } from "../../hooks/useMenuDrawer"
 
 interface LogNotificationProps {
     notification: NotificationClass
@@ -29,6 +31,8 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
     const io = useIo()
     const { user } = useUser()
     const navigate = useNavigate()
+
+    const { removeNotification, open, setOpen } = useNotification()
 
     const { listUsers, pendingUsers } = useUsers()
     const { listKits } = useKits()
@@ -53,9 +57,10 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
     const messageTemplates: any = {
         new: {
             employee: {
-                message: "Novo colaborador cadastrado, encaminhe-o para aprovação.",
                 onClick: () => {
                     user && io.emit("notification:viewed", notification.id, user.id)
+                    removeNotification(notification.id)
+                    removeNotification(notification.id)
                     navigate(
                         !employee?.approved
                             ? `/adm/review/profile/${notification.target_id}`
@@ -68,12 +73,16 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                 onClick: () => {
                     user && io.emit("notification:viewed", notification.id, user.id)
                     navigate(`/producer/tillage/${talhao?.tillageId}`)
+                    removeNotification(notification.id)
                 },
             },
             kit: {
                 onClick: () => {
+                    drawer && open && setOpen(false)
                     navigate(`/adm/settings-kit/${notification.target_id}`)
+
                     user && io.emit("notification:viewed", notification.id, user.id)
+                    removeNotification(notification.id)
                 },
             },
             call: {
@@ -86,6 +95,7 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                             ? `/employee/call/${notification.target_id}/laudos`
                             : `/employee/call/${notification.target_id}/laudos`
                     )
+                    removeNotification(notification.id)
                 },
             },
         },
@@ -95,6 +105,7 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                 onClick: () => {
                     user && io.emit("notification:viewed", notification.id, user.id)
                     navigate(`/adm/settings-kit/${notification.target_id}`)
+                    removeNotification(notification.id)
                 },
             },
         },
@@ -102,8 +113,11 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
             kit: {
                 message: `Seu kit foi ativado`,
                 onClick: () => {
+                    drawer && open && setOpen(false)
+
                     user && io.emit("notification:viewed", notification.id, user.id)
                     navigate(`/adm/settings-kit/${notification.target_id}`)
+                    removeNotification(notification.id)
                 },
             },
             admin: {
@@ -111,6 +125,7 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                 onClick: () => {
                     user && io.emit("notification:viewed", notification.id, user.id)
                     navigate(`/adm/profile/${notification.target_id}`)
+                    removeNotification(notification.id)
                 },
             },
             manager: {
@@ -118,6 +133,7 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                 onClick: () => {
                     user && io.emit("notification:viewed", notification.id, user.id)
                     navigate(`/adm/profile/${notification.target_id}`)
+                    removeNotification(notification.id)
                 },
             },
         },
@@ -127,6 +143,7 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                 onClick: () => {
                     user && io.emit("notification:viewed", notification.id, user.id)
                     navigate(`/adm/settings-kit/${notification.target_id}`)
+                    removeNotification(notification.id)
                 },
             },
             admin: {
@@ -134,13 +151,14 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                 onClick: () => {
                     user && io.emit("notification:viewed", notification.id, user.id)
                     navigate(`/adm/profile/${notification.target_id}`)
+                    removeNotification(notification.id)
                 },
             },
             manager: {
-                message: `Você se tornou administrador`,
                 onClick: () => {
                     user && io.emit("notification:viewed", notification.id, user.id)
                     navigate(`/adm/profile/${notification.target_id}`)
+                    removeNotification(notification.id)
                 },
             },
         },
@@ -150,6 +168,7 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                 onClick: () => {
                     user && io.emit("notification:viewed", notification.id, user.id)
                     navigate(`/adm/call/${report?.callId}/report/${notification.target_id}`)
+                    removeNotification(notification.id)
                 },
             },
         },
@@ -159,6 +178,7 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                 onClick: () => {
                     user && io.emit("notification:viewed", notification.id, user.id)
 
+                    removeNotification(notification.id)
                     navigate(`/adm/call/${report?.callId}/report/${notification.target_id}`)
                 },
             },

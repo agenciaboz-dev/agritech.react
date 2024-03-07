@@ -58,25 +58,11 @@ export const NotificationDrawer: React.FC<NotificationDrawerProps> = ({}) => {
             keepMounted
         >
             <Box sx={{ p: "4vw 4vw 2vw", flexDirection: "row", justifyContent: "space-between" }}>
-                <p style={{ fontWeight: "800", color: colors.text.white, fontFamily: "MalgunGothicBold" }}>
-                    {navigationItems.notifications.title}
-                </p>
-                <p
-                    style={{
-                        fontWeight: "800",
-                        color: colors.text.white,
-                        fontFamily: "MalgunGothicBold",
-                        fontSize: "3.5vw",
-                    }}
-                    onClick={() => {
-                        navigate("/notifications/list")
-                        setOpen(false)
-                    }}
-                >
-                    Ver todas
+                <p style={{ fontWeight: "800", color: colors.text.white, fontFamily: "MalgunGothicBold", fontSize:"1.2rem" }}>
+                    {navigationItems.notifications.title} Recentes
                 </p>
             </Box>
-            <Box sx={{ overflowY: "auto", gap: "8vw" }}>
+            <Box sx={{ overflowY: "auto", gap: "8vw", height: "90%" }}>
                 <Box>
                     <Box sx={{ flexDirection: "column", paddingTop: "2vw", gap: "vw" }}>
                         {recents?.map((item, index) => (
@@ -85,6 +71,22 @@ export const NotificationDrawer: React.FC<NotificationDrawerProps> = ({}) => {
                     </Box>
                 </Box>
             </Box>
+            <p
+                style={{
+                    fontWeight: "800",
+                    color: colors.text.white,
+                    fontFamily: "MalgunGothicBold",
+                    fontSize: "3.5vw",
+                    alignSelf: "end",
+                    marginRight: "5vw",
+                }}
+                onClick={() => {
+                    navigate("/notifications/list")
+                    setOpen(false)
+                }}
+            >
+                Ver todas
+            </p>
         </Drawer>
     )
 }
