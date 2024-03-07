@@ -30,7 +30,6 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         io.emit("user:login", data)
     }
     const logout = () => {
-        io.emit("user:logout")
         navigate("/login")
         setUser(null)
         snackbar({ severity: "info", text: "Desconectado!" })
