@@ -82,9 +82,9 @@ export const NotificationsList: React.FC<NotificationsListProps> = ({ user }) =>
                         gap: "3vw",
                     }}
                 >
-                    <Box sx={{ overflowY: "auto", height: "60%", gap: "2vw" }}>
+                    <Box sx={{ overflowY: "auto", height: "75%", gap: "2vw" }}>
                         {listNotifications?.map((item) => (
-                            <LogNotification notification={item} />
+                            <LogNotification drawer={false} notification={item} />
                         ))}
                     </Box>
                 </Box>
