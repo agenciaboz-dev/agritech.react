@@ -7,18 +7,22 @@ import { colors } from "../style/colors"
 import { IoIosArrowDown } from "react-icons/io"
 import { useNotification } from "../hooks/useNotifications"
 import { LogNotification } from "../pages/Notifications/LogNotification"
+import { userInfo } from "os"
+import { useUser } from "../hooks/useUser"
 
 interface NotificationDrawerProps {}
 
 export const NotificationDrawer: React.FC<NotificationDrawerProps> = ({}) => {
     const navigationItems = useNavigationList()
+    const { user } = useUser()
     const notifications = navigationItems.notifications.drawer
 
     const navigate = useNavigate()
 
     const { open, setOpen } = useNotificationDrawer()
     const { listNotifications } = useNotification()
-    // const { user, logout, setUser } = useUser()
+
+    const recents = user && listNotifications?.filter((item) => !item.viewed_by.includes(user.id))
 
     const menuItemStyle: SxProps = {
         fontSize: "3.8vw",
@@ -74,9 +78,9 @@ export const NotificationDrawer: React.FC<NotificationDrawerProps> = ({}) => {
             </Box>
             <Box sx={{ overflowY: "auto", gap: "8vw" }}>
                 <Box>
-                    <Box sx={{ flexDirection: "column", paddingTop: "2vw", gap: "0.3vw" }}>
-                        {listNotifications?.map((item) => (
-                            <LogNotification notification={item} drawer />
+                    <Box sx={{ flexDirection: "column", paddingTop: "2vw", gap: "vw" }}>
+                        {recents?.map((item, index) => (
+                            <LogNotification notification={item} drawer key={index} />
                         ))}
                     </Box>
                 </Box>

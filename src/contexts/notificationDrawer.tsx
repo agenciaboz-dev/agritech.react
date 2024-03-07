@@ -2,13 +2,16 @@ import { createContext, useEffect, useState } from "react"
 import React from "react"
 import { useIo } from "../hooks/useIo"
 import { useUser } from "../hooks/useUser"
+import { Notification, NotificationClass } from "../types/server/class/Notification"
 
 interface NotificationDrawerContextValue {
     open: boolean
     setOpen: (value: boolean) => void
-    listNotifications: NotificationType[] | undefined
-    setListNotifications: (value: NotificationType[] | undefined) => void
-    addNotification: (value: NotificationType) => void
+    listNotifications: NotificationClass[] | undefined
+    setListNotifications: (value: NotificationClass[]) => void
+    recents: NotificationClass[] | undefined
+    setRecents: (value: NotificationClass[]) => void
+    addNotification: (value: NotificationClass) => void
 }
 
 interface NotificationDrawerProviderProps {
@@ -24,9 +27,10 @@ export const NotificationDrawerProvider: React.FC<NotificationDrawerProviderProp
 
     const io = useIo()
     const { user } = useUser()
-    const [listNotifications, setListNotifications] = useState<NotificationType[]>()
+    const [listNotifications, setListNotifications] = useState<NotificationClass[]>([])
+    const [recents, setRecents] = useState<NotificationClass[]>([])
 
-    const addNotification = (newValue: NotificationType) => {
+    const addNotification = (newValue: NotificationClass) => {
         setListNotifications((item) => [...(item ?? []), newValue])
     }
 
@@ -35,16 +39,33 @@ export const NotificationDrawerProvider: React.FC<NotificationDrawerProviderProp
     }, [user])
 
     useEffect(() => {
-        io.on("notification:list", (list: NotificationType[]) => {
+        io.on("notification:list", (list: NotificationClass[]) => {
             setListNotifications(list)
             console.log(list)
         })
-        console.log(listNotifications)
+        // console.log(listNotifications)
+    }, [])
+
+    useEffect(() => {
+        io.on("notification:new", (notification: NotificationClass) => {
+            // if (notification.users.find((user_id) => user_id == user?.id)) {
+            setListNotifications((prevNotifications) => [...prevNotifications, notification])
+            console.log("entrou")
+            // }
+        })
+
+        return () => {
+            io.off("notification:new")
+        }
+    }, [])
+
+    useEffect(() => {
+        user && setRecents(listNotifications?.filter((item) => !item.viewed_by.includes(user.id)))
     }, [listNotifications])
 
     return (
         <NotificationDrawerContext.Provider
-            value={{ open, setOpen, listNotifications, setListNotifications, addNotification }}
+            value={{ open, setOpen, listNotifications, setListNotifications, addNotification, recents, setRecents }}
         >
             {children}
         </NotificationDrawerContext.Provider>

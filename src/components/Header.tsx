@@ -1,4 +1,4 @@
-import { Avatar, Box, IconButton, Paper, SxProps } from "@mui/material"
+import { Avatar, Badge, Box, IconButton, Paper, SxProps } from "@mui/material"
 import NotificationsIcon from "@mui/icons-material/Notifications"
 import { useHeader } from "../hooks/useHeader"
 import { useMenuDrawer } from "../hooks/useMenuDrawer"
@@ -12,6 +12,7 @@ import drone from "../assets/logo/droneIcon.png"
 import { useNotificationDrawer } from "../hooks/useNotificationDrawer"
 import { useUser } from "../hooks/useUser"
 import { useScrollIntoView } from "@mantine/hooks"
+import { useNotification } from "../hooks/useNotifications"
 
 interface HeaderProps {
     back?: boolean
@@ -25,6 +26,7 @@ export const Header: React.FC<HeaderProps> = ({ back, location, style }) => {
     const notificationDrawer = useNotificationDrawer()
     const navigate = useNavigate()
     const { user } = useUser()
+    const { listNotifications, recents } = useNotification()
 
     const iconStyle: SxProps = {
         width: "7vw",
@@ -59,13 +61,16 @@ export const Header: React.FC<HeaderProps> = ({ back, location, style }) => {
             {/* <IconButton color="primary" onClick={notifications.toggle}> */}
             <Box style={{ flexDirection: "row", gap: "4vw", alignItems: "center" }}>
                 <SearchIcon sx={{ color: "#fff" }} />
-                <NotificationsNoneIcon
-                    sx={{ color: "#fff" }}
-                    onClick={() => {
-                        notificationDrawer.toggle()
-                        console.log("tem qe abrir")
-                    }}
-                />
+                <Badge badgeContent={recents?.length} color="success">
+                    {" "}
+                    <NotificationsNoneIcon
+                        sx={{ color: "#fff" }}
+                        onClick={() => {
+                            notificationDrawer.toggle()
+                            console.log("tem qe abrir")
+                        }}
+                    />
+                </Badge>
                 <Avatar
                     src={user?.image}
                     style={{ color: "#fff", width: "8vw", height: "8vw" }}

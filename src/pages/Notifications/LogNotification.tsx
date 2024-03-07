@@ -1,6 +1,5 @@
 import { Avatar, Box, IconButton } from "@mui/material"
 import React, { useEffect, useState } from "react"
-import findEmployee from "../../hooks/filterEmployee"
 import { useKits } from "../../hooks/useKits"
 import { useCall } from "../../hooks/useCall"
 import { useReports } from "../../hooks/useReports"
@@ -9,9 +8,7 @@ import { useUsers } from "../../hooks/useUsers"
 import ArrowForwardIos from "@mui/icons-material/ArrowForwardIos"
 import { useUser } from "../../hooks/useUser"
 import { PiPlant, PiPlugsConnectedDuotone } from "react-icons/pi"
-import { CiViewTable } from "react-icons/ci"
-import Alert from "../../assets/icons/circle_alert.svg"
-import { TbPlaylistAdd, TbReport } from "react-icons/tb"
+import { TbCrown, TbPlaylistAdd } from "react-icons/tb"
 import { HiOutlineClipboardDocument, HiOutlineClipboardDocumentCheck } from "react-icons/hi2"
 import { VscDebugDisconnect } from "react-icons/vsc"
 import { MdUpdate } from "react-icons/md"
@@ -20,13 +17,16 @@ import { Report } from "../../definitions/report"
 import { useNavigate } from "react-router-dom"
 import { colors } from "../../style/colors"
 import { RiCustomerServiceLine } from "react-icons/ri"
+import { useIo } from "../../hooks/useIo"
+import { NotificationClass } from "../../types/server/class/Notification"
 
 interface LogNotificationProps {
-    notification: NotificationType
+    notification: NotificationClass
     drawer: Boolean
 }
 
 export const LogNotification: React.FC<LogNotificationProps> = ({ notification, drawer }) => {
+    const io = useIo()
     const { user } = useUser()
     const navigate = useNavigate()
 
@@ -49,105 +49,158 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
         setTalhao(listTalhao?.find((item) => item.id === notification.target_id))
         setKit(listKits?.find((item) => item.id === notification.target_id))
     }, [notification])
-    useEffect(() => {
-        notification.target_key === "employee" && console.log(employee)
-        notification.target_key === "call" && console.log(call)
-        notification.target_key === "report" && console.log(report)
-        notification.target_key === "talhao" && console.log(talhao)
-        notification.target_key === "kit" && console.log(kit)
-    }, [])
 
     const messageTemplates: any = {
         new: {
             employee: {
                 message: "Novo colaborador cadastrado, encaminhe-o para aprovação.",
-                onClick: () =>
+                onClick: () => {
+                    user && io.emit("notification:viewed", notification.id, user.id)
                     navigate(
                         !employee?.approved
                             ? `/adm/review/profile/${notification.target_id}`
                             : `/adm/profile/${notification.target_id}`
-                    ),
+                    )
+                },
             },
             talhao: {
                 message: "Um novo talhão foi adicionado para você.",
-                onClick: () => navigate(`/producer/tillage/${talhao?.tillageId}`),
+                onClick: () => {
+                    user && io.emit("notification:viewed", notification.id, user.id)
+                    navigate(`/producer/tillage/${talhao?.tillageId}`)
+                },
             },
-            kit: { onClick: () => navigate(`/adm/settings-kit/${notification.target_id}`) },
+            kit: {
+                onClick: () => {
+                    navigate(`/adm/settings-kit/${notification.target_id}`)
+                    user && io.emit("notification:viewed", notification.id, user.id)
+                },
+            },
             call: {
-                onClick: () =>
+                onClick: () => {
+                    user && io.emit("notification:viewed", notification.id, user.id)
                     navigate(
                         user?.isAdmin
                             ? `/adm/call/${notification.target_id}/laudos`
                             : user?.producer
                             ? `/employee/call/${notification.target_id}/laudos`
                             : `/employee/call/${notification.target_id}/laudos`
-                    ),
+                    )
+                },
             },
         },
         update: {
             kit: {
                 message: "Verifique as atualizações",
-                onClick: () => navigate(`/adm/settings-kit/${notification.target_id}`),
+                onClick: () => {
+                    user && io.emit("notification:viewed", notification.id, user.id)
+                    navigate(`/adm/settings-kit/${notification.target_id}`)
+                },
             },
         },
         active: {
             kit: {
                 message: `Seu kit foi ativado`,
-                onClick: () => navigate(`/adm/settings-kit/${notification.target_id}`),
+                onClick: () => {
+                    user && io.emit("notification:viewed", notification.id, user.id)
+                    navigate(`/adm/settings-kit/${notification.target_id}`)
+                },
+            },
+            admin: {
+                message: `Agora você tem permissões de administrador.`,
+                onClick: () => {
+                    user && io.emit("notification:viewed", notification.id, user.id)
+                    navigate(`/adm/profile/${notification.target_id}`)
+                },
+            },
+            manager: {
+                message: `Agora você tem permissões de gerente.`,
+                onClick: () => {
+                    user && io.emit("notification:viewed", notification.id, user.id)
+                    navigate(`/adm/profile/${notification.target_id}`)
+                },
             },
         },
         disabled: {
             kit: {
                 message: `Seu kit foi desativado`,
-                onClick: () => navigate(`/adm/settings-kit/${notification.target_id}`),
+                onClick: () => {
+                    user && io.emit("notification:viewed", notification.id, user.id)
+                    navigate(`/adm/settings-kit/${notification.target_id}`)
+                },
+            },
+            admin: {
+                message: `Você não é mais administrador`,
+                onClick: () => {
+                    user && io.emit("notification:viewed", notification.id, user.id)
+                    navigate(`/adm/profile/${notification.target_id}`)
+                },
+            },
+            manager: {
+                message: `Você se tornou administrador`,
+                onClick: () => {
+                    user && io.emit("notification:viewed", notification.id, user.id)
+                    navigate(`/adm/profile/${notification.target_id}`)
+                },
             },
         },
         approve: {
             report: {
                 message: `O relatório do talhão ${report?.call?.talhao?.name} foi aprovado.`,
-                onClick: () => navigate(`/adm/call/${report?.callId}/report/${notification.target_id}`),
+                onClick: () => {
+                    user && io.emit("notification:viewed", notification.id, user.id)
+                    navigate(`/adm/call/${report?.callId}/report/${notification.target_id}`)
+                },
             },
         },
         close: {
             report: {
                 message: `O relatório do talhão ${report?.call?.talhao?.name} foi fechado.`,
-                onClick: () => navigate(`/adm/call/${report?.callId}/report/${notification.target_id}`),
+                onClick: () => {
+                    user && io.emit("notification:viewed", notification.id, user.id)
+
+                    navigate(`/adm/call/${report?.callId}/report/${notification.target_id}`)
+                },
             },
         },
     }
 
+    useEffect(() => {
+        io.on("notification:viewed", () => {})
+    }, [])
     const generateMessageAndOnClick = () => {
-        // Acessa o objeto de ação baseado na ação da notificação
         const actionObject = messageTemplates[notification.action]
-        // Acessa o objeto de template baseado no target_key da notificação
         const templateObject = actionObject ? actionObject[notification.target_key] : null
         if (templateObject) {
-            // Processa a mensagem para substituir placeholders
-            // const processedMessage = templateObject.message.replace("${target_id}", notification.target_id.toString())
-            // Retorna a mensagem processada e a função onClick
             return { message: templateObject.message, onClick: templateObject.onClick }
         } else {
-            // Retorna valores padrão se não houver template correspondente
             return { onClick: () => console.log("Ação padrão.") }
         }
     }
 
     // Usar a função para gerar a mensagem e onClick
     const { message, onClick } = generateMessageAndOnClick()
-
+    const findBy = notification.viewed_by.find((item) => item === user?.id)
     return (
         <Box
             sx={{
                 width: "100%",
-                height: "16vw",
-                bgcolor: !drawer ? "#F0F9F2" : "transparent",
+                height: "13vw",
+                bgcolor:
+                    !drawer && findBy
+                        ? "transparent"
+                        : !drawer && findBy === undefined
+                        ? "#F0F9F2"
+                        : drawer && "transparent",
                 p: "3vw",
                 borderRadius: "4vw",
                 flexDirection: "row",
                 alignItems: "center",
                 justifyContent: "space-between",
             }}
-            onClick={onClick}
+            onClick={() => {
+                !drawer && findBy === undefined && onClick
+            }}
         >
             <Box sx={{ flexDirection: "row", gap: drawer ? "3vw" : "1.5vw", width: "90%", alignItems: "center" }}>
                 <Box width="13%">
@@ -223,6 +276,46 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                                 paddingRight: 0,
                             }}
                         />
+                    ) : notification.target_key === "active" && notification.action === "admin" ? (
+                        <TbCrown
+                            style={{
+                                color: drawer ? colors.text.white : colors.text.black,
+                                width: "7vw",
+                                height: "7vw",
+                                paddingLeft: 0,
+                                paddingRight: 0,
+                            }}
+                        />
+                    ) : notification.target_key === "disabled" && notification.action === "admin" ? (
+                        <TbCrown
+                            style={{
+                                color: drawer ? colors.text.white : colors.text.black,
+                                width: "7vw",
+                                height: "7vw",
+                                paddingLeft: 0,
+                                paddingRight: 0,
+                            }}
+                        />
+                    ) : notification.target_key === "active" && notification.action === "manager" ? (
+                        <TbCrown
+                            style={{
+                                color: drawer ? colors.text.white : colors.text.black,
+                                width: "7vw",
+                                height: "7vw",
+                                paddingLeft: 0,
+                                paddingRight: 0,
+                            }}
+                        />
+                    ) : notification.target_key === "disabled" && notification.action === "manager" ? (
+                        <TbCrown
+                            style={{
+                                color: drawer ? colors.text.white : colors.text.black,
+                                width: "7vw",
+                                height: "7vw",
+                                paddingLeft: 0,
+                                paddingRight: 0,
+                            }}
+                        />
                     ) : (
                         notification.target_key === "kit" &&
                         notification.action === "update" && (
@@ -239,58 +332,153 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                     )}
                 </Box>
                 <Box sx={{ flexDirection: "column", width: "75%", flexWrap: "nowrap" }}>
+                    <Box sx={{ flexDirection: "row", gap: "1vw" }}>
+                        <p
+                            style={{
+                                // display: "flex",
+                                fontSize: "2.5vw",
+                                textOverflow: "ellipsis",
+                                overflowX: "hidden",
+                                whiteSpace: "nowrap",
+                                color: drawer ? colors.text.white : colors.text.black,
+                            }}
+                        >
+                            {" "}
+                            {new Date(Number(notification.datetime)).toLocaleDateString("pt-br")} -
+                        </p>
+                        <p
+                            style={{
+                                // display: "flex",
+                                fontSize: "2.5vw",
+                                textOverflow: "ellipsis",
+                                overflowX: "hidden",
+                                whiteSpace: "nowrap",
+                                color: drawer ? colors.text.white : colors.text.black,
+                            }}
+                        >
+                            {" "}
+                            {new Date(Number(notification.datetime)).toLocaleTimeString("pt-br")}
+                        </p>
+                    </Box>
                     {notification.target_key === "employee" ? (
                         <p
                             style={{
-                                fontWeight: "800",
-                                fontSize: "0.8rem",
+                                fontSize: "0.9rem",
                                 color: drawer ? colors.text.white : colors.text.black,
                                 textOverflow: "ellipsis",
                                 whiteSpace: "nowrap",
                                 overflowX: "hidden",
+                                fontWeight: findBy === undefined ? "800" : "0",
                             }}
                         >
-                            {employee?.name}
+                            {employee?.name} foi cadastrado
                         </p>
                     ) : notification.action === "close" && notification.target_key === "report" ? (
                         <p
                             style={{
                                 color: drawer ? colors.text.white : colors.text.black,
-
-                                fontWeight: "800",
-                                fontSize: "0.8rem",
+                                fontSize: "0.9rem",
                                 textOverflow: "ellipsis",
                                 whiteSpace: "nowrap",
                                 overflowX: "hidden",
+                                fontWeight: findBy === undefined ? "800" : "0",
                             }}
                         >
-                            {report?.call?.talhao?.tillage?.owner} - {report?.call?.talhao?.tillage?.name}
+                            Relatório fechado para {report?.call?.talhao?.tillage?.owner} -{" "}
+                            {report?.call?.talhao?.tillage?.name}
+                        </p>
+                    ) : notification.action === "active" && notification.target_key === "admin" ? (
+                        <p
+                            style={{
+                                color: drawer ? colors.text.white : colors.text.black,
+                                fontSize: "0.9rem",
+                                textOverflow: "ellipsis",
+                                whiteSpace: "nowrap",
+                                overflowX: "hidden",
+                                fontWeight: findBy === undefined ? "800" : "0",
+                            }}
+                        >
+                            Você se tornou administrador
+                        </p>
+                    ) : notification.action === "disabled" && notification.target_key === "admin" ? (
+                        <p
+                            style={{
+                                color: drawer ? colors.text.white : colors.text.black,
+                                fontSize: "0.9rem",
+                                textOverflow: "ellipsis",
+                                whiteSpace: "nowrap",
+                                overflowX: "hidden",
+                                fontWeight: findBy === undefined ? "800" : "0",
+                            }}
+                        >
+                            Você não é mais administrador
+                        </p>
+                    ) : notification.action === "active" && notification.target_key === "manager" ? (
+                        <p
+                            style={{
+                                color: drawer ? colors.text.white : colors.text.black,
+                                fontSize: "0.9rem",
+                                textOverflow: "ellipsis",
+                                whiteSpace: "nowrap",
+                                overflowX: "hidden",
+                                fontWeight: findBy === undefined ? "800" : "0",
+                            }}
+                        >
+                            Você se tornou gerente
+                        </p>
+                    ) : notification.action === "disabled" && notification.target_key === "manager" ? (
+                        <p
+                            style={{
+                                color: drawer ? colors.text.white : colors.text.black,
+                                fontSize: "0.9rem",
+                                textOverflow: "ellipsis",
+                                whiteSpace: "nowrap",
+                                overflowX: "hidden",
+                                fontWeight: findBy === undefined ? "800" : "0",
+                            }}
+                        >
+                            Você não é mais gerente
                         </p>
                     ) : notification.action === "new" && notification.target_key === "kit" ? (
                         <p
                             style={{
                                 color: drawer ? colors.text.white : colors.text.black,
-                                fontWeight: "800",
-                                fontSize: "0.8rem",
+                                fontSize: "0.9rem",
+                                fontWeight: findBy === undefined ? "800" : "0",
+                                textOverflow: "ellipsis",
+                                whiteSpace: "nowrap",
+                                overflowX: "hidden",
                             }}
                         >
                             Novo kit {kit?.name} disponível
                         </p>
-                    ) : notification.target_key === "kit" ? (
+                    ) : notification.action === "active" && notification.target_key === "kit" ? (
                         <p
                             style={{
-                                fontWeight: "800",
-                                fontSize: "0.8rem",
+                                fontSize: "0.9rem",
+                                color: drawer ? colors.text.white : colors.text.black,
+                                fontWeight: findBy === undefined ? "800" : "0",
+                            }}
+                        >
+                            Seu Kit foi ativado
+                        </p>
+                    ) : notification.action === "disabled" && notification.target_key === "kit" ? (
+                        <p
+                            style={{
+                                fontSize: "0.9rem",
+                                fontWeight: findBy === undefined ? "800" : "0",
+
                                 color: drawer ? colors.text.white : colors.text.black,
                             }}
                         >
-                            {kit?.name}
+                            Seu Kit foi desativado
                         </p>
                     ) : notification.action === "update" && notification.target_key === "kit" ? (
                         <p
                             style={{
-                                fontWeight: "800",
-                                fontSize: "0.8rem",
+                                fontSize: "0.9rem",
+                                fontWeight: findBy === undefined ? "800" : "0",
+
                                 color: drawer ? colors.text.white : colors.text.black,
                             }}
                         >
@@ -301,11 +489,12 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                         notification.target_key === "call" && (
                             <p
                                 style={{
-                                    fontWeight: "800",
-                                    fontSize: "0.8rem",
+                                    fontSize: "0.9rem",
                                     color: drawer ? colors.text.white : colors.text.black,
                                     textOverflow: "ellipsis",
                                     whiteSpace: "nowrap",
+                                    fontWeight: findBy === undefined ? "800" : "0",
+
                                     overflowX: "hidden",
                                 }}
                             >
@@ -313,24 +502,19 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                             </p>
                         )
                     )}
-                    <p
-                        style={{
-                            // display: "flex",
-                            fontSize: "3.0vw",
-                            textOverflow: "ellipsis",
-                            overflowX: "hidden",
-                            whiteSpace: "nowrap",
-                            color: drawer ? colors.text.white : colors.text.black,
-                        }}
-                    >
-                        {message}
-                    </p>
                 </Box>
             </Box>
             <Box sx={{ width: "10%" }}>
-                <IconButton onClick={onClick}>
-                    <ArrowForwardIos fontSize="small" sx={{ color: drawer ? colors.text.white : colors.text.black }} />
-                </IconButton>
+                {drawer && findBy === undefined && (
+                    <IconButton onClick={onClick}>
+                        <ArrowForwardIos fontSize="small" sx={{ color: drawer ? colors.text.white : colors.text.black }} />
+                    </IconButton>
+                )}
+                {!drawer && findBy === undefined && (
+                    <IconButton onClick={onClick}>
+                        <ArrowForwardIos fontSize="small" sx={{ color: drawer ? colors.text.white : colors.text.black }} />
+                    </IconButton>
+                )}
             </Box>
         </Box>
     )

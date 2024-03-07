@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, IconButton } from "@mui/material"
+import { Avatar, Badge, Box, Button, IconButton } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { colors } from "../../../style/colors"
 import drone from "../../../assets/logo/droneIcon.png"
@@ -17,6 +17,7 @@ import { CardUser } from "../../../components/CardUser"
 import Logo from "../../../assets/logo/Avatar.png"
 import { useNotificationDrawer } from "../../../hooks/useNotificationDrawer"
 import PostAddIcon from "@mui/icons-material/PostAdd"
+import { useNotification } from "../../../hooks/useNotifications"
 
 interface PanelProps {
     user: User
@@ -31,6 +32,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
 
     const menu = useMenuDrawer()
     const notificationDrawer = useNotificationDrawer()
+    const { recents } = useNotification()
     const { listUsers } = useUsers()
     const [listEmployee, setListEmployee] = useState<User[]>()
     const [listProducer, setListProducer] = useState<User[]>()
@@ -51,6 +53,9 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
         setListEmployee(listUsers?.filter((users) => users.employee !== null && !users.isAdmin))
         setListProducer(listUsers?.filter((users) => users.producer !== null))
     }, [listUsers])
+    useEffect(() => {
+        console.log(recents)
+    }, [recents])
 
     return (
         <Box style={{ flex: 1, backgroundColor: colors.button, paddingTop: "4vw", height: "100%" }}>
@@ -78,13 +83,14 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                 </Box>
                 <Box style={{ flexDirection: "row", gap: "4vw" }}>
                     <SearchIcon sx={{ color: "#fff" }} />
-                    <NotificationsNoneIcon
-                        sx={{ color: "#fff" }}
-                        onClick={() => {
-                            notificationDrawer.toggle()
-                           
-                        }}
-                    />
+                    <Badge badgeContent={recents?.length} color="success">
+                        <NotificationsNoneIcon
+                            sx={{ color: "#fff" }}
+                            onClick={() => {
+                                notificationDrawer.toggle()
+                            }}
+                        />
+                    </Badge>
                     <Avatar
                         src={user.image}
                         style={{ color: "#fff", width: "8vw", height: "8vw" }}

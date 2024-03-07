@@ -4,13 +4,7 @@ import { Box, Button } from "@mui/material"
 import { Header } from "../../components/Header"
 import { colors } from "../../style/colors"
 import { LogNotification } from "./LogNotification"
-import { NotificationDrawer } from "../../components/NotificationDrawer"
 import { useNotification } from "../../hooks/useNotifications"
-import { useUsers } from "../../hooks/useUsers"
-import { useKits } from "../../hooks/useKits"
-import { useCall } from "../../hooks/useCall"
-import { useReports } from "../../hooks/useReports"
-import { useTalhao } from "../../hooks/useTalhao"
 
 interface NotificationsListProps {
     user: User
@@ -19,6 +13,7 @@ interface NotificationsListProps {
 export const NotificationsList: React.FC<NotificationsListProps> = ({ user }) => {
     const header = useHeader()
     const { listNotifications } = useNotification()
+    const sortedList = listNotifications?.sort((a, b) => Number(b.datetime) - Number(a.datetime))
 
     useEffect(() => {
         header.setTitle("Notificações")
@@ -82,8 +77,8 @@ export const NotificationsList: React.FC<NotificationsListProps> = ({ user }) =>
                         gap: "3vw",
                     }}
                 >
-                    <Box sx={{ overflowY: "auto", height: "75%", gap: "2vw" }}>
-                        {listNotifications?.map((item) => (
+                    <Box sx={{ overflowY: "auto", height: "70%", gap: "2vw" }}>
+                        {sortedList?.map((item) => (
                             <LogNotification drawer={false} notification={item} />
                         ))}
                     </Box>
