@@ -17,7 +17,6 @@ export const NotificationsList: React.FC<NotificationsListProps> = ({ user }) =>
 
     useEffect(() => {
         header.setTitle("Notificações")
-        console.log(listNotifications)
     }, [])
 
     return (

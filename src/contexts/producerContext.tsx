@@ -43,13 +43,11 @@ export const ProducerProvider: React.FC<ProducerProviderProps> = ({ children }) 
                 const listId = data.filter((item) => item.producerId === user?.producer?.id) //lista de lavoura do respectivo usuário Cliente
                 setListTillages(listId)
                 setTillageUpdate(true)
-                // snackbar({ severity: "success", text: "Lista atualizada" })
             } else if (user?.employee) {
                 if (producerid) {
                     const listTillagesId = data.filter((item) => item.producerId === producerid) //lista de lavoura do respectivo usuário employee ou adm
                     setListTillages(listTillagesId)
                     setTillageUpdate(true)
-                    // snackbar({ severity: "success", text: "Lista atualizada" })
                 }
             }
         })

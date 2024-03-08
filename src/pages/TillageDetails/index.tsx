@@ -53,12 +53,12 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
     const header = useHeader()
     const navigate = useNavigate()
 
+    const { tillageid, producerid } = useParams()
     const { snackbar } = useSnackbar()
     const { user } = useUser()
     const { addCallPending, allCalls, addCall, addCallApprove } = useCall()
     const { listKits } = useKits()
 
-    const images = useArray().newArray(5)
     const [open, setOpen] = useState(false)
     const [openApproved, setOpenApproved] = useState(false)
     const [loading, setLoading] = useState(false)
@@ -70,6 +70,30 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
     const [selectedKit, setSelectedKit] = useState<Kit | null>(null) // Estado para o valor selecionado
     const [kits, setKits] = useState(listKits?.filter((item) => !!item && item.active) as Kit[])
     const [kitValue, setKitValue] = useState("") // Estado para o texto do campo de entrada
+    const [listTillages, setListTillages] = useState<Tillage[]>([])
+    const [tillageUpdate, setTillageUpdate] = useState<Boolean>(false)
+
+    useEffect(() => {
+        io.emit("tillage:list")
+
+        io.on("tillage:list:success", (data: Tillage[]) => {
+            if (user?.employee) {
+                if (producerid) {
+                    const listTillagesId = data.filter((item) => item.producerId === Number(producerid)) //lista de lavoura do respectivo usuário employee ou adm
+                    setListTillages(listTillagesId)
+                    setTillageUpdate(true)
+                }
+            }
+        })
+        io.on("tillage:list:error", () => {
+            snackbar({ severity: "error", text: "Algo deu errado!" })
+        })
+
+        return () => {
+            io.off("tillage:list:success")
+            io.off("tillage:list:error")
+        }
+    }, [])
 
     const handleKitChange = (event: any, selected: any) => {
         if (selected) {
@@ -87,6 +111,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
     const [weatherData, setWeatherData] = useState<CurrentConditions>()
     const [icon, setIcon] = useState<string>("")
     const [loadingIcon, setLoadingIcon] = useState(false)
+    const [cover, setCover] = useState<String[]>([])
 
     const toggleSelection = (talhao: Talhao) => {
         if (selectedAvatar === talhao.id) {
@@ -98,14 +123,12 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
         }
     }
 
-    const { producerid, tillageid } = useParams()
     const [call, setCall] = useState<Call>()
 
     //only producer
     const [tillageSelectProd, setTillageSelectProd] = useState<Tillage>()
-    const { listTillages, setProducerid } = useProducer()
+    // const { listTillages, setProducerid } = useProducer()
     // //only employee and adm
-    const producerSelect = findProducer(producerid || "")
 
     const [callStatus, setCallStatus] = useState(false)
 
@@ -118,8 +141,29 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
         const findTillage = listTillages.find((item) => item.id === Number(tillageid))
         setTillageSelectProd(findTillage)
         setTillageSelect(findTillage)
+    }, [tillageid, listTillages])
+
+    useEffect(() => {
+        tillageSelect?.talhao?.map((item) => {
+            io.emit("tillage:cover", item.id)
+        })
+
+        tillageSelect?.talhao?.map((item) => {
+            io.on("tillage:cover:success", (data: { tillageId: number; cover: string }) => {
+                // if (data.tillageId === tillage.id) {
+                //     setCover(data.cover)
+                // }
+            })
+        })
+
+        return () => {
+            io.off("tillage:cover:success")
+        }
     }, [tillageid])
 
+    useEffect(() => {
+        console.log(listTillages)
+    }, [listTillages])
     //
     useEffect(() => {
         console.log(call)
@@ -250,7 +294,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
 
     useEffect(() => {
         header.setTitle(!tillageSelect ? `Informações` : tillageSelect.name)
-        setProducerid(Number(producerid))
+        // setProducerid(Number(producerid))
         // console.log(tillageSelect)
     }, [tillageSelect])
 

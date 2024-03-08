@@ -26,7 +26,6 @@ export const ListTillages: React.FC<ListTillagesProps> = ({}) => {
 
     const [tillages, setTillages] = useState<Tillage[]>(listTillages)
     const [tillagesProducer, setTillagesProducer] = useState<Tillage[]>(producerEncontrado[0].producer?.tillage || [])
-    // console.log(tillagesProducer)
     const [searchText, setSearchText] = useState("")
 
     useEffect(() => {
@@ -44,6 +43,7 @@ export const ListTillages: React.FC<ListTillagesProps> = ({}) => {
     useEffect(() => {
         setTillages(listTillages)
     }, [listTillages])
+
     useEffect(() => {
         const filteredList = tillages?.filter(
             (item) => item !== null && item.name.toLowerCase().includes(searchText.toLowerCase())
@@ -122,7 +122,7 @@ export const ListTillages: React.FC<ListTillagesProps> = ({}) => {
                                     <CardTillage key={index} tillage={item} location={`/producer/tillage/${item.id}`} />
                                 ))
                             ) : (
-                                tillages.length === 0 && <p>Nenhuma lavoura encontrada.</p>
+                                tillages.length === 0 && <p>Nenhuma fazenda encontrada.</p>
                             )
                         ) : tillagesProducer.length !== 0 ? (
                             tillagesProducer?.map((tillage, index) => (

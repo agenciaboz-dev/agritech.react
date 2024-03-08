@@ -27,7 +27,7 @@ export const TalhaoProvider: React.FC<TalhaoProviderProps> = ({ children }) => {
         })
 
         return () => {
-            io.off("talhaoe:list:success")
+            io.off("talhao:list:success")
         }
     }, [])
 

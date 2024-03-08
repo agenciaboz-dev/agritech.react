@@ -94,7 +94,6 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
     }, [value])
 
     useEffect(() => {
-        console.log(findUser?.employee)
         header.setTitle(findUser?.name || "")
     }, [])
 

@@ -14,7 +14,6 @@ import { useMenuDrawer } from "../../../hooks/useMenuDrawer"
 import { useNavigate } from "react-router-dom"
 import { useUsers } from "../../../hooks/useUsers"
 import { CardUser } from "../../../components/CardUser"
-import Logo from "../../../assets/logo/Avatar.png"
 import { useNotificationDrawer } from "../../../hooks/useNotificationDrawer"
 import PostAddIcon from "@mui/icons-material/PostAdd"
 import { useNotification } from "../../../hooks/useNotifications"
@@ -50,7 +49,8 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
     }, [])
 
     useEffect(() => {
-        setListEmployee(listUsers?.filter((users) => users.employee !== null && !users.isAdmin))
+        console.log(listUsers)
+        setListEmployee(listUsers?.filter((users) => users.employee !== null))
         setListProducer(listUsers?.filter((users) => users.producer !== null))
     }, [listUsers])
     useEffect(() => {
