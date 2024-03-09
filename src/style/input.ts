@@ -20,7 +20,7 @@ export const textField = {
         },
     },
     "& .MuiOutlinedInput-input": {
-        height: "3.5vw",
+        height: "3vw",
     },
 }
 

@@ -2,6 +2,7 @@ import React, { ChangeEventHandler } from "react"
 import { Box, TextField, MenuItem } from "@mui/material"
 import { textField } from "../../../style/input"
 import { useBankAccount } from "../../../hooks/useBankAccount"
+import MaskedInput from "../../../components/MaskedInput"
 
 interface BankProps {
     values: Partial<Omit<User, "producer"> & { producer: Partial<Producer> }>
@@ -62,6 +63,10 @@ export const Bank: React.FC<BankProps> = ({ values, handleChange }) => {
                     sx={textField}
                     value={values.employee?.bank?.agency}
                     onChange={handleChange}
+                    InputProps={{
+                        inputComponent: MaskedInput,
+                        inputProps: { mask: "00000000000000000000", inputMode: "numeric" },
+                    }}
                 />
                 <TextField
                     label={"Nº da conta"}
@@ -69,6 +74,10 @@ export const Bank: React.FC<BankProps> = ({ values, handleChange }) => {
                     sx={textField}
                     value={values.employee?.bank?.account}
                     onChange={handleChange}
+                    InputProps={{
+                        inputComponent: MaskedInput,
+                        inputProps: { mask: "00000000000000000000", inputMode: "numeric" },
+                    }}
                 />
             </Box>
         </Box>

@@ -14,6 +14,7 @@ import { useEstadosBrasil } from "../../hooks/useEstadosBrasil"
 import { useGender } from "../../hooks/useGender"
 import { useNavigate } from "react-router-dom"
 import { useRelationship } from "../../hooks/useRelationship"
+import { unmaskCurrency } from "../../hooks/unmaskNumber"
 
 interface ProfileProps {
     user: User
@@ -21,7 +22,6 @@ interface ProfileProps {
 
 export const Profile: React.FC<ProfileProps> = ({ user }) => {
     const header = useHeader()
-    const navigate = useNavigate()
     const io = useIo()
     const { setUser } = useUser()
 
@@ -63,11 +63,15 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
                   voter_card: user.employee.voter_card,
                   work_card: user.employee.work_card,
                   residence: user.employee.residence,
-                  //   bank: {
-                  //       account: user.employee?.bank?.account || "",
-                  //       name: user.employee?.bank?.name || "",
-                  //       agency: user?.employee?.bank?.agency || "",
-                  //       type: user?.employee?.bank?.type || "",
+                  bank: {
+                      account: user.employee?.bank?.account || "",
+                      name: user.employee?.bank?.name || "",
+                      agency: user.employee?.bank?.agency || "",
+                      type: user.employee?.bank?.type || "",
+                  },
+                  //   professional: {
+                  //       admission: user.employee.professional?.admission,
+                  //       salary: user.employee.professional?.salary,
                   //   },
               }
             : undefined,
@@ -104,7 +108,15 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
                       }
                     : undefined,
 
-                employee: values.employee ? {} : undefined,
+                employee: values.employee
+                    ? {
+                          ...values.employee,
+                          professional: {
+                              ...values.employee.professional,
+                              salary: unmaskCurrency(values.employee.professional?.salary || 0),
+                          },
+                      }
+                    : undefined,
                 producer: values.producer
                     ? {
                           ...values.producer,

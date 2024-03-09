@@ -62,10 +62,10 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
             const areaDayCalls =
                 callsForDay?.map((item) => Number(item.talhao?.area)).reduce((prev, current) => prev + current, 0) || 0
 
-            useEffect(() => {
-                console.log({ por_dia_temos: areaDayCalls })
-                findUser?.employee?.kits && console.log({ limite_kit: findUser?.employee.kits[0].hectareDay })
-            }, [findUser?.employee])
+            // useEffect(() => {
+            //     console.log({ por_dia_temos: areaDayCalls })
+            //     findUser?.employee?.kits && console.log({ limite_kit: findUser?.employee.kits[0].hectareDay })
+            // }, [findUser?.employee])
 
             const indicatorColor =
                 callsForDay &&

@@ -72,6 +72,10 @@ export const StepFour: React.FC<StepFourProps> = ({ data, handleChange }) => {
                             name="employee.bank.account"
                             value={data.employee?.bank?.account}
                             sx={textField}
+                            InputProps={{
+                                inputComponent: MaskedInput,
+                                inputProps: { mask: "00000000000000000000", inputMode: "numeric" },
+                            }}
                             onChange={handleChange}
                         />
                         <TextField
@@ -80,6 +84,10 @@ export const StepFour: React.FC<StepFourProps> = ({ data, handleChange }) => {
                             value={data.employee?.bank?.agency}
                             sx={textField}
                             onChange={handleChange}
+                            InputProps={{
+                                inputComponent: MaskedInput,
+                                inputProps: { mask: "00000000000000000000", inputMode: "numeric" },
+                            }}
                         />
                     </Box>
                 </Box>

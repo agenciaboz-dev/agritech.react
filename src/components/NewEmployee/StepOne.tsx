@@ -17,7 +17,7 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange }) => {
     const gender = useGender()
     const typeRelationship = useRelationship()
     return (
-        <Box sx={{ width: "100%", height: "100%", gap: "4vw", flexDirection: "column" }}>
+        <Box sx={{ width: "100%", height: "100%", gap: "5vw", flexDirection: "column" }}>
             <Box sx={{ gap: "2vw", width: "100%", height: "100%" }}>
                 <p style={{ fontSize: "4.5vw", fontWeight: "800", fontFamily: "MalgunGothic2", textAlign: "left" }}>
                     Dados Pessoais
@@ -74,15 +74,7 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange }) => {
                     onChange={handleChange}
                     required
                 />
-                <TextField
-                    name="password"
-                    // type="password"
-                    label={"Senha"}
-                    value={"Bump2024!"}
-                    sx={textField}
-                    InputProps={{ readOnly: true }}
-                    required
-                />
+
                 <Box sx={{ alignItems: "center", justifyContent: "center", gap: "5vw" }}>
                     {data.employee && (
                         <Box sx={{ flexDirection: "row", width: "100%", gap: "2vw" }}>
@@ -170,6 +162,9 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange }) => {
                     )}
                 </Box>
             </Box>
+                <p style={{ fontWeight: "800", lineHeight: "1.1", fontSize: "3vw" }}>
+                    Obs: A senha do novo colaborador é o seu cpf. Após isso ele(a) pode alterar na conta pessoal.
+                </p>
         </Box>
     )
 }

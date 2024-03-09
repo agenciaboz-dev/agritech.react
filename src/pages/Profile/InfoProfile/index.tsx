@@ -9,6 +9,7 @@ import { Contact } from "./Contact"
 import { Address } from "./Address"
 import { Bank } from "./Bank"
 import { Professional } from "./Professional"
+import { useUser } from "../../../hooks/useUser"
 
 interface InfoProfileProps {
     values: Partial<Omit<User, "producer"> & { producer: Partial<Producer> }>
@@ -17,6 +18,8 @@ interface InfoProfileProps {
 }
 
 export const InfoProfile: React.FC<InfoProfileProps> = ({ values, handleChange, review }) => {
+    const { user } = useUser()
+    const userlog = user ? user.id === values.id || user.isAdmin : false
     const [tab, setTab] = React.useState("personal")
     const changeTab = (event: React.SyntheticEvent, newValue: string) => {
         setTab(newValue)
@@ -33,25 +36,27 @@ export const InfoProfile: React.FC<InfoProfileProps> = ({ values, handleChange, 
                 scrollButtons="auto"
                 allowScrollButtonsMobile
             >
-                <Tab sx={tabStyle} value="historic" label="Histórico" />
+                {/* <Tab sx={tabStyle} value="historic" label="Histórico" /> */}
                 <Tab sx={tabStyle} value="personal" label="Pessoal" />
-                {values.employee?.id !== undefined && <Tab sx={tabStyle} value="documentation" label="Documentação" />}
+                {values.employee !== undefined && <Tab sx={tabStyle} value="documentation" label="Documentação" />}
                 <Tab sx={tabStyle} value="contact" label="Contato" />
                 <Tab sx={tabStyle} value="address" label="Endereço" />
-                {values.employee && <Tab sx={tabStyle} value="bank" label="Dados Bancários" />}
-                {values.employee && <Tab sx={tabStyle} value="professional" label="Profissional" />}
+                {values.employee !== undefined && <Tab sx={tabStyle} value="bank" label="Dados Bancários" />}
+                {values.employee !== undefined && values.employee !== undefined && (
+                    <Tab sx={tabStyle} value="professional" label="Profissional" />
+                )}
             </Tabs>
             {tab === "personal" && <Personal values={values} handleChange={handleChange ? handleChange : () => {}} />}
-            {tab === "documentation" && values.employee?.id !== undefined && (
+            {tab === "documentation" && values.employee !== undefined && (
                 <Documentation values={values} handleChange={handleChange ? handleChange : () => {}} />
             )}
             {tab === "contact" && <Contact values={values} handleChange={handleChange ? handleChange : () => {}} />}
             {tab === "address" && <Address values={values} handleChange={handleChange ? handleChange : () => {}} />}
-            {values.employee != null && tab === "bank" && values.employee && (
+            {values.employee !== undefined && tab === "bank" && values.employee && (
                 <Bank values={values} handleChange={handleChange ? handleChange : () => {}} />
             )}
-            {values.employee !== null && tab === "professional" && values.employee && (
-                <Professional values={values} handleChange={handleChange ? handleChange : () => {}} />
+            {values.employee !== undefined && tab === "professional" && values.employee && (
+                <Professional userLog={userlog} values={values} handleChange={handleChange ? handleChange : () => {}} />
             )}
         </Box>
     )

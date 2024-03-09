@@ -94,75 +94,7 @@ export const StepThree: React.FC<StepThreeProps> = ({ data, handleChange, setCur
                         Enviar documento
                     </Button>
                 </Box>
-                {/* <Box sx={{ gap: "4vw" }}>
-                    {" "}
-                    <p style={{ fontSize: "4.5vw", fontWeight: "800", fontFamily: "MalgunGothic2", textAlign: "left" }}>
-                        Dados Bancários
-                    </p>
-                    <Box sx={{ gap: "3vw" }}>
-                        <TextField
-                            label={"Banco"}
-                            name="name"
-                            value={data.employee?.bank_data.name}
-                            sx={textField}
-                            onChange={handleChange}
-                        />
-
-                        <TextField
-                            select
-                            onChange={handleChange}
-                            label="Tipo de conta"
-                            name="type"
-                            sx={{
-                                ...textField,
-                                width: "100%",
-                            }}
-                            variant="outlined"
-                            value={data.employee?.bank_data.type}
-                            InputProps={{
-                                style: {},
-                            }}
-                            SelectProps={{
-                                MenuProps: { MenuListProps: { sx: { maxHeight: "80vw", overflowY: "auto" } } },
-                            }}
-                        >
-                            <MenuItem
-                                value={0}
-                                sx={{
-                                    display: "none",
-                                }}
-                            ></MenuItem>
-                            {bankAccount.map((account) => (
-                                <MenuItem
-                                    key={account.value}
-                                    value={account.id}
-                                    sx={{
-                                        width: "100%",
-                                    }}
-                                >
-                                    {account.value}
-                                </MenuItem>
-                            ))}
-                        </TextField>
-
-                        <Box sx={{ flexDirection: "row", gap: "2vw" }}>
-                            <TextField
-                                label={"Conta"}
-                                name="account"
-                                value={data.employee?.bank_data.account}
-                                sx={textField}
-                                onChange={handleChange}
-                            />
-                            <TextField
-                                label={"Agência"}
-                                name="agency"
-                                value={data.employee?.bank_data.agency}
-                                sx={textField}
-                                onChange={handleChange}
-                            />
-                        </Box>
-                    </Box>
-                </Box> */}
+                
             </Box>
         </Box>
     )

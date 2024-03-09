@@ -27,6 +27,7 @@ export const Contact: React.FC<ContactProps> = ({ values, handleChange }) => {
                     value={values.password}
                     onChange={handleChange}
                     type="password"
+                    
                 />
             </Box>
             <TextField

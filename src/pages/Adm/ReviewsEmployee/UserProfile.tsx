@@ -72,34 +72,38 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
         rejected: profile?.rejected || "",
         office: profile?.office,
 
-        employee: {
-            id: profile?.employee?.id,
-            rg: profile?.employee?.rg || "",
-            gender: profile?.employee?.gender || "",
-            military: profile?.employee?.military || "",
-            nationality: profile?.employee?.nationality || "",
-            relationship: profile?.employee?.relationship || "",
-            voter_card: profile?.employee?.voter_card || "",
-            work_card: profile?.employee?.work_card || "",
-            residence: profile?.employee?.residence || "",
-            bank: {
-                account: profile?.employee?.bank?.account || "",
-                name: profile?.employee?.bank?.name || "",
-                agency: profile?.employee?.bank?.agency || "",
-                type: profile?.employee?.bank?.type || "",
-            },
-            professional: {
-                salary: profile?.employee?.professional?.salary,
-                admission: new Date(profile?.employee?.professional?.admission || 0).toLocaleDateString("pt-br") || "",
-            },
-        },
-        producer: {
-            cnpj: profile?.producer?.cnpj || "",
-            contract: profile?.producer?.contract || false,
-            inscricaoEstadual: profile?.producer?.inscricaoEstadual || "",
-            id: profile?.producer?.id,
-            employeeId: profile?.producer?.employeeId,
-        },
+        employee: profile?.employee
+            ? {
+                  id: profile?.employee?.id,
+                  rg: profile?.employee?.rg || "",
+                  gender: profile?.employee?.gender || "",
+                  military: profile?.employee?.military || "",
+                  nationality: profile?.employee?.nationality || "",
+                  relationship: profile?.employee?.relationship || "",
+                  voter_card: profile?.employee?.voter_card || "",
+                  work_card: profile?.employee?.work_card || "",
+                  residence: profile?.employee?.residence || "",
+                  bank: {
+                      account: profile?.employee?.bank?.account || "",
+                      name: profile?.employee?.bank?.name || "",
+                      agency: profile?.employee?.bank?.agency || "",
+                      type: profile?.employee?.bank?.type || "",
+                  },
+                  professional: {
+                      salary: profile?.employee?.professional?.salary,
+                      admission: new Date(profile?.employee?.professional?.admission || 0).toLocaleDateString("pt-br") || "",
+                  },
+              }
+            : undefined,
+        producer: profile?.producer
+            ? {
+                  cnpj: profile?.producer?.cnpj || "",
+                  contract: profile?.producer?.contract || false,
+                  inscricaoEstadual: profile?.producer?.inscricaoEstadual || "",
+                  id: profile?.producer?.id,
+                  employeeId: profile?.producer?.employeeId,
+              }
+            : undefined,
     }
 
     const handleApprove = async (valuesUser: User) => {

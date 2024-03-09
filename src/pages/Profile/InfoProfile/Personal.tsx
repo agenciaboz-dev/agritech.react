@@ -30,7 +30,7 @@ export const Personal: React.FC<PersonalProps> = ({ values, handleChange }) => {
                 value={values.birth}
                 onChange={handleChange}
             />
-            {values.employee?.id === undefined && (
+            {values.employee === undefined && (
                 <TextField
                     label={"CPF"}
                     name={"cpf"}
@@ -44,14 +44,13 @@ export const Personal: React.FC<PersonalProps> = ({ values, handleChange }) => {
                     }}
                 />
             )}
-            {values.employee?.id === undefined && (
+            {values.employee === undefined && (
                 <>
                     <TextField
                         label={"CNPJ"}
                         name={"producer.cnpj"}
                         sx={textField}
                         value={values.producer?.cnpj}
-                        onChange={handleChange}
                         InputProps={{
                             inputComponent: MaskedInputNando,
                             inputProps: { mask: useCnpjMask, inputMode: "numeric" },
@@ -63,7 +62,9 @@ export const Personal: React.FC<PersonalProps> = ({ values, handleChange }) => {
                         name={"producer.inscricaoEstadual"}
                         sx={textField}
                         value={values.producer?.inscricaoEstadual}
-                        onChange={handleChange}
+                        InputProps={{
+                            readOnly: true,
+                        }}
                     />
                 </>
             )}
