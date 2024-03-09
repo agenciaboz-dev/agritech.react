@@ -48,11 +48,13 @@ const UserRoutes: React.FC<{ user: User }> = ({ user }) => {
             <ReactRoutes>
                 {user.employee ? (
                     <>
+                        <BottomNavigation section={bottomMenu.employee} />
                         <Route path="/employee/*" element={<Employee user={user} />} />
                         {/* <Route path="/producer/:producerid/:tillageid" element={<TillageDetails />} /> */}
                     </>
                 ) : (
                     <>
+                        <BottomNavigation section={bottomMenu.producer} />
                         <Route path="/producer/*" element={<Producer user={user} />} />
                         {/* <Route path="/producer/:tillageid" element={<TillageDetails />} /> */}
                     </>

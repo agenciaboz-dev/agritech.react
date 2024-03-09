@@ -6,7 +6,6 @@ import SearchIcon from "@mui/icons-material/Search"
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone"
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos"
 import { useNavigationList } from "../../../hooks/useNavigationList"
-import { BottomNavigation } from "../../../components/BottomNavigation"
 import { useIo } from "../../../hooks/useIo"
 import { useUser } from "../../../hooks/useUser"
 import { useSnackbar } from "burgos-snackbar"
@@ -23,7 +22,6 @@ interface PanelProps {
 }
 
 export const Panel: React.FC<PanelProps> = ({ user }) => {
-    const bottomMenu = useNavigationList()
     const io = useIo()
     const { setUser } = useUser()
     const { snackbar } = useSnackbar()
@@ -311,9 +309,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                         <PostAddIcon fontSize="medium" sx={{ color: "#fff" }} />
                     </IconButton>
 
-                    <Box sx={{ flexDirection: "row" }}>
-                        <BottomNavigation section={bottomMenu.admin} external />
-                    </Box>
+                  
                 </Box>
             </Box>
         </Box>

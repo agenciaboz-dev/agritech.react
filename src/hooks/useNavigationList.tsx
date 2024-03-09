@@ -1,32 +1,16 @@
-import ChatIcon from "@mui/icons-material/Chat"
 import GridViewIcon from "@mui/icons-material/GridView"
-import StorefrontIcon from "@mui/icons-material/Storefront"
-import MultipleStopIcon from "@mui/icons-material/MultipleStop"
-import BarChartIcon from "@mui/icons-material/BarChart"
-import LocalShippingIcon from "@mui/icons-material/LocalShipping"
-import AppsIcon from "@mui/icons-material/Apps"
-import SwapHorizIcon from "@mui/icons-material/SwapHoriz"
 import GridPanel from "../assets/icons/view-grid.svg"
-import Chats from "../assets/icons/chat-lines.svg"
-import Calendar from "../assets/icons/calendar.svg"
-import Analysis from "../assets/icons/page-search.svg"
-import Statistics from "../assets/icons/stat-up.svg"
 import User from "../assets/icons/user.svg"
 import AddUser from "../assets/icons/add-user.svg"
 import AddEmployee from "../assets/icons/add-database-script.svg"
-import Pin from "../assets/icons/pin.svg"
 import Timer from "../assets/icons/timer.svg"
-import Receipt from "../assets/icons/receipt.svg"
 import Alert from "../assets/icons/circle_alert.svg"
-import Database from "../assets/icons/database.svg"
 import { PiPlantLight } from "react-icons/pi"
-import { CiViewTable } from "react-icons/ci"
-
-// import CircumIcon from "@klarr-agency/circum-icons-react" // React
+import { CiCalendarDate, CiCircleAlert, CiGrid41, CiViewTable } from "react-icons/ci"
+import { SlDocs } from "react-icons/sl"
 
 import { SxProps } from "@mui/material"
 import { useUser } from "./useUser"
-import { CardNotification } from "../components/CardNotification"
 
 export const useNavigationList = () => {
     const { user } = useUser()
@@ -81,28 +65,28 @@ export const useNavigationList = () => {
             {
                 id: 1,
                 title: "Painel",
-                location: "/",
-                icon: <img src={GridPanel} alt="Logotipo do App" />,
+                location: "/panel",
+                icon: <CiGrid41 alt="Logotipo do App" style={{ width: "6vw", height: "6vw" }} />,
             },
 
             {
                 id: 2,
                 title: "Calendário",
                 location: "/calendar",
-                icon: <img src={Calendar} alt="Logotipo do App" />,
+                icon: <CiCalendarDate style={{ width: "6vw", height: "6vw" }} />,
             },
 
             {
                 id: 3,
                 title: "Chamados",
                 location: "/calls",
-                icon: <img src={Alert} alt="Logotipo do App" style={{ width: "6vw" }} />,
+                icon: <CiCircleAlert style={{ width: "6vw", height: "6vw" }} />,
             },
             {
                 id: 4,
                 title: "Análises",
                 location: "/reviews",
-                icon: <img src={Analysis} alt="Logotipo do App" />,
+                icon: <SlDocs style={{ width: "5vw", height: "5vw" }} />,
             },
         ],
     }
@@ -154,7 +138,7 @@ export const useNavigationList = () => {
             //     icon: <SwapHorizIcon sx={iconStyle} />,
             // },
             {
-                id: 3,
+                id: 2,
                 title: "Chamados",
                 location: "/requests",
                 icon: <img src={Alert} alt="Logotipo do App" style={{ width: "6vw" }} />,

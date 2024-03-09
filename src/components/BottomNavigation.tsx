@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { BottomNavigationAction, BottomNavigation as MuiBottomNav } from "@mui/material"
 import { useNavigate } from "react-router-dom"
 import { colors } from "../style/colors"
@@ -58,7 +58,10 @@ export const BottomNavigation: React.FC<BottomNavigationProps> = ({ external, se
                             borderRadius: "2vw",
                             gap: "1vw",
                             padding: "0",
-                            minWidth: "0!important",
+
+                            "&.Mui-selected": {
+                                color: "white",
+                            },
                         }}
                     />
                 )
