@@ -133,14 +133,10 @@ export const CalendarKit: React.FC<CalendarKitProps> = ({}) => {
                 }}
             >
                 <Box gap="4vw" sx={{ width: "100%" }}>
-                    <p style={{ color: colors.primary, fontSize: "3.3vw" }}>
-                        Selecione um kit para visualizar o calendário.
-                    </p>
                     <Autocomplete
                         value={selectedKit}
                         options={kits || []}
                         getOptionLabel={(option) => option.name || ""}
-                        // inputValue={inputValue}
                         onChange={(event, selected) => setSelectedKit(selected)}
                         isOptionEqualToValue={(option, value) => option.id == value.id}
                         renderInput={(params) => <TextField {...params} sx={{ ...textField }} label="kit" required />}
@@ -178,10 +174,11 @@ export const CalendarKit: React.FC<CalendarKitProps> = ({}) => {
                         gap: "3vw",
                     }}
                 >
-                    { callsDay?.length !== 0
+                    {selectedKit
+                        ? callsDay?.length !== 0
                             ? callsDay?.map((call, index) => <LogsCard key={index} review={false} call={call} />)
                             : "Nenhum chamado aberto para esse dia"
-                     }
+                        : "Selecione um kit para visualizar o calendário."}
                 </Box>
             </Box>
         </Box>

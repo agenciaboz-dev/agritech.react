@@ -47,13 +47,9 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
     }, [])
 
     useEffect(() => {
-        console.log(listUsers)
         setListEmployee(listUsers?.filter((users) => users.employee !== null))
         setListProducer(listUsers?.filter((users) => users.producer !== null))
     }, [listUsers])
-    useEffect(() => {
-        console.log(recents)
-    }, [recents])
 
     return (
         <Box style={{ flex: 1, backgroundColor: colors.button, paddingTop: "4vw", height: "100%" }}>
@@ -308,8 +304,6 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                     >
                         <PostAddIcon fontSize="medium" sx={{ color: "#fff" }} />
                     </IconButton>
-
-                  
                 </Box>
             </Box>
         </Box>
