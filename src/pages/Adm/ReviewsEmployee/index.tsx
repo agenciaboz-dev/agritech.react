@@ -71,7 +71,7 @@ export const ReviewsEmployee: React.FC<ReviewsEmployeeProps> = ({ user }) => {
                     flexDirection: "column",
                 }}
             >
-                <Box sx={{ alignItems: "center", width: "100%", justifyContent: "space-between", flexDirection: "row" }}>
+                {/* <Box sx={{ alignItems: "center", width: "100%", justifyContent: "space-between", flexDirection: "row" }}>
                     <p style={{ padding: "0 2vw", fontSize: "4.55vw" }}>Pendentes</p>
                     <Button
                         size="small"
@@ -91,7 +91,7 @@ export const ReviewsEmployee: React.FC<ReviewsEmployeeProps> = ({ user }) => {
                     >
                         Ações em massa
                     </Button>
-                </Box>
+                </Box> */}
                 <Tabs
                     value={tab}
                     onChange={changeTab}
