@@ -15,5 +15,5 @@ export const ButtonAgritech: React.FC<ButtonProps> = (props) => {
         borderRadius: "10vw",
         height: "10vw",
     }
-    return <Button {...props} sx={[props.sx, button_style]}></Button>
+    return <Button { ...props } sx={ { ...props.sx, button_style } }></Button>
 }
