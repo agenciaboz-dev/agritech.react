@@ -21,8 +21,6 @@ export const Personal: React.FC<PersonalProps> = ({ values, handleChange }) => {
 
     return (
         <Box sx={{ flexDirection: "column", gap: "3vw" }}>
-            <TextField label={"Nome Completo"} name={"name"} sx={textField} value={values.name} onChange={handleChange} />
-
             <TextField
                 label={"Data de Nascimento"}
                 name={"birth"}

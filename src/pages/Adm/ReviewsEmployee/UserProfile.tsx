@@ -28,7 +28,6 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
 
     const userSelect = listUsers?.filter((item) => item.id === Number(userId)) || []
 
-    const { unmask } = useDataHandler()
     const { snackbar } = useSnackbar()
 
     const [profile, setProfile] = useState<User>()
@@ -40,11 +39,18 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
         ? useEffect(() => {
               const user = pendingUsers.find((user) => String(user.id) === userId)
               setProfile(user)
-          }, [pendingUsers, userId])
+          }, [pendingUsers, profile, userId])
         : useEffect(() => {
               const user = listUsers?.find((user) => String(user.id) === userId)
               setProfile(user)
-          }, [listUsers, userId])
+          }, [listUsers, profile, userId])
+
+    useEffect(() => {
+        console.log({ atualizou: profile })
+    }, [profile])
+
+    const [isAdmin, setIsAdmin] = useState(profile?.isAdmin)
+    const [isManager, setIsManager] = useState(profile?.isManager)
 
     const valuesUser: User = {
         name: profile?.name || "",
@@ -53,7 +59,7 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
         email: profile?.email || "",
         username: profile?.username || "",
         password: profile?.password || "",
-        birth: new Date(profile?.birth || 0).toLocaleDateString("pt-br") || "",
+        birth: new Date(Number(profile?.birth) || 0).toLocaleDateString("pt-br") || "",
         image: profile?.image || null,
         isManager: profile?.isManager || false,
         address: {
@@ -67,7 +73,7 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
         },
         id: profile?.id || 0,
 
-        isAdmin: false,
+        isAdmin: profile?.isAdmin || false,
         approved: profile?.approved || false,
         rejected: profile?.rejected || "",
         office: profile?.office,
@@ -212,6 +218,27 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
                             Acessar Fazendas
                         </Button>
                     )}
+                    {view && userSelect[0].employee && user?.isAdmin && (
+                        <Button
+                            size="small"
+                            variant="contained"
+                            sx={{
+                                alignItems: "center",
+                                gap: "0vw",
+                                backgroundColor: colors.button,
+                                color: colors.text.white,
+                                textTransform: "none",
+                                borderRadius: "5vw",
+                                fontSize: "3.0vw",
+                                p: "1vw 3vw",
+                                width: "fit-content",
+                                zIndex: 1,
+                            }}
+                            onClick={() => {}}
+                        >
+                            Gerenciar acesso
+                        </Button>
+                    )}
                 </Box>
                 <HeaderProfile
                     values={valuesUser}
@@ -219,6 +246,12 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
                     setImage={setImage}
                     style={{ flexDirection: "row", gap: "5vw" }}
                     view
+                    isAdmin={isAdmin}
+                    isManager={isManager}
+                    setIsAdmin={setIsAdmin}
+                    setIsManager={setIsManager}
+                    profile={profile}
+                    setProfile={setProfile}
                 />
                 <InfoProfile values={valuesUser} review />
 

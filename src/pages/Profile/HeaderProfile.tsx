@@ -1,10 +1,9 @@
 import { Avatar } from "@files-ui/react"
 import { Avatar as ProfileImage } from "@mui/material"
-import { Box, TextField, SxProps, Button, FormGroup, FormControlLabel, styled, Switch } from "@mui/material"
-import React, { ChangeEventHandler, useEffect, useState } from "react"
+import { Box, TextField, SxProps, FormGroup, FormControlLabel, styled, Switch } from "@mui/material"
+import React, { ChangeEventHandler, useEffect } from "react"
 import { textField } from "../../style/input"
 import MaskedInput from "../../components/MaskedInput"
-import { colors } from "../../style/colors"
 import { useIo } from "../../hooks/useIo"
 import { useUser } from "../../hooks/useUser"
 import { useSnackbar } from "burgos-snackbar"
@@ -16,6 +15,12 @@ interface HeaderProfileProps {
     view?: boolean
     image: File | undefined
     setImage: React.Dispatch<React.SetStateAction<File | undefined>>
+    isAdmin?: boolean
+    isManager?: boolean
+    setIsAdmin: (value: boolean) => void
+    setIsManager: (value: boolean) => void
+    profile: User | undefined
+    setProfile: (values: User) => void
 }
 
 const Android12Switch = styled(Switch)(({ theme }) => ({
@@ -45,45 +50,43 @@ const Android12Switch = styled(Switch)(({ theme }) => ({
     },
 }))
 
-export const HeaderProfile: React.FC<HeaderProfileProps> = ({ values, handleChange, style, view, image, setImage }) => {
-    // const [adminStatus, setAdminStatus] = useState(false)
-    // const [managerStatus, setManagerStatus] = useState(false)
+export const HeaderProfile: React.FC<HeaderProfileProps> = ({
+    values,
+    handleChange,
+    style,
+    view,
+    image,
+    setImage,
+    isAdmin,
+    isManager,
+    setIsAdmin,
+    setIsManager,
+    profile,
+    setProfile,
+}) => {
     const { snackbar } = useSnackbar()
     const { user } = useUser()
 
     const io = useIo()
-    const [isAdmin, setIsAdmin] = useState(values.isAdmin)
-    const [isManager, setIsManager] = useState(values.isManager)
-    const [profile, setProfile] = useState<User>()
-
-    const toggleAdmin = (user: User) => {
-        io.emit("user:toggle:admin", { id: values.id })
-    }
-
-    const toggleManager = (user: User) => {
-        io.emit("user:toggle:manager", user)
-    }
 
     const handleChangeAdmin = (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
-        setIsAdmin(checked)
-        io.emit("user:admin:toggle", profile)
+        setIsAdmin(event.target.checked)
+        io.emit("user:toggle:admin", values.id) // Emitir evento com o ID do usuário
     }
 
     const handleChangeManager = (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
-        setIsManager(checked)
-        toggleManager(values)
+        setIsManager(event.target.checked)
+        io.emit("user:toggle:manager", values.id) // Emitir evento com o ID do usuário
     }
-    useEffect(() => {
-        setProfile(values)
-    }, [values])
 
     useEffect(() => {
         io.on("user:manager:toggle:success", (data: User) => {
             setProfile(data)
-            console.log(data)
+            console.log({ Manager: data })
         })
         io.on("user:admin:toggle:success", (data: User) => {
             setProfile(data)
+            console.log({ Admin: data })
         })
         io.on("user:admin:toggle:failed", (error) => {
             snackbar({ severity: "error", text: "Não foi possível atualizar!" })
@@ -91,8 +94,24 @@ export const HeaderProfile: React.FC<HeaderProfileProps> = ({ values, handleChan
         io.on("user:manager:toggle:failed", (error) => {
             snackbar({ severity: "error", text: "Não foi possível atualizar!" })
         })
-    }, [])
 
+        return () => {
+            io.off("user:manager:toggle:success")
+            io.off("user:manager:toggle:failed")
+            io.off("user:admin:toggle:success")
+            io.off("user:admin:toggle:failed")
+        }
+    }, [])
+    useEffect(() => {
+        profile?.isAdmin && setIsAdmin(profile?.isAdmin)
+    }, [profile?.isAdmin])
+    useEffect(() => {
+        profile?.isManager && setIsManager(profile?.isManager)
+    }, [profile?.isManager])
+
+    useEffect(() => {
+        console.log(profile)
+    }, [profile])
     return (
         <Box
             sx={{
@@ -132,7 +151,7 @@ export const HeaderProfile: React.FC<HeaderProfileProps> = ({ values, handleChan
                     }}
                 />
 
-                {user?.isAdmin && values.employee?.id !== undefined && (
+                {user?.isAdmin && values.employee?.id !== undefined && profile && (
                     <Box sx={{ flexDirection: "column", justifyContent: "space-between" }}>
                         <FormGroup sx={{ width: "90%" }}>
                             <FormControlLabel
@@ -160,16 +179,6 @@ export const HeaderProfile: React.FC<HeaderProfileProps> = ({ values, handleChan
                         </FormGroup>
                     </Box>
                 )}
-
-                {/* {values.employee === null && (
-                    <Button
-                        size="small"
-                        variant="contained"
-                        sx={{ bgcolor: colors.button, textTransform: "none", borderRadius: "5vw" }}
-                    >
-                        Iniciar conversa
-                    </Button>
-                )} */}
             </Box>
         </Box>
     )
