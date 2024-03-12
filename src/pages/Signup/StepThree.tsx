@@ -56,7 +56,7 @@ export const StepThree: React.FC<StepThreeProps> = ({ data, handleChange, setCur
                         }}
                     />
                 </Box>
-                <Box sx={{ gap: "2vw" }}>
+                {/* <Box sx={{ gap: "2vw" }}>
                     <p style={{ fontSize: "3.5vw", fontFamily: "MalgunGothic2", textAlign: "left" }}>
                         {" "}
                         Certificado de reservista
@@ -93,8 +93,7 @@ export const StepThree: React.FC<StepThreeProps> = ({ data, handleChange, setCur
                     >
                         Enviar documento
                     </Button>
-                </Box>
-                
+                </Box> */}
             </Box>
         </Box>
     )

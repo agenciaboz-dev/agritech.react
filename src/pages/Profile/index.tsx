@@ -29,10 +29,6 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
     const { snackbar } = useSnackbar()
     const [image, setImage] = useState<File>()
 
-    const estados = useEstadosBrasil()
-    const gender = useGender()
-    const typeRelationship = useRelationship()
-
     const [loading, setLoading] = useState(false)
 
     const initialValues: Partial<Omit<User, "producer"> & { producer: Partial<Producer> }> = {
@@ -213,6 +209,7 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
                                         }}
                                         image={image}
                                         setImage={setImage}
+                                      
                                     />
                                     <InfoProfile values={values} handleChange={handleChange} review={false} />
                                     <Button

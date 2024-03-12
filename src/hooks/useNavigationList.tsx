@@ -10,11 +10,8 @@ import { CiCalendarDate, CiCircleAlert, CiGrid41, CiViewTable } from "react-icon
 import { SlDocs } from "react-icons/sl"
 
 import { SxProps } from "@mui/material"
-import { useUser } from "./useUser"
 
 export const useNavigationList = () => {
-    const { user } = useUser()
-
     const iconStyle: SxProps = { color: "#232323" }
 
     const admin: NavigationMenu = {
@@ -42,12 +39,7 @@ export const useNavigationList = () => {
                 location: "/adm/new_producer",
                 icon: <img src={AddUser} style={{ width: "6vw" }} />,
             },
-            // {
-            //     id: 4,
-            //     title: "Fixados",
-            //     location: "/adm/fixed",
-            //     icon: <img src={Pin} style={{ width: "6vw" }} />,
-            // },
+
             {
                 id: 5,
                 title: "Relatórios",
@@ -116,32 +108,19 @@ export const useNavigationList = () => {
                 location: "/producer/new",
                 icon: <img src={AddEmployee} style={{ width: "6vw" }} />,
             },
-            // {
-            //     id: 4,
-            //     title: "Fixados",
-            //     location: "/producer/fixed",
-            //     icon: <img src={Pin} style={{ width: "6vw" }} />,
-            // },
         ],
         bottom: [
             {
                 id: 1,
                 title: "Painel",
                 location: "/",
-                icon: <GridViewIcon sx={iconStyle} />,
+                icon: <CiGrid41 alt="Logotipo do App" style={{ width: "6vw", height: "6vw" }} />,
             },
-
-            // {
-            //     id: 2,
-            //     title: "Transações",
-            //     location: "/transactions",
-            //     icon: <SwapHorizIcon sx={iconStyle} />,
-            // },
             {
                 id: 2,
                 title: "Chamados",
                 location: "/requests",
-                icon: <img src={Alert} alt="Logotipo do App" style={{ width: "6vw" }} />,
+                icon: <CiCircleAlert style={{ width: "6vw", height: "6vw" }} />,
             },
         ],
     }
@@ -169,13 +148,6 @@ export const useNavigationList = () => {
                 location: "/call/new",
                 icon: <img src={AddUser} style={{ width: "6vw" }} />,
             },
-
-            // {
-            //     id: 5,
-            //     title: "Fixados",
-            //     location: "/employee/fixed",
-            //     icon: <img src={Pin} style={{ width: "6vw" }} />,
-            // },
         ],
 
         icon: <img src={GridPanel} />,
@@ -184,14 +156,14 @@ export const useNavigationList = () => {
                 id: 1,
                 title: "Painel ",
                 location: "/panel",
-                icon: <GridViewIcon sx={iconStyle} />,
+                icon: <CiGrid41 alt="Logotipo do App" style={{ width: "6vw", height: "6vw" }} />,
             },
 
             {
                 id: 2,
                 title: "Chamados",
                 location: "/requests",
-                icon: <img src={Alert} alt="Logotipo do App" style={{ width: "6vw" }} />,
+                icon: <CiCircleAlert style={{ width: "6vw", height: "6vw" }} />,
             },
         ],
     }

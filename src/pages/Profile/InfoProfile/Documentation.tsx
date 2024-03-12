@@ -61,7 +61,7 @@ export const Documentation: React.FC<DocumentationProps> = ({ values, handleChan
                             inputProps: { mask: "00.000.000/0000-00" },
                         }}
                     />
-                    <Box sx={{ gap: "2vw" }}>
+                    {/* <Box sx={{ gap: "2vw" }}>
                         <p style={{ fontSize: "3.5vw", fontFamily: "MalgunGothic2", textAlign: "left" }}>
                             {" "}
                             Certificado de reservista
@@ -98,7 +98,7 @@ export const Documentation: React.FC<DocumentationProps> = ({ values, handleChan
                         >
                             Enviar documento
                         </Button>
-                    </Box>
+                    </Box> */}
                 </>
             )}
         </Box>

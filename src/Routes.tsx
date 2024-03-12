@@ -47,15 +47,9 @@ const UserRoutes: React.FC<{ user: User }> = ({ user }) => {
             <BottomNavigation section={user.employee ? bottomMenu.employee : bottomMenu.producer} />
             <ReactRoutes>
                 {user.employee ? (
-                    <>
-                        <Route path="/employee/*" element={<Employee user={user} />} />
-                        {/* <Route path="/producer/:producerid/:tillageid" element={<TillageDetails />} /> */}
-                    </>
+                    <Route path="/employee/*" element={<Employee user={user} />} />
                 ) : (
-                    <>
-                        <Route path="/producer/*" element={<Producer user={user} />} />
-                        {/* <Route path="/producer/:tillageid" element={<TillageDetails />} /> */}
-                    </>
+                    <Route path="/producer/*" element={<Producer user={user} />} />
                 )}
 
                 <Route path="/profile" element={<Profile user={user} />} />

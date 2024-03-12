@@ -17,10 +17,10 @@ interface HeaderProfileProps {
     setImage: React.Dispatch<React.SetStateAction<File | undefined>>
     isAdmin?: boolean
     isManager?: boolean
-    setIsAdmin: (value: boolean) => void
-    setIsManager: (value: boolean) => void
-    profile: User | undefined
-    setProfile: (values: User) => void
+    setIsAdmin?: (value: boolean) => void
+    setIsManager?: (value: boolean) => void
+    profile?: User | undefined
+    setProfile?: (values: User) => void
 }
 
 const Android12Switch = styled(Switch)(({ theme }) => ({
@@ -70,22 +70,22 @@ export const HeaderProfile: React.FC<HeaderProfileProps> = ({
     const io = useIo()
 
     const handleChangeAdmin = (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
-        setIsAdmin(event.target.checked)
+        setIsAdmin && setIsAdmin(event.target.checked)
         io.emit("user:toggle:admin", values.id) // Emitir evento com o ID do usuário
     }
 
     const handleChangeManager = (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
-        setIsManager(event.target.checked)
+        setIsManager && setIsManager(event.target.checked)
         io.emit("user:toggle:manager", values.id) // Emitir evento com o ID do usuário
     }
 
     useEffect(() => {
         io.on("user:manager:toggle:success", (data: User) => {
-            setProfile(data)
+            setProfile && setProfile(data)
             console.log({ Manager: data })
         })
         io.on("user:admin:toggle:success", (data: User) => {
-            setProfile(data)
+            setProfile && setProfile(data)
             console.log({ Admin: data })
         })
         io.on("user:admin:toggle:failed", (error) => {
@@ -103,10 +103,10 @@ export const HeaderProfile: React.FC<HeaderProfileProps> = ({
         }
     }, [])
     useEffect(() => {
-        profile?.isAdmin && setIsAdmin(profile?.isAdmin)
+        profile?.isAdmin && setIsAdmin && setIsAdmin(profile?.isAdmin)
     }, [profile?.isAdmin])
     useEffect(() => {
-        profile?.isManager && setIsManager(profile?.isManager)
+        profile?.isManager && setIsManager && setIsManager(profile?.isManager)
     }, [profile?.isManager])
 
     useEffect(() => {

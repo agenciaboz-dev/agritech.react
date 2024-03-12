@@ -15,7 +15,6 @@ interface ProducerProps {
 export const Producer: React.FC<ProducerProps> = ({ user }) => {
     return (
         <>
-            {/* {user.approved && <BottomNavigation section={bottomMenu.producer} />} */}
             <ReactRoutes>
                 <Route path="/*" element={<PanelUser user={user} />} />
                 <Route path="/producer" element={<PanelUser user={user} />} />
