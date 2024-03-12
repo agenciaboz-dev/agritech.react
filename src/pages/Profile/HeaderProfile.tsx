@@ -131,14 +131,7 @@ export const HeaderProfile: React.FC<HeaderProfileProps> = ({
                 />
             )}
             <Box sx={{ flexDirection: "column", gap: "3vw", width: "60%" }}>
-                <TextField
-                    label={"Nome Completo"}
-                    name="name"
-                    value={values.name}
-                    onChange={handleChange}
-                    sx={textField}
-                    InputProps={{ readOnly: true }}
-                />
+                <TextField label={"Nome Completo"} name="name" value={values.name} onChange={handleChange} sx={textField} />
                 <TextField
                     label={"Telefone"}
                     name="phone"

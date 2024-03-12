@@ -14,9 +14,9 @@ interface ReviewsCallProps {
 
 export const ReviewsCall: React.FC<ReviewsCallProps> = ({ user }) => {
     const header = useHeader()
-    const { listCallsPending, listCalls } = useCall()
+    const { listCalls } = useCall()
 
-    const sortedPendingCalls = listCallsPending.sort((a, b) => Number(a.open) - Number(b.open))
+    const sortedPendingCalls = listCalls.filter((item) => !item.approved).sort((a, b) => Number(a.open) - Number(b.open))
     const sortedApprovedCalls = listCalls.sort((a, b) => Number(a.open) - Number(b.open))
 
     const [tab, setTab] = useState("pending")
@@ -24,6 +24,9 @@ export const ReviewsCall: React.FC<ReviewsCallProps> = ({ user }) => {
         setTab(newValue)
     }
 
+    useEffect(() => {
+        console.log(sortedPendingCalls)
+    }, [sortedPendingCalls])
     useEffect(() => {
         header.setTitle("Chamados")
     }, [])
@@ -102,7 +105,7 @@ export const ReviewsCall: React.FC<ReviewsCallProps> = ({ user }) => {
                         <Tab sx={tabStyle} value="calls" label="Em andamento" />
                     </Tabs>
                     <Box sx={{ width: "100%", height: "100%", overflow: "auto", gap: "1vw" }}>
-                        {tab === "pending" && listCallsPending.length !== 0
+                        {tab === "pending" && sortedPendingCalls.length !== 0
                             ? sortedPendingCalls?.map((call, index) => <LogsCard key={index} call={call} review />)
                             : tab === "pending" && "Nenhum chamado pendente"}
                         {tab === "calls" && listCalls.length !== 0

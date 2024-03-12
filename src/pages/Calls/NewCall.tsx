@@ -100,7 +100,7 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
             producerId: user.producer ? user.producer.id : selectedProducer?.id,
             talhaoId: selectedTalhao?.id,
             userId: Number(account?.user?.id),
-            kitId: 2,
+            kitId: selectedKit?.id ? selectedKit?.id : undefined,
             forecast: dayjs(pickDate).valueOf().toString(),
             hectarePrice: unmaskCurrency(values.hectarePrice),
         }
@@ -233,7 +233,7 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
             snackbar({ severity: "error", text: "Algo deu errado" })
             setLoading(false)
         })
-     
+
         return () => {
             io.off("AdminCall:creation:success")
             io.off("AdminCall:creation:failed")
