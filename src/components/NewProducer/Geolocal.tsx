@@ -40,6 +40,7 @@ export const Geolocal: React.FC<GeolocalProps> = ({ setCurrentStep, origin, coor
         return null
     }
 
+   
     const captureMapImage = () => {
         if (mapRef.current) {
             leafletImage(mapRef.current, function (err, canvas) {

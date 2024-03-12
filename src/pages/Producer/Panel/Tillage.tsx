@@ -203,7 +203,7 @@ export const Tillage: React.FC<TillageProps> = ({}) => {
                             {findTillage?.talhao?.length === 0 && tab === "calls" && (
                                 <p>É necessário ter talhões cadastrados para abrir chamados.</p>
                             )}
-                            {tab === "history" && <p>Nenhum Registro</p>}
+                            {/* {tab === "history" && <p>Nenhum Registro</p>} */}
                             {tab === "calls" && !findTillage?.talhao && (
                                 <p style={{ padding: "2vw" }}>Não existe nenhum talhão cadastrado.</p>
                             )}

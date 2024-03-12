@@ -100,12 +100,12 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
             producerId: user.producer ? user.producer.id : selectedProducer?.id,
             talhaoId: selectedTalhao?.id,
             userId: Number(account?.user?.id),
-            kitId: selectedKit?.id,
+            kitId: 2,
             forecast: dayjs(pickDate).valueOf().toString(),
             hectarePrice: unmaskCurrency(values.hectarePrice),
         }
         console.log(data)
-        io.emit(user.isAdmin ? "admin:call:create" : "call:create", data)
+        io.emit("admin:call:create", data)
         setLoading(true)
     }
 
@@ -215,7 +215,7 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
     }, [selectedProducer, tillageId])
 
     useEffect(() => {
-        io.on(user.isAdmin ? "adminCall:creation:success" : "call:creation:success", (data: Call) => {
+        io.on("adminCall:creation:success", (data: Call) => {
             // console.log({ chamadoAberto: data })
             addCall(data)
             {
@@ -228,19 +228,15 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
             })
             navigate(user.isAdmin ? "/adm/calls" : user.employee ? "/employee/" : "/producer/")
         })
-        io.on(user.isAdmin ? "adminCall:creation:failed" : "call:creation:failed", (error) => {
+        io.on("adminCall:creation:failed", (error) => {
             console.log({ chamadoAberto: error })
             snackbar({ severity: "error", text: "Algo deu errado" })
             setLoading(false)
         })
-        io.on("call:update:failed", (error) => {
-            console.log({ chamadoAberto: error })
-            snackbar({ severity: "error", text: "Já existe chamado ativo pra esse Fazenda!" })
-            setLoading(false)
-        })
+     
         return () => {
-            io.off("call:creation:success")
-            io.off("call:creation:failed")
+            io.off("AdminCall:creation:success")
+            io.off("AdminCall:creation:failed")
         }
     }, [])
 
@@ -311,6 +307,31 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                     <Box sx={{ gap: "4vw" }}>
                         {user.employee && (
                             <>
+                                {!user.isAdmin && (
+                                    <LocalizationProvider
+                                        dateAdapter={AdapterDayjs}
+                                        localeText={ptBR.components.MuiLocalizationProvider.defaultProps.localeText}
+                                    >
+                                        <DemoContainer components={["MobileDatePicker"]}>
+                                            <DemoItem label={"Previsão da visita"}>
+                                                <ThemeProvider theme={newTheme}>
+                                                    <MobileDatePicker
+                                                        sx={{ ...textField }}
+                                                        format="DD/MM/YYYY"
+                                                        value={pickDate}
+                                                        onChange={(newDate) => {
+                                                            if (newDate !== null) {
+                                                                setPickDate(newDate)
+                                                            }
+                                                        }}
+                                                        timezone="system"
+                                                        disablePast
+                                                    />
+                                                </ThemeProvider>
+                                            </DemoItem>
+                                        </DemoContainer>
+                                    </LocalizationProvider>
+                                )}
                                 <Autocomplete
                                     value={selectedProducer}
                                     options={producers || []}

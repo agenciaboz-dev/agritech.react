@@ -524,7 +524,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                             {tillageSelect?.talhao?.length === 0 && tab === "calls" && (
                                 <p>É necessário ter talhões cadastrados para abrir chamados.</p>
                             )}
-                            {tab === "history" && <p>Nenhum Registro</p>}
+                            {/* {tab === "history" && <p>Nenhum Registro</p>} */}
 
                             <DialogConfirm
                                 user={user}

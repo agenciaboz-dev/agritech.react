@@ -23,6 +23,7 @@ export const NotificationDrawer: React.FC<NotificationDrawerProps> = ({}) => {
     const { listNotifications } = useNotification()
 
     const recents = user && listNotifications?.filter((item) => !item.viewed_by.includes(user.id))
+    const sorted_list = recents?.sort((a, b) => Number(b.datetime) - Number(a.datetime))
 
     const menuItemStyle: SxProps = {
         fontSize: "3.8vw",
@@ -58,14 +59,21 @@ export const NotificationDrawer: React.FC<NotificationDrawerProps> = ({}) => {
             keepMounted
         >
             <Box sx={{ p: "4vw 4vw 2vw", flexDirection: "row", justifyContent: "space-between" }}>
-                <p style={{ fontWeight: "800", color: colors.text.white, fontFamily: "MalgunGothicBold", fontSize:"1.2rem" }}>
+                <p
+                    style={{
+                        fontWeight: "800",
+                        color: colors.text.white,
+                        fontFamily: "MalgunGothicBold",
+                        fontSize: "1.2rem",
+                    }}
+                >
                     {navigationItems.notifications.title} Recentes
                 </p>
             </Box>
             <Box sx={{ overflowY: "auto", gap: "8vw", height: "90%" }}>
                 <Box>
                     <Box sx={{ flexDirection: "column", paddingTop: "2vw", gap: "vw" }}>
-                        {recents?.map((item, index) => (
+                        {sorted_list?.map((item, index) => (
                             <LogNotification notification={item} drawer key={index} />
                         ))}
                     </Box>
