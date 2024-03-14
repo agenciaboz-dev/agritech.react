@@ -24,6 +24,7 @@ import { useSnackbar } from "burgos-snackbar"
 import { useDisclosure } from "@mantine/hooks"
 import { api } from "../../../../api/index.ts"
 import { useReports } from "../../../../hooks/useReports.ts"
+import { Call } from "../../../../definitions/call"
 
 interface ReportDetailsProps {}
 
@@ -63,12 +64,24 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
     }
 
     const [selectedReport, setSelectedReport] = useState<Report>()
-    const callSelect = listCalls.find((item) => item.id === Number(callid))
+    const [call, setCall] = useState<Call>()
+
     useEffect(() => {
-        const call_report = callSelect?.reports?.find((item) => item.id === Number(reportid))
-        const updated_report = reports.listReports.find((item) => item.id == call_report?.id)
-        setSelectedReport(updated_report)
-    }, [callSelect?.reports])
+        if (listCalls.length == 0) io.emit("call:listApproved")
+        if (reports.listReports.length == 0) io.emit("report:list")
+    }, [])
+
+    useEffect(() => {
+        listCalls && setCall(listCalls.find((item) => item.id === Number(callid)))
+    }, [listCalls])
+
+    useEffect(() => {
+        console.log(reportid)
+    }, [reportid])
+
+    useEffect(() => {
+        reports.listReports && setSelectedReport(reports.listReports.find((item) => item.id === Number(callid)))
+    }, [reports.listReports])
 
     const handleApprove = async () => {
         io.emit("report:approve", selectedReport?.id)
@@ -78,6 +91,10 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
     const exportPDF = async () => {
         selectedReport?.pdf_path && window.open(selectedReport.pdf_path, "_blank")?.focus()
     }
+
+    useEffect(() => {
+        console.log({ selectedReport })
+    }, [selectedReport])
 
     useEffect(() => {
         io.on("report:approved:success", (data: Report) => {
@@ -93,10 +110,14 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
         }
     }, [])
 
+    useEffect(() => {
+        console.log(listCalls)
+        console.log(reports.listReports)
+    }, [listCalls])
+
     return (
         selectedReport &&
-        callSelect &&
-        callSelect?.talhao && (
+        call && (
             <Box
                 sx={{
                     width: "100%",
@@ -150,7 +171,7 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                         flexDirection: "row",
                     }}
                 >
-                    <Header back location={`/adm/producer/${callSelect.producerId}/${callSelect.talhao?.tillageId}`} />
+                    <Header back location={`/adm/producer/${call?.producerId}/${call?.talhao?.tillageId}`} />
                 </Box>
                 <Box
                     style={{
@@ -229,24 +250,24 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                                 </Box>
                                 <p>
                                     <span style={{ fontWeight: "bold" }}>Contratante:</span>{" "}
-                                    {callSelect.producer?.user && callSelect["producer"]["user"]["name"]}{" "}
+                                    {call?.producer?.user && call.producer?.user.name}
                                 </p>
                                 <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
                                     <p>
                                         <span style={{ fontWeight: "bold" }}>CPF:</span>{" "}
-                                        {callSelect.producer?.user && formatCPF(callSelect["producer"]["user"]["cpf"] || "")}{" "}
+                                        {call?.producer?.user && formatCPF(call.producer.user.cpf || "")}{" "}
                                     </p>
                                     <p>
                                         <span style={{ fontWeight: "bold" }}>CNPJ:</span>{" "}
-                                        {callSelect.producer?.user && formatCNPJ(callSelect["producer"]["cnpj"] || "")}{" "}
+                                        {call?.producer?.user && formatCNPJ(call.producer.cnpj || "")}{" "}
                                     </p>
                                 </Box>
                                 <p>
                                     <span style={{ fontWeight: "bold" }}>Propriedade:</span>{" "}
-                                    {callSelect.talhao.tillage && callSelect["talhao"]["tillage"]["name"]}{" "}
+                                    {call?.talhao?.tillage && call.talhao.tillage.name}{" "}
                                 </p>
                                 <p>
-                                    <span style={{ fontWeight: "bold" }}>Talhão:</span> {callSelect["talhao"]["name"]}{" "}
+                                    <span style={{ fontWeight: "bold" }}>Talhão:</span> {call?.talhao && call.talhao.name}
                                 </p>
                             </Box>
 
@@ -255,18 +276,16 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                         <Box sx={{ gap: "2vw" }}>
                             <Box sx={{ justifyContent: "space-between", width: "100%", flexDirection: "row" }}>
                                 <p style={{ fontWeight: "bold" }}>Custo por hectare: </p>
-                                {callSelect.talhao.tillage && (
-                                    <CurrencyText value={Number(callSelect["talhao"]["tillage"]["hectarePrice"])} />
-                                )}
+                                {call?.talhao?.tillage && <CurrencyText value={Number(call?.talhao.tillage.hectarePrice)} />}
                             </Box>
                             <Box sx={{ justifyContent: "space-between", width: "100%", flexDirection: "row" }}>
                                 <p style={{ fontWeight: "bold" }}>Área Trabalhada no dia:</p>{" "}
-                                {selectedReport["areaTrabalhada"]} ha{" "}
+                                {selectedReport?.areaTrabalhada} ha{" "}
                             </Box>
                             <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
                                 <p style={{ fontWeight: "bold" }}>Custo total: </p>
                                 <p style={{ justifyContent: "space-between" }}>
-                                    <CurrencyText value={Number(selectedReport["totalPrice"])} />
+                                    <CurrencyText value={Number(selectedReport?.totalPrice)} />
                                 </p>
                             </Box>
                             <hr />
@@ -313,25 +332,22 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                                         <Tab sx={{ ...tabStyle, width: "35%" }} value="material" label="Insumos" />
                                     </Tabs>
                                     <Box sx={{ height: "max-content", maxHeight: "100%", overflowY: "auto" }}>
-                                        {tab === "operation" && selectedReport.operation && (
+                                        {tab === "operation" && selectedReport?.operation && call && (
                                             <Box sx={{ gap: "4vw" }}>
                                                 <Box sx={{ gap: "2vw" }}>
-                                                    <OperationComponent
-                                                        call={callSelect}
-                                                        operation={selectedReport["operation"]}
-                                                    />
+                                                    <OperationComponent call={call} operation={selectedReport.operation} />
                                                     <hr />
                                                 </Box>
                                             </Box>
                                         )}
-                                        {tab === "treatment" && selectedReport.treatment && (
-                                            <TreatmentComponent treatment={selectedReport["treatment"]} />
+                                        {tab === "treatment" && selectedReport?.treatment && (
+                                            <TreatmentComponent treatment={selectedReport.treatment} />
                                         )}
-                                        {tab === "techReport" && selectedReport.techReport && (
-                                            <TechReportComponent tech={selectedReport["techReport"]} />
+                                        {tab === "techReport" && selectedReport?.techReport && (
+                                            <TechReportComponent tech={selectedReport?.techReport} />
                                         )}
-                                        {tab === "material" && selectedReport.material && (
-                                            <MaterialComponent material={selectedReport["material"]} />
+                                        {tab === "material" && selectedReport?.material && (
+                                            <MaterialComponent material={selectedReport?.material} />
                                         )}
                                     </Box>
                                 </Box>

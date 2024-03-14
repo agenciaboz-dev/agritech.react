@@ -53,25 +53,22 @@ export const ModalStage: React.FC<ModalStageProps> = ({ opened, close, report })
     const backSubmit = (values: Stage) => {
         const data = {
             ...values,
-            id: report?.stages ? report?.stages[2].id : null,
             date: new Date().getTime().toString(),
             start: new Date(Number(initPick)).getTime().toString(),
             finish: new Date(Number(finishPick)).getTime().toString(),
         }
-        io.emit("stage:update:three", data)
+        io.emit("stage:new", data, 4)
         io.emit("report:close", report.id)
         setLoading(true)
         console.log(data)
     }
 
     useEffect(() => {
-        io.on("stage:updateThree:success", (stage) => {
+        io.on("stage:new", (report: Report) => {
             snackbar({ severity: "success", text: "Dados registrados!" })
             setLoading(false)
+
             console.log("Finalizado")
-        })
-        io.on("stage:updateThree:failed", (stage) => {
-            snackbar({ severity: "error", text: "Tem algo errado com os dados de volta!" })
         })
 
         io.on("report:closed:success", (updatedReport: Report) => {
@@ -92,8 +89,7 @@ export const ModalStage: React.FC<ModalStageProps> = ({ opened, close, report })
         })
 
         return () => {
-            io.off("stage:updateThree:success")
-            io.off("stage:updateThree:failed")
+            io.off("stage:new")
             io.off("report:closed:success")
             io.off("report:closed:failed")
         }

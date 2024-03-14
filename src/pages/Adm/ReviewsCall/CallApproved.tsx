@@ -101,6 +101,9 @@ export const CallApproved: React.FC<CallApprovedProps> = ({}) => {
             setLoading(false)
         })
     }, [])
+    useEffect(() => {
+        if (listKits.length == 0) io.emit("kit:list")
+    }, [])
     return (
         <Box
             sx={{

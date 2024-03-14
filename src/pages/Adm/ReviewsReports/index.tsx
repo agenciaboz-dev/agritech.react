@@ -32,20 +32,16 @@ export const ReviewsReports: React.FC<ReviewsReportsProps> = ({ user }) => {
     useEffect(() => {
         console.log("lista udou")
         setReports(
-            listReports
-                .filter((item) => item.approved && item.stage === "STAGE4")
-                .sort((a, b) => Number(a.date) - Number(b.date))
+            listReports.filter((item) => item.approved && item.stage === 4).sort((a, b) => Number(a.date) - Number(b.date))
         )
         setReportsPending(
-            listReports
-                .filter((item) => !item.approved && item.stage! === "STAGE4")
-                .sort((a, b) => Number(a.date) - Number(b.date))
+            listReports.filter((item) => !item.approved && item.stage! === 4).sort((a, b) => Number(a.date) - Number(b.date))
         )
         console.log(listReports)
     }, [listReports])
 
     useEffect(() => {
-        if(listReports.length === 0) io.emit("report:list")
+        if (listReports.length === 0) io.emit("report:list")
         console.log("emitindo")
         header.setTitle("Relatórios")
     }, [])

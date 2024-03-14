@@ -293,6 +293,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
     }
 
     useEffect(() => {
+        
         header.setTitle(!tillageSelect ? `Informações` : tillageSelect.name)
         // setProducerid(Number(producerid))
         // console.log(tillageSelect)
@@ -487,18 +488,19 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                             ) : tab === "calls" && selectedCall && selectedCall.reports?.length === 0 ? (
                                 <ProgressCall
                                     user={user}
-                                    click={() =>
-                                        navigate(
-                                            user?.producer !== null
-                                                ? `/producer/call/${call?.id}`
-                                                : selectedCall?.stage === "STAGE4"
-                                                ? user.isAdmin
-                                                    ? `/adm/call/${selectedCall?.id}/laudo`
-                                                    : `/employee/call/${selectedCall?.id}/laudo`
-                                                : user.isAdmin
-                                                ? `/adm/call/${selectedCall?.id}/report`
-                                                : `/employee/call/${call?.id}/report`
-                                        )
+                                    click={
+                                        () => {}
+                                        // navigate(
+                                        //     user?.producer !== null
+                                        //         ? `/producer/call/${call?.id}`
+                                        //         : selectedCall?.stage === 4
+                                        //         ? user.isAdmin
+                                        //             ? `/adm/call/${selectedCall?.id}/laudo`
+                                        //             : `/employee/call/${selectedCall?.id}/laudo`
+                                        //         : user.isAdmin
+                                        //         ? `/adm/call/${selectedCall?.id}/report`
+                                        //         : `/employee/call/${call?.id}/report`
+                                        // )
                                     }
                                     data={progress}
                                     call={selectedCall}

@@ -37,6 +37,7 @@ export const ReviewsCall: React.FC<ReviewsCallProps> = ({ user }) => {
         if (listCalls.length == 0) io.emit("call:listApproved")
         if (listCallsPending.length == 0) io.emit("call:listPending")
     }, [])
+  
 
     return (
         <Box

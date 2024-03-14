@@ -8,6 +8,8 @@ import { useUser } from "../../hooks/useUser"
 import { Call } from "../../definitions/call"
 import { useKits } from "../../hooks/useKits"
 import { useUsers } from "../../hooks/useUsers"
+import { io } from "socket.io-client"
+import { useIo } from "../../hooks/useIo"
 
 interface LogsCardProps {
     review?: boolean
@@ -19,6 +21,7 @@ interface LogsCardProps {
 }
 
 export const LogsCard: React.FC<LogsCardProps> = ({ review, call, variant, talhao, tillage, setSelectedCall }) => {
+    const io = useIo()
     const navigate = useNavigate()
     const { user } = useUser()
     const { listKits } = useKits()
@@ -31,6 +34,9 @@ export const LogsCard: React.FC<LogsCardProps> = ({ review, call, variant, talha
     const totalTrabalhado = call?.reports?.map((item) => Number(item.areaTrabalhada))
     const sumTotal = totalTrabalhado?.reduce((prev, current) => prev + current, 0) || 0
 
+    useEffect(() => {
+        if (listKits.length == 0) io.emit("kit:list")
+    }, [])
     return (
         <Box
             sx={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}
@@ -41,7 +47,7 @@ export const LogsCard: React.FC<LogsCardProps> = ({ review, call, variant, talha
                         call && setSelectedCall(call)
                     } else {
                         navigate(`/adm/call/${call?.id}/laudos`)
-                        // if (call?.reports && call.reports[0].stage === "STAGE1") {
+                        // if (call?.reports && call.reports[0].stage === 1) {
                         //     console.log("sem relatorio")
                         //     navigate(`/adm/call/${call?.id}/stages/${call?.reports && call.reports[0].id}`)
                         //     call && setSelectedCall(call)
@@ -88,7 +94,7 @@ export const LogsCard: React.FC<LogsCardProps> = ({ review, call, variant, talha
                             call && setSelectedCall(call)
                         } else {
                             navigate(`/adm/call/${call?.id}/laudos`)
-                            // if (call?.reports && call.reports[0].stage === "STAGE1") {
+                            // if (call?.reports && call.reports[0].stage === 1) {
                             //     console.log("sem relatorio")
                             //     navigate(`/adm/call/${call?.id}/stages/${call?.reports && call.reports[0].id}`)
                             //     call && setSelectedCall(call)

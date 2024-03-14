@@ -108,6 +108,9 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
         })
     }, [])
 
+    useEffect(() => {
+        if (kitsActived.length == 0) io.emit("kit:list")
+    }, [listKits])
     return (
         <Box
             sx={{

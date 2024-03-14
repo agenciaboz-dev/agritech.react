@@ -6,23 +6,36 @@ import { TitleComponents } from "../../components/TitleComponents"
 import { useNavigate, useParams } from "react-router-dom"
 import { useCall } from "../../hooks/useCall"
 import { LogsLaudo } from "./LogsLaudo"
+import { useIo } from "../../hooks/useIo"
+import { useReports } from "../../hooks/useReports"
 
 interface ListLaudosProps {
     user: User
 }
 
 export const ListLaudos: React.FC<ListLaudosProps> = ({ user }) => {
+    const io = useIo()
     const navigate = useNavigate()
     const { callid } = useParams()
+    const { listReports } = useReports()
 
     const { listCalls } = useCall()
-    const selectedCall = listCalls.find((item) => item.id === Number(callid))
-    const sortedReports = selectedCall?.reports?.sort((a, b) => Number(a.date) - Number(b.date))
 
     useEffect(() => {
-        console.log(selectedCall)
+        if (listCalls.length == 0) io.emit("call:listApproved")
+        if (listReports.length == 0) io.emit("report:list")
+        console.log(listCalls)
+        console.log(listReports)
     }, [])
 
+    const selectedCall = listCalls.find((item) => item.id === Number(callid))
+    const sortedReports = listReports
+        ?.filter((item) => item.callId === Number(callid))
+        .sort((a, b) => Number(a.date) - Number(b.date))
+
+    useEffect(() => {
+        console.log(listCalls)
+    }, [listCalls])
     return (
         <Box
             sx={{
