@@ -9,7 +9,6 @@ import { Call, CreateCall } from "../../definitions/call"
 import { textField } from "../../style/input"
 import { useUser } from "../../hooks/useUser"
 import { useKits } from "../../hooks/useKits"
-import { useProducer } from "../../hooks/useProducer"
 import { useIo } from "../../hooks/useIo"
 import { useSnackbar } from "burgos-snackbar"
 import { useNavigate } from "react-router-dom"
@@ -38,8 +37,7 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
     const { listUsers } = useUsers()
     const { snackbar } = useSnackbar()
     const { listKits } = useKits()
-    const { listTillages } = useProducer()
-    const { addCall, addCallPending, addCallApprove } = useCall()
+    const { addCallPending, addCallApprove } = useCall()
 
     const [highlightedDays, setHighlightedDays] = React.useState()
 
@@ -53,7 +51,9 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
     )
     const [kits, setKits] = useState(listKits?.filter((item) => !!item && item.active) as Kit[])
     const [tillages, setTillages] = useState<Tillage[]>([])
+    const [tillagesProducer, setTillagesProducer] = useState<Tillage[]>([])
     const [talhoes, setTalhoes] = useState<Talhao[]>([])
+    const [talhoesProducer, setTalhoesProducer] = useState<Talhao[]>([])
 
     const [tillageId, setTillageId] = useState<number | null>(null)
     const [talhaoId, setTalhaoId] = useState<number | null>(null)
@@ -62,15 +62,6 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
     const findTillageInfo = selectedProducer?.tillage?.find((item) => item.id === tillageId)
     const talhaoSelect = findTillageInfo?.talhao?.find((item) => item.id === talhaoId)
 
-    //Render options => user.producer
-    const producerTillagesList = listTillages.filter((item) => item.producerId === user.producer?.id)
-    const [tillagesProducer, setTillagesProducer] = useState<{ id: number; name: string }[]>(
-        user.producer?.tillage?.map((tillage) => ({
-            id: tillage.id,
-            name: tillage.name,
-            call: tillage.call,
-        })) || []
-    )
 
     const formik = useFormik<CreateCall>({
         initialValues: {
@@ -93,7 +84,7 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
 
     const handleSubmit = (values: CreateCall) => {
         console.log(values)
-        const data = {
+        const dataAdmin = {
             approved: user.isAdmin ? true : false,
             open: new Date().getTime().toString(),
             comments: "",
@@ -104,10 +95,39 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
             forecast: dayjs(pickDate).valueOf().toString(),
             hectarePrice: unmaskCurrency(values.hectarePrice),
         }
-        console.log(data)
-        io.emit("admin:call:create", data)
+
+        const dataProducer = {
+            approved: false,
+            open: new Date().getTime().toString(),
+            comments: values.comments,
+            producerId: user.id,
+            talhaoId: selectedTalhao?.id,
+            userId: user?.id,
+            forecast: dayjs(pickDate).valueOf().toString(),
+        }
+
+        console.log(dataAdmin)
+        console.log(dataAdmin)
+        io.emit(
+            user.employee !== null ? "admin:call:create" : "call:create",
+            user.employee !== null ? dataAdmin : dataProducer
+        )
         setLoading(true)
     }
+
+    useEffect(() => {
+        io.on("call:creation:success", (data: Call) => {
+            console.log({ callProducer: data })
+            snackbar({ severity: "success", text: "Chamado aberto! Aguarde a aprovação." })
+            setLoading(false)
+            navigate("/producer/requests")
+        })
+        io.on("call:creation:failed", (data: Call) => {
+            console.log({ callProducer: data })
+            snackbar({ severity: "error", text: "Algo deu errado!" })
+            setLoading(false)
+        })
+    }, [])
 
     const newTheme = (theme: any) =>
         createTheme({
@@ -188,15 +208,6 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
             </Badge>
         )
     }
-    useEffect(() => {
-        setTillagesProducer(
-            producerTillagesList.map((tillage) => ({
-                id: tillage.id,
-                name: tillage.name,
-                call: tillage.call,
-            })) || []
-        )
-    }, [listTillages])
 
     useEffect(() => {
         console.log(
@@ -215,9 +226,25 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
     }, [selectedProducer, tillageId])
 
     useEffect(() => {
+        console.log(
+            user.producer?.tillage?.length !== 0
+                ? selectedProducer?.tillage?.map((tillage) => ({
+                      id: tillage.id,
+                      name: tillage.name,
+                      call: tillage.call,
+                  }))
+                : undefined
+        )
+        if (user.producer?.tillage) setTillagesProducer(user.producer?.tillage)
+
+        const selectedTillage = user.producer?.tillage?.find((item) => item.id === tillageId)
+        if (selectedTillage?.talhao) setTalhoesProducer(selectedTillage.talhao)
+    }, [user, tillageId])
+
+    useEffect(() => {
         io.on("adminCall:creation:success", (data: Call) => {
             // console.log({ chamadoAberto: data })
-            addCall(data)
+            addCallPending(data)
             {
                 !data.approved ? addCallPending(data) : addCallApprove(data)
             }
@@ -305,33 +332,33 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                 />
                 <form onSubmit={formik.handleSubmit}>
                     <Box sx={{ gap: "4vw" }}>
+                        {!user.isAdmin && (
+                            <LocalizationProvider
+                                dateAdapter={AdapterDayjs}
+                                localeText={ptBR.components.MuiLocalizationProvider.defaultProps.localeText}
+                            >
+                                <DemoContainer components={["MobileDatePicker"]}>
+                                    <DemoItem label={"Previsão da visita"}>
+                                        <ThemeProvider theme={newTheme}>
+                                            <MobileDatePicker
+                                                sx={{ ...textField }}
+                                                format="DD/MM/YYYY"
+                                                value={pickDate}
+                                                onChange={(newDate) => {
+                                                    if (newDate !== null) {
+                                                        setPickDate(newDate)
+                                                    }
+                                                }}
+                                                timezone="system"
+                                                disablePast
+                                            />
+                                        </ThemeProvider>
+                                    </DemoItem>
+                                </DemoContainer>
+                            </LocalizationProvider>
+                        )}
                         {user.employee && (
                             <>
-                                {!user.isAdmin && (
-                                    <LocalizationProvider
-                                        dateAdapter={AdapterDayjs}
-                                        localeText={ptBR.components.MuiLocalizationProvider.defaultProps.localeText}
-                                    >
-                                        <DemoContainer components={["MobileDatePicker"]}>
-                                            <DemoItem label={"Previsão da visita"}>
-                                                <ThemeProvider theme={newTheme}>
-                                                    <MobileDatePicker
-                                                        sx={{ ...textField }}
-                                                        format="DD/MM/YYYY"
-                                                        value={pickDate}
-                                                        onChange={(newDate) => {
-                                                            if (newDate !== null) {
-                                                                setPickDate(newDate)
-                                                            }
-                                                        }}
-                                                        timezone="system"
-                                                        disablePast
-                                                    />
-                                                </ThemeProvider>
-                                            </DemoItem>
-                                        </DemoContainer>
-                                    </LocalizationProvider>
-                                )}
                                 <Autocomplete
                                     value={selectedProducer}
                                     options={producers || []}
@@ -423,104 +450,34 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                                 </LocalizationProvider>
                             </Box>
                         )}
-                        {/* {user.producer && (
-                                    <>
-                                        <Autocomplete
-                                            value={
-                                                tillagesProducer.find((tillage) => tillage.id === values.tillageId) || null
-                                            }
-                                            inputValue={inputValue}
-                                            options={tillagesProducer || []}
-                                            getOptionLabel={(option: { id: number; name: string }) => option.name}
-                                            onChange={(event, selected) => {
-                                                if (selected) {
-                                                    setFieldValue("tillageId", selected.id)
-                                                    setTillageId(selected.id)
-                                                }
-                                            }}
-                                            renderOption={(props, option) => {
-                                                // Verifique se a opção atual tem uma 'call' associada
-                                                const isOptionDisabled = allCalls.some((call) =>
-                                                    account.user?.producer
-                                                        ? call.producerId === user?.producer?.id &&
-                                                          call.tillageId === option.id
-                                                        : call.producerId === producerId && call.tillageId === option.id
-                                                )
-
-                                                return (
-                                                    <li
-                                                        {...props}
-                                                        style={{
-                                                            color: isOptionDisabled ? "black" : "black",
-                                                            // Desabilitar a opção se necessário
-                                                            pointerEvents: isOptionDisabled ? "none" : "auto",
-                                                            opacity: isOptionDisabled ? 0.7 : 1,
-                                                            flexDirection: "column",
-
-                                                            alignItems: "start",
-                                                        }}
-                                                    >
-                                                        {option.name}{" "}
-                                                        {isOptionDisabled && (
-                                                            <span style={{ color: colors.delete, fontSize: "3vw" }}>
-                                                                Já existe chamado
-                                                            </span>
-                                                        )}
-                                                    </li>
-                                                )
-                                            }}
-                                            renderInput={(params) => (
-                                                <TextField {...params} sx={{ ...textField }} label="Fazenda" required />
-                                            )}
-                                        />
-                                        <Autocomplete
-                                            value={talhoes.find((tillage) => tillage.id === values.talhaoId) || null}
-                                            inputValue={inputValue}
-                                            options={talhoes || []}
-                                            getOptionLabel={(option: { id: number; name: string }) => option.name}
-                                            onChange={(event, selected) => {
-                                                if (selected) {
-                                                    setFieldValue("tillageId", selected.id)
-                                                    setTillageId(selected.id)
-                                                }
-                                            }}
-                                            renderOption={(props, option) => {
-                                                // Verifique se a opção atual tem uma 'call' associada
-                                                const isOptionDisabled = allCalls.some((call) =>
-                                                    account.user?.producer
-                                                        ? call.producerId === user?.producer?.id &&
-                                                          call.tillageId === option.id
-                                                        : call.producerId === producerId && call.tillageId === option.id
-                                                )
-
-                                                return (
-                                                    <li
-                                                        {...props}
-                                                        style={{
-                                                            color: isOptionDisabled ? "black" : "black",
-                                                            // Desabilitar a opção se necessário
-                                                            pointerEvents: isOptionDisabled ? "none" : "auto",
-                                                            opacity: isOptionDisabled ? 0.7 : 1,
-                                                            flexDirection: "column",
-
-                                                            alignItems: "start",
-                                                        }}
-                                                    >
-                                                        {option.name}{" "}
-                                                        {isOptionDisabled && (
-                                                            <span style={{ color: colors.delete, fontSize: "3vw" }}>
-                                                                Já existe chamado
-                                                            </span>
-                                                        )}
-                                                    </li>
-                                                )
-                                            }}
-                                            renderInput={(params) => (
-                                                <TextField {...params} sx={{ ...textField }} label="Talhao" required />
-                                            )}
-                                        />
-                                    </>
-                                )} */}
+                        {user.producer && (
+                            <>
+                                <Autocomplete
+                                    value={tillagesProducer.find((item) => item.id === tillageId) || null}
+                                    options={tillagesProducer || []}
+                                    getOptionLabel={(option: { id: number; name: string }) => option.name}
+                                    onChange={(event, selected) => {
+                                        if (selected) {
+                                            formik.setFieldValue("tillageId", selected.id)
+                                            setTillageId(selected.id)
+                                        }
+                                    }}
+                                    renderInput={(params) => (
+                                        <TextField {...params} sx={{ ...textField }} label="Fazenda" required />
+                                    )}
+                                />
+                                <Autocomplete
+                                    value={selectedTalhao}
+                                    options={talhoesProducer || []}
+                                    getOptionLabel={(option) => option.name}
+                                    onChange={(event, selected) => setSelectedTalhao(selected)}
+                                    renderInput={(params) => (
+                                        <TextField {...params} sx={{ ...textField }} label="Talhao" required />
+                                    )}
+                                    disabled={tillageId ? false : true}
+                                />
+                            </>
+                        )}
 
                         <TextField
                             multiline

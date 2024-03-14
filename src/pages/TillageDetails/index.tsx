@@ -56,7 +56,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
     const { tillageid, producerid } = useParams()
     const { snackbar } = useSnackbar()
     const { user } = useUser()
-    const { addCallPending, allCalls, addCall, addCallApprove } = useCall()
+    const { addCallApprove } = useCall()
     const { listKits } = useKits()
 
     const [open, setOpen] = useState(false)
@@ -301,7 +301,6 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
     useEffect(() => {
         io.on(user?.isAdmin ? "adminCall:creation:success" : "call:creation:success", (data: any) => {
             console.log({ chamadoAberto: data })
-            addCall(data)
             addCallApprove(data)
             setLoading(false)
             setCall(data)

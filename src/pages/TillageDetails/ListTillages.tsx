@@ -21,16 +21,16 @@ export const ListTillages: React.FC<ListTillagesProps> = ({}) => {
     const { listUsers } = useUsers()
 
     const producerSelect = findProducer(producerid || "")
-    const producerEncontrado = listUsers?.filter((item) => String(item.producer?.id) === producerid) || []
+    const producerEncontrado = listUsers?.find((item) => String(item.producer?.id) === producerid)
     const { listTillages, tillageUpdate, setProducerid } = useProducer()
 
     const [tillages, setTillages] = useState<Tillage[]>(listTillages)
-    const [tillagesProducer, setTillagesProducer] = useState<Tillage[]>(producerEncontrado[0].producer?.tillage || [])
+    const [tillagesProducer, setTillagesProducer] = useState<Tillage[]>(producerEncontrado?.producer?.tillage || [])
     const [searchText, setSearchText] = useState("")
 
     useEffect(() => {
-        setTillagesProducer(producerEncontrado[0].producer?.tillage || [])
-    }, [producerEncontrado[0].producer?.tillage])
+        setTillagesProducer(producerEncontrado?.producer?.tillage || [])
+    }, [producerEncontrado?.producer?.tillage])
 
     useEffect(() => {
         const filteredList = tillagesProducer?.filter(
@@ -38,7 +38,7 @@ export const ListTillages: React.FC<ListTillagesProps> = ({}) => {
         )
 
         setTillagesProducer(filteredList || [])
-    }, [producerEncontrado[0].producer?.tillage, searchText])
+    }, [producerEncontrado?.producer?.tillage, searchText])
 
     useEffect(() => {
         setTillages(listTillages)

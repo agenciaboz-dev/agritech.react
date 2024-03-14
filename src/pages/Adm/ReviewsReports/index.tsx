@@ -10,6 +10,7 @@ import { useIo } from "../../../hooks/useIo"
 import { NewReport, Report } from "../../../definitions/report"
 import { LogsReport } from "./LogsReport"
 import { SearchField } from "../../../components/SearchField"
+import { useReports } from "../../../hooks/useReports"
 
 interface ReviewsReportsProps {
     user: User
@@ -24,31 +25,28 @@ export const ReviewsReports: React.FC<ReviewsReportsProps> = ({ user }) => {
         setTab(newValue)
     }
 
+    const { listReports } = useReports()
     const [reports, setReports] = useState<Report[]>([])
     const [reportsPending, setReportsPending] = useState<Report[]>([])
 
     useEffect(() => {
-        io.emit("report:list")
-
-        io.on("report:list:success", (data: Report[]) => {
-            setReports(
-                data
-                    .filter((item) => item.approved && item.stage === "STAGE4")
-                    .sort((a, b) => Number(a.date) - Number(b.date))
-            )
-            setReportsPending(
-                data
-                    .filter((item) => !item.approved && item.stage! === "STAGE4")
-                    .sort((a, b) => Number(a.date) - Number(b.date))
-            )
-        })
-
-        return () => {
-            io.off("report:list:success")
-        }
-    }, [reports, reportsPending])
+        console.log("lista udou")
+        setReports(
+            listReports
+                .filter((item) => item.approved && item.stage === "STAGE4")
+                .sort((a, b) => Number(a.date) - Number(b.date))
+        )
+        setReportsPending(
+            listReports
+                .filter((item) => !item.approved && item.stage! === "STAGE4")
+                .sort((a, b) => Number(a.date) - Number(b.date))
+        )
+        console.log(listReports)
+    }, [listReports])
 
     useEffect(() => {
+        if(listReports.length === 0) io.emit("report:list")
+        console.log("emitindo")
         header.setTitle("Relatórios")
     }, [])
 

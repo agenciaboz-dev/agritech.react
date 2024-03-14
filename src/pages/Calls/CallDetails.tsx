@@ -42,7 +42,7 @@ export const CallDetails: React.FC<CallDetailsProps> = ({}) => {
     const { listKits } = useKits()
     const { listUsers } = useUsers()
     const { listTillages } = useProducer()
-    const { listCalls, allCalls, setAllCalls, setCalls } = useCall()
+    const { listCalls, setCalls } = useCall()
 
     const [open, setOpen] = useState(false)
     const [opened, { open: openCancelModal, close }] = useDisclosure(false)
@@ -68,7 +68,6 @@ export const CallDetails: React.FC<CallDetailsProps> = ({}) => {
     }, [])
 
     const removeCall = (call: Call) => {
-        setAllCalls(allCalls.filter((item) => item.id !== call.id))
         setCalls(listCalls.filter((item) => item.id !== call.id))
     }
     const cancelCall = (values?: Call) => {

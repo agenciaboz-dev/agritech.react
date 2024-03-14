@@ -33,19 +33,12 @@ export const Login: React.FC<LoginProps> = ({}) => {
     }
 
     const handleLogin = async (values: LoginValues) => {
-        if (user?.isAdmin) {
-            io.emit("admin:login", values)
-        } else {
-            io.emit("user:login", values)
-        }
+        if (loading) return
+
         setLoading(true)
+        io.emit("user:login", values)
     }
     useEffect(() => {
-        io.on("admin:login:success", (user: User) => {
-            setLoading(false)
-            console.log("Admin logado:", user)
-            setUser(user)
-        })
         io.on("user:login:success", (user: User) => {
             setLoading(false)
             setUser(user)

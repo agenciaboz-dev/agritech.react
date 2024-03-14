@@ -35,6 +35,10 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
     const [listProducer, setListProducer] = useState<User[]>()
 
     useEffect(() => {
+        if (listUsers.length == 0) {
+            io.emit("users:list")
+        }
+
         io.on("user:disconnect", () => {
             setUser(null)
             console.log(user)
@@ -47,13 +51,11 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
     }, [])
 
     useEffect(() => {
+        console.log(listUsers)
         setListEmployee(listUsers?.filter((users) => users.employee !== null))
         setListProducer(listUsers?.filter((users) => users.producer !== null))
     }, [listUsers])
 
-    useEffect(() => {
-        console.log(listUsers)
-    }, [listUsers])
     return (
         <Box style={{ flex: 1, backgroundColor: colors.button, paddingTop: "4vw", height: "100%" }}>
             <Box style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", padding: "0 4vw" }}>

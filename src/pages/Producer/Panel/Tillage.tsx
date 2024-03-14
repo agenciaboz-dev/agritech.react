@@ -24,6 +24,8 @@ export const Tillage: React.FC<TillageProps> = ({}) => {
     const { user } = useUser()
     const { tillageid } = useParams()
     const findTillage = listTillages.find((item) => item.id === Number(tillageid))
+    const [weatherData, setWeatherData] = useState<CurrentConditions>()
+    const [icon, setIcon] = useState<string>("")
 
     const [tab, setTab] = React.useState("calls")
     const changeTab = (event: React.SyntheticEvent, newValue: string) => {
@@ -47,6 +49,22 @@ export const Tillage: React.FC<TillageProps> = ({}) => {
     useEffect(() => {
         header.setTitle(findTillage ? findTillage?.name : "")
     }, [])
+
+    useEffect(() => {
+        // console.log({ location: tillageSelect?.address.city })
+        findTillage?.address.city && io.emit("weather:find", { data: findTillage?.address.city })
+
+        io.on("weather:find:success", (data: any) => {
+            setWeatherData(data.currentConditions)
+            setIcon(data.currentConditions.icon)
+        })
+        io.on("weather:find:failed", (data: any) => {})
+
+        return () => {
+            io.off("weather:find:success")
+            io.off("weather:find:failed")
+        }
+    }, [findTillage])
 
     return (
         <Box
@@ -152,7 +170,7 @@ export const Tillage: React.FC<TillageProps> = ({}) => {
                         height: "100%",
                     }}
                 >
-                    <WeatherComponent icon="" dataWeather={undefined} />
+                    <WeatherComponent dataWeather={weatherData} icon={icon} />
                     {selectedAvatar === 0 && findTillage?.talhao?.length !== 0 ? (
                         <p>Selecione um talhão</p>
                     ) : (

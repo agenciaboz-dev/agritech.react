@@ -8,4 +8,5 @@ declare interface Producer {
     reportId?: number
     // userid: number
     user?: User
+    call: Call[]
 }

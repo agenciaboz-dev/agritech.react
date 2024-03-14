@@ -44,8 +44,6 @@ export const UsersProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     }, [pendingUsers])
 
     useEffect(() => {
-        io.emit("user:pendingApproval")
-        io.emit("users:list")
 
         // Atualiza a lista completa de usuários pendentes
         const handleUpdatePendingList = (updatedList: any) => {

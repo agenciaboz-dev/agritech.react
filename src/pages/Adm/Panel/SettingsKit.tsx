@@ -9,10 +9,12 @@ import { useNavigate } from "react-router-dom"
 import { useKits } from "../../../hooks/useKits"
 import { useUser } from "../../../hooks/useUser"
 import { SearchField } from "../../../components/SearchField"
+import { useIo } from "../../../hooks/useIo"
 
 interface SettingsKitProps {}
 
 export const SettingsKit: React.FC<SettingsKitProps> = ({}) => {
+    const io = useIo()
     const header = useHeader()
     const navigate = useNavigate()
     const { listKits, updateKit } = useKits()
@@ -35,6 +37,7 @@ export const SettingsKit: React.FC<SettingsKitProps> = ({}) => {
 
     useEffect(() => {
         header.setTitle("Painel")
+        if (listKits.length === 0) io.emit("kit:list")
         console.log(listKits)
         console.log({ kits_emp: kitsEmployee })
     }, [])

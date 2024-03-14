@@ -6,7 +6,7 @@ import { useIo } from "../hooks/useIo"
 interface ReportsContextValue {
     listReports: Report[]
     setListReports: (value: Report[]) => void
-    update: (value:Report) => void
+    update: (value: Report) => void
 }
 
 interface ReportsProviderProps {
@@ -24,8 +24,9 @@ export const ReportProvider: React.FC<ReportsProviderProps> = ({ children }) => 
     const update = (report: Report) => setListReports((list) => [...list?.filter((item) => item.id != report.id), report])
 
     useEffect(() => {
-        io.emit("report:list")
         io.on("report:list:success", (reports: Report[]) => {
+            console.log("resposta")
+            console.log(reports)
             setListReports(reports)
         })
 

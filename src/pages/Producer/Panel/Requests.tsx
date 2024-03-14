@@ -17,9 +17,10 @@ export const Requests: React.FC<RequestsProps> = ({}) => {
     const io = useIo()
     const { user } = useUser()
     const { listCallsPending, listCalls } = useCall()
-    const [callsPending, setCallsPending] = useState<Call[]>([])
+    // const [callsPending, setCallsPending] = useState<Call[]>([])
 
     const callsApprove = listCalls.filter((item) => item.producerId === user?.producer?.id)
+    const callsPending = listCallsPending.filter((item) => item.producerId === user?.producer?.id)
 
     const [tab, setTab] = useState("pending")
     const changeTab = (event: React.SyntheticEvent, newValue: string) => {
@@ -29,9 +30,8 @@ export const Requests: React.FC<RequestsProps> = ({}) => {
     useEffect(() => {
         header.setTitle("Chamados")
     }, [])
-    useEffect(() => {
-        setCallsPending(listCallsPending.filter((item) => item.producerId === user?.producer?.id))
-    }, [listCallsPending])
+
+    console.log(listCallsPending)
 
     return (
         <Box

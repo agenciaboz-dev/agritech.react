@@ -32,6 +32,9 @@ export const ReviewsEmployee: React.FC<ReviewsEmployeeProps> = ({ user }) => {
     }, [pendingUsers])
 
     useEffect(() => {
+        if (pendingUsers.length == 0) {
+            io.emit("user:pendingApproval")
+        }
         header.setTitle("Análise de Contas")
     }, [])
 

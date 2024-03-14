@@ -13,10 +13,13 @@ interface ReviewsCallProps {
 }
 
 export const ReviewsCall: React.FC<ReviewsCallProps> = ({ user }) => {
+    const io = useIo()
     const header = useHeader()
-    const { listCalls } = useCall()
+    const { listCalls, listCallsPending } = useCall()
 
-    const sortedPendingCalls = listCalls.filter((item) => !item.approved).sort((a, b) => Number(a.open) - Number(b.open))
+    const sortedPendingCalls = listCallsPending
+        .filter((item) => !item.approved)
+        .sort((a, b) => Number(a.open) - Number(b.open))
     const sortedApprovedCalls = listCalls.sort((a, b) => Number(a.open) - Number(b.open))
 
     const [tab, setTab] = useState("pending")
@@ -27,8 +30,12 @@ export const ReviewsCall: React.FC<ReviewsCallProps> = ({ user }) => {
     useEffect(() => {
         console.log(sortedPendingCalls)
     }, [sortedPendingCalls])
+
     useEffect(() => {
         header.setTitle("Chamados")
+
+        if (listCalls.length == 0) io.emit("call:listApproved")
+        if (listCallsPending.length == 0) io.emit("call:listPending")
     }, [])
 
     return (

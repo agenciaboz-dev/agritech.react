@@ -36,7 +36,6 @@ export const ProducerProvider: React.FC<ProducerProviderProps> = ({ children }) 
     const [listTillages, setListTillages] = useState<Tillage[]>([])
 
     useEffect(() => {
-        io.emit("tillage:list")
 
         io.on("tillage:list:success", (data: Tillage[]) => {
             if (user?.producer) {

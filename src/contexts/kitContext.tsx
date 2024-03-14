@@ -29,7 +29,6 @@ export const KitProvider: React.FC<KitProviderProps> = ({ children }) => {
     const { user } = useUser()
 
     useEffect(() => {
-        io.emit("kit:list")
 
         io.on("kit:list:success", (data: Kit[]) => {
             setListKits(data)
