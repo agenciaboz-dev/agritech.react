@@ -237,7 +237,6 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                                 </Menu.Target>
                                 <Menu.Dropdown>
                                     <Menu.Item onClick={exportPDF}>Exportar PDF</Menu.Item>
-                                    <Menu.Item>Compartihar</Menu.Item>
                                 </Menu.Dropdown>
                             </Menu>
                         </Group>

@@ -58,7 +58,7 @@ export const ModalStage: React.FC<ModalStageProps> = ({ opened, close, report })
             finish: new Date(Number(finishPick)).getTime().toString(),
         }
         io.emit("stage:new", data, 4)
-        io.emit("report:close", report.id)
+
         setLoading(true)
         console.log(data)
     }
@@ -70,6 +70,11 @@ export const ModalStage: React.FC<ModalStageProps> = ({ opened, close, report })
             reports.update(report)
 
             console.log("Finalizado")
+
+            if (report.stage == 4) {
+                io.emit("report:close", report.id)
+                setLoading(true)
+            }
         })
 
         io.on("report:closed:success", (updatedReport: Report) => {
