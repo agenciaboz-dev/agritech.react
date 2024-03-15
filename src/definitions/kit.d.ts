@@ -7,6 +7,8 @@ declare interface NewKit {
     employees?: Employee[]
     calls?: Call[]
     hectareDay?: number
+    model?: string
+    equipment?: string
 
     // Maybe change the calendar
     calendar?: Calendar

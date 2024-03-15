@@ -113,7 +113,25 @@ export const ContentKit: React.FC<ContentKitProps> = ({ edit, values, handleChan
                     </Box>
                 </Box>
             </Box>
-            <Box sx={{ overflowY: "auto", gap: "4vw" }}>
+            <Box sx={{ overflowY: "auto", gap: "4vw", pt: "4vw" }}>
+                <Box sx={{ flexDirection: "row", justifyContent: "space-between", gap: "2vw" }}>
+                    <TextField
+                        label={"Equipamento"}
+                        name="equipment"
+                        value={edit ? values.equipment : "Loren impsum dolor sit amet"}
+                        sx={{ ...textField, width: "50%" }}
+                        onChange={handleChange}
+                        required
+                    />
+                    <TextField
+                        label={"Modelo"}
+                        name="model"
+                        value={edit ? values.model : "Loren impsum dolor sit amet"}
+                        sx={{ ...textField, width: "50%" }}
+                        onChange={handleChange}
+                        required
+                    />
+                </Box>
                 <Box sx={{}}>
                     <TitleComponents title="Objetos" button click={open} />
                     {data.listObjects.map((item, index) => (

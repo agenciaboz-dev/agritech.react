@@ -46,6 +46,8 @@ export const ViewKit: React.FC<ViewKitProps> = ({}) => {
         objects: kit?.objects,
         employees: kit?.employees,
         calls: kit?.calls,
+        equipment: kit?.equipment,
+        model: kit?.model,
     }
     const dataEmployee = kit?.employees?.map((item) => {
         return findEmployee(String(item.id))

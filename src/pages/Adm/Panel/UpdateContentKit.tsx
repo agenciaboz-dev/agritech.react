@@ -135,6 +135,7 @@ export const UpdateContentKit: React.FC<UpdateContentKitProps> = ({ edit, values
                                 <p style={{}}>{values.name}</p>
                                 <p style={{ ...style_p }}>Hectares por dia</p>
                                 <p style={{}}>{values.hectareDay} ha</p>
+
                                 <p style={{ ...style_p }}>Descrição</p>
                                 <p style={{}}>{values.description}</p>
                             </Box>
@@ -143,6 +144,37 @@ export const UpdateContentKit: React.FC<UpdateContentKitProps> = ({ edit, values
                 </Box>
             </Box>
             <Box sx={{ overflowY: "auto", gap: "4vw", pt: "10vw" }}>
+                {edit ? (
+                    <Box sx={{ flexDirection: "row", justifyContent: "space-between", gap: "2vw" }}>
+                        <TextField
+                            label={"Equipamento"}
+                            name="equipment"
+                            value={edit ? values.equipment : "Loren impsum dolor sit amet"}
+                            sx={{ ...textField, width: "50%" }}
+                            onChange={handleChange}
+                            required
+                        />
+                        <TextField
+                            label={"Modelo"}
+                            name="model"
+                            value={edit ? values.model : "Loren impsum dolor sit amet"}
+                            sx={{ ...textField, width: "50%" }}
+                            onChange={handleChange}
+                            required
+                        />
+                    </Box>
+                ) : (
+                    <Box sx={{}}>
+                        <Box>
+                            <p style={{ ...style_p }}>Equipamento</p>
+                            <p style={{}}>{values.equipment} </p>
+                        </Box>
+                        <Box>
+                            <p style={{ ...style_p }}>Modelo</p>
+                            <p style={{}}>{values.model}</p>
+                        </Box>
+                    </Box>
+                )}
                 <Box sx={{}}>
                     <TitleComponents title="Objetos" button={edit} click={open} />
                     {data.listObjects?.map((item, index) => (
