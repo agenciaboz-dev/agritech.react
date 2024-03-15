@@ -40,6 +40,7 @@ import {
 } from "../../../definitions/report"
 import dayjs from "dayjs"
 import { ModalStage } from "./ModalStage"
+import { useReports } from "../../../hooks/useReports"
 
 interface LaudoCallProps {
     user: User
@@ -53,9 +54,10 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
     const { callid, reportid } = useParams()
     const call = useCallInfo(callid)
     const { listCalls } = useCall()
+    const { listReports } = useReports()
 
     const selectedCall = listCalls.find((item) => item.id === Number(callid))
-    const report = selectedCall?.reports?.find((item) => item.id === Number(reportid))
+    const [report, setReport] = useState<Report>()
     // console.log({ Laudo: selectedCall })
 
     const [stage, setstage] = useState(0)
@@ -72,13 +74,14 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
     const [areaTrabalhada, setAreaTrabalhada] = useState("")
     const [initPick, setInitPick] = useState(null)
     const [finishPick, setFinishPick] = useState(null)
+    const { update } = useReports()
 
     const initialValues: NewReport = {
         operation: {
-            service: report?.operation?.service || "",
-            culture: report?.operation?.culture || "",
+            service: report?.operation?.id ? report?.operation?.service : "",
+            culture: report?.operation?.id ? report?.operation?.culture : "",
             areaMap: "",
-            equipment: report?.call?.kit?.name || "",
+            equipment: report?.call?.kit ? report?.call?.kit?.name : "",
             model: "",
         },
         areaTrabalhada: String(report?.areaTrabalhada) || "",
@@ -113,22 +116,38 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
         if (report?.treatment?.products) setListProducts(report?.treatment?.products)
         if (report?.material) setListMaterials(report?.material)
         if (report?.techReport?.flight) setListFlights(report?.techReport.flight)
+    }, [report])
+
+    useEffect(() => {
+        if (listReports.length == 0) io.emit("report:list")
+        if (listCalls.length == 0) io.emit("call:listApproved")
     }, [])
 
+    useEffect(() => {
+        setReport(listReports.find((item) => item.id === Number(reportid)))
+    }, [listReports])
+
+    useEffect(() => {
+        console.log({ Atualizou: report })
+    }, [report])
+
     const updateOperation = async (values: Operation | undefined) => {
-        if (values) {
+        if (values && report) {
             const data = {
                 id: report?.operation?.id,
                 ...values,
                 areaMap: Number(selectedCall?.talhao?.tillage?.area),
+                reportId: report.id,
             }
             io.emit("operation:update", data)
+            console.log({ data })
         }
     }
 
     useEffect(() => {
-        io.on("operation:update:success", (data) => {
+        io.on("operation:update:success", (data: Report) => {
             console.log(data)
+            update(data)
         })
         io.on("operation:update:failed", (error) => {
             console.log(error)
@@ -140,7 +159,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
     }, [])
 
     const createTreatment = async (values: Treatment | undefined) => {
-        if (values) {
+        if (values && report) {
             const treatmentNormalize = listProducts?.map((item) => ({
                 name: item.name,
                 dosage: unmaskNumber(item.dosage),
@@ -151,6 +170,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                 id: report?.treatment?.id,
                 ...values,
                 products: treatmentNormalize,
+                reportId: report.id,
             }
             io.emit("treatment:update", data)
             console.log({ enviei: data })
@@ -159,6 +179,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
 
     useEffect(() => {
         io.on("treatment:update:success", (data) => {
+            update(data)
             console.log(data)
         })
         io.on("treatment:update:failed", (error) => {
@@ -174,7 +195,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
     }, [])
 
     const createTechReport = async (values: TechReport | undefined) => {
-        if (values) {
+        if (values && report) {
             const flightNormalize = listFlights?.map((item) => ({
                 temperature: unmaskNumber(item.temperature),
                 humidity: unmaskNumber(item.humidity),
@@ -199,6 +220,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                 init: new Date(Number(initPick)).getTime().toString(),
                 finish: new Date(Number(finishPick)).getTime().toString(),
                 flight: flightNormalize,
+                reportId: report.id,
             }
             io.emit("techReport:update", data)
             // io.emit("report:update", data)
@@ -208,6 +230,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
 
     useEffect(() => {
         io.on("techReport:update:success", (data) => {
+            update(data)
             console.log(data)
         })
         io.on("techReport:update:failed", (error) => {
@@ -246,6 +269,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
 
     useEffect(() => {
         io.on("report:update:success", (data) => {
+            update(data)
             console.log(data)
         })
         io.on("report:update:failed", (error) => {
@@ -469,7 +493,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                     click={openStage}
                     variant
                 />
-                <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+                <Formik initialValues={initialValues} onSubmit={handleSubmit} enableReinitialize>
                     {({ values, handleChange }) => (
                         <Box sx={{ gap: "4vw", height: "85%", overflowY: "auto", p: "2vw 0" }}>
                             <Form>
@@ -517,66 +541,8 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                                                 sx={{ ...textField }}
                                                 disabled={!user?.producer ? false : true}
                                             />
-
-                                            <LocalizationProvider
-                                                dateAdapter={AdapterDayjs}
-                                                localeText={ptBR.components.MuiLocalizationProvider.defaultProps.localeText}
-                                            >
-                                                <DemoContainer
-                                                    components={["TimeField", "TimeField", "TimeField"]}
-                                                    sx={{ paddingTop: 0 }}
-                                                >
-                                                    <Box sx={{ flexDirection: "row", gap: "1vw", paddingTop: "0" }}>
-                                                        {!report?.techReport?.init && (
-                                                            <TimeField
-                                                                label="Início"
-                                                                name="init"
-                                                                sx={{ ...textField }}
-                                                                value={initPick}
-                                                                onChange={(newValue) => setInitPick(newValue)}
-                                                                format="HH:mm"
-                                                                ampm={false}
-                                                                InputProps={{
-                                                                    inputMode: "numeric",
-                                                                    endAdornment: (
-                                                                        <CiClock2
-                                                                            style={{
-                                                                                color: "black",
-                                                                                width: "6vw",
-                                                                                height: "6vw",
-                                                                            }}
-                                                                        />
-                                                                    ),
-                                                                }}
-                                                            />
-                                                        )}
-                                                        {!report?.techReport?.finish && (
-                                                            <TimeField
-                                                                label="Final"
-                                                                name="finish"
-                                                                sx={{ ...textField }}
-                                                                value={finishPick}
-                                                                onChange={(newValue) => setFinishPick(newValue)}
-                                                                format="HH:mm"
-                                                                ampm={false}
-                                                                InputProps={{
-                                                                    inputMode: "numeric",
-                                                                    endAdornment: (
-                                                                        <CiClock2
-                                                                            style={{
-                                                                                color: "black",
-                                                                                width: "6vw",
-                                                                                height: "6vw",
-                                                                            }}
-                                                                        />
-                                                                    ),
-                                                                }}
-                                                            />
-                                                        )}
-                                                    </Box>
-                                                </DemoContainer>
-                                            </LocalizationProvider>
                                         </Box>
+
                                         <Stepper
                                             active={stage}
                                             size="xs"
@@ -651,6 +617,10 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                                                 values={values}
                                                 change={handleChange}
                                                 open={openFlight}
+                                                initPick={setInitPick}
+                                                finishPick={setFinishPick}
+                                                setInitPick={setInitPick}
+                                                setFinishPick={setFinishPick}
                                             />
                                             <ButtonAgritech
                                                 // type="submit"

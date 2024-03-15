@@ -21,7 +21,7 @@ export const ReportProvider: React.FC<ReportsProviderProps> = ({ children }) => 
     const io = useIo()
     const [listReports, setListReports] = useState<Report[]>([])
 
-    const update = (report: Report) => setListReports((list) => [...list?.filter((item) => item.id != report.id), report])
+    const update = (report: Report) => setListReports((list) => [...list.filter((item) => item.id != report.id), report])
 
     useEffect(() => {
         io.on("report:list:success", (reports: Report[]) => {

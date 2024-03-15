@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { colors } from "../../style/colors"
 import { Box } from "@mui/material"
 import { Header } from "../../components/Header"
@@ -8,6 +8,7 @@ import { useCall } from "../../hooks/useCall"
 import { LogsLaudo } from "./LogsLaudo"
 import { useIo } from "../../hooks/useIo"
 import { useReports } from "../../hooks/useReports"
+import { Report } from "../../definitions/report"
 
 interface ListLaudosProps {
     user: User
@@ -29,13 +30,18 @@ export const ListLaudos: React.FC<ListLaudosProps> = ({ user }) => {
     }, [])
 
     const selectedCall = listCalls.find((item) => item.id === Number(callid))
-    const sortedReports = listReports
-        ?.filter((item) => item.callId === Number(callid))
-        .sort((a, b) => Number(a.date) - Number(b.date))
+    const [sortedReports, setSortedReports] = useState<Report[]>([])
 
+    useEffect(() => {
+        listReports &&
+            setSortedReports(
+                listReports?.filter((item) => item.callId === Number(callid)).sort((a, b) => Number(a.date) - Number(b.date))
+            )
+    }, [listReports])
     useEffect(() => {
         console.log(listCalls)
     }, [listCalls])
+
     return (
         <Box
             sx={{

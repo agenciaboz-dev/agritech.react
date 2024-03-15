@@ -7,8 +7,8 @@ declare interface NewReport {
     material?: Material[]
     techReport?: TechReport
     areaTrabalhada: string
-    stages: Stage[]
-    stage: number
+    stages?: Stage[]
+    stage?: number
     talhao?: Talhao
     call?: Call
 }

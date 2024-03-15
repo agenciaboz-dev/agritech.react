@@ -17,6 +17,7 @@ import { ButtonAgritech } from "../../components/ButtonAgritech"
 import { useIo } from "../../hooks/useIo"
 import { useSnackbar } from "burgos-snackbar"
 import { Report, Stage } from "../../definitions/report"
+import { useReports } from "../../hooks/useReports"
 
 interface ReportStageProps {
     user: User
@@ -41,6 +42,7 @@ export const ReportStage: React.FC<ReportStageProps> = ({ user }) => {
     const [initPick, setInitPick] = useState(null)
     const [finishPick, setFinishPick] = useState(null)
     const [durationPick, setDuration] = useState(null)
+    const { update } = useReports()
 
     const dates = {
         initPick: initPick,
@@ -132,7 +134,7 @@ export const ReportStage: React.FC<ReportStageProps> = ({ user }) => {
 
     useEffect(() => {
         if (report) {
-            setstage(report.stage)
+            if (report.stage) setstage(report.stage)
         }
 
         if (report?.stage === 3) {
@@ -141,7 +143,9 @@ export const ReportStage: React.FC<ReportStageProps> = ({ user }) => {
 
         io.on("stage:new", (report: Report) => {
             setLoading(false)
+            update(report)
             setReport(report)
+            report.stage && setstage(report.stage)
         })
 
         return () => {

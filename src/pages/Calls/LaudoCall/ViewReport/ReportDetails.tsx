@@ -47,7 +47,7 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
     const io = useIo()
     const { callid, reportid } = useParams()
     const { listCalls } = useCall()
-    const { listReports } = useReports()
+    const { listReports, update } = useReports()
     const { user } = useUser()
     const { snackbar } = useSnackbar()
 
@@ -102,12 +102,14 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
     }
 
     const exportPDF = async () => {
+        console.log(selectedReport?.pdf_path)
         selectedReport?.pdf_path && window.open(selectedReport.pdf_path, "_blank")?.focus()
     }
 
     useEffect(() => {
         io.on("report:approved:success", (data: Report) => {
             snackbar({ severity: "success", text: "Relatório aprovado" })
+            update(data)
             close()
         })
         io.on("report:approved:failed", (error) => {

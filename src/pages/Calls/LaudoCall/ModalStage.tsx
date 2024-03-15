@@ -67,6 +67,7 @@ export const ModalStage: React.FC<ModalStageProps> = ({ opened, close, report })
         io.on("stage:new", (report: Report) => {
             snackbar({ severity: "success", text: "Dados registrados!" })
             setLoading(false)
+            reports.update(report)
 
             console.log("Finalizado")
         })

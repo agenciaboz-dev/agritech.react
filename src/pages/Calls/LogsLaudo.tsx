@@ -41,7 +41,7 @@ export const LogsLaudo: React.FC<LogsLaudoProps> = ({ report, talhao, id, tillag
                 onClick={() => {
                     if (user?.employee) {
                         if (report && report.stage === 1) {
-                            console.log("sem relatorio")
+                            console.log({ Report: report })
                             user.isAdmin
                                 ? navigate(`/adm/call/${report.call?.id}/stages/${report.id}`)
                                 : navigate(`/employee/call/${report.call?.id}/stages/${report.id}`)

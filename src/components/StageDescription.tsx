@@ -76,7 +76,7 @@ export const StageDescription: React.FC<StageDescriptionProps> = ({ title, value
                                     endAdornment: <CiClock2 style={{ color: "black", width: "6vw", height: "6vw" }} />,
                                 }}
                             />
-                            <TimeField
+                            {/* <TimeField
                                 label="Duração"
                                 name="duration"
                                 sx={{ ...textField }}
@@ -90,7 +90,7 @@ export const StageDescription: React.FC<StageDescriptionProps> = ({ title, value
                                     readOnly: true,
                                     endAdornment: <CiClock2 style={{ color: "black", width: "6vw", height: "6vw" }} />,
                                 }}
-                            />
+                            /> */}
                         </Box>
                     </DemoContainer>
                 </LocalizationProvider>
