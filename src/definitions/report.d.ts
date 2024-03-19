@@ -55,7 +55,6 @@ declare interface Product {
     id?: number
     name: string
     dosage: string
-    unit: string
     treatentId?: number //temporaly optional
 }
 

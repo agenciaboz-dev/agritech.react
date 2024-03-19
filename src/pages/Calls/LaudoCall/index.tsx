@@ -162,8 +162,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
         if (values && report) {
             const treatmentNormalize = listProducts?.map((item) => ({
                 name: item.name,
-                dosage: unmaskNumber(item.dosage),
-                unit: item.unit,
+                dosage: item.dosage,
             }))
 
             const data = {
@@ -247,12 +246,12 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
             talhao: item.talhao,
             area: unmaskNumber(item.area),
             product: item.product,
-            dosage: unmaskNumber(item.dosage),
+            dosage: item.dosage,
             classification: item.classification,
-            total: unmaskNumber(item.total),
-            removed: unmaskNumber(item.removed),
-            applied: unmaskNumber(item.applied),
-            returned: unmaskNumber(item.returned),
+            total: item.total,
+            removed: item.removed,
+            applied: item.applied,
+            returned: item.returned,
             comments: item.comments,
         }))
 
@@ -284,8 +283,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
     const handleSubmit = async (values: NewReport) => {
         const treatmentNormalize = listProducts?.map((item) => ({
             name: item.name,
-            dosage: unmaskNumber(item.dosage),
-            unit: item.unit,
+            dosage: item.dosage,
         }))
 
         const flightNormalize = listFlights?.map((item) => ({
@@ -309,12 +307,12 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
             talhao: item.talhao,
             area: unmaskNumber(item.area),
             product: item.product,
-            dosage: unmaskNumber(item.dosage),
+            dosage: item.dosage,
             classification: item.classification,
-            total: unmaskNumber(item.total),
-            removed: unmaskNumber(item.removed),
-            applied: unmaskNumber(item.applied),
-            returned: unmaskNumber(item.returned),
+            total: item.total,
+            removed: item.removed,
+            applied: item.applied,
+            returned: item.returned,
             comments: item.comments,
         }))
 

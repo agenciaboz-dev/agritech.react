@@ -10,6 +10,8 @@ import { textField } from "../../../style/input"
 import { useNumberMask } from "burgos-masks"
 import MaskedInput from "../../../components/MaskedInput"
 import MaskedInputNando from "../../../components/MaskedNando"
+import { Product } from "../../../definitions/report"
+import { unmaskNumber } from "../../../hooks/unmaskNumber"
 
 interface ModalProductProps {
     product: Product[]
@@ -21,18 +23,18 @@ interface ModalProductProps {
 export const ModalProduct: React.FC<ModalProductProps> = ({ opened, close, product, setproduct }) => {
     const [value, setValue] = useState("")
     const [unit, setUnit] = useState("")
-    const floatMask = useNumberMask({ allowDecimal: true,allowLeadingZeroes: true })
+    const floatMask = useNumberMask({ allowDecimal: true, allowLeadingZeroes: true })
 
     const handleInputChange = (event: any) => {
         const { name, value } = event.target
         if (name === "value") {
             setValue(value)
         } else if (name === "unit") {
-            setUnit(value)
+            setUnit(value as string)
         }
     }
     const addObject = () => {
-        setproduct([...product, { name: "", dosage: "", unit: "L" }])
+        setproduct([...product, { name: "", dosage: "" }])
     }
     const deleteObject = (id: number) => {
         const newObj = product.filter((_, index) => index !== id)
@@ -48,6 +50,10 @@ export const ModalProduct: React.FC<ModalProductProps> = ({ opened, close, produ
     }
 
     const saveObject = () => {
+        const newObj = product.map((item) => {
+            return { ...item, dosage: `${unmaskNumber(item.dosage)} ${unit}` }
+        })
+        setproduct(newObj)
         close()
     }
     return (
@@ -95,46 +101,41 @@ export const ModalProduct: React.FC<ModalProductProps> = ({ opened, close, produ
                             InputProps={{
                                 inputComponent: MaskedInputNando,
                                 inputProps: { mask: floatMask, inputMode: "numeric" },
-                                endAdornment: "L",
                             }}
                         />
-                        {/* <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            value={value}
-                            sx={{
-                                "& .MuiSelect-root": {
-                                    border: "1px solid black",
-                                },
-                                "& .MuiInputBase-root .MuiOutlinedInput-root .MuiInputBase-colorPrimary  .css-44k0ts-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root":
-                                    {
-                                        height: "9vw",
-                                        borderColor: colors.secondary,
-                                        "& fieldset": {
-                                            borderColor: colors.primary,
-                                        },
-                                    },
-                            }}
+                        <TextField
+                            select
                             onChange={handleInputChange}
-                            inputProps={{
-                                sx: {
-                                    border: "none",
-                                    "& .MuiSelect-root": {
-                                        border: "1px solid black",
-                                    },
-                                    "& .MuiOutlinedInput-root .MuiSelect-root": {
-                                        borderColor: colors.secondary,
-                                        "& fieldset": {
-                                            borderColor: colors.primary,
-                                        },
+                            label="Unidade"
+                            name="unit"
+                            sx={{
+                                ...textField,
+                                width: "100%",
+                            }}
+                            required
+                            variant="outlined"
+                            value={unit}
+                            InputProps={{
+                                sx: { ...textField, height: "10.76vw" },
+                            }}
+                            SelectProps={{
+                                MenuProps: {
+                                    MenuListProps: {
+                                        sx: { width: "100%", maxHeight: "80vw", overflowY: "auto" },
                                     },
                                 },
                             }}
                         >
+                            <MenuItem
+                                value={0}
+                                sx={{
+                                    display: "none",
+                                }}
+                            ></MenuItem>
                             <MenuItem value={"g"}>g</MenuItem>
-                            <MenuItem value={"kg"}>Kg</MenuItem>
-                            <MenuItem value={"l"}>L</MenuItem>
-                        </Select> */}
+                            <MenuItem value={"Kg"}>Kg</MenuItem>
+                            <MenuItem value={"L"}>L</MenuItem>
+                        </TextField>
                     </Box>
                 </Box>
             ))}

@@ -1,8 +1,8 @@
 import { Modal, TextInput } from "@mantine/core"
-import React, { ChangeEvent } from "react"
+import React, { ChangeEvent, useState } from "react"
 import { ButtonAgritech } from "../../../components/ButtonAgritech"
 import { MdOutlineAdd } from "react-icons/md"
-import { Accordion, Box, IconButton, TextField, Typography } from "@mui/material"
+import { Accordion, Box, IconButton, MenuItem, TextField, Typography } from "@mui/material"
 import { AiOutlineDelete } from "react-icons/ai"
 import { colors } from "../../../style/colors"
 import MuiAccordionDetails from "@mui/material/AccordionDetails"
@@ -11,6 +11,8 @@ import { AccordionSummary } from "../../../components/Accordion"
 import MaskedInputNando from "../../../components/MaskedNando"
 import { useNumberMask } from "burgos-masks"
 import { textField } from "../../../style/input"
+import { Material } from "../../../definitions/report"
+import { unmaskNumber } from "../../../hooks/unmaskNumber"
 
 interface ModalMaterialProps {
     material: Material[]
@@ -26,12 +28,23 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 
 export const ModalMaterial: React.FC<ModalMaterialProps> = ({ opened, close, material, setMaterial }) => {
     const [expanded, setExpanded] = React.useState<string | false>("")
-    const floatMask = useNumberMask({ allowDecimal: true,allowLeadingZeroes: true })
+    const [unit, setUnit] = useState("")
+    const [value, setValue] = useState("")
+
+    const floatMask = useNumberMask({ allowDecimal: true, allowLeadingZeroes: true })
 
     const expandendChange = (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
         setExpanded(newExpanded ? panel : false)
     }
 
+    const handleInputChange = (event: any) => {
+        const { name, value } = event.target
+        if (name === "value") {
+            setValue(value)
+        } else if (name === "unit") {
+            setUnit(value as string)
+        }
+    }
     const addObject = () => {
         setMaterial([
             ...material,
@@ -63,6 +76,10 @@ export const ModalMaterial: React.FC<ModalMaterialProps> = ({ opened, close, mat
     }
 
     const saveObject = () => {
+        const newObj = material.map((item) => {
+            return { ...item, dosage: `${unmaskNumber(item.dosage)} ${unit}` }
+        })
+        setMaterial(newObj)
         close()
     }
     return (
@@ -136,59 +153,85 @@ export const ModalMaterial: React.FC<ModalMaterialProps> = ({ opened, close, mat
                                 required
                             />
 
-                            <Box sx={{ flexDirection: "row", gap: "2vw", width: "100%" }}>
+                            <Box sx={{ flexDirection: "row", gap: "2vw", width: "100%", justifyContent: "space-between" }}>
                                 <TextField
                                     label="Dose/ha"
                                     name="dosage"
                                     value={item.dosage}
                                     data-autofocus
                                     required
-                                    sx={{ ...textField, width: "50%" }}
+                                    sx={{ ...textField, width: "60%" }}
                                     onChange={(e) => handleChange(index, e as React.ChangeEvent<HTMLInputElement>)}
                                     InputProps={{
                                         inputComponent: MaskedInputNando,
                                         inputProps: { mask: floatMask, inputMode: "numeric" },
-                                        endAdornment: "L",
                                     }}
                                 />
                                 <TextField
-                                    label="Classificação"
-                                    name="classification"
-                                    value={item.classification}
-                                    data-autofocus
+                                    select
+                                    onChange={handleInputChange}
+                                    label="Unidade"
+                                    name="unit"
+                                    sx={{
+                                        ...textField,
+                                        width: "40%",
+                                    }}
                                     required
-                                    sx={{ ...textField, width: "50%" }}
-                                    onChange={(e) => handleChange(index, e as React.ChangeEvent<HTMLInputElement>)}
-                                />
+                                    variant="outlined"
+                                    value={unit}
+                                    InputProps={{
+                                        sx: { ...textField, height: "10.76vw" },
+                                    }}
+                                    SelectProps={{
+                                        MenuProps: {
+                                            MenuListProps: {
+                                                sx: { width: "100%", maxHeight: "80vw", overflowY: "auto" },
+                                            },
+                                        },
+                                    }}
+                                >
+                                    <MenuItem
+                                        value={0}
+                                        sx={{
+                                            display: "none",
+                                        }}
+                                    ></MenuItem>
+                                    <MenuItem value={"g"}>g</MenuItem>
+                                    <MenuItem value={"Kg"}>Kg</MenuItem>
+                                    <MenuItem value={"L"}>L</MenuItem>
+                                </TextField>
                             </Box>
-
+                            <TextField
+                                label="Classificação"
+                                name="classification"
+                                value={item.classification}
+                                data-autofocus
+                                required
+                                sx={{ ...textField, width: "100%" }}
+                                onChange={(e) => handleChange(index, e as React.ChangeEvent<HTMLInputElement>)}
+                            />
+                            <p style={{ fontSize: "0.7rem" }}>Indique as unidades de medida dos respectivos campos. </p>
                             <Box sx={{ flexDirection: "row", gap: "3vw" }}>
                                 <TextField
                                     label="Total"
                                     name="total"
                                     value={item.total}
+                                    placeholder="Ex: 1,5 L"
                                     data-autofocus
                                     required
                                     sx={{ ...textField, width: "100%" }}
                                     onChange={(e) => handleChange(index, e as React.ChangeEvent<HTMLInputElement>)}
-                                    InputProps={{
-                                        inputComponent: MaskedInputNando,
-                                        inputProps: { mask: floatMask, inputMode: "numeric" },
-                                        endAdornment: "L",
-                                    }}
+                                    InputProps={{}}
                                 />
                                 <TextField
                                     label="Retirado"
                                     name="removed"
                                     value={item.removed}
+                                    placeholder="Ex: 1,5 galão"
                                     data-autofocus
                                     required
                                     sx={{ ...textField, width: "100%" }}
-                                    InputProps={{
-                                        inputComponent: MaskedInputNando,
-                                        inputProps: { mask: floatMask, inputMode: "numeric" },
-                                        endAdornment: "L",
-                                    }}
+                                    InputProps={{}}
                                     onChange={(e) => handleChange(index, e as React.ChangeEvent<HTMLInputElement>)}
                                 />
                             </Box>
@@ -197,14 +240,11 @@ export const ModalMaterial: React.FC<ModalMaterialProps> = ({ opened, close, mat
                                     label="Aplicado "
                                     name="applied"
                                     value={item.applied}
+                                    placeholder="Ex: 1,5 calda"
                                     data-autofocus
                                     sx={{ ...textField, width: "100%" }}
                                     onChange={(e) => handleChange(index, e as React.ChangeEvent<HTMLInputElement>)}
-                                    InputProps={{
-                                        inputComponent: MaskedInputNando,
-                                        inputProps: { mask: floatMask, inputMode: "numeric" },
-                                        endAdornment: "L",
-                                    }}
+                                    InputProps={{}}
                                     required
                                 />
 
@@ -212,13 +252,10 @@ export const ModalMaterial: React.FC<ModalMaterialProps> = ({ opened, close, mat
                                     label="Devolvido"
                                     name="returned"
                                     value={item.returned}
+                                    placeholder="Ex:1,5 L"
                                     data-autofocus
                                     sx={{ ...textField, width: "100%" }}
-                                    InputProps={{
-                                        inputComponent: MaskedInputNando,
-                                        inputProps: { mask: floatMask, inputMode: "numeric" },
-                                        endAdornment: "L",
-                                    }}
+                                    InputProps={{}}
                                     onChange={(e) => handleChange(index, e as React.ChangeEvent<HTMLInputElement>)}
                                     required
                                 />
