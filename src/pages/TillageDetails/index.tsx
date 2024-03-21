@@ -15,7 +15,7 @@ import { colors } from "../../style/colors"
 import { Header } from "../../components/Header"
 import { useHeader } from "../../hooks/useHeader"
 import { useParams } from "react-router"
-import GeoImage from "../../assets/geo.svg"
+// import GeoImage from "../../assets/geo.svg"
 import { useArray } from "burgos-array"
 import { tabStyle } from "../../style/tabStyle"
 import { WeatherComponent } from "../../components/WeatherComponent"
@@ -45,6 +45,7 @@ import { useCurrencyMask } from "burgos-masks"
 import MaskedInputNando from "../../components/MaskedNando"
 import { CurrencyText } from "../../components/CurrencyText"
 import { Indicator } from "@mantine/core"
+import GeoImage from "../../assets/default.png"
 
 interface TillageDetailsProps {}
 
@@ -293,7 +294,6 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
     }
 
     useEffect(() => {
-        
         header.setTitle(!tillageSelect ? `Informações` : tillageSelect.name)
         // setProducerid(Number(producerid))
         // console.log(tillageSelect)
@@ -403,7 +403,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                         }}
                     >
                         {/* {!user?.producer ? tillageSelect?.name : tillageSelectProd?.name} */}
-                        {!user?.producer ? selectedTalhao?.name : "Talhão 1"}
+                        {!user?.producer ? selectedTalhao?.name : ""}
                     </p>
 
                     {/* <p
@@ -420,7 +420,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                         {tillageSelect?.talhao?.map((item, index) => (
                             <Box sx={{ alignItems: "center" }} key={index}>
                                 <Avatar
-                                    src={item.cover}
+                                    src={item.cover || GeoImage}
                                     style={{
                                         width: "28vw",
                                         height: "38vw",
@@ -512,6 +512,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                                     <Box sx={{ overflowY: "auto", height: "50%" }}>
                                         {selectedTalhao?.calls.map((item, index) => (
                                             <LogsCard
+                                                user={user}
                                                 key={index}
                                                 call={item}
                                                 talhao={selectedTalhao}

@@ -8,6 +8,7 @@ import { useUser } from "../../hooks/useUser"
 import { Call } from "../../definitions/call"
 import { useKits } from "../../hooks/useKits"
 import { useUsers } from "../../hooks/useUsers"
+import { userInfo } from "os"
 
 interface LogsCardProps {
     review?: boolean
@@ -20,6 +21,7 @@ export const LogsCard: React.FC<LogsCardProps> = ({ review, call, variant }) => 
     const account = useUser()
     const { listKits } = useKits()
     const { listUsers } = useUsers()
+    const { user } = useUser()
     const producerSelected = listUsers?.find((item) => item.producer?.id === call?.producerId)
     const kitSelected = listKits.find((item) => item.id === call?.kitId)
 
@@ -52,10 +54,7 @@ export const LogsCard: React.FC<LogsCardProps> = ({ review, call, variant }) => 
                             </ActionIcon>
                         </Menu.Target>
                         <Menu.Dropdown>
-                            <Menu.Item>Ver responsável</Menu.Item>
-                            <Menu.Item>Ver Cliente</Menu.Item>
-                            <Menu.Item>Editar</Menu.Item>
-                            <Menu.Item color="red">Excluir</Menu.Item>
+                            <Menu.Item color="red">Cancelar</Menu.Item>
                         </Menu.Dropdown>
                     </Menu>
                 </Group>
@@ -81,11 +80,19 @@ export const LogsCard: React.FC<LogsCardProps> = ({ review, call, variant }) => 
         >
             <Box sx={{ flexDirection: "column" }}>
                 <Box sx={{ flexDirection: "row", alignItems: "center", gap: "2vw" }}>
-                    <p style={{ fontSize: "3vw", color: "gray" }}>11:00 - 13:00</p>
+                    <p style={{ fontSize: "3vw", color: "gray" }}>
+                        {" "}
+                        {new Date(Number(call?.open)).toLocaleDateString("pt-br")} -{" "}
+                        {new Date(Number(call?.open)).toLocaleTimeString("pt-br")}
+                    </p>
                 </Box>
-                <p style={{ fontSize: "3.5vw", fontWeight: "600" }}>Chamado para {tillageSelected?.name}</p>
+
+                <p style={{ fontSize: "3.5vw", fontWeight: "600" }}>Chamado aberto para {call?.talhao?.tillage?.name}</p>
+
                 <p style={{ fontSize: "3vw", color: "gray" }}>
-                    {call?.approved ? `Utilizando #Kit ${kitSelected?.name}` : "Aguardando aprovação"}
+                    {call?.approved
+                        ? `Previsão: ${new Date(Number(call.forecast)).toLocaleDateString("pt-br")}`
+                        : "Aguardando aprovação"}
                 </p>
             </Box>
 

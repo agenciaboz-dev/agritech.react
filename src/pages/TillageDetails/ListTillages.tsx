@@ -24,7 +24,7 @@ export const ListTillages: React.FC<ListTillagesProps> = ({}) => {
     const producerEncontrado = listUsers?.find((item) => String(item.producer?.id) === producerid)
     const { listTillages, tillageUpdate, setProducerid } = useProducer()
 
-    const [tillages, setTillages] = useState<Tillage[]>(listTillages)
+    const [tillages, setTillages] = useState<Tillage[] | undefined>(user?.producer?.tillage)
     const [tillagesProducer, setTillagesProducer] = useState<Tillage[]>(producerEncontrado?.producer?.tillage || [])
     const [searchText, setSearchText] = useState("")
 
@@ -41,15 +41,20 @@ export const ListTillages: React.FC<ListTillagesProps> = ({}) => {
     }, [producerEncontrado?.producer?.tillage, searchText])
 
     useEffect(() => {
-        setTillages(listTillages)
-    }, [listTillages])
+        if (user?.producer !== null && user?.producer?.tillage) setTillages(user?.producer?.tillage)
+        console.log({ opa: user?.producer?.tillage })
+    }, [user, user?.producer?.tillage])
+
+    useEffect(() => {
+        console.log(user?.producer?.tillage)
+    }, [tillages, user?.producer?.tillage])
 
     useEffect(() => {
         const filteredList = tillages?.filter(
             (item) => item !== null && item.name.toLowerCase().includes(searchText.toLowerCase())
         )
         setTillages(filteredList || [])
-    }, [listTillages, searchText])
+    }, [user?.producer?.tillage, searchText])
 
     useEffect(() => {
         header.setTitle(user?.producer !== null ? "Minhas Fazendas" : "Fazendas")
@@ -110,15 +115,15 @@ export const ListTillages: React.FC<ListTillagesProps> = ({}) => {
                     }}
                 >
                     {/* <SearchField
-                            searchText={searchText}
-                            setSearchText={setSearchText} // Passa setSearchText para poder atualizar o estado de pesquisa
-                            placeholder="fazendas do produtor"
-                        />
-                 */}
+                        searchText={searchText}
+                        setSearchText={setSearchText} // Passa setSearchText para poder atualizar o estado de pesquisa
+                        placeholder="fazendas do produtor"
+                    /> */}
+
                     <Box sx={{ gap: "2vw", height: "90%", overflow: "auto" }}>
-                        {tillages && user?.producer !== null ? (
+                        {user?.producer !== null && tillages ? (
                             tillages.length !== 0 ? (
-                                tillages?.map((item, index) => (
+                                tillages.map((item, index) => (
                                     <CardTillage key={index} tillage={item} location={`/producer/tillage/${item.id}`} />
                                 ))
                             ) : (

@@ -1,4 +1,4 @@
-import { Avatar, Box, IconButton, Tab, Tabs } from "@mui/material"
+import { Avatar, Box, IconButton, Tab, Tabs, ThemeProvider, createTheme } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { colors } from "../../../style/colors"
 import { Header } from "../../../components/Header"
@@ -12,6 +12,17 @@ import { useUser } from "../../../hooks/useUser"
 import { useProducer } from "../../../hooks/useProducer"
 import { useIo } from "../../../hooks/useIo"
 import { PiPlant } from "react-icons/pi"
+import { Call, CreateCall } from "../../../definitions/call"
+import { OpenCallBox, ProgressCall } from "../../../components/OpenCallBox"
+import { LogsCard } from "../../TillageDetails/LogsCard"
+import { content, openCall, progress } from "../../../tools/contenModals"
+import { DialogConfirm } from "../../../components/DialogConfirm"
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
+import { LocalizationProvider, MobileDatePicker, ptBR } from "@mui/x-date-pickers"
+import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo"
+import { CurrencyText } from "../../../components/CurrencyText"
+import { textField, input } from "../../../style/input"
+import dayjs, { Dayjs } from "dayjs"
 
 interface TillageProps {}
 
@@ -19,13 +30,16 @@ export const Tillage: React.FC<TillageProps> = ({}) => {
     const io = useIo()
     const header = useHeader()
     const navigate = useNavigate()
-    const { listTillages } = useProducer()
 
     const { user } = useUser()
     const { tillageid } = useParams()
-    const findTillage = listTillages.find((item) => item.id === Number(tillageid))
+    const [selectedTalhao, setSelectedTalhao] = useState<Talhao>()
+
+    const findTillage = user?.producer?.tillage.find((item) => item.id === Number(tillageid))
     const [weatherData, setWeatherData] = useState<CurrentConditions>()
     const [icon, setIcon] = useState<string>("")
+    const [pickDate, setPickDate] = useState<Dayjs | null>(null)
+    const [variant, setVariant] = useState(false)
 
     const [tab, setTab] = React.useState("calls")
     const changeTab = (event: React.SyntheticEvent, newValue: string) => {
@@ -33,16 +47,20 @@ export const Tillage: React.FC<TillageProps> = ({}) => {
     }
 
     const [selectedAvatar, setSelectedAvatar] = useState(0)
-    const [selectedTalhao, setSelectedTalhao] = useState("")
-    const toggleSelection = (id: number, name: string) => {
-        if (selectedAvatar === id) {
-            // Se o mesmo avatar já está selecionado, mantenha-o selecionado
-            setSelectedAvatar(id)
-            console.log({ deseleiona: id })
+    const [selectedCall, setSelectedCall] = useState<Call | null>(null)
+    const [callStatus, setCallStatus] = useState(false)
+    const [loading, setLoading] = useState(false)
+
+    const [open, setOpen] = useState(false)
+    const [openApproved, setOpenApproved] = useState(false)
+
+    const toggleSelection = (talhao: Talhao) => {
+        if (selectedAvatar === talhao.id) {
+            setSelectedAvatar(talhao.id)
         } else {
-            // Caso contrário, selecione o novo avatar
-            setSelectedAvatar(id)
-            setSelectedTalhao(`Talhão ${id}`)
+            setSelectedAvatar(talhao.id)
+            setSelectedTalhao(talhao)
+            setSelectedCall(null)
         }
     }
 
@@ -66,6 +84,65 @@ export const Tillage: React.FC<TillageProps> = ({}) => {
         }
     }, [findTillage])
 
+    const handleClickOpen = () => {
+        setOpen(true)
+    }
+
+    const initialValues = {
+        approved: false,
+        open: "",
+        comments: "",
+        producerId: user?.id,
+        talhaoId: selectedTalhao?.id,
+        kitId: undefined,
+        userId: user?.id,
+        hectarePrice: "",
+        forecast: "",
+    }
+    const handleSubmit = (values: CreateCall) => {
+        const data = {
+            ...values,
+            forecast: dayjs(pickDate).valueOf().toString(),
+        }
+        console.log(data)
+        io.emit("call:create", data)
+        setLoading(true)
+    }
+
+    const newTheme = (theme: any) =>
+        createTheme({
+            ...theme,
+            components: {
+                MuiPickersToolbar: {
+                    styleOverrides: {
+                        root: {
+                            color: "#fff",
+                            // borderRadius: 5,
+                            borderWidth: 0,
+                            backgroundColor: colors.primary,
+                        },
+                    },
+                },
+                MuiPickersMonth: {
+                    styleOverrides: {
+                        monthButton: {
+                            borderRadius: 20,
+                            borderWidth: 0,
+                            border: "0px solid",
+                        },
+                    },
+                },
+                MuiPickersDay: {
+                    styleOverrides: {
+                        root: {
+                            color: colors.primary,
+                            borderRadius: 20,
+                            borderWidth: 0,
+                        },
+                    },
+                },
+            },
+        })
     return (
         <Box
             sx={{
@@ -116,7 +193,7 @@ export const Tillage: React.FC<TillageProps> = ({}) => {
                         }}
                     >
                         {/* {!user?.producer ? tillageSelect?.name : tillageSelectProd?.name} */}
-                        {!findTillage?.talhao ? "Nenhum talhão cadastrado." : selectedTalhao}
+                        {!user?.producer ? selectedTalhao?.name : ""}
                     </p>
 
                     {/* <p
@@ -144,11 +221,9 @@ export const Tillage: React.FC<TillageProps> = ({}) => {
                                             borderRadius: "8vw",
                                             border: selectedAvatar === item.id ? `5px solid ${colors.secondary}` : "",
                                         }}
-                                        onClick={() =>
-                                            selectedAvatar !== item.id ? toggleSelection(item.id, item.name) : () => {}
-                                        }
+                                        onClick={() => (selectedTalhao?.id !== item.id ? toggleSelection(item) : () => {})}
                                     />
-                                    <p style={{ fontSize: "3.5vw", color: colors.text.white }}>Talhão {item.id}</p>
+                                    <p style={{ fontSize: "3.5vw", color: colors.text.white }}>{item.name}</p>
                                 </Box>
                             ))}
                     </Box>
@@ -171,6 +246,7 @@ export const Tillage: React.FC<TillageProps> = ({}) => {
                     }}
                 >
                     <WeatherComponent dataWeather={weatherData} icon={icon} />
+
                     {selectedAvatar === 0 && findTillage?.talhao?.length !== 0 ? (
                         <p>Selecione um talhão</p>
                     ) : (
@@ -188,105 +264,128 @@ export const Tillage: React.FC<TillageProps> = ({}) => {
                                 <Tab sx={{ ...tabStyle, width: "50%" }} value="history" label="Histórico" />
                                 <Tab sx={{ ...tabStyle, width: "50%" }} value="calls" label="Chamados" />
                             </Tabs>
-                            {/* {tab === "calls" && (!call || !callStatus) && (
-                            <OpenCallBox
-                                click={user?.isAdmin && callStatus ? handleOpenApprove : handleClickOpen}
-                                data={content}
-                                callStatus={callStatus}
-                                call={call}
-                                user={user}
-                            />
-                        )} */}
-                            {/* {tab === "calls" && !call?.report && call?.approved && (
-                            <ProgressCall
-                                user={user}
-                                click={() =>
-                                    navigate(
-                                        user?.producer !== null
-                                            ? `/producer/call/${call?.id}`
-                                            : call?.stages.length === 3
-                                            ? user.isAdmin
-                                                ? `/adm/call/${call?.id}/laudo`
-                                                : `/employee/call/${call?.id}/laudo`
-                                            : user.isAdmin
-                                            ? `/adm/call/${call?.id}/report`
-                                            : `/employee/call/${call?.id}/report`
-                                    )
-                                }
-                                data={progress}
-                                call={call}
-                                tillage={tillageSelectProd}
-                            />
-                        )} */}
                             {findTillage?.talhao?.length === 0 && tab === "calls" && (
                                 <p>É necessário ter talhões cadastrados para abrir chamados.</p>
                             )}
-                            {/* {tab === "history" && <p>Nenhum Registro</p>} */}
-                            {tab === "calls" && !findTillage?.talhao && (
-                                <p style={{ padding: "2vw" }}>Não existe nenhum talhão cadastrado.</p>
+                            {tab === "calls" && selectedTalhao?.calls.length === 0 ? (
+                                <OpenCallBox
+                                    click={handleClickOpen}
+                                    data={content}
+                                    callStatus={callStatus}
+                                    call={selectedTalhao.calls[0]}
+                                    talhao={selectedTalhao}
+                                    tillage={findTillage}
+                                    user={user}
+                                    setSelectedCall={() => {}}
+                                />
+                            ) : tab === "calls" && selectedCall && selectedCall.reports?.length === 0 ? (
+                                <ProgressCall
+                                    user={user}
+                                    click={
+                                        () => {}
+                                        // navigate(
+                                        //     user?.producer !== null
+                                        //         ? `/producer/call/${call?.id}`
+                                        //         : selectedCall?.stage === 4
+                                        //         ? user.isAdmin
+                                        //             ? `/adm/call/${selectedCall?.id}/laudo`
+                                        //             : `/employee/call/${selectedCall?.id}/laudo`
+                                        //         : user.isAdmin
+                                        //         ? `/adm/call/${selectedCall?.id}/report`
+                                        //         : `/employee/call/${call?.id}/report`
+                                        // )
+                                    }
+                                    data={progress}
+                                    call={selectedCall}
+                                    tillage={findTillage}
+                                    setSelectedCall={setSelectedCall}
+                                />
+                            ) : (
+                                tab === "calls" && (
+                                    <Box sx={{ overflowY: "auto", height: "50%" }}>
+                                        {selectedTalhao?.calls.map((item, index) => (
+                                            <LogsCard
+                                                user={user}
+                                                key={index}
+                                                call={item}
+                                                talhao={selectedTalhao}
+                                                tillage={findTillage}
+                                                setSelectedCall={setSelectedCall}
+                                            />
+                                        ))}
+                                    </Box>
+                                )
                             )}
-                            {/* {tab === "calls" && call?.report && (
-                            <LaudoCall
-                                user={user}
-                                click={() =>
-                                    navigate(
-                                        user?.isAdmin
-                                            ? `/adm/call/${call?.id}/report/${call?.report?.id}`
-                                            : `/employee/call/${call?.id}/report/${call.report?.id}`
-                                    )
-                                }
-                                data={progress}
-                                call={call}
-                                tillage={tillageSelectProd}
-                            />
-                        )} */}
-                            {/* <DialogConfirm
-                            user={user}
-                            open={open}
-                            setOpen={setOpen}
-                            data={openCall}
-                            click={() => {
-                                setVariant(true)
-                                setOpen(false)
-                                handleSubmit(initialValues)
-                            }}
-                        />
-                        {user?.isAdmin && (
+
+                            {/* {tab === "history" && <p>Nenhum Registro</p>} */}
+
                             <DialogConfirm
                                 user={user}
-                                open={openApproved}
-                                setOpen={setOpenApproved}
-                                data={approveCall}
+                                open={open}
+                                setOpen={setOpen}
+                                data={openCall}
+                                children={
+                                    <Box sx={{ gap: "3vw" }}>
+                                        {user?.isAdmin && (
+                                            <Box sx={{ gap: "2vw" }}>
+                                                <LocalizationProvider
+                                                    dateAdapter={AdapterDayjs}
+                                                    localeText={
+                                                        ptBR.components.MuiLocalizationProvider.defaultProps.localeText
+                                                    }
+                                                >
+                                                    <DemoContainer components={["MobileDatePicker"]} sx={{ color: "#fff" }}>
+                                                        <DemoItem label="Previsão da visita">
+                                                            <ThemeProvider theme={newTheme}>
+                                                                <MobileDatePicker
+                                                                    sx={{ ...textField }}
+                                                                    format="DD/MM/YYYY"
+                                                                    value={pickDate}
+                                                                    onChange={(newDate) => {
+                                                                        if (newDate !== null) {
+                                                                            setPickDate(newDate)
+                                                                        }
+                                                                    }}
+                                                                    timezone="system"
+                                                                    disablePast
+                                                                />
+                                                            </ThemeProvider>
+                                                        </DemoItem>
+                                                    </DemoContainer>
+                                                </LocalizationProvider>
+                                                <Box sx={{ flexDirection: "row", gap: "2vw", color: colors.text.white }}>
+                                                    <p style={{ fontSize: "4vw" }}>Custo por hectare: </p>
+                                                    {"  "}
+                                                    <p style={{ fontSize: "4vw" }}>
+                                                        <CurrencyText value={findTillage?.hectarePrice || ""} />
+                                                    </p>
+                                                </Box>
+                                            </Box>
+                                        )}
+                                    </Box>
+                                }
                                 click={() => {
                                     setVariant(true)
-                                    setOpenApproved(false)
-                                    navigate(`/adm/calls/${call?.id}`)
+                                    setOpen(false)
+                                    handleSubmit(initialValues)
                                 }}
                             />
-                        )}
-                        {tab === "calls" && call && (
-                            <Box sx={{ height: "50%", overflowY: "auto", p: "2vw" }}>
-                                <LogsCard call={call} talhao={selectedAvatar} />
-                                <LogsCard call={call} talhao={selectedAvatar} />
-                                <LogsCard call={call} talhao={selectedAvatar} />
-                            </Box>
-                        )} */}
-                            <IconButton
-                                sx={{
-                                    bgcolor: colors.button,
-                                    width: "12vw",
-                                    height: "12vw",
-                                    borderRadius: "10vw",
-                                    position: "absolute",
-                                    bottom: "26vw",
-                                    right: "8vw",
-                                }}
-                                onClick={() => navigate(`/producer/${findTillage?.id}/new_Talhao`)}
-                            >
-                                <PiPlant color={"#fff"} sx={{ width: "6vw", height: "6vw" }} />
-                            </IconButton>
                         </>
                     )}
+                    <IconButton
+                        sx={{
+                            bgcolor: colors.button,
+                            width: "12vw",
+                            height: "12vw",
+                            borderRadius: "10vw",
+                            position: "absolute",
+                            bottom: "22vw",
+                            right: "5vw",
+                        }}
+                        onClick={() => navigate(`/adm/producer/${findTillage?.producerId}/${findTillage?.id}/new_talhao`)}
+                    >
+                        <PiPlant color={"#fff"} sx={{ width: "6vw", height: "6vw" }} />
+                    </IconButton>
                 </Box>
             </Box>
         </Box>

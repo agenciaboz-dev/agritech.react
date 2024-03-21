@@ -108,7 +108,7 @@ export const Requests: React.FC<RequestsProps> = ({}) => {
                     </Tabs>
                     <Box sx={{ width: "100%", height: "100%", overflow: "auto", gap: "1vw" }}>
                         {tab === "pending" && listCallsPending.length !== 0
-                            ? callsPending?.map((call, index) => <LogsCard key={index} call={call} variant />)
+                            ? listCallsPending?.map((call, index) => <LogsCard key={index} call={call} variant />)
                             : tab === "pending" && "Nenhum chamado pendente"}
                         {tab === "calls" && listCalls.length !== 0
                             ? callsApprove?.map((call, index) => <LogsCard key={index} call={call} variant />)
