@@ -1,14 +1,15 @@
 import React from "react"
 import { image } from "../image"
 import { colors } from "../style/colors"
-import { Box, Button } from "@mui/material"
+import { Box, Button, useMediaQuery } from "@mui/material"
 import { useNavigate } from "react-router-dom"
-import logo from "../assets/logo/logo.png";
+import logo from "../assets/logo/logo.png"
 import { ButtonComponent } from "../components/ButtonComponent"
 
 interface HomeProps {}
 
 export const Home: React.FC<HomeProps> = ({}) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
     const navigate = useNavigate()
     return (
         <Box
