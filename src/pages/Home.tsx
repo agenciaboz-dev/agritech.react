@@ -16,7 +16,7 @@ export const Home: React.FC<HomeProps> = ({}) => {
             sx={{
                 alignItems: "center",
                 justifyContent: "center",
-                gap: "3vw",
+                gap: isMobile ? "3vw" : "1vw",
                 height: "100%",
                 flexDirection: "column",
                 width: "100%",
@@ -27,13 +27,13 @@ export const Home: React.FC<HomeProps> = ({}) => {
                     width: "100%",
                     height: "90%",
                     backgroundImage: `linear-gradient(${colors.secondary}, ${colors.primary})`,
-                    borderBottomRightRadius: "7vw",
-                    borderBottomLeftRadius: "7vw",
+                    borderBottomRightRadius: isMobile ? "7vw" : "1vw",
+                    borderBottomLeftRadius: isMobile ? "7vw" : "1vw",
                     alignItems: "center",
                     justifyContent: "space-between",
-                    paddingBottom: "10vw",
                     boxShadow: "3px 3px 6px gray",
-                    padding: "4vw",
+                    padding: isMobile ? "4vw" : "1vw",
+                    paddingBottom: isMobile ? "4vw" : "3vw",
                     flexDirection: "column",
                 }}
             >
@@ -47,16 +47,23 @@ export const Home: React.FC<HomeProps> = ({}) => {
                     }}
                 />
 
-                <Box style={{ width: "100%", height: "20%", gap: "2vw", flexDirection: "column" }}>
+                <Box
+                    style={{
+                        width: isMobile ? "100%" : "20%",
+                        height: "20%",
+                        gap: isMobile ? "2vw" : "1vw",
+                        flexDirection: "column",
+                    }}
+                >
                     <Button
                         variant="outlined"
                         sx={{
-                            padding: "2vw",
+                            padding: isMobile ? "2vw" : "1vw",
                             borderColor: "#fff",
                             width: "100%",
                             color: colors.text.white,
                             fontWeight: "600",
-                            fontSize: "4vw",
+                            fontSize: isMobile ? "4vw" : "1.2vw",
                             borderRadius: "10vw",
                             textTransform: "none",
                         }}
@@ -68,15 +75,15 @@ export const Home: React.FC<HomeProps> = ({}) => {
                 </Box>
             </Box>
 
-            <Box sx={{ height: "10%", width: "100%", alignItems: "center" }}>
+            <Box sx={{ height: "10%", width: isMobile ? "100%" : "20%", alignItems: "center" }}>
                 <Button
                     sx={{
                         width: "100%",
                         fontWeight: "600",
-                        padding: "2vw",
+                        padding: isMobile ? "2vw" : "1vw",
                         color: colors.text.black,
                         textTransform: "none",
-                        fontSize: "4vw",
+                        fontSize: isMobile ? "4vw" : "1vw",
                     }}
                     onClick={() => navigate("/terms")}
                 >
