@@ -195,7 +195,13 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
         const actionObject = messageTemplates[notification.action]
         const templateObject = actionObject ? actionObject[notification.target_key] : null
         if (templateObject) {
-            return { message: templateObject.message, onClick: templateObject.onClick }
+            return {
+                message: templateObject.message,
+                onClick: () => {
+                    setOpen(false)
+                    templateObject.onClick()
+                },
+            }
         } else {
             return { onClick: () => console.log("Ação padrão.") }
         }
@@ -221,9 +227,7 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                 alignItems: "center",
                 justifyContent: "space-between",
             }}
-            onClick={() => {
-                !drawer && findBy === undefined && onClick
-            }}
+            onClick={onClick}
         >
             <Box sx={{ flexDirection: "row", gap: drawer ? "3vw" : "1.5vw", width: "90%", alignItems: "center" }}>
                 <Box width="13%">
