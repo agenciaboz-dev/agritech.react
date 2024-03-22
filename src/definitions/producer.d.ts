@@ -3,10 +3,10 @@ declare interface Producer {
     cnpj: string
     inscricaoEstadual: string
     contract: boolean
-    tillage: Tillage[]
+    tillage?: Tillage[]
     employeeId?: number
     reportId?: number
     // userid: number
     user?: User
-    call: Call[]
+    call?: Call[]
 }

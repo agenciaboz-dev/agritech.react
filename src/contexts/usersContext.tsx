@@ -5,6 +5,7 @@ interface UsersContextType {
     listUsers: User[]
     pendingUsers: User[]
     addUser: (value: any) => void
+    removeUser: (value: any) => void
     setPendingUsers: React.Dispatch<React.SetStateAction<User[]>>
     setListUsers: (value: User[]) => void
 }
@@ -19,6 +20,9 @@ export const UsersProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     const [listUsers, setListUsers] = useState<User[]>([])
     const addUser = (newUser: User) => {
         setListUsers((user) => [...user, newUser])
+    }
+    const removeUser = (deletedUser: User) => {
+        setListUsers((currentUsers) => currentUsers.filter((item) => item.id !== deletedUser.id))
     }
 
     useEffect(() => {
@@ -44,7 +48,6 @@ export const UsersProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     }, [pendingUsers])
 
     useEffect(() => {
-
         // Atualiza a lista completa de usuários pendentes
         const handleUpdatePendingList = (updatedList: any) => {
             setPendingUsers(updatedList)
@@ -58,7 +61,7 @@ export const UsersProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         }
     }, [])
     return (
-        <UsersContext.Provider value={{ listUsers, addUser, setListUsers, pendingUsers, setPendingUsers }}>
+        <UsersContext.Provider value={{ listUsers, addUser, removeUser, setListUsers, pendingUsers, setPendingUsers }}>
             {children}
         </UsersContext.Provider>
     )

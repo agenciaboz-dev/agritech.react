@@ -9,6 +9,7 @@ interface ContactProps {
 }
 
 export const Contact: React.FC<ContactProps> = ({ values, handleChange }) => {
+    console.log({ Chegou: values })
     return (
         <Box sx={{ flexDirection: "column", gap: "3vw" }}>
             <Box sx={{ flexDirection: "row", gap: "3vw" }}>
@@ -18,7 +19,6 @@ export const Contact: React.FC<ContactProps> = ({ values, handleChange }) => {
                     sx={textField}
                     value={values.username}
                     onChange={handleChange}
-                    InputProps={{ readOnly: true }}
                 />
                 <TextField
                     label={"Senha"}
@@ -27,7 +27,6 @@ export const Contact: React.FC<ContactProps> = ({ values, handleChange }) => {
                     value={values.password}
                     onChange={handleChange}
                     type="password"
-                    
                 />
             </Box>
             <TextField

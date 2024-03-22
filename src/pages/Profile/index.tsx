@@ -30,6 +30,7 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
     const [image, setImage] = useState<File>()
 
     const [loading, setLoading] = useState(false)
+    const [tab, setTab] = React.useState("personal")
 
     const initialValues: Partial<Omit<User, "producer"> & { producer: Partial<Producer> }> = {
         name: user.name,
@@ -209,30 +210,37 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
                                         }}
                                         image={image}
                                         setImage={setImage}
-                                      
                                     />
-                                    <InfoProfile values={values} handleChange={handleChange} review={false} />
-                                    <Button
-                                        variant="contained"
-                                        type="submit"
-                                        sx={{
-                                            fontSize: "4vw",
-                                            color: colors.text.white,
-                                            width: "100%",
-                                            backgroundColor: colors.button,
-                                            borderRadius: "5vw",
-                                            textTransform: "none",
-                                        }}
-                                    >
-                                        {loading ? (
-                                            <CircularProgress
-                                                size={"9vw"}
-                                                sx={{ color: colors.text.white, width: "0.5vw" }}
-                                            />
-                                        ) : (
-                                            "Salvar"
-                                        )}
-                                    </Button>
+                                    <InfoProfile
+                                        values={values}
+                                        handleChange={handleChange}
+                                        review={false}
+                                        tab={tab}
+                                        setTab={setTab}
+                                    />
+                                    {tab !== "security" && (
+                                        <Button
+                                            variant="contained"
+                                            type="submit"
+                                            sx={{
+                                                fontSize: "4vw",
+                                                color: colors.text.white,
+                                                width: "100%",
+                                                backgroundColor: colors.button,
+                                                borderRadius: "5vw",
+                                                textTransform: "none",
+                                            }}
+                                        >
+                                            {loading ? (
+                                                <CircularProgress
+                                                    size={"9vw"}
+                                                    sx={{ color: colors.text.white, width: "0.5vw" }}
+                                                />
+                                            ) : (
+                                                "Salvar"
+                                            )}
+                                        </Button>
+                                    )}
                                 </Box>
                             </Form>
                         )}
