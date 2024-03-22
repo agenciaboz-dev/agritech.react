@@ -78,6 +78,7 @@ export const Home: React.FC<HomeProps> = ({}) => {
                         textTransform: "none",
                         fontSize: "4vw",
                     }}
+                    onClick={() => navigate("/terms")}
                 >
                     Termos de serviço
                 </Button>

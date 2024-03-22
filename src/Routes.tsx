@@ -15,6 +15,7 @@ import { Employee } from "./pages/Employee"
 import { Producer } from "./pages/Producer"
 import { Calls } from "./pages/Calls"
 import { NotificationsList } from "./pages/Notifications/NotificationsList"
+import { Terms } from "./pages/Terms"
 
 interface RoutesProps {}
 
@@ -67,7 +68,9 @@ const UnauthenticatedRoutes = () => (
         <Route path="/home" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/*" element={<Home />} />
+        <Route path="/*" element={ <Home /> } />
+        <Route path="/terms" element={ <Terms /> } />
+        
     </ReactRoutes>
 )
 
