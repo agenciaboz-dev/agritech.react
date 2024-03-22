@@ -1,5 +1,5 @@
 import React from "react"
-import { Button } from "@mui/material"
+import { Button, useMediaQuery } from "@mui/material"
 import { colors } from "../style/colors"
 import { useNavigate } from "react-router-dom"
 
@@ -9,19 +9,20 @@ interface ButtonComponentProps {
 }
 
 export const ButtonComponent: React.FC<ButtonComponentProps> = ({ title, location }) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
     const navigate = useNavigate()
     return (
         <Button
             variant="contained"
             sx={{
-                padding: "3vw",
+                padding: isMobile ? "3vw" : "1vw",
                 borderColor: colors.button,
                 width: "100%",
                 backgroundColor: "#232323",
                 borderRadius: "10vw",
                 fontWeight: "800",
                 textTransform: "none",
-                fontSize: "4vw",
+                fontSize: isMobile ? "4vw" : "1.2vw",
             }}
             onClick={() => navigate(location)}
         >
