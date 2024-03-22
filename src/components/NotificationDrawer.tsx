@@ -1,5 +1,5 @@
 import React from "react"
-import { Box, Card, Drawer, MenuItem, SxProps } from "@mui/material"
+import { Box, Card, MenuItem, SwipeableDrawer, SxProps } from "@mui/material"
 import { useNavigationList } from "../hooks/useNavigationList"
 import { useNavigate } from "react-router-dom"
 import { useNotificationDrawer } from "../hooks/useNotificationDrawer"
@@ -40,7 +40,8 @@ export const NotificationDrawer: React.FC<NotificationDrawerProps> = ({}) => {
     }
 
     return (
-        <Drawer
+        <SwipeableDrawer
+            onOpen={() => setOpen(true)}
             anchor={"right"}
             open={open}
             onClose={handleClose}
@@ -95,6 +96,6 @@ export const NotificationDrawer: React.FC<NotificationDrawerProps> = ({}) => {
             >
                 Ver todas
             </p>
-        </Drawer>
+        </SwipeableDrawer>
     )
 }

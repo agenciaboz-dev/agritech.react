@@ -1,5 +1,5 @@
 import React, { useEffect } from "react"
-import { Avatar, Box, Drawer, IconButton, MenuItem, SxProps, useRadioGroup } from "@mui/material"
+import { Avatar, Box, Drawer, IconButton, MenuItem, SwipeableDrawer, SxProps, useRadioGroup } from "@mui/material"
 import { useMenuDrawer } from "../hooks/useMenuDrawer"
 import { useUser } from "../hooks/useUser"
 import { useNavigationList } from "../hooks/useNavigationList"
@@ -50,7 +50,8 @@ export const MenuDrawer: React.FC<MenuDrawerProps> = ({}) => {
     }
 
     return (
-        <Drawer
+        <SwipeableDrawer
+            onOpen={() => setOpen(true)}
             anchor={"right"}
             open={open}
             onClose={handleClose}
@@ -165,6 +166,6 @@ export const MenuDrawer: React.FC<MenuDrawerProps> = ({}) => {
                     <LogoutIcon sx={{ color: "#fff", width: "6vw" }} />
                 </MenuItem>
             </Box>
-        </Drawer>
+        </SwipeableDrawer>
     )
 }
