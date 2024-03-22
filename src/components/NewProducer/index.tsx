@@ -98,6 +98,8 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
             contract: true,
             inscricaoEstadual: "",
             employeeId: user?.employee?.id,
+            
+            
         },
     }
 

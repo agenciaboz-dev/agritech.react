@@ -35,7 +35,7 @@ export const Tillage: React.FC<TillageProps> = ({}) => {
     const { tillageid } = useParams()
     const [selectedTalhao, setSelectedTalhao] = useState<Talhao>()
 
-    const findTillage = user?.producer?.tillage.find((item) => item.id === Number(tillageid))
+    const findTillage = user?.producer?.tillage?.find((item) => item.id === Number(tillageid))
     const [weatherData, setWeatherData] = useState<CurrentConditions>()
     const [icon, setIcon] = useState<string>("")
     const [pickDate, setPickDate] = useState<Dayjs | null>(null)
@@ -99,7 +99,7 @@ export const Tillage: React.FC<TillageProps> = ({}) => {
         hectarePrice: "",
         forecast: "",
     }
-    const handleSubmit = (values: CreateCall) => {
+    const handleSubmit = (values: any) => {
         const data = {
             ...values,
             forecast: dayjs(pickDate).valueOf().toString(),
