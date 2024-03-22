@@ -2,13 +2,13 @@ import React, { useContext, useEffect, useState } from "react"
 import { useIo } from "../hooks/useIo"
 import { useUser } from "../hooks/useUser"
 import UserContext from "../contexts/userContext"
-import { Box, Button, CircularProgress, TextField } from "@mui/material"
+import { Box, Button, CircularProgress, TextField, useMediaQuery } from "@mui/material"
 import { colors } from "../style/colors"
 import logo from "../assets/logo/logo.png"
 import { useNavigate } from "react-router-dom"
 import { Formik, Form } from "formik"
 import { useSnackbar } from "burgos-snackbar"
-import { textField } from "../style/input"
+import { useResponsiveStyles } from "../hooks/useResponsiveStyles"
 import { buttonStyle } from "../style/button"
 
 interface LoginProps {}
@@ -18,6 +18,9 @@ interface LoginValues {
     password: string
 }
 export const Login: React.FC<LoginProps> = ({}) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
+    const { textField } = useResponsiveStyles()
+
     const navigate = useNavigate()
     const { snackbar } = useSnackbar()
     const io = useIo()
@@ -71,6 +74,7 @@ export const Login: React.FC<LoginProps> = ({}) => {
         >
             <Box
                 sx={{
+                    height: isMobile ? "40%" : "30%",
                     width: "100%",
                     alignItems: "center",
                     justifyContent: "center",
@@ -83,19 +87,19 @@ export const Login: React.FC<LoginProps> = ({}) => {
                     style={{
                         alignItems: "center",
                         justifyContent: "center",
-                        width: "30vw",
+                        width: isMobile ? "30vw" : "10vw",
                     }}
                 />
             </Box>
             <Box
                 sx={{
-                    padding: "4vw",
+                    padding: isMobile ? "4vw" : "1vw",
                     width: "100%",
-                    height: "100%",
+                    height: isMobile ? "60%" : "70%",
                     backgroundColor: "#fff",
-                    borderTopLeftRadius: "5vw",
-                    borderTopRightRadius: "5vw",
-                    gap: "3vw",
+                    borderTopLeftRadius: isMobile ? "5vw" : "2vw",
+                    borderTopRightRadius: isMobile ? "5vw" : "2vw",
+                    gap: isMobile ? "3vw" : "1vw",
                     flexDirection: "column",
                 }}
             >
@@ -103,8 +107,8 @@ export const Login: React.FC<LoginProps> = ({}) => {
                     style={{
                         color: colors.text.black,
                         fontFamily: "MalgunGothic2",
-                        paddingTop: "3vw",
-                        fontSize: "5vw",
+                        paddingTop: isMobile ? "3vw" : "1vw",
+                        fontSize: isMobile ? "5vw" : "1vw",
                         fontWeight: "600",
                     }}
                 >
@@ -136,11 +140,13 @@ export const Login: React.FC<LoginProps> = ({}) => {
                                 sx={{
                                     ...buttonStyle,
                                     backgroundColor: colors.button,
-                                    padding: "3vw",
-                                    fontSize: "4vw",
+                                    padding: isMobile ? "3vw" : "1vw",
+                                    fontSize: isMobile ? "4vw" : "1.2vw",
                                     fontWeight: "600",
                                     borderRadius: "10vw",
                                     textTransform: "none",
+                                    width: isMobile ? "100%" : "20%",
+                                    margin: "3vw auto 0",
                                 }}
                             >
                                 {loading ? <CircularProgress size={30} sx={{ color: "#fff", fontSize: "2vw" }} /> : "Entrar"}
@@ -149,7 +155,14 @@ export const Login: React.FC<LoginProps> = ({}) => {
                     )}
                 </Formik>
                 <Button
-                    sx={{ padding: "3vw", color: colors.text.black, fontWeight: "600", fontSize: "4vw" }}
+                    sx={{
+                        padding: isMobile ? "3vw" : "1vw",
+                        color: colors.text.black,
+                        fontWeight: "600",
+                        fontSize: isMobile ? "4vw" : "1.2vw",
+                        width: isMobile ? "100%" : "20%",
+                        margin: "0 auto",
+                    }}
                     onClick={() => navigate("/signup")}
                 >
                     Cadastre-se
