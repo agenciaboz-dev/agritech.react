@@ -16,7 +16,7 @@ export const Address: React.FC<AddressProps> = ({ values, handleChange }) => {
             <p style={{ fontSize: "4.0vw", fontFamily: "MalgunGothic2", textAlign: "left", fontWeight: "800" }}>
                 Endereço Residencial
             </p>
-            <Box sx={{ flexDirection: "row", gap: "3vw" }}>
+            <Box sx={{ flexDirection: "row", gap: "2.5vw" }}>
                 <TextField
                     label={"CEP"}
                     name={"address.cep"}
@@ -39,7 +39,7 @@ export const Address: React.FC<AddressProps> = ({ values, handleChange }) => {
                     }}
                     value={values.address?.uf}
                     InputProps={{
-                        sx: { ...textField, height: "12vw" },
+                        sx: { ...textField, height: "10.5vw" },
                     }}
                     SelectProps={{
                         MenuProps: {
@@ -81,7 +81,7 @@ export const Address: React.FC<AddressProps> = ({ values, handleChange }) => {
                 value={values.address?.district}
                 onChange={handleChange}
             />
-            <Box sx={{ flexDirection: "row", gap: "3vw" }}>
+            <Box sx={{ flexDirection: "row", gap: "2.5vw" }}>
                 <TextField
                     label={"Logradouro, Rua, Avenida..."}
                     name={"address.street"}

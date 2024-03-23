@@ -33,6 +33,7 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
     const [loading, setLoading] = useState(false)
     const [tab, setTab] = React.useState("personal")
     const [pickDate, setPickDate] = useState<Dayjs | null>(dayjs(Number(user.employee?.professional?.admission)) || null)
+    const [birthPick, setBirthPick] = useState<Dayjs | null>(dayjs(Number(user.birth)) || null)
 
     const initialValues: Partial<Omit<User, "producer"> & { producer: Partial<Producer> }> = {
         name: user.name,
@@ -68,10 +69,10 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
                       agency: user.employee?.bank?.agency || "",
                       type: user.employee?.bank?.type || "",
                   },
-                  //   professional: {
-                  //       admission: user.employee.professional?.admission,
-                  //       salary: user.employee.professional?.salary,
-                  //   },
+                  professional: {
+                      admission: user.employee.professional?.admission,
+                      salary: user.employee.professional?.salary,
+                  },
               }
             : undefined,
         producer: user.producer
@@ -89,11 +90,7 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
                 ...values,
                 cpf: values.cpf ? unmask(values.cpf) : undefined,
                 phone: values.phone ? unmask(values.phone) : undefined,
-                birth: values.birth
-                    ? new Date(`${values.birth.split("/")[2]}-${values.birth.split("/")[1]}-${values.birth.split("/")[0]}`)
-                          .getTime()
-                          .toString()
-                    : undefined,
+                birth: dayjs(birthPick).valueOf().toString(),
                 image: image
                     ? {
                           file: image,
@@ -222,6 +219,8 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
                                         setTab={setTab}
                                         pickDate={pickDate}
                                         setPickDate={setPickDate}
+                                        birthPick={birthPick}
+                                        setBirthPick={setBirthPick}
                                     />
                                     {tab !== "security" && (
                                         <Button

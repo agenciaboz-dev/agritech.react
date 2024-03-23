@@ -12,7 +12,7 @@ interface DocumentationProps {
 export const Documentation: React.FC<DocumentationProps> = ({ values, handleChange }) => {
     return (
         <Box sx={{ flexDirection: "column", gap: "3vw" }}>
-            <Box sx={{ flexDirection: "row", gap: "3vw" }}>
+            <Box sx={{ flexDirection: "row", gap: "2.5vw" }}>
                 <TextField
                     label={"CPF"}
                     name={"cpf"}

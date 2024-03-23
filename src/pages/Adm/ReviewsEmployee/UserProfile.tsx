@@ -12,6 +12,7 @@ import { InfoProfile } from "../../Profile/InfoProfile"
 import { useIo } from "../../../hooks/useIo"
 import { useUser } from "../../../hooks/useUser"
 import { unmaskCurrency } from "../../../hooks/unmaskNumber"
+import dayjs, { Dayjs } from "dayjs"
 
 interface UserprofileProps {
     view?: boolean
@@ -34,15 +35,22 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
     const [image, setImage] = useState<File>()
     const [loadingApprove, setLoadingApprove] = useState(false)
     const [loadingReject, setLoadingReject] = useState(false)
+    const [tab, setTab] = React.useState("personal")
+    const [pickDate, setPickDate] = useState<Dayjs | null>(null)
+    const [birthPick, setBirthPick] = useState<Dayjs | null>(dayjs(Number(user?.birth)) || null)
 
     !view
         ? useEffect(() => {
               const user = pendingUsers.find((user) => String(user.id) === userId)
               setProfile(user)
+              setPickDate(dayjs(Number(user?.employee?.professional?.admission)))
+              setBirthPick(dayjs(Number(user?.birth)))
           }, [pendingUsers, profile, userId])
         : useEffect(() => {
               const user = listUsers?.find((user) => String(user.id) === userId)
               setProfile(user)
+              setPickDate(dayjs(Number(user?.employee?.professional?.admission)))
+              setBirthPick(dayjs(Number(user?.birth)))
           }, [listUsers, profile, userId])
 
     useEffect(() => {
@@ -253,7 +261,16 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
                     profile={profile}
                     setProfile={setProfile}
                 />
-                <InfoProfile values={valuesUser} review />
+                <InfoProfile
+                    values={valuesUser}
+                    review
+                    tab={tab}
+                    setTab={setTab}
+                    pickDate={pickDate}
+                    setPickDate={setPickDate}
+                    birthPick={birthPick}
+                    setBirthPick={setBirthPick}
+                />
 
                 {!view && (
                     <Box sx={{ gap: "2vw", flexDirection: "row" }}>

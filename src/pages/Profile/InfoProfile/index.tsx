@@ -19,8 +19,10 @@ interface InfoProfileProps {
     review: boolean
     tab: string
     setTab: React.Dispatch<React.SetStateAction<string>>
-    pickDate: Dayjs | null
-    setPickDate: React.Dispatch<React.SetStateAction<Dayjs | null>>
+    pickDate?: Dayjs | null
+    setPickDate?: React.Dispatch<React.SetStateAction<Dayjs | null>> 
+    birthPick?: Dayjs | null
+    setBirthPick?: React.Dispatch<React.SetStateAction<Dayjs | null>> 
 }
 
 export const InfoProfile: React.FC<InfoProfileProps> = ({
@@ -31,6 +33,8 @@ export const InfoProfile: React.FC<InfoProfileProps> = ({
     setTab,
     pickDate,
     setPickDate,
+    birthPick,
+    setBirthPick,
 }) => {
     const { user } = useUser()
     const userlog = user ? user.id === values.id || user.isAdmin : false
@@ -60,7 +64,14 @@ export const InfoProfile: React.FC<InfoProfileProps> = ({
                 )}
                 {user?.cpf === values.cpf && <Tab sx={tabStyle} value="security" label="Privacidade e Segurança" />}
             </Tabs>
-            {tab === "personal" && <Personal values={values} handleChange={handleChange ? handleChange : () => {}} />}
+            {tab === "personal" && (
+                <Personal
+                    values={values}
+                    handleChange={handleChange ? handleChange : () => {}}
+                    birthPick={birthPick}
+                    setBirthPick={setBirthPick}
+                />
+            )}
             {tab === "documentation" && values.employee !== undefined && (
                 <Documentation values={values} handleChange={handleChange ? handleChange : () => {}} />
             )}

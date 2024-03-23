@@ -1,4 +1,4 @@
-import { Box, Button, MenuItem, TextField } from "@mui/material"
+import { Box, Button, MenuItem, TextField, ThemeProvider, createTheme } from "@mui/material"
 import React, { ChangeEventHandler } from "react"
 import { textField } from "../../../style/input"
 import { useGender } from "../../../hooks/useGender"
@@ -7,27 +7,83 @@ import MaskedInput from "../../../components/MaskedInput"
 import { useUser } from "../../../hooks/useUser"
 import MaskedInputNando from "../../../components/MaskedNando"
 import { useCnpjMask } from "burgos-masks"
+import { Dayjs } from "dayjs"
+import { LocalizationProvider, MobileDatePicker, ptBR } from "@mui/x-date-pickers"
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
+import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo"
+import { colors } from "../../../style/colors"
 
 interface PersonalProps {
     values: Partial<Omit<User, "producer"> & { producer: Partial<Producer> }>
     handleChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
+    birthPick?: Dayjs | null
+    setBirthPick?: React.Dispatch<React.SetStateAction<Dayjs | null>>
 }
 
-export const Personal: React.FC<PersonalProps> = ({ values, handleChange }) => {
+const newTheme = (theme: any) =>
+    createTheme({
+        ...theme,
+        components: {
+            MuiPickersToolbar: {
+                styleOverrides: {
+                    root: {
+                        color: "#fff",
+                        // borderRadius: 5,
+                        borderWidth: 0,
+                        backgroundColor: colors.primary,
+                    },
+                },
+            },
+            MuiPickersMonth: {
+                styleOverrides: {
+                    monthButton: {
+                        borderRadius: 20,
+                        borderWidth: 0,
+                        border: "0px solid",
+                    },
+                },
+            },
+            MuiPickersDay: {
+                styleOverrides: {
+                    root: {
+                        color: colors.primary,
+                        borderRadius: 20,
+                        borderWidth: 0,
+                    },
+                },
+            },
+        },
+    })
+export const Personal: React.FC<PersonalProps> = ({ values, handleChange, birthPick, setBirthPick }) => {
     const gender = useGender()
     const typeRelationship = useRelationship()
-
     const { user } = useUser()
 
     return (
-        <Box sx={{ flexDirection: "column", gap: "3vw" }}>
-            <TextField
-                label={"Data de Nascimento"}
-                name={"birth"}
-                sx={textField}
-                value={values.birth}
-                onChange={handleChange}
-            />
+        <Box sx={{ flexDirection: "column", gap: "2.5vw" }}>
+            <LocalizationProvider
+                dateAdapter={AdapterDayjs}
+                localeText={ptBR.components.MuiLocalizationProvider.defaultProps.localeText}
+            >
+                <DemoContainer components={["MobileDatePicker"]} sx={{ color: colors.text.black }}>
+                    <DemoItem label="Data de Nascimento">
+                        <ThemeProvider theme={newTheme}>
+                            <MobileDatePicker
+                                sx={{ ...textField }}
+                                format="DD/MM/YYYY"
+                                value={birthPick}
+                                onChange={(newDate) => {
+                                    if (newDate !== null && setBirthPick) {
+                                        setBirthPick(newDate)
+                                    }
+                                }}
+                                timezone="system"
+                                readOnly={user?.cpf !== values.cpf}
+                            />
+                        </ThemeProvider>
+                    </DemoItem>
+                </DemoContainer>
+            </LocalizationProvider>
             {values.employee === undefined && (
                 <TextField
                     label={"CPF"}

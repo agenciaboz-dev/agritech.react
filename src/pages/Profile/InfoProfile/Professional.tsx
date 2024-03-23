@@ -13,8 +13,8 @@ interface ProfessionalProps {
     values: Partial<Omit<User, "producer"> & { producer: Partial<Producer> }>
     handleChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
     userLog: boolean
-    pickDate: Dayjs | null
-    setPickDate: React.Dispatch<React.SetStateAction<Dayjs | null>>
+    pickDate?: Dayjs | null
+    setPickDate?: React.Dispatch<React.SetStateAction<Dayjs | null>>
 }
 
 const newTheme = (theme: any) =>
@@ -77,7 +77,7 @@ export const Professional: React.FC<ProfessionalProps> = ({ userLog, values, han
                     label={"Salário"}
                     name={"employee.professional.salary"}
                     sx={{ ...textField }}
-                    value={values.employee?.professional?.salary || 0}
+                    value={values.employee?.professional?.salary}
                     onChange={handleChange}
                     InputProps={{
                         inputComponent: MaskedInputNando,
@@ -100,7 +100,7 @@ export const Professional: React.FC<ProfessionalProps> = ({ userLog, values, han
                                     format="DD/MM/YYYY"
                                     value={pickDate}
                                     onChange={(newDate) => {
-                                        if (newDate !== null) {
+                                        if (newDate !== null && setPickDate) {
                                             setPickDate(newDate)
                                         }
                                     }}
