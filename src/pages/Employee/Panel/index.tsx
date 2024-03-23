@@ -1,4 +1,4 @@
-import { Box, Button, IconButton } from "@mui/material"
+import { Avatar, Badge, Box, Button, IconButton } from "@mui/material"
 import React, { useEffect } from "react"
 import { colors } from "../../../style/colors"
 import drone from "../../../assets/logo/droneIcon.png"
@@ -14,6 +14,8 @@ import PostAddIcon from "@mui/icons-material/PostAdd"
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos"
 import { CardUser } from "../../../components/CardUser"
 import findProducer from "../../../hooks/filterProducer"
+import { useNotificationDrawer } from "../../../hooks/useNotificationDrawer"
+import { useNotification } from "../../../hooks/useNotifications"
 
 interface PanelUserProps {
     user: User
@@ -25,6 +27,8 @@ export const PanelUser: React.FC<PanelUserProps> = ({ user }) => {
     const { snackbar } = useSnackbar()
     const navigate = useNavigate()
     const menu = useMenuDrawer()
+    const notificationDrawer = useNotificationDrawer()
+    const { recents } = useNotification()
 
     const team = user.employee?.producers?.map((item) => {
         return findProducer(String(item.id))
@@ -66,13 +70,22 @@ export const PanelUser: React.FC<PanelUserProps> = ({ user }) => {
                         Painel
                     </p>
                 </Box>
-                <Box style={{ flexDirection: "row", gap: "4vw" }}>
-                    <SearchIcon sx={{ color: "#fff" }} />
-                    <NotificationsNoneIcon sx={{ color: "#fff" }} />
-                    <PersonOutlineIcon
-                        sx={{ color: "#fff" }}
+                <Box style={{ flexDirection: "row", gap: "4vw", alignItems: "center" }}>
+                    {/* <SearchIcon sx={{ color: "#fff" }} /> */}
+                    <Badge badgeContent={recents?.length} color="success">
+                        <NotificationsNoneIcon
+                            sx={{ color: "#fff" }}
+                            onClick={() => {
+                                notificationDrawer.toggle()
+                            }}
+                        />
+                    </Badge>
+                    <Avatar
+                        src={user.image}
+                        style={{ color: "#fff", width: "8vw", height: "8vw" }}
                         onClick={() => {
                             menu.toggle()
+                            console.log("abriu")
                         }}
                     />
                 </Box>

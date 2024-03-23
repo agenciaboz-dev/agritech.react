@@ -60,7 +60,6 @@ export const Header: React.FC<HeaderProps> = ({ back, location, style }) => {
             </Box>
             {/* <IconButton color="primary" onClick={notifications.toggle}> */}
             <Box style={{ flexDirection: "row", gap: "4vw", alignItems: "center" }}>
-                <SearchIcon sx={{ color: "#fff" }} />
                 <Badge badgeContent={recents?.length} color="success">
                     {" "}
                     <NotificationsNoneIcon

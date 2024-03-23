@@ -1,4 +1,4 @@
-import { Box, Button, IconButton } from "@mui/material"
+import { Avatar, Badge, Box, Button, IconButton } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { colors } from "../../../style/colors"
 import drone from "../../../assets/logo/droneIcon.png"
@@ -13,6 +13,8 @@ import AddIcon from "@mui/icons-material/Add"
 import { useNavigate } from "react-router-dom"
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos"
 import { CardTillage } from "../../../components/CardTillage"
+import { useNotificationDrawer } from "../../../hooks/useNotificationDrawer"
+import { useNotification } from "../../../hooks/useNotifications"
 
 interface PanelUserProps {
     user: User
@@ -25,6 +27,8 @@ export const PanelUser: React.FC<PanelUserProps> = ({ user }) => {
     const navigate = useNavigate()
 
     const menu = useMenuDrawer()
+    const notificationDrawer = useNotificationDrawer()
+    const { recents } = useNotification()
 
     useEffect(() => {
         io.on("user:disconnect", () => {
@@ -62,13 +66,22 @@ export const PanelUser: React.FC<PanelUserProps> = ({ user }) => {
                         Painel
                     </p>
                 </Box>
-                <Box style={{ flexDirection: "row", gap: "4vw" }}>
-                    <SearchIcon sx={{ color: "#fff" }} />
-                    <NotificationsNoneIcon sx={{ color: "#fff" }} />
-                    <PersonOutlineIcon
-                        sx={{ color: "#fff" }}
+                <Box style={{ flexDirection: "row", gap: "4vw", alignItems: "center" }}>
+                    {/* <SearchIcon sx={{ color: "#fff" }} /> */}
+                    <Badge badgeContent={recents?.length} color="success">
+                        <NotificationsNoneIcon
+                            sx={{ color: "#fff" }}
+                            onClick={() => {
+                                notificationDrawer.toggle()
+                            }}
+                        />
+                    </Badge>
+                    <Avatar
+                        src={user.image}
+                        style={{ color: "#fff", width: "8vw", height: "8vw" }}
                         onClick={() => {
                             menu.toggle()
+                            console.log("abriu")
                         }}
                     />
                 </Box>
@@ -114,12 +127,12 @@ export const PanelUser: React.FC<PanelUserProps> = ({ user }) => {
                                 textAlign: "left",
                             }}
                         >
-                            Fazendas Recentes
+                            Fazendas
                         </p>
                         <Box style={{ width: "100%" }}>
                             {user.producer?.tillage?.length !== 0 &&
                                 user.producer?.tillage
-                                    ?.slice(0, 3)
+                                    ?.slice(0, 7)
                                     .map((tillage, index) => (
                                         <CardTillage
                                             key={index}

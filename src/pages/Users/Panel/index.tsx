@@ -1,4 +1,4 @@
-import { Box, Button, Icon, IconButton } from "@mui/material"
+import { Avatar, Badge, Box, Button, Icon, IconButton } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { colors } from "../../../style/colors"
 import drone from "../../../assets/logo/droneIcon.png"
@@ -11,6 +11,8 @@ import { useSnackbar } from "burgos-snackbar"
 import { useMenuDrawer } from "../../../hooks/useMenuDrawer"
 import AddIcon from "@mui/icons-material/Add"
 import { useNavigate } from "react-router-dom"
+import { useNotificationDrawer } from "../../../hooks/useNotificationDrawer"
+import { useNotification } from "../../../hooks/useNotifications"
 
 interface PanelUserProps {
     user: User
@@ -23,6 +25,8 @@ export const PanelUser: React.FC<PanelUserProps> = ({ user }) => {
     const navigate = useNavigate()
 
     const menu = useMenuDrawer()
+    const notificationDrawer = useNotificationDrawer()
+    const { recents } = useNotification()
 
     useEffect(() => {
         io.on("user:disconnect", () => {
@@ -69,13 +73,21 @@ export const PanelUser: React.FC<PanelUserProps> = ({ user }) => {
                         Painel
                     </p>
                 </Box>
-                <Box style={{ flexDirection: "row", gap: "4vw" }}>
-                    <SearchIcon sx={{ color: "#fff" }} />
-                    <NotificationsNoneIcon sx={{ color: "#fff" }} />
-                    <PersonOutlineIcon
-                        sx={{ color: "#fff" }}
+                <Box style={{ flexDirection: "row", gap: "4vw", alignItems: "center" }}>
+                    <Badge badgeContent={recents?.length} color="success">
+                        <NotificationsNoneIcon
+                            sx={{ color: "#fff" }}
+                            onClick={() => {
+                                notificationDrawer.toggle()
+                            }}
+                        />
+                    </Badge>
+                    <Avatar
+                        src={user.image}
+                        style={{ color: "#fff", width: "8vw", height: "8vw" }}
                         onClick={() => {
                             menu.toggle()
+                            console.log("abriu")
                         }}
                     />
                 </Box>
@@ -112,9 +124,7 @@ export const PanelUser: React.FC<PanelUserProps> = ({ user }) => {
                         gap: "10vw",
                         height: "100%",
                     }}
-                >
-                    
-                </Box>
+                ></Box>
             </Box>
         </Box>
     )
