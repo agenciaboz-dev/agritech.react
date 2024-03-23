@@ -109,7 +109,7 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
                 city: infoCep?.cidade.nome,
                 cep: unmask(infoCep?.cep || ""),
                 uf: infoCep?.estado.sigla,
-                adjunct: infoCep?.complemento,
+                adjunct: values.address.adjunct,
             },
             area: unmaskNumber(values.area),
             hectarePrice: unmaskNumber(values.hectarePrice || 0),
