@@ -17,12 +17,12 @@ export const ReviewsCall: React.FC<ReviewsCallProps> = ({ user }) => {
     const header = useHeader()
     const { listCalls, listCallsPending } = useCall()
 
+    
+    const [tab, setTab] = useState("pending")
     const sortedPendingCalls = listCallsPending
         .filter((item) => !item.approved)
         .sort((a, b) => Number(a.open) - Number(b.open))
     const sortedApprovedCalls = listCalls.sort((a, b) => Number(a.open) - Number(b.open))
-
-    const [tab, setTab] = useState("pending")
     const changeTab = (event: React.SyntheticEvent, newValue: string) => {
         setTab(newValue)
     }

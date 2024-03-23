@@ -76,7 +76,7 @@ export const LogsCard: React.FC<LogsCardProps> = ({ review, call, variant }) => 
     ) : (
         <Box
             sx={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}
-            onClick={() => navigate(`/producer/tillage/${tillageSelected?.id}`)}
+            onClick={() => navigate(`/producer/tillage/${call?.talhao?.tillageId}`)}
         >
             <Box sx={{ flexDirection: "column" }}>
                 <Box sx={{ flexDirection: "row", alignItems: "center", gap: "2vw" }}>
@@ -92,16 +92,16 @@ export const LogsCard: React.FC<LogsCardProps> = ({ review, call, variant }) => 
                 <p style={{ fontSize: "3vw", color: "gray" }}>
                     {call?.approved
                         ? `Previsão: ${new Date(Number(call.forecast)).toLocaleDateString("pt-br")}`
-                        : "Aguardando aprovação"}
+                        : "Aguardando aprovação "}
                 </p>
             </Box>
 
-            {/* <IconButton
+            <IconButton
                 onClick={() => navigate(`/producer/calls/${call?.id}`)}
                 // onClick={() => navigate(account.user?.isAdmin ? `/adm/call/${user?.id}/report` : `/call/1/report`)}
             >
                 <IoIosArrowForward style={{ width: "5vw", height: "5vw" }} />
-            </IconButton> */}
+            </IconButton>
         </Box>
     )
 }
