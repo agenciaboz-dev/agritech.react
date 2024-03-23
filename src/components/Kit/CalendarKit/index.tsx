@@ -12,10 +12,12 @@ import { IconUser } from "@tabler/icons-react"
 import { Call } from "../../../definitions/call"
 import { useKits } from "../../../hooks/useKits"
 import { textField } from "../../../style/input"
+import { useIo } from "../../../hooks/useIo"
 
 interface CalendarKitProps {}
 
 export const CalendarKit: React.FC<CalendarKitProps> = ({}) => {
+    const io = useIo()
     const header = useHeader()
     const navigate = useNavigate()
 
@@ -88,6 +90,9 @@ export const CalendarKit: React.FC<CalendarKitProps> = ({}) => {
         }
     }
 
+    useEffect(() => {
+        if (listKits.length === 0) io.emit("kit:list")
+    }, [listKits])
     useEffect(() => {
         handleFindCalls(value)
     }, [value])

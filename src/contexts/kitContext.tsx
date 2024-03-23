@@ -24,12 +24,11 @@ export default KitContext
 export const KitProvider: React.FC<KitProviderProps> = ({ children }) => {
     const io = useIo()
     const [listKits, setListKits] = useState<Kit[]>([])
-    const {addNotification}=useNotification()
+    const { addNotification } = useNotification()
     const { snackbar } = useSnackbar()
     const { user } = useUser()
 
     useEffect(() => {
-
         io.on("kit:list:success", (data: Kit[]) => {
             setListKits(data)
             // snackbar({ severity: "success", text: "Lista de kits atualizada" })
@@ -51,6 +50,10 @@ export const KitProvider: React.FC<KitProviderProps> = ({ children }) => {
     const toggleKit = (id: number) => {
         io.emit("kit:toggle", { id: id })
     }
+
+    useEffect(() => {
+        if (listKits.length === 0) io.emit("kit:list")
+    }, [])
 
     useEffect(() => {
         io.on("kit:toggle:success", (data: Kit) => {
