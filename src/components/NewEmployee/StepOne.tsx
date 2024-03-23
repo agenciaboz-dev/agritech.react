@@ -1,4 +1,4 @@
-import { Box, Button, TextField, MenuItem } from "@mui/material"
+import { Box, Button, TextField, MenuItem, ThemeProvider, createTheme } from "@mui/material"
 import React, { ChangeEventHandler, useEffect, useState } from "react"
 import { colors } from "../../style/colors"
 import MaskedInput from "../../components/MaskedInput"
@@ -7,13 +7,53 @@ import { textField } from "../../style/input"
 import { useRelationship } from "../../hooks/useRelationship"
 import MaskedInputNando from "../../components/MaskedNando"
 import { useCnpjMask, useCpfMask } from "burgos-masks"
+import { LocalizationProvider, MobileDatePicker, ptBR } from "@mui/x-date-pickers"
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
+import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo"
+import { Dayjs } from "dayjs"
 
 interface StepOneProps {
     data: NewEmployee
     handleChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
+    birthPick?: Dayjs | null
+    setBirthPick?: React.Dispatch<React.SetStateAction<Dayjs | null>>
 }
+const newTheme = (theme: any) =>
+    createTheme({
+        ...theme,
+        components: {
+            MuiPickersToolbar: {
+                styleOverrides: {
+                    root: {
+                        color: "#fff",
+                        // borderRadius: 5,
+                        borderWidth: 0,
+                        backgroundColor: colors.primary,
+                    },
+                },
+            },
+            MuiPickersMonth: {
+                styleOverrides: {
+                    monthButton: {
+                        borderRadius: 20,
+                        borderWidth: 0,
+                        border: "0px solid",
+                    },
+                },
+            },
+            MuiPickersDay: {
+                styleOverrides: {
+                    root: {
+                        color: colors.primary,
+                        borderRadius: 20,
+                        borderWidth: 0,
+                    },
+                },
+            },
+        },
+    })
 
-export const StepOne: React.FC<StepOneProps> = ({ data, handleChange }) => {
+export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, birthPick, setBirthPick }) => {
     const gender = useGender()
     const typeRelationship = useRelationship()
     return (
@@ -50,21 +90,28 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange }) => {
                     />
                 </Box>
 
-                <Box sx={{ flexDirection: "row", gap: "2vw" }}>
-                    <TextField
-                        label={"Data de Nascimento"}
-                        name="birth"
-                        value={data.birth}
-                        sx={{ ...textField, width: "100%" }}
-                        InputProps={{
-                            inputComponent: MaskedInput,
-                            inputProps: { mask: "00/00/0000" },
-                            inputMode: "numeric",
-                        }}
-                        onChange={handleChange}
-                        required
-                    />
-                </Box>
+                <LocalizationProvider
+                    dateAdapter={AdapterDayjs}
+                    localeText={ptBR.components.MuiLocalizationProvider.defaultProps.localeText}
+                >
+                    <DemoContainer components={["MobileDatePicker"]} sx={{ color: colors.text.black }}>
+                        <DemoItem label="Data de Nascimento">
+                            <ThemeProvider theme={newTheme}>
+                                <MobileDatePicker
+                                    sx={{ ...textField }}
+                                    format="DD/MM/YYYY"
+                                    value={birthPick}
+                                    onChange={(newDate) => {
+                                        if (newDate !== null && setBirthPick) {
+                                            setBirthPick(newDate)
+                                        }
+                                    }}
+                                    timezone="system"
+                                />
+                            </ThemeProvider>
+                        </DemoItem>
+                    </DemoContainer>
+                </LocalizationProvider>
                 <TextField
                     label={"E-mail"}
                     name="email"
@@ -162,9 +209,9 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange }) => {
                     )}
                 </Box>
             </Box>
-                <p style={{ fontWeight: "800", lineHeight: "1.1", fontSize: "3vw" }}>
-                    Obs: A senha do novo colaborador é o seu cpf. Após isso ele(a) pode alterar na conta pessoal.
-                </p>
+            <p style={{ fontWeight: "800", lineHeight: "1.1", fontSize: "3vw" }}>
+                Obs: A senha do novo colaborador é o seu cpf. Após isso ele(a) pode alterar na conta pessoal.
+            </p>
         </Box>
     )
 }

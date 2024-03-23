@@ -41,7 +41,10 @@ export const StepFour: React.FC<StepFourProps> = ({ data, handleChange }) => {
                         variant="outlined"
                         value={data.employee?.bank?.type}
                         InputProps={{
-                            style: {},
+                            sx: {
+                                ...textField,
+                                height: "10.5vw",
+                            },
                         }}
                         SelectProps={{
                             MenuProps: { MenuListProps: { sx: { maxHeight: "80vw", overflowY: "auto" } } },

@@ -96,7 +96,7 @@ export const StepTwo: React.FC<StepTwoProps> = ({ data, handleChange }) => {
                             InputProps={{
                                 sx: {
                                     ...textField,
-                                    height: "12vw",
+                                    height: "10.5vw",
                                 },
                             }}
                             SelectProps={{

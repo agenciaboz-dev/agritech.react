@@ -1,4 +1,4 @@
-import { Box, TextField, Button, MenuItem, FormControlLabel, FormGroup, styled, Switch } from "@mui/material"
+import { Box, TextField, Button, MenuItem, FormControlLabel, FormGroup, styled, Switch, ThemeProvider, createTheme } from "@mui/material"
 import React, { ChangeEventHandler, useState } from "react"
 import { textField } from "../../style/input"
 import { useBankAccount } from "../../hooks/useBankAccount"
@@ -6,6 +6,11 @@ import MaskedInputNando from "../MaskedNando"
 import { useCurrencyMask } from "burgos-masks"
 import MaskedInput from "../MaskedInput"
 import { useIo } from "../../hooks/useIo"
+import { LocalizationProvider, MobileDatePicker, ptBR } from "@mui/x-date-pickers"
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
+import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo"
+import { colors } from "../../style/colors"
+import { Dayjs } from "dayjs"
 
 interface StepFiveProps {
     data: NewEmployee
@@ -14,6 +19,8 @@ interface StepFiveProps {
     setAdminStatus: (values: boolean) => void
     managerStatus: boolean
     setManagerStatus: (values: boolean) => void
+    pickDate?: Dayjs | null
+    setPickDate?: React.Dispatch<React.SetStateAction<Dayjs | null>>
 }
 const Android12Switch = styled(Switch)(({ theme }) => ({
     padding: 8,
@@ -42,6 +49,41 @@ const Android12Switch = styled(Switch)(({ theme }) => ({
     },
 }))
 
+const newTheme = (theme: any) =>
+    createTheme({
+        ...theme,
+        components: {
+            MuiPickersToolbar: {
+                styleOverrides: {
+                    root: {
+                        color: "#fff",
+                        // borderRadius: 5,
+                        borderWidth: 0,
+                        backgroundColor: colors.primary,
+                    },
+                },
+            },
+            MuiPickersMonth: {
+                styleOverrides: {
+                    monthButton: {
+                        borderRadius: 20,
+                        borderWidth: 0,
+                        border: "0px solid",
+                    },
+                },
+            },
+            MuiPickersDay: {
+                styleOverrides: {
+                    root: {
+                        color: colors.primary,
+                        borderRadius: 20,
+                        borderWidth: 0,
+                    },
+                },
+            },
+        },
+    })
+
 export const StepFive: React.FC<StepFiveProps> = ({
     data,
     handleChange,
@@ -49,9 +91,10 @@ export const StepFive: React.FC<StepFiveProps> = ({
     setAdminStatus,
     managerStatus,
     setManagerStatus,
+    pickDate,
+    setPickDate,
 }) => {
     const bankAccount = useBankAccount()
-
 
     const handleChangeAdmin = (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
         console.log("handleChangeAdmin", checked)
@@ -83,21 +126,28 @@ export const StepFive: React.FC<StepFiveProps> = ({
                             },
                         }}
                     />
-                    <TextField
-                        variant="outlined"
-                        label={"Data de admissão"}
-                        value={data.employee?.professional?.admission}
-                        name="employee.professional.admission"
-                        sx={{ ...textField, width: "100%" }}
-                        onChange={handleChange}
-                        InputProps={{
-                            inputComponent: MaskedInput,
-                            inputProps: {
-                                mask: "00/00/0000",
-                                inputMode: "numeric",
-                            },
-                        }}
-                    />
+                    <LocalizationProvider
+                        dateAdapter={AdapterDayjs}
+                        localeText={ptBR.components.MuiLocalizationProvider.defaultProps.localeText}
+                    >
+                        <DemoContainer components={["MobileDatePicker"]} sx={{ color: colors.text.black }}>
+                            <DemoItem label="Data de Admissão">
+                                <ThemeProvider theme={newTheme}>
+                                    <MobileDatePicker
+                                        sx={{ ...textField }}
+                                        format="DD/MM/YYYY"
+                                        value={pickDate}
+                                        onChange={(newDate) => {
+                                            if (newDate !== null && setPickDate) {
+                                                setPickDate(newDate)
+                                            }
+                                        }}
+                                        timezone="system"
+                                    />
+                                </ThemeProvider>
+                            </DemoItem>
+                        </DemoContainer>
+                    </LocalizationProvider>
                     <TextField
                         variant="outlined"
                         label={"Nº da carteira de trabalho"}

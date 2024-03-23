@@ -36,7 +36,7 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
     const [loadingApprove, setLoadingApprove] = useState(false)
     const [loadingReject, setLoadingReject] = useState(false)
     const [tab, setTab] = React.useState("personal")
-    const [pickDate, setPickDate] = useState<Dayjs | null>(null)
+    const [pickDate, setPickDate] = useState<Dayjs | null>(dayjs())
     const [birthPick, setBirthPick] = useState<Dayjs | null>(dayjs(Number(user?.birth)) || dayjs())
 
     !view
@@ -226,7 +226,7 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
                             Acessar Fazendas
                         </Button>
                     )}
-                    {view && userSelect[0].employee && user?.isAdmin && (
+                    {/* {view && userSelect[0].employee && user?.isAdmin && (
                         <Button
                             size="small"
                             variant="contained"
@@ -246,7 +246,7 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
                         >
                             Gerenciar acesso
                         </Button>
-                    )}
+                    )} */}
                 </Box>
                 <HeaderProfile
                     values={valuesUser}

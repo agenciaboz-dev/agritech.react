@@ -36,6 +36,7 @@ import { unmaskCurrency } from "../../hooks/unmaskNumber"
 import { useIo } from "../../hooks/useIo"
 import { useUsers } from "../../hooks/useUsers"
 import { Avatar } from "@files-ui/react"
+import dayjs, { Dayjs } from "dayjs"
 
 interface NewEmployeeProps {}
 
@@ -86,6 +87,9 @@ export const NewEmployee: React.FC<NewEmployeeProps> = ({}) => {
 
     const [adminStatus, setAdminStatus] = useState(false)
     const [managerStatus, setManagerStatus] = useState(false)
+
+    const [pickDate, setPickDate] = useState<Dayjs | null>(null)
+    const [birthPick, setBirthPick] = useState<Dayjs | null>(null)
 
     const formik = useFormik<NewEmployee>({
         initialValues: {
@@ -138,24 +142,17 @@ export const NewEmployee: React.FC<NewEmployeeProps> = ({}) => {
     })
 
     const handleSubmit = (values: NewEmployee) => {
-        if (!isValidDateString(values.birth)) {
-            console.log("Data de nascimento inválida")
-            snackbar({ severity: "error", text: "Data de nascimento inválida" })
-            return
-        }
-        const admission = values.employee?.professional?.admission
-            ? new Date(values.employee?.professional?.admission.split("/").reverse().join("/"))
-            : undefined
-
+      
         const data = {
             ...values,
             isAdmin: adminStatus,
             isManager: managerStatus,
             username: values.email,
-            password: "Bump2024!",
+            password: unmask(values.cpf),
             cpf: unmask(values.cpf),
             phone: unmask(values.phone),
             approved: true,
+            birth: dayjs(birthPick).valueOf().toString(),
             image: image
                 ? {
                       file: image,
@@ -175,7 +172,7 @@ export const NewEmployee: React.FC<NewEmployeeProps> = ({}) => {
                 residence: values.employee?.residence,
                 bank: { ...values.employee.bank },
                 professional: {
-                    admission: admission,
+                    admission: dayjs(pickDate).valueOf().toString(),
                     salary: unmaskCurrency(values.employee?.professional?.salary || 0),
                 },
             },
@@ -286,7 +283,7 @@ export const NewEmployee: React.FC<NewEmployeeProps> = ({}) => {
                                         variant="outlined"
                                         value={formik.values.office}
                                         InputProps={{
-                                            sx: { ...textField, height: "12vw" },
+                                            sx: { ...textField, height: "10.5vw" },
                                         }}
                                         SelectProps={{
                                             MenuProps: {
@@ -339,7 +336,12 @@ export const NewEmployee: React.FC<NewEmployeeProps> = ({}) => {
                                 </Stepper>
                                 <Box sx={{ maxHeight: "80%", width: "100%" }}>
                                     {currentStep === 0 && (
-                                        <StepOne data={formik.values} handleChange={formik.handleChange} />
+                                        <StepOne
+                                            data={formik.values}
+                                            handleChange={formik.handleChange}
+                                            birthPick={birthPick}
+                                            setBirthPick={setBirthPick}
+                                        />
                                     )}
                                     {currentStep === 1 && (
                                         <StepTwo data={formik.values} handleChange={formik.handleChange} />
@@ -358,6 +360,8 @@ export const NewEmployee: React.FC<NewEmployeeProps> = ({}) => {
                                             setAdminStatus={setAdminStatus}
                                             managerStatus={managerStatus}
                                             setManagerStatus={setManagerStatus}
+                                            setPickDate={setPickDate}
+                                            pickDate={pickDate}
                                         />
                                     )}
                                 </Box>
