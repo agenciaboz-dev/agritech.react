@@ -11,6 +11,7 @@ import { Bank } from "./Bank"
 import { Professional } from "./Professional"
 import { useUser } from "../../../hooks/useUser"
 import { Security } from "./Security"
+import { Dayjs } from "dayjs"
 
 interface InfoProfileProps {
     values: Partial<Omit<User, "producer"> & { producer: Partial<Producer> }>
@@ -18,9 +19,19 @@ interface InfoProfileProps {
     review: boolean
     tab: string
     setTab: React.Dispatch<React.SetStateAction<string>>
+    pickDate: Dayjs | null
+    setPickDate: React.Dispatch<React.SetStateAction<Dayjs | null>>
 }
 
-export const InfoProfile: React.FC<InfoProfileProps> = ({ values, handleChange, review, tab, setTab }) => {
+export const InfoProfile: React.FC<InfoProfileProps> = ({
+    values,
+    handleChange,
+    review,
+    tab,
+    setTab,
+    pickDate,
+    setPickDate,
+}) => {
     const { user } = useUser()
     const userlog = user ? user.id === values.id || user.isAdmin : false
     const changeTab = (event: React.SyntheticEvent, newValue: string) => {
@@ -59,7 +70,13 @@ export const InfoProfile: React.FC<InfoProfileProps> = ({ values, handleChange, 
                 <Bank values={values} handleChange={handleChange ? handleChange : () => {}} />
             )}
             {values.employee !== undefined && tab === "professional" && values.employee && (
-                <Professional userLog={userlog} values={values} handleChange={handleChange ? handleChange : () => {}} />
+                <Professional
+                    userLog={userlog}
+                    values={values}
+                    handleChange={handleChange ? handleChange : () => {}}
+                    pickDate={pickDate}
+                    setPickDate={setPickDate}
+                />
             )}
             {user?.cpf === values.cpf && tab == "security" && <Security />}
         </Box>

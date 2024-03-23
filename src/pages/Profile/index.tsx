@@ -15,6 +15,7 @@ import { useGender } from "../../hooks/useGender"
 import { useNavigate } from "react-router-dom"
 import { useRelationship } from "../../hooks/useRelationship"
 import { unmaskCurrency } from "../../hooks/unmaskNumber"
+import dayjs, { Dayjs } from "dayjs"
 
 interface ProfileProps {
     user: User
@@ -31,6 +32,7 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
 
     const [loading, setLoading] = useState(false)
     const [tab, setTab] = React.useState("personal")
+    const [pickDate, setPickDate] = useState<Dayjs | null>(dayjs(Number(user.employee?.professional?.admission)) || null)
 
     const initialValues: Partial<Omit<User, "producer"> & { producer: Partial<Producer> }> = {
         name: user.name,
@@ -110,6 +112,7 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
                           ...values.employee,
                           professional: {
                               ...values.employee.professional,
+                              admission: dayjs(pickDate).valueOf().toString(),
                               salary: unmaskCurrency(values.employee.professional?.salary || 0),
                           },
                       }
@@ -217,6 +220,8 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
                                         review={false}
                                         tab={tab}
                                         setTab={setTab}
+                                        pickDate={pickDate}
+                                        setPickDate={setPickDate}
                                     />
                                     {tab !== "security" && (
                                         <Button
