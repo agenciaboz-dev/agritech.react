@@ -32,7 +32,18 @@ export const CardUser: React.FC<CardUserProps> = ({ review, user, location }) =>
                 <Avatar src={user.image} sx={{ width: "10vw", height: "10vw" }} />
                 <Box sx={{ flexDirection: "column", gap: "1vw" }}>
                     {!user.producer && <OfficeDot office={user.office} />}
-                    <p style={{ fontSize: "3.7vw" }}>{user.name}</p>
+                    <p
+                        style={{
+                            fontSize: "3.7vw",
+                            width: "40vw",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            whiteSpace: "nowrap",
+                            flexWrap: "nowrap",
+                        }}
+                    >
+                        {user.name}
+                    </p>
                 </Box>
             </Box>
             <Box sx={{ alignItems: "center", flexDirection: "row" }}>

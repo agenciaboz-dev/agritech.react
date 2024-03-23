@@ -148,7 +148,7 @@ export const HeaderProfile: React.FC<HeaderProfileProps> = ({
                     <Box sx={{ flexDirection: "column", justifyContent: "space-between" }}>
                         <FormGroup sx={{ width: "90%" }}>
                             <FormControlLabel
-                                checked={isAdmin}
+                                checked={isAdmin || false}
                                 control={<Android12Switch />}
                                 onChange={handleChangeAdmin}
                                 label={
@@ -160,7 +160,7 @@ export const HeaderProfile: React.FC<HeaderProfileProps> = ({
                         </FormGroup>
                         <FormGroup sx={{ width: "90%" }}>
                             <FormControlLabel
-                                checked={isManager}
+                                checked={isManager || false}
                                 control={<Android12Switch />}
                                 onChange={handleChangeManager}
                                 label={

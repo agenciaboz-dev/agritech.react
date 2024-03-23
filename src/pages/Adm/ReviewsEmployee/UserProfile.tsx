@@ -37,7 +37,7 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
     const [loadingReject, setLoadingReject] = useState(false)
     const [tab, setTab] = React.useState("personal")
     const [pickDate, setPickDate] = useState<Dayjs | null>(null)
-    const [birthPick, setBirthPick] = useState<Dayjs | null>(dayjs(Number(user?.birth)) || null)
+    const [birthPick, setBirthPick] = useState<Dayjs | null>(dayjs(Number(user?.birth)) || dayjs())
 
     !view
         ? useEffect(() => {

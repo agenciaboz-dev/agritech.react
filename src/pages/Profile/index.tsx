@@ -40,6 +40,8 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
         cpf: user.cpf,
         phone: user.phone,
         email: user.email,
+        username: user.username,
+        password: user.password,
         birth: new Date(Number(user.birth) || 0).toLocaleDateString("pt-br"),
         image: user.image || null,
         address: {
