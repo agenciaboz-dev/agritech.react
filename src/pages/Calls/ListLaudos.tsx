@@ -67,7 +67,8 @@ export const ListLaudos: React.FC<ListLaudosProps> = ({ user }) => {
                     location={
                         user?.isAdmin
                             ? `/adm/producer/${selectedCall?.producer?.id}/${selectedCall?.talhao?.tillage?.id}`
-                            : `/adm/producer/${selectedCall?.producer?.id}/${selectedCall?.talhao?.tillage?.id}`
+                            : // : `/employee/producer/${selectedCall?.producer?.id}/${selectedCall?.talhao?.tillage?.id}`
+                              "/employee/requests"
                     }
                 />
             </Box>

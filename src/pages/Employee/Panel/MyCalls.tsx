@@ -17,7 +17,7 @@ export const MyCalls: React.FC<MyCallsProps> = ({}) => {
     const { user } = useUser()
     const { listKits } = useKits()
 
-    const [tab, setTab] = React.useState("waiting")
+    const [tab, setTab] = React.useState("day")
     const changeTab = (event: React.SyntheticEvent, newValue: string) => {
         setTab(newValue)
     }
@@ -27,10 +27,17 @@ export const MyCalls: React.FC<MyCallsProps> = ({}) => {
 
     const callsEmployee = kitsEmployee.flat()
 
+    const sorted_waiting = callsEmployee.sort((a, b) => Number(a.forecast) - Number(b.forecast))
+    const sorted_progress = callsEmployee
+        .filter((item) => new Date(Number(item.forecast)).setHours(0, 0, 0, 0) === new Date().setHours(0, 0, 0, 0))
+        .sort((a, b) => Number(a.forecast) - Number(b.forecast))
+
     useEffect(() => {
-        console.log(callsEmployee)
         header.setTitle("Meus chamados")
     }, [])
+    useEffect(() => {
+        console.log({ sorteados: sorted_progress })
+    }, [sorted_progress])
 
     return (
         <Box
@@ -78,15 +85,18 @@ export const MyCalls: React.FC<MyCallsProps> = ({}) => {
                     scrollButtons="auto"
                     allowScrollButtonsMobile
                 >
-                    <Tab sx={tabStyle} value="late" label="Atrasados" />
+                    <Tab sx={tabStyle} value="day" label="Chamados do dia" />
                     <Tab sx={tabStyle} value="waiting" label="Aguardando" />
                     {/* <Tab sx={tabStyle} value="concluded" label="Concluídos" /> */}
                 </Tabs>
                 <Box sx={{ width: "100%", height: "82%", overflow: "auto", gap: "1vw" }}>
-                    {tab === "late" && <p>Nenhum chamado atrasado</p>}
-                    {tab === "waiting" && callsEmployee.length !== 0
-                        ? callsEmployee?.map((call, index) => <LogsCard key={index} call={call} review />)
+                    {tab === "waiting" && sorted_waiting.length !== 0
+                        ? sorted_waiting?.map((call, index) => <LogsCard key={index} call={call} review />)
                         : tab === "waiting" && <p>Nenhum chamado </p>}
+
+                    {tab === "day" && sorted_progress.length !== 0
+                        ? sorted_progress?.map((call, index) => <LogsCard key={index} call={call} review />)
+                        : tab === "day" && <p>Nenhum chamado </p>}
                     {/* {tab === "concluded" && kitsEmployee.length !== 0
                         ? kitsEmployee?.map((user, index) => <></>)
                         : tab === "concluded" && <p>Nenhum chamado </p>} */}

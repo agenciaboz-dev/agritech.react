@@ -44,7 +44,7 @@ export const LogsLaudo: React.FC<LogsLaudoProps> = ({ report, talhao, id, tillag
                             console.log({ Report: report })
                             user.isAdmin
                                 ? navigate(`/adm/call/${report.call?.id}/stages/${report.id}`)
-                                : navigate(`/employee/call/${report.call?.id}/stages/${report.id}`)
+                                : navigate(`/call/${report.call?.id}/stages/${report.id}`)
                             // call && setSelectedCall(call)
                         } else if (report && report.stage === 4) {
                             console.log("report finalizado")

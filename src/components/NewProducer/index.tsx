@@ -98,8 +98,6 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
             contract: true,
             inscricaoEstadual: "",
             employeeId: user?.employee?.id,
-            
-            
         },
     }
 
@@ -184,7 +182,7 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
         others: "",
         address: {
             street: "",
-            district: "",
+            district: infoCep?.bairro || "",
             number: "",
             city: infoCep?.cidade.nome || "",
             cep: infoCep?.cep || "",
@@ -219,8 +217,8 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
             ...values,
             cover: values.cover,
             address: {
-                street: infoCep?.logradouro,
-                district: infoCep?.bairro,
+                street: infoCep?.logradouro || "",
+                district: infoCep?.bairro || "",
                 number: "",
                 city: infoCep?.cidade.nome,
                 cep: unmask(infoCep?.cep || ""),

@@ -16,6 +16,7 @@ import { CardUser } from "../../../components/CardUser"
 import findProducer from "../../../hooks/filterProducer"
 import { useNotificationDrawer } from "../../../hooks/useNotificationDrawer"
 import { useNotification } from "../../../hooks/useNotifications"
+import { useUsers } from "../../../hooks/useUsers"
 
 interface PanelUserProps {
     user: User
@@ -29,10 +30,9 @@ export const PanelUser: React.FC<PanelUserProps> = ({ user }) => {
     const menu = useMenuDrawer()
     const notificationDrawer = useNotificationDrawer()
     const { recents } = useNotification()
+    const { listUsers } = useUsers()
 
-    const team = user.employee?.producers?.map((item) => {
-        return findProducer(String(item.id))
-    })
+    const team = user.employee?.producers
 
     useEffect(() => {
         io.on("user:disconnect", () => {
@@ -46,6 +46,14 @@ export const PanelUser: React.FC<PanelUserProps> = ({ user }) => {
         }
     }, [])
 
+    useEffect(() => {
+        console.log({ team: team })
+    }, [])
+
+    useEffect(() => {
+        if (listUsers.length === 0) io.emit("users:list")
+        console.log(listUsers)
+    }, [listUsers])
     return (
         <Box style={{ flex: 1, backgroundColor: colors.button, paddingTop: "4vw", height: "100%" }}>
             <Box style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", padding: "0 4vw" }}>
@@ -136,12 +144,22 @@ export const PanelUser: React.FC<PanelUserProps> = ({ user }) => {
                             Clientes Fixados
                         </p>
                         <Box style={{ width: "100%" }}>
-                            {team?.length !== 0 &&
-                                team
-                                    ?.slice(0, 3)
-                                    .map((user) => (
-                                        <CardUser user={user} key={user.id} location={`/employee/profile/${user.id}`} />
-                                    ))}
+                            {team?.length !== 0 ? (
+                                team?.slice(0, 3).map(
+                                    (producer) =>
+                                        producer.user && (
+                                            <CardUser
+                                                user={producer.user}
+                                                key={producer.user.id}
+                                                review
+                                                location={`/employee/profile/${producer.user.id}`}
+                                            />
+                                        )
+                                    //
+                                )
+                            ) : (
+                                <p>Você não cadastrou nenhum cliente.</p>
+                            )}
                         </Box>
                         <Box
                             style={{
@@ -223,7 +241,7 @@ export const PanelUser: React.FC<PanelUserProps> = ({ user }) => {
                                     textAlign: "left",
                                 }}
                             >
-                                Equipes
+                                Equipe
                             </p>
                             <Box
                                 sx={{

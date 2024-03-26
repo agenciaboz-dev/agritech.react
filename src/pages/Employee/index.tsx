@@ -14,6 +14,8 @@ import { LaudoCall } from "../Calls/LaudoCall"
 import { CallDetails } from "../Calls/CallDetails"
 import { NewTalhao } from "../TillageDetails/NewTalhao"
 import { ReportStage } from "../Calls/ReportStage"
+import { ReviewsReports } from "../Adm/ReviewsReports"
+import { CalendarKit } from "../../components/Kit/CalendarKit"
 
 interface EmployeeProps {
     user: User
@@ -37,6 +39,9 @@ export const Employee: React.FC<EmployeeProps> = ({ user }) => {
                 <Route path="/call/:callid/report" element={<ReportStage user={user} />} />
                 <Route path="/call/:callid/laudo" element={<LaudoCall user={user} />} />
                 <Route path="/producer/:producerid/:tillageid/new_talhao" element={<NewTalhao />} />
+             
+                <Route path="/calendar" element={<CalendarKit />} />
+                <Route path="/call/:callid/laudos" element={<LaudoCall user={user} />} />
             </ReactRoutes>
         </>
     )

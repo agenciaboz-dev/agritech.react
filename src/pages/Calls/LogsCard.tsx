@@ -32,8 +32,7 @@ export const LogsCard: React.FC<LogsCardProps> = ({ review, call, variant }) => 
             <Box sx={{ flexDirection: "column" }}>
                 <Box sx={{ flexDirection: "row", alignItems: "center", gap: "2vw" }}>
                     <p style={{ fontSize: "3vw", color: "gray" }}>
-                        {new Date(Number(call?.open)).toLocaleDateString("pt-br")} -{" "}
-                        {new Date(Number(call?.open)).toLocaleTimeString("pt-br")}
+                        {new Date(Number(call?.forecast)).toLocaleDateString("pt-br")}
                     </p>
                 </Box>
                 <p style={{ fontSize: "3.5vw", fontWeight: "600" }}>
@@ -60,13 +59,7 @@ export const LogsCard: React.FC<LogsCardProps> = ({ review, call, variant }) => 
                 </Group>
             ) : (
                 <IconButton
-                    onClick={() =>
-                        navigate(
-                            account.user?.isAdmin
-                                ? `/adm/calls/${call?.id}`
-                                : `/employee/producer/${call?.producerId}/${call?.tillageId}`
-                        )
-                    }
+                    onClick={() => navigate(account.user?.isAdmin ? `/adm/calls/${call?.id}` : `/call/${call?.id}/laudos`)}
                     // onClick={() => navigate(account.user?.isAdmin ? `/adm/call/${user?.id}/report` : `/call/1/report`)}
                 >
                     <IoIosArrowForward style={{ width: "5vw", height: "5vw" }} />

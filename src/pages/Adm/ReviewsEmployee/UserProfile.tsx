@@ -21,6 +21,7 @@ interface UserprofileProps {
 export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
     const header = useHeader()
     const navigate = useNavigate()
+
     const io = useIo()
     const { user } = useUser()
     const { userId } = useParams()
@@ -171,6 +172,11 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
     useEffect(() => {
         header.setTitle(view ? valuesUser.name : "Análise de Perfil")
     })
+
+    useEffect(() => {
+        if (listUsers.length === 0) io.emit("users:list")
+        console.log(listUsers)
+    }, [listUsers])
     return (
         <Box
             sx={{
