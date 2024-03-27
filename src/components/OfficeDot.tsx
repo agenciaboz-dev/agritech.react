@@ -1,6 +1,6 @@
 import React from "react"
 import FiberManualRecordOutlinedIcon from "@mui/icons-material/FiberManualRecordOutlined"
-import { Box } from "@mui/material"
+import { Box, useMediaQuery } from "@mui/material"
 import green from "../assets/icons/green.svg"
 import yellow from "../assets/icons/yellow.svg"
 import copilot from "../assets/icons/copilot.svg"
@@ -11,6 +11,7 @@ interface OfficeDotProps {
 }
 
 export const OfficeDot: React.FC<OfficeDotProps> = ({ office }) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
     return (
         <Box sx={{ flexDirection: "row", alignItems: "center", gap: "1vw" }}>
             <img
@@ -27,7 +28,7 @@ export const OfficeDot: React.FC<OfficeDotProps> = ({ office }) => {
                 }
             />
 
-            <p style={{ fontSize: "3vw", color: "gray" }}>
+            <p style={{ fontSize: isMobile ? "3vw" : "1rem", color: "gray" }}>
                 {office === "agronomist"
                     ? "Agronômo"
                     : office === "technician"

@@ -1,4 +1,4 @@
-import { Avatar, Badge, Box, Button, IconButton } from "@mui/material"
+import { Avatar, Badge, Box, Button, IconButton, useMediaQuery } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { colors } from "../../../style/colors"
 import drone from "../../../assets/logo/droneIcon.png"
@@ -22,6 +22,8 @@ interface PanelProps {
 }
 
 export const Panel: React.FC<PanelProps> = ({ user }) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
+
     const io = useIo()
     const { setUser } = useUser()
     const { snackbar } = useSnackbar()
@@ -57,22 +59,27 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
     }, [listUsers])
 
     return (
-        <Box style={{ flex: 1, backgroundColor: colors.button, paddingTop: "4vw", height: "100%" }}>
-            <Box style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", padding: "0 4vw" }}>
+        <Box style={{ flex: 1, backgroundColor: colors.button, paddingTop: isMobile ? "4vw" : "1vw", height: "100%" }}>
+            <Box
+                style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    padding: isMobile ? "0 4vw 4vw" : "0 1vw 1vw",
+                }}
+            >
                 <Box
                     sx={{
                         flexDirection: "row",
-                        paddingBottom: "2vw",
                         alignItems: "center",
-                        paddingTop: " 0vw",
                         gap: "1vw",
                     }}
                 >
-                    <img src={drone} style={{ width: "10vw" }} />
+                    <img src={drone} style={{ width: isMobile ? "10vw" : "3vw" }} />
                     <p
                         style={{
                             color: colors.text.white,
-                            fontSize: "5vw",
+                            fontSize: isMobile ? "5vw" : "1.5rem",
                             fontFamily: "MalgunGothic2",
                             fontWeight: "bold",
                         }}
@@ -81,10 +88,10 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                     </p>
                 </Box>
                 <Box style={{ flexDirection: "row", gap: "4vw" }}>
-                    <SearchIcon sx={{ color: "#fff" }} />
+                    <SearchIcon sx={{ color: "#fff", width: isMobile ? "8vw" : "2vw", height: isMobile ? "8vw" : "2vw" }} />
                     <Badge badgeContent={recents?.length} color="success">
                         <NotificationsNoneIcon
-                            sx={{ color: "#fff" }}
+                            sx={{ color: "#fff", width: isMobile ? "8vw" : "2vw", height: isMobile ? "8vw" : "2vw" }}
                             onClick={() => {
                                 notificationDrawer.toggle()
                             }}
@@ -92,7 +99,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                     </Badge>
                     <Avatar
                         src={user.image}
-                        style={{ color: "#fff", width: "8vw", height: "8vw" }}
+                        style={{ color: "#fff", width: isMobile ? "8vw" : "2vw", height: isMobile ? "8vw" : "2vw" }}
                         onClick={() => {
                             menu.toggle()
                             console.log("abriu")
@@ -105,8 +112,8 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                     justifyContent: "center",
                     flex: 1,
                     backgroundColor: colors.primary,
-                    borderTopLeftRadius: "5vw",
-                    borderTopRightRadius: "5vw",
+                    borderTopLeftRadius: isMobile ? "5vw" : "2vw",
+                    borderTopRightRadius: isMobile ? "5vw" : "2vw",
                     paddingTop: 10,
                     height: "100%",
                 }}
@@ -115,12 +122,12 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                     style={{
                         flexDirection: "row",
                         alignItems: "center",
-                        paddingBottom: "5vw",
+                        paddingBottom: isMobile ? "5vw" : "1.5vw",
                         justifyContent: "space-between",
-                        padding: "1vw 3vw",
+                        padding: isMobile ? "1vw 3vw 3vw" : "5vw 1vw 1.5vw",
                     }}
                 >
-                    <p style={{ color: colors.text.white, fontSize: "5vw", fontFamily: "MalgunGothic2" }}>
+                    <p style={{ color: colors.text.white, fontSize: isMobile ? "5vw" : "1.5rem", fontFamily: "MalgunGothic2" }}>
                         Configuração de Kits
                     </p>
                     <IconButton onClick={() => navigate("/adm/settings-kit")}>
@@ -129,22 +136,21 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                 </Box>
                 <Box
                     style={{
-                        padding: "4vw",
+                        padding: isMobile ? "4vw" : "1vw",
                         width: "100%",
                         backgroundColor: "#fff",
-                        borderTopLeftRadius: "7vw",
-                        borderTopRightRadius: "7vw",
+                        borderTopLeftRadius: isMobile ? "7vw" : "2vw",
+                        borderTopRightRadius: isMobile ? "7vw" : "2vw",
                         flex: 1,
                         height: "100%",
-                        gap: "10vw",
                     }}
                 >
-                    <Box sx={{ gap: "4vw" }}>
-                        <Box sx={{ gap: "0vw" }}>
+                    <Box sx={{ gap: isMobile ? "4vw" : "2vw" }}>
+                        <Box>
                             <p
                                 style={{
                                     color: colors.text.black,
-                                    fontSize: "4.5vw",
+                                    fontSize: isMobile ? "4.5vw" : "1.5rem",
                                     fontFamily: "MalgunGothic2",
                                     textAlign: "left",
                                 }}
@@ -155,9 +161,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                                 {listEmployee?.length !== 0 &&
                                     listEmployee
                                         ?.slice(0, 3)
-                                        .map((user) => (
-                                            <CardUser user={user} key={user.id} location={`/adm/calendar/${user.id}`} />
-                                        ))}
+                                        .map((user) => <CardUser user={user} key={user.id} location={`/adm/calendar/${user.id}`} />)}
                             </Box>
                             <Box
                                 style={{
@@ -166,21 +170,21 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                                     alignItems: "center",
                                     justifyContent: "space-between",
                                     gap: 20,
-                                    paddingTop: "2vw",
+                                    padding: isMobile ? "2vw 0 0" : "2vw 1vw 0",
                                 }}
                             >
                                 <Button
                                     variant="contained"
                                     color="primary"
                                     sx={{
-                                        width: "50%",
-                                        padding: "2.5vw",
+                                        width: isMobile ? "50%" : "fit-content",
+                                        padding: isMobile ? "2.5vw" : "1vw",
                                         color: colors.text.white,
                                         fontWeight: "500",
-                                        fontSize: "3vw",
+                                        fontSize: isMobile ? "3vw" : "1.2rem",
                                         textTransform: "none",
                                         borderRadius: "10vw",
-                                        height: "10vw",
+                                        height: isMobile ? "10vw" : "fit-content",
                                     }}
                                     onClick={() => navigate("/adm/new_employee")}
                                 >
@@ -189,7 +193,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                                 <Box
                                     sx={{
                                         flexDirection: "row",
-                                        width: "25%",
+                                        width: isMobile ? "25%" : "fit-content",
                                         alignItems: "center",
                                         justifyContent: "center",
                                         gap: "1vw",
@@ -198,7 +202,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                                     <p
                                         style={{
                                             color: colors.primary,
-                                            fontSize: "3.5vw",
+                                            fontSize: isMobile ? "3.5vw" : "1.2rem",
                                             fontFamily: "MalgunGothic2",
                                             fontWeight: "500",
                                         }}
@@ -208,7 +212,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                                     >
                                         Ver todos
                                     </p>
-                                    <ArrowForwardIosIcon color="primary" sx={{ width: "2vw" }} />
+                                    <ArrowForwardIosIcon color="primary" sx={{ width: "3vw", padding: 0 }} />
                                 </Box>
                             </Box>
                         </Box>
@@ -216,7 +220,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                             <p
                                 style={{
                                     color: colors.text.black,
-                                    fontSize: "4.5vw",
+                                    fontSize: isMobile ? "4.5vw" : "1.5rem",
                                     fontFamily: "MalgunGothic2",
                                     textAlign: "left",
                                 }}
@@ -227,9 +231,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                                 {listProducer?.length !== 0 &&
                                     listProducer
                                         ?.slice(0, 3)
-                                        .map((user) => (
-                                            <CardUser user={user} key={user.id} location={`/adm/profile/${user.id}`} />
-                                        ))}
+                                        .map((user) => <CardUser user={user} key={user.id} location={`/adm/profile/${user.id}`} />)}
                             </Box>
                             <Box
                                 style={{
@@ -246,21 +248,21 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                                         flexDirection: "row",
                                         alignItems: "center",
                                         justifyContent: "space-between",
-                                        paddingTop: "2vw",
+                                        padding: isMobile ? "2vw 0 0" : "2vw 1vw 0",
                                     }}
                                 >
                                     <Button
                                         variant="contained"
                                         color="primary"
                                         sx={{
-                                            width: "50%",
-                                            padding: "2.5vw",
+                                            width: isMobile ? "50%" : "fit-content",
+                                            padding: isMobile ? "2.5vw" : "1vw",
                                             color: colors.text.white,
                                             fontWeight: "500",
-                                            fontSize: "3vw",
+                                            fontSize: isMobile ? "3vw" : "1.2rem",
                                             textTransform: "none",
                                             borderRadius: "10vw",
-                                            height: "10vw",
+                                            height: isMobile ? "10vw" : "fit-content",
                                         }}
                                         onClick={() => navigate("/adm/new_producer")}
                                     >
@@ -269,7 +271,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                                     <Box
                                         sx={{
                                             flexDirection: "row",
-                                            width: "30%",
+                                            width: isMobile ? "30%" : "fit-content",
                                             alignItems: "center",
                                             justifyContent: "center",
                                             gap: "1vw",
@@ -278,7 +280,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                                         <p
                                             style={{
                                                 color: colors.primary,
-                                                fontSize: "3.5vw",
+                                                fontSize: isMobile ? "3.5vw" : "1.2rem",
                                                 fontFamily: "MalgunGothic2",
                                                 fontWeight: "500",
                                             }}
@@ -298,12 +300,12 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                     <IconButton
                         sx={{
                             bgcolor: colors.button,
-                            width: "12vw",
-                            height: "12vw",
-                            borderRadius: "10vw",
+                            width: isMobile ? "12vw" : "5vw",
+                            height: isMobile ? "12vw" : "5vw",
+                            borderRadius: "50%",
                             position: "absolute",
-                            bottom: "26vw",
-                            right: "7vw",
+                            bottom: isMobile ? "26vw" : "1vw",
+                            right: isMobile ? "7vw" : "1vw",
                         }}
                         onClick={() => navigate("/adm/call/new")}
                     >
