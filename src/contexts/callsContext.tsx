@@ -55,7 +55,7 @@ export const CallProvider: React.FC<CallProviderProps> = ({ children }) => {
             setCalls(data)
         })
 
-        //Exemplo do aprovved call
+        /** Exemplo do aproveed call*/
         io.on("aprovou", (call: Call) => {
             if (
                 call.producerId == user?.producer?.id ||
@@ -67,7 +67,7 @@ export const CallProvider: React.FC<CallProviderProps> = ({ children }) => {
 
         return () => {
             io.off("call:listApproved:success")
-            io.off('aprovou')
+            io.off("aprovou")
         }
     }, [listCalls])
 
