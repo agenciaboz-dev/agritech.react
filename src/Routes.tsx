@@ -16,6 +16,7 @@ import { Producer } from "./pages/Producer"
 import { Calls } from "./pages/Calls"
 import { NotificationsList } from "./pages/Notifications/NotificationsList"
 import { Terms } from "./pages/Terms"
+import { Box } from "@mui/material"
 
 interface RoutesProps {}
 
@@ -23,14 +24,19 @@ const AdminRoutes: React.FC<{ user: User }> = ({ user }) => {
     const bottomMenu = useNavigationList()
 
     return (
-        <>
+        <Box
+            sx={{
+                position: "relative",
+                height: "100%",
+            }}
+        >
             <BottomNavigation section={bottomMenu.admin} />
             <ReactRoutes>
                 <Route path="/" element={<Panel user={user} />} />
                 <Route path="/adm/*" element={<Adm user={user} />} />
                 <Route path="/notifications/*" element={<NotificationsList user={user} />} />
             </ReactRoutes>
-        </>
+        </Box>
     )
 }
 

@@ -49,7 +49,6 @@ export const Adm: React.FC<AdmProps> = ({ user }) => {
             <Route path="/producer/:producerid/:tillageid/new_talhao" element={<NewTalhao />} />
             <Route path="/reports" element={<ReviewsReports user={user} />} />
             <Route path="/calendar" element={<CalendarKit />} />
-           
         </ReactRoutes>
     )
 }

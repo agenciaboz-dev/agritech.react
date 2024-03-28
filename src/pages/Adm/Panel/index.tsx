@@ -59,7 +59,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
     }, [listUsers])
 
     return (
-        <Box style={{ flex: 1, backgroundColor: colors.button, paddingTop: isMobile ? "4vw" : "1vw", height: "100%" }}>
+        <Box style={{ flex: 1, backgroundColor: colors.button, paddingTop: isMobile ? "4vw" : "1vw", position: "relative" }}>
             <Box
                 style={{
                     flexDirection: "row",
@@ -88,10 +88,10 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                     </p>
                 </Box>
                 <Box style={{ flexDirection: "row", gap: "4vw" }}>
-                    <SearchIcon sx={{ color: "#fff", width: isMobile ? "8vw" : "2vw", height: isMobile ? "8vw" : "2vw" }} />
+                    <SearchIcon sx={{ color: "#fff", width: isMobile ? "8vw" : "2vw", height: isMobile ? "8vw" : "2vw", cursor: "pointer" }} />
                     <Badge badgeContent={recents?.length} color="success">
                         <NotificationsNoneIcon
-                            sx={{ color: "#fff", width: isMobile ? "8vw" : "2vw", height: isMobile ? "8vw" : "2vw" }}
+                            sx={{ color: "#fff", width: isMobile ? "8vw" : "2vw", height: isMobile ? "8vw" : "2vw", cursor: "pointer" }}
                             onClick={() => {
                                 notificationDrawer.toggle()
                             }}
@@ -99,7 +99,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                     </Badge>
                     <Avatar
                         src={user.image}
-                        style={{ color: "#fff", width: isMobile ? "8vw" : "2vw", height: isMobile ? "8vw" : "2vw" }}
+                        style={{ color: "#fff", width: isMobile ? "8vw" : "2vw", height: isMobile ? "8vw" : "2vw", cursor: "pointer" }}
                         onClick={() => {
                             menu.toggle()
                             console.log("abriu")
@@ -124,7 +124,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                         alignItems: "center",
                         paddingBottom: isMobile ? "5vw" : "1.5vw",
                         justifyContent: "space-between",
-                        padding: isMobile ? "1vw 3vw 3vw" : "5vw 1vw 1.5vw",
+                        padding: isMobile ? "1vw 3vw 3vw" : "1vw 1vw 1.5vw",
                     }}
                 >
                     <p style={{ color: colors.text.white, fontSize: isMobile ? "5vw" : "1.5rem", fontFamily: "MalgunGothic2" }}>
@@ -143,10 +143,12 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                         borderTopRightRadius: isMobile ? "7vw" : "2vw",
                         flex: 1,
                         height: "100%",
+                        position: "relative",
+                        paddingBottom: isMobile ? "10vh" : "20vh",
                     }}
                 >
                     <Box sx={{ gap: isMobile ? "4vw" : "2vw" }}>
-                        <Box>
+                        <Box sx={{ gap: isMobile ? "2vw" : "1vw" }}>
                             <p
                                 style={{
                                     color: colors.text.black,
@@ -216,7 +218,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                                 </Box>
                             </Box>
                         </Box>
-                        <Box sx={{ gap: "2vw" }}>
+                        <Box sx={{ gap: isMobile ? "2vw" : "1vw" }}>
                             <p
                                 style={{
                                     color: colors.text.black,
@@ -271,7 +273,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                                     <Box
                                         sx={{
                                             flexDirection: "row",
-                                            width: isMobile ? "30%" : "fit-content",
+                                            width: isMobile ? "25%" : "fit-content",
                                             alignItems: "center",
                                             justifyContent: "center",
                                             gap: "1vw",
@@ -290,29 +292,28 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                                         >
                                             Ver todos
                                         </p>
-                                        <ArrowForwardIosIcon color="primary" sx={{ width: "2vw" }} />
+                                        <ArrowForwardIosIcon color="primary" sx={{ width: "3vw", padding: 0 }} />
                                     </Box>
                                 </Box>
                             </Box>
                         </Box>
                     </Box>
-
-                    <IconButton
-                        sx={{
-                            bgcolor: colors.button,
-                            width: isMobile ? "12vw" : "5vw",
-                            height: isMobile ? "12vw" : "5vw",
-                            borderRadius: "50%",
-                            position: "absolute",
-                            bottom: isMobile ? "26vw" : "1vw",
-                            right: isMobile ? "7vw" : "1vw",
-                        }}
-                        onClick={() => navigate("/adm/call/new")}
-                    >
-                        <PostAddIcon fontSize="medium" sx={{ color: "#fff" }} />
-                    </IconButton>
                 </Box>
             </Box>
+            <IconButton
+                sx={{
+                    bgcolor: colors.button,
+                    width: isMobile ? "12vw" : "5vw",
+                    height: isMobile ? "12vw" : "5vw",
+                    borderRadius: "50%",
+                    position: "sticky",
+                    bottom: isMobile ? "10vh" : "13vh",
+                    left: isMobile ? "85vw" : "91vw",
+                }}
+                onClick={() => navigate("/adm/call/new")}
+            >
+                <PostAddIcon fontSize="medium" sx={{ color: "#fff" }} />
+            </IconButton>
         </Box>
     )
 }
