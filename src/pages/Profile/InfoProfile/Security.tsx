@@ -28,7 +28,7 @@ export const Security: React.FC<SecurityProps> = ({ values }) => {
 
     const handleSubmit = () => {
         console.log(user)
-        if (user) io.emit("user:delete", user.id)
+        if (user) io.emit("user:delete", user.isAdmin ? values.id : user.cpf === values.cpf && user.id)
     }
 
     useEffect(() => {
@@ -36,7 +36,7 @@ export const Security: React.FC<SecurityProps> = ({ values }) => {
             snackbar({ severity: "info", text: "Usuário excluído com sucesso!" })
             removeUser(user)
             setUser(null)
-            navigate("/login")
+            user.isAdmin ? navigate("/adm/panel") : user.cpf === values.cpf && navigate("/login")
         })
         io.on("user:delete:error", (user: User) => {
             snackbar({ severity: "error", text: "Aldo deu errado! tente novamente mais tarde." })
