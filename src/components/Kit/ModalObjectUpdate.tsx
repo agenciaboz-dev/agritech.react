@@ -26,11 +26,9 @@ export const ModalObjectUpdate: React.FC<ModalObjectUpdateProps> = ({ opened, cl
         setObject(newObj)
     }
     const handleChange = (index: number, event: ChangeEvent<HTMLInputElement>) => {
-        const newObj = [...object]
-        newObj[index] = {
-            ...newObj[index],
-            [event.target.name]: event.target.value,
-        }
+        const { name, value } = event.target
+        const newValue = name === "quantity" ? parseInt(value) : value // Parse quantity as integer
+        const newObj = object.map((item, idx) => (idx === index ? { ...item, [name]: newValue } : item))
         setObject(newObj)
     }
 
@@ -79,7 +77,16 @@ export const ModalObjectUpdate: React.FC<ModalObjectUpdateProps> = ({ opened, cl
                             type="number"
                             value={objeto.quantity}
                             withAsterisk
-                            onChange={(e) => handleChange(index, e)}
+                            onChange={(e) => {
+                                const newValue = parseInt(e.target.value)
+                                if (!isNaN(newValue) && newValue >= 0) {
+                                    handleChange(index, e)
+                                } else if (e.target.value === "") {
+                                    handleChange(index, {
+                                        target: { name: e.target.name, value: "" },
+                                    } as React.ChangeEvent<HTMLInputElement>)
+                                }
+                            }}
                             styles={{ root: { width: "25%" }, input: { border: "1px solid black" } }}
                             leftSection={<MdNumbers style={{ width: "4.5vw", height: "4.5vw" }} />}
                         />

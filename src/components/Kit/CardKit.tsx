@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom"
 import { useUser } from "../../hooks/useUser"
 import { useKits } from "../../hooks/useKits"
 import { useSetState } from "@mantine/hooks"
+import ArrowForwardIos from "@mui/icons-material/ArrowForwardIos"
 
 const Android12Switch = styled(Switch)(({ theme }) => ({
     padding: 8,
@@ -50,7 +51,10 @@ export const CardKit: React.FC<CardKitProps> = ({ kit }) => {
     }
 
     return (
-        <Box sx={{ padding: "3vw 1vw", flexDirection: "row", alignItems: "center", borderBottom: "1px solid #88A486" }}>
+        <Box
+            sx={{ padding: "3vw 1vw", flexDirection: "row", alignItems: "center", borderBottom: "1px solid #88A486" }}
+            onClick={() => navigate(user?.isAdmin ? `/adm/settings-kit/${kit.id}` : `/employee/settings-kit/${kit.id}`)}
+        >
             <FormGroup sx={{ width: "90%" }}>
                 <FormControlLabel
                     checked={kit.active}
@@ -74,9 +78,7 @@ export const CardKit: React.FC<CardKitProps> = ({ kit }) => {
                     }
                 />
             </FormGroup>
-            <ArrowRightIcon
-                onClick={() => navigate(user?.isAdmin ? `/adm/settings-kit/${kit.id}` : `/employee/settings-kit/${kit.id}`)}
-            />
+            <ArrowForwardIos />
         </Box>
     )
 }

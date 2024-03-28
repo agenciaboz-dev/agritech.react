@@ -11,7 +11,7 @@ import { CardObject } from "../../../components/Kit/CardObject"
 import { useHeader } from "../../../hooks/useHeader"
 import { useNumberMask } from "burgos-masks"
 import MaskedInputNando from "../../../components/MaskedNando"
-import { ModalEmployee } from "../../../components/Kit/ModalEmployeeUpdate"
+import { ModalEmployee } from "../../../components/Kit/ModalEmployee"
 
 interface ContentKitProps {
     edit?: boolean

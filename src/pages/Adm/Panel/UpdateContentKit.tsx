@@ -7,18 +7,18 @@ import { useDisclosure } from "@mantine/hooks"
 import { ModalObject } from "../../../components/Kit/ModalObject"
 import { useIo } from "../../../hooks/useIo"
 import { NewObject } from "../../../definitions/object"
-import { ModalEmployeeUpdate } from "../../../components/Kit/ModalEmployee"
 import { CardTeam } from "../../../components/Kit/CardTeam"
 import { CardObject } from "../../../components/Kit/CardObject"
 import { ModalObjectUpdate } from "../../../components/Kit/ModalObjectUpdate"
 import { useNumberMask } from "burgos-masks"
 import MaskedInputNando from "../../../components/MaskedNando"
+import { ModalEmployeeUpdate } from "../../../components/Kit/ModalEmployeeU"
 
 interface UpdateContentKitProps {
     edit?: boolean
     values: NewKit
     handleChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> | undefined
-    kitId?: number
+    kit: Kit
     data: {
         list: User[] | undefined
         listObjects: NewObject[]
@@ -36,7 +36,7 @@ const style_p = {
     fontWeight: "bold",
 }
 
-export const UpdateContentKit: React.FC<UpdateContentKitProps> = ({ edit, values, handleChange, data, kitId }) => {
+export const UpdateContentKit: React.FC<UpdateContentKitProps> = ({ edit, values, handleChange, data, kit }) => {
     const io = useIo()
     const floatMask = useNumberMask({ allowDecimal: true, allowLeadingZeroes: true })
     const [openedModalObjects, { open, close }] = useDisclosure(false)
@@ -60,7 +60,7 @@ export const UpdateContentKit: React.FC<UpdateContentKitProps> = ({ edit, values
                 employees={data.team}
                 setEmployees={data.setListEmployees}
                 allEmployees={data.list}
-                kitId={kitId}
+                kit={kit}
             />
 
             <Box sx={{ gap: "3vw", height: "30%" }}>
@@ -183,7 +183,7 @@ export const UpdateContentKit: React.FC<UpdateContentKitProps> = ({ edit, values
                 </Box>
                 <Box sx={{ gap: "3vw" }}>
                     <TitleComponents title="Responsáveis" button={edit} click={openEmployees} />
-                    {data?.dataEmployee?.map((item, index) => (
+                    {data?.team?.map((item, index) => (
                         <CardTeam key={index} employee={item} />
                     ))}
                 </Box>

@@ -5,33 +5,42 @@ import { colors } from "../../style/colors"
 import { useUser } from "../../hooks/useUser"
 import { TfiCrown } from "react-icons/tfi"
 
-interface ModalEmployeeUpdateProps {
+interface ModalEmployeeProps {
     employees: User[]
     setEmployees: (values: User[]) => void
     opened: boolean
     close: () => void
     allEmployees?: User[]
-    kitId?: number
 }
 
-export const ModalEmployeeUpdate: React.FC<ModalEmployeeUpdateProps> = ({
-    opened,
-    close,
-    setEmployees,
-    allEmployees,
-    kitId,
-}) => {
-    const [selectedRows, setSelectedRows] = useState<number[]>([])
-    const { user } = useUser()
+export const ModalEmployee: React.FC<ModalEmployeeProps> = ({ opened, close, employees, setEmployees, allEmployees }) => {
+    const filteredEmployeeIds = employees
+        .filter((employee) => employee.employee?.id !== undefined) // Filtra os funcionários cujo id não é undefined
+        .map((employee) => employee.employee!.id)
 
-    const freeEmployees = allEmployees?.filter(
-        (item) =>
-            (item.employee?.kits?.length === 0 || (item.employee?.kits && item.employee?.kits[0].id === kitId)) &&
-            (item.office === "copilot" || item.office === "pilot")
-    )
+    const [selectedRows, setSelectedRows] = useState<number[]>([])
+
     useEffect(() => {
-        console.log(freeEmployees)
-    }, [])
+        const filteredIdsWithoutUndefined = filteredEmployeeIds.filter((id) => id !== undefined)
+        const filteredIds: number[] = filteredIdsWithoutUndefined.map((id) => id as number)
+
+        setSelectedRows(filteredIds)
+    }, [employees])
+
+    console.log(filteredEmployeeIds)
+    const freeEmployees = allEmployees?.filter(
+        (item) => item.employee?.kits?.length === 0 && (item.office === "copilot" || item.office === "pilot")
+    )
+
+    const handleCheckboxChange = (id: number) => {
+        if (selectedRows.includes(id)) {
+            setSelectedRows(selectedRows.filter((rowId) => rowId !== id))
+        } else if (selectedRows.length < 2) {
+            // Limita a seleção para no máximo 2 valores
+            setSelectedRows([...selectedRows, id])
+        }
+    }
+
     const rows = freeEmployees?.map((element) => (
         <Table.Tr
             key={element.name}
@@ -41,13 +50,8 @@ export const ModalEmployeeUpdate: React.FC<ModalEmployeeUpdateProps> = ({
                 <Checkbox
                     aria-label="Select row"
                     checked={selectedRows.includes(element.employee?.id || 0)}
-                    onChange={(event) => {
-                        const newSelectedRows = event.currentTarget.checked
-                            ? [...selectedRows, element.employee?.id].filter((id): id is number => id !== undefined)
-                            : selectedRows.filter((id) => id !== element.employee?.id)
-
-                        setSelectedRows(newSelectedRows)
-                    }}
+                    disabled={selectedRows.length >= 2 && !selectedRows.includes(element.employee?.id || 0)}
+                    onChange={() => handleCheckboxChange(element.employee?.id || 0)}
                 />
             </Table.Td>
             <Table.Td>

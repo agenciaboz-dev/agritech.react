@@ -77,6 +77,8 @@ export const ViewKit: React.FC<ViewKitProps> = ({}) => {
         .filter((id) => id !== undefined)
         .map((id) => ({ id }))
 
+    console.log({ opa: employeesIds })
+
     const handleUpdateKit = (values: Kit) => {
         const objects = listObjects.map((item) => ({
             ...item,
@@ -95,10 +97,9 @@ export const ViewKit: React.FC<ViewKitProps> = ({}) => {
                 : undefined,
         }
 
-        setEdit(!edit)
         io.emit("kit:update", data)
         setLoading(true)
-        open()
+        // open()
     }
     useEffect(() => {
         console.log(edit)
@@ -108,8 +109,9 @@ export const ViewKit: React.FC<ViewKitProps> = ({}) => {
         io.on("kit:update:success", (data: Kit) => {
             updateKit(data)
             console.log(data)
-            // !edit && snackbar({ severity: "success", text: "Kit atualizado!" })
+            snackbar({ severity: "success", text: "Kit atualizado!" })
             setLoading(false)
+            // setEdit(false)
             close()
         })
         io.on("kit:update:failed", (error) => {
@@ -131,146 +133,136 @@ export const ViewKit: React.FC<ViewKitProps> = ({}) => {
         console.log(kit)
     }, [])
     return (
-        <Formik initialValues={initalValues} onSubmit={handleUpdateKit}>
-            {({ values, handleChange }) => (
-                <Form>
-                    <Modal
-                        color="#000"
-                        opened={opened}
-                        onClose={close}
-                        size={"sm"}
-                        withCloseButton={false}
-                        centered
-                        style={{ backgroundColor: "transparent" }}
-                        styles={{
-                            body: {
-                                display: "flex",
-                                flexDirection: "column",
-                                gap: "6vw",
-                                width: "100%",
-                                height: "100%",
-                                alignItems: "center",
-                                justifyContent: "center",
-                            },
-                            root: {
-                                width: "100%",
-                                height: "100%",
-                                maxHeight: "75%",
-                            },
-                            content: {
-                                width: "100%",
-                                height: "100%",
-                                backgroundColor: "transparent",
-                                boxShadow: "none",
-                            },
-                        }}
-                    >
-                        <CircularProgress sx={{ color: colors.text.white, width: "15vw", height: "15vw" }} />
-                    </Modal>
-                    <Box
-                        sx={{
-                            width: "100%",
-                            height: "100%",
-                            backgroundColor: colors.button,
-                            flexDirection: "column",
-                        }}
-                    >
+        <>
+            <Formik initialValues={initalValues} onSubmit={handleUpdateKit}>
+                {({ values, handleChange }) => (
+                    <Form>
                         <Box
                             sx={{
                                 width: "100%",
-                                height: "8%",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                gap: "1vw",
-                                padding: "4vw",
-                                paddingBottom: "13vw",
-                                flexDirection: "row",
-                            }}
-                        >
-                            <Header back location={user?.isAdmin ? "/adm/settings-kit" : "/employee/settings-kit"} />
-                        </Box>
-                        <Box
-                            style={{
-                                justifyContent: "center",
-                                flex: 1,
-                                backgroundColor: colors.secondary,
-                                borderTopLeftRadius: "5vw",
-                                borderTopRightRadius: "5vw",
-                                paddingTop: 10,
+                                height: "100%",
+                                backgroundColor: colors.button,
+                                flexDirection: "column",
                             }}
                         >
                             <Box
-                                style={{
-                                    flexDirection: "row",
+                                sx={{
+                                    width: "100%",
+                                    height: "8%",
+                                    justifyContent: "center",
                                     alignItems: "center",
-                                    paddingBottom: "5vw",
-                                    justifyContent: "space-between",
-                                    padding: "2vw 3vw",
+                                    gap: "1vw",
+                                    padding: "4vw",
+                                    paddingBottom: "13vw",
+                                    flexDirection: "row",
                                 }}
                             >
-                                <p
-                                    style={{
-                                        color: colors.text.white,
-                                        fontSize: "5vw",
-                                        fontFamily: "MalgunGothic2",
-                                        fontWeight: "bold",
-                                    }}
-                                >
-                                    {kit !== null ? kit?.name : "Kit"}
-                                </p>
-                                <Button
-                                    type={"submit"}
-                                    size="small"
-                                    variant="contained"
-                                    sx={{
-                                        alignItems: "center",
-                                        gap: "1vw",
-                                        backgroundColor: edit ? colors.primary : "#fff",
-                                        textTransform: "none",
-                                        borderRadius: "5vw",
-                                        fontSize: "3vw",
-                                        width: "fit-content",
-                                        color: edit ? colors.text.white : colors.text.black,
-                                    }}
-                                    // onClick={}
-                                >
-                                    {!edit ? (
-                                        <Box sx={{ flexDirection: "row", alignItems: "center", gap: "2vw" }}>
-                                            <FiEdit2 /> <p style={{ fontSize: "3.5vw" }}>Editar</p>
-                                        </Box>
-                                    ) : (
-                                        <Box sx={{ flexDirection: "row", alignItems: "center", gap: "2vw" }}>
-                                            <p style={{ fontSize: "3.5vw" }}>Salvar Informações</p>
-                                        </Box>
-                                    )}
-                                </Button>
+                                <Header back location={user?.isAdmin ? "/adm/settings-kit" : "/employee/settings-kit"} />
                             </Box>
                             <Box
                                 style={{
-                                    padding: "6vw 4vw 0",
-                                    width: "100%",
-                                    backgroundColor: "#fff",
-                                    borderTopLeftRadius: "7vw",
-                                    borderTopRightRadius: "7vw",
-                                    height: "100%",
-                                    gap: "1vw",
-                                    overflowY: "hidden",
+                                    justifyContent: "center",
+                                    flex: 1,
+                                    backgroundColor: colors.secondary,
+                                    borderTopLeftRadius: "5vw",
+                                    borderTopRightRadius: "5vw",
+                                    paddingTop: 10,
                                 }}
                             >
-                                <Box sx={{ overflowX: "hidden", overflowY: "auto", height: "88%", p: "0 2vw" }}>
-                                    <UpdateContentKit
-                                        data={data}
-                                        edit={edit}
-                                        values={values}
-                                        handleChange={handleChange}
-                                        kitId={kit?.id}
-                                    />
+                                <Box
+                                    style={{
+                                        flexDirection: "row",
+                                        alignItems: "center",
+                                        paddingBottom: "5vw",
+                                        justifyContent: "space-between",
+                                        padding: "2vw 3vw",
+                                    }}
+                                >
+                                    <p
+                                        style={{
+                                            color: colors.text.white,
+                                            fontSize: "5vw",
+                                            fontFamily: "MalgunGothic2",
+                                            fontWeight: "bold",
+                                        }}
+                                    >
+                                        {kit !== null ? kit?.name : "Kit"}
+                                    </p>
+                                    {!edit ? (
+                                        <Button
+                                            type="button"
+                                            size="small"
+                                            variant="contained"
+                                            sx={{
+                                                alignItems: "center",
+                                                gap: "1vw",
+                                                backgroundColor: "#fff",
+                                                textTransform: "none",
+                                                borderRadius: "5vw",
+                                                fontSize: "3vw",
+                                                width: "fit-content",
+                                                color: edit ? colors.text.white : colors.text.black,
+                                            }}
+                                            onClick={() => {
+                                                setEdit(true)
+                                            }}
+                                        >
+                                            <Box sx={{ flexDirection: "row", alignItems: "center", gap: "2vw" }}>
+                                                <FiEdit2 /> <p style={{ fontSize: "3.5vw" }}>Editar</p>
+                                            </Box>
+                                        </Button>
+                                    ) : (
+                                        <Button
+                                            type={"submit"}
+                                            size="small"
+                                            variant="contained"
+                                            sx={{
+                                                alignItems: "center",
+                                                gap: "1vw",
+                                                backgroundColor: colors.primary,
+                                                textTransform: "none",
+                                                borderRadius: "5vw",
+                                                fontSize: "3vw",
+                                                width: "fit-content",
+                                                color: edit ? colors.text.white : colors.text.black,
+                                            }}
+                                            // onClick={}
+                                        >
+                                            <Box sx={{ flexDirection: "row", alignItems: "center", gap: "2vw" }}>
+                                                <p style={{ fontSize: "3.5vw" }}>Salvar Informações</p>
+                                            </Box>
+                                        </Button>
+                                    )}
+                                </Box>
+                                <Box
+                                    style={{
+                                        padding: "6vw 4vw 0",
+                                        width: "100%",
+                                        backgroundColor: "#fff",
+                                        borderTopLeftRadius: "7vw",
+                                        borderTopRightRadius: "7vw",
+                                        height: "100%",
+                                        gap: "1vw",
+                                        overflowY: "hidden",
+                                    }}
+                                >
+                                    <Box sx={{ overflowX: "hidden", overflowY: "auto", height: "88%", p: "0 2vw" }}>
+                                        {kit && (
+                                            <UpdateContentKit
+                                                data={data}
+                                                edit={edit}
+                                                values={values}
+                                                handleChange={handleChange}
+                                                kit={kit}
+                                            />
+                                        )}
+                                    </Box>
                                 </Box>
                             </Box>
                         </Box>
-                    </Box>
-                </Form>
-            )}
-        </Formik>
+                    </Form>
+                )}
+            </Formik>
+        </>
     )
 }
