@@ -17,6 +17,10 @@ import { KitProvider } from "../contexts/kitContext"
 import { CallProvider } from "../contexts/callsContext"
 import { ReportProvider } from "../contexts/reportsContext"
 import { TalhaoProvider } from "../contexts/talhaoContext"
+import { LocalizationProvider, ptBR } from "@mui/x-date-pickers"
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
+import "dayjs/locale/pt-br"
+
 interface ProvidersProps {
     children: React.ReactNode
 }
@@ -43,7 +47,16 @@ export const Providers: React.FC<ProvidersProps> = ({ children }) => {
                                                             <NotificationDrawer />
                                                             <MenuDrawer />
                                                             <MantineProvider theme={mantine_theme}>
-                                                                {children}
+                                                                <LocalizationProvider
+                                                                    dateAdapter={AdapterDayjs}
+                                                                    localeText={
+                                                                        ptBR.components.MuiLocalizationProvider.defaultProps
+                                                                            .localeText
+                                                                    }
+                                                                    adapterLocale={"pt-br"}
+                                                                >
+                                                                    {children}
+                                                                </LocalizationProvider>
                                                             </MantineProvider>
                                                         </HeaderProvider>
                                                     </MenuDrawerProvider>

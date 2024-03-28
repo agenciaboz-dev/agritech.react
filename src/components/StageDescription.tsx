@@ -5,7 +5,7 @@ import { colors } from "../style/colors"
 import { Call } from "../definitions/call"
 import { useUser } from "../hooks/useUser"
 import { dateFrontend } from "../hooks/useFormattedDate"
-import { LocalizationProvider, TimeField, ptBR } from "@mui/x-date-pickers"
+import { TimeField, ptBR } from "@mui/x-date-pickers"
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo"
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import { CiClock2 } from "react-icons/ci"
@@ -42,11 +42,6 @@ export const StageDescription: React.FC<StageDescriptionProps> = ({ title, value
                     InputProps={{ readOnly: true }}
                     disabled={!user?.producer ? false : true}
                 />
-                <LocalizationProvider
-                    dateAdapter={AdapterDayjs}
-                    localeText={ptBR.components.MuiLocalizationProvider.defaultProps.localeText}
-                >
-                    <DemoContainer components={["TimeField", "TimeField", "TimeField"]}>
                         <Box sx={{ flexDirection: "row", gap: "2vw" }}>
                             <TimeField
                                 label="Início"
@@ -92,8 +87,6 @@ export const StageDescription: React.FC<StageDescriptionProps> = ({ title, value
                                 }}
                             /> */}
                         </Box>
-                    </DemoContainer>
-                </LocalizationProvider>
             </Box>
             <TextField
                 multiline

@@ -41,6 +41,7 @@ export const NotificationDrawer: React.FC<NotificationDrawerProps> = ({}) => {
 
     return (
         <SwipeableDrawer
+            disableSwipeToOpen
             onOpen={() => setOpen(true)}
             anchor={"right"}
             open={open}

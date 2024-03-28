@@ -21,10 +21,6 @@ import { ModalMaterial } from "./ModalMaterials"
 import { useIo } from "../../../hooks/useIo"
 import { TreatmentComponent } from "./Treatment"
 import { useSnackbar } from "burgos-snackbar"
-import { LocalizationProvider, TimeField, ptBR } from "@mui/x-date-pickers"
-import { CiClock2 } from "react-icons/ci"
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo"
 import { useCall } from "../../../hooks/useCall"
 import { unmaskNumber } from "../../../hooks/unmaskNumber"
 import {
@@ -38,7 +34,6 @@ import {
     TechReport,
     Treatment,
 } from "../../../definitions/report"
-import dayjs from "dayjs"
 import { ModalStage } from "./ModalStage"
 import { useReports } from "../../../hooks/useReports"
 

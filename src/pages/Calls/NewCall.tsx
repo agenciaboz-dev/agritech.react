@@ -16,7 +16,6 @@ import { useCall } from "../../hooks/useCall"
 import dayjs, { Dayjs } from "dayjs"
 import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo"
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider"
 import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker"
 import { ptBR } from "@mui/x-date-pickers/locales"
 import { unmaskCurrency } from "../../hooks/unmaskNumber"
@@ -340,29 +339,21 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                 <form onSubmit={formik.handleSubmit}>
                     <Box sx={{ gap: "4vw" }}>
                         {!user.isAdmin && (
-                            <LocalizationProvider
-                                dateAdapter={AdapterDayjs}
-                                localeText={ptBR.components.MuiLocalizationProvider.defaultProps.localeText}
-                            >
-                                <DemoContainer components={["MobileDatePicker"]}>
-                                    <DemoItem label={"Previsão da visita"}>
-                                        <ThemeProvider theme={newTheme}>
-                                            <MobileDatePicker
-                                                sx={{ ...textField }}
-                                                format="DD/MM/YYYY"
-                                                value={pickDate}
-                                                onChange={(newDate) => {
-                                                    if (newDate !== null) {
-                                                        setPickDate(newDate)
-                                                    }
-                                                }}
-                                                timezone="system"
-                                                disablePast
-                                            />
-                                        </ThemeProvider>
-                                    </DemoItem>
-                                </DemoContainer>
-                            </LocalizationProvider>
+                            <DemoItem label={"Previsão da visita"}>
+                                <MobileDatePicker
+                                    sx={{ ...textField }}
+                                    format="DD/MM/YYYY"
+                                    value={pickDate}
+                                    onChange={(newDate) => {
+                                        if (newDate !== null) {
+                                            setPickDate(newDate)
+                                        }
+                                    }}
+                                    timezone="system"
+                                    localeText={ptBR.components.MuiLocalizationProvider.defaultProps.localeText}
+                                    disablePast
+                                />
+                            </DemoItem>
                         )}
                         {user.employee && (
                             <>
@@ -428,11 +419,6 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                                         disabled={selectedTalhao ? false : true}
                                     />
                                 </Box>
-                                <LocalizationProvider
-                                    dateAdapter={AdapterDayjs}
-                                    localeText={ptBR.components.MuiLocalizationProvider.defaultProps.localeText}
-                                >
-                                    <DemoContainer components={["MobileDatePicker"]}>
                                         <DemoItem label={"Previsão da visita"}>
                                             <ThemeProvider theme={newTheme}>
                                                 <MobileDatePicker
@@ -453,8 +439,6 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                                                 />
                                             </ThemeProvider>
                                         </DemoItem>
-                                    </DemoContainer>
-                                </LocalizationProvider>
                             </Box>
                         )}
                         {user.producer && (

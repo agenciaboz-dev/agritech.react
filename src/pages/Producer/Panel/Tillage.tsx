@@ -18,7 +18,7 @@ import { LogsCard } from "../../TillageDetails/LogsCard"
 import { content, openCall, progress } from "../../../tools/contenModals"
 import { DialogConfirm } from "../../../components/DialogConfirm"
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
-import { LocalizationProvider, MobileDatePicker, ptBR } from "@mui/x-date-pickers"
+import {  MobileDatePicker, ptBR } from "@mui/x-date-pickers"
 import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo"
 import { CurrencyText } from "../../../components/CurrencyText"
 import { textField, input } from "../../../style/input"
@@ -328,15 +328,7 @@ export const Tillage: React.FC<TillageProps> = ({}) => {
                                     <Box sx={{ gap: "3vw" }}>
                                         {user?.isAdmin && (
                                             <Box sx={{ gap: "2vw" }}>
-                                                <LocalizationProvider
-                                                    dateAdapter={AdapterDayjs}
-                                                    localeText={
-                                                        ptBR.components.MuiLocalizationProvider.defaultProps.localeText
-                                                    }
-                                                >
-                                                    <DemoContainer components={["MobileDatePicker"]} sx={{ color: "#fff" }}>
                                                         <DemoItem label="Previsão da visita">
-                                                            <ThemeProvider theme={newTheme}>
                                                                 <MobileDatePicker
                                                                     sx={{ ...textField }}
                                                                     format="DD/MM/YYYY"
@@ -349,10 +341,7 @@ export const Tillage: React.FC<TillageProps> = ({}) => {
                                                                     timezone="system"
                                                                     disablePast
                                                                 />
-                                                            </ThemeProvider>
                                                         </DemoItem>
-                                                    </DemoContainer>
-                                                </LocalizationProvider>
                                                 <Box sx={{ flexDirection: "row", gap: "2vw", color: colors.text.white }}>
                                                     <p style={{ fontSize: "4vw" }}>Custo por hectare: </p>
                                                     {"  "}

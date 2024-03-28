@@ -7,9 +7,7 @@ import { textField } from "../../style/input"
 import { useRelationship } from "../../hooks/useRelationship"
 import MaskedInputNando from "../../components/MaskedNando"
 import { useCnpjMask, useCpfMask } from "burgos-masks"
-import { LocalizationProvider, MobileDatePicker, ptBR } from "@mui/x-date-pickers"
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
-import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo"
+import {  MobileDatePicker, ptBR } from "@mui/x-date-pickers"
 import { Dayjs } from "dayjs"
 
 interface StepOneProps {
@@ -90,13 +88,6 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, birthPick,
                     />
                 </Box>
 
-                <LocalizationProvider
-                    dateAdapter={AdapterDayjs}
-                    localeText={ptBR.components.MuiLocalizationProvider.defaultProps.localeText}
-                >
-                    <DemoContainer components={["MobileDatePicker"]} sx={{ color: colors.text.black }}>
-                        <DemoItem label="Data de Nascimento">
-                            <ThemeProvider theme={newTheme}>
                                 <MobileDatePicker
                                     sx={{ ...textField }}
                                     format="DD/MM/YYYY"
@@ -108,10 +99,6 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, birthPick,
                                     }}
                                     timezone="system"
                                 />
-                            </ThemeProvider>
-                        </DemoItem>
-                    </DemoContainer>
-                </LocalizationProvider>
                 <TextField
                     label={"E-mail"}
                     name="email"

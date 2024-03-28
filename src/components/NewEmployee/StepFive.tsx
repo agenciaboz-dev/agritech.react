@@ -6,9 +6,7 @@ import MaskedInputNando from "../MaskedNando"
 import { useCurrencyMask } from "burgos-masks"
 import MaskedInput from "../MaskedInput"
 import { useIo } from "../../hooks/useIo"
-import { LocalizationProvider, MobileDatePicker, ptBR } from "@mui/x-date-pickers"
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
-import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo"
+import {  MobileDatePicker, ptBR } from "@mui/x-date-pickers"
 import { colors } from "../../style/colors"
 import { Dayjs } from "dayjs"
 
@@ -126,13 +124,6 @@ export const StepFive: React.FC<StepFiveProps> = ({
                             },
                         }}
                     />
-                    <LocalizationProvider
-                        dateAdapter={AdapterDayjs}
-                        localeText={ptBR.components.MuiLocalizationProvider.defaultProps.localeText}
-                    >
-                        <DemoContainer components={["MobileDatePicker"]} sx={{ color: colors.text.black }}>
-                            <DemoItem label="Data de Admissão">
-                                <ThemeProvider theme={newTheme}>
                                     <MobileDatePicker
                                         sx={{ ...textField }}
                                         format="DD/MM/YYYY"
@@ -144,10 +135,6 @@ export const StepFive: React.FC<StepFiveProps> = ({
                                         }}
                                         timezone="system"
                                     />
-                                </ThemeProvider>
-                            </DemoItem>
-                        </DemoContainer>
-                    </LocalizationProvider>
                     <TextField
                         variant="outlined"
                         label={"Nº da carteira de trabalho"}

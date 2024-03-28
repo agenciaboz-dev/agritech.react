@@ -61,13 +61,7 @@ export const Personal: React.FC<PersonalProps> = ({ values, handleChange, birthP
 
     return (
         <Box sx={{ flexDirection: "column", gap: "2.5vw" }}>
-            <LocalizationProvider
-                dateAdapter={AdapterDayjs}
-                localeText={ptBR.components.MuiLocalizationProvider.defaultProps.localeText}
-            >
-                <DemoContainer components={["MobileDatePicker"]} sx={{ color: colors.text.black }}>
                     <DemoItem label="Data de Nascimento">
-                        <ThemeProvider theme={newTheme}>
                             <MobileDatePicker
                                 sx={{ ...textField }}
                                 format="DD/MM/YYYY"
@@ -80,10 +74,7 @@ export const Personal: React.FC<PersonalProps> = ({ values, handleChange, birthP
                                 timezone="system"
                                 readOnly={user?.cpf !== values.cpf}
                             />
-                        </ThemeProvider>
                     </DemoItem>
-                </DemoContainer>
-            </LocalizationProvider>
             {values.employee === undefined && (
                 <TextField
                     label={"CPF"}

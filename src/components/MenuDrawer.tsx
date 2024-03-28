@@ -54,6 +54,7 @@ export const MenuDrawer: React.FC<MenuDrawerProps> = ({}) => {
             onOpen={() => setOpen(true)}
             anchor={"right"}
             open={open}
+            disableSwipeToOpen
             onClose={handleClose}
             PaperProps={{
                 sx: {

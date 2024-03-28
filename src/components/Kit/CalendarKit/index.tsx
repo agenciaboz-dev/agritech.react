@@ -34,7 +34,7 @@ export const CalendarKit: React.FC<CalendarKitProps> = ({}) => {
 
     //Methods and variables Date
     const [value, setValue] = useState<Date | null>(null)
-    const dayCurrent = new Date().getDate()
+    const dayCurrent = new Date().toLocaleDateString("pt-br")
 
     const handleFindCalls = (value: Date | null) => {
         console.log(selectedKit?.calls)
@@ -156,11 +156,11 @@ export const CalendarKit: React.FC<CalendarKitProps> = ({}) => {
                     }}
                     getDayProps={(day) => ({
                         style: {
-                            border: day.getDate() == dayCurrent ? `1px solid ${colors.secondary}` : "",
+                            border: day.toLocaleDateString("pt-br") == dayCurrent ? `1px solid ${colors.secondary}` : "",
                             color:
-                                day.getDate() == dayCurrent
+                                day.toLocaleDateString("pt-br") == dayCurrent
                                     ? colors.secondary
-                                    : day.getDate() == value?.getDate()
+                                    : day.toLocaleDateString("pt-br") == value?.toLocaleDateString("pt-br")
                                     ? "white"
                                     : "",
                         },
