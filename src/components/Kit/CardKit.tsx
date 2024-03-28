@@ -78,7 +78,7 @@ export const CardKit: React.FC<CardKitProps> = ({ kit }) => {
                     }
                 />
             </FormGroup>
-            <ArrowForwardIos />
+            <ArrowForwardIos fontSize="small" />
         </Box>
     )
 }

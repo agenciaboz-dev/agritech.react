@@ -1,28 +1,33 @@
-import { Box, Button } from "@mui/material"
+import { Autocomplete, Box, Button, TextField } from "@mui/material"
 import React, { useEffect, useState } from "react"
-import { colors } from "../../style/colors"
-import { Header } from "../Header"
-import { useHeader } from "../../hooks/useHeader"
+import { colors } from "../../../style/colors"
+import { Header } from "../../../components/Header"
+import { useHeader } from "../../../hooks/useHeader"
 import { useNavigate, useParams } from "react-router-dom"
-import { useUsers } from "../../hooks/useUsers"
+import { useUsers } from "../../../hooks/useUsers"
 import { DatePicker, DatePickerProps } from "@mantine/dates"
 import { Indicator } from "@mantine/core"
-import { LogsCard } from "../../pages/Calls/LogsCard"
+import { LogsCard } from "../../../pages/Calls/LogsCard"
 import { IconUser } from "@tabler/icons-react"
-import { useCall } from "../../hooks/useCall"
-import { Call } from "../../definitions/call"
+import { Call } from "../../../definitions/call"
+import { useKits } from "../../../hooks/useKits"
+import { textField } from "../../../style/input"
+import { useIo } from "../../../hooks/useIo"
 
 interface CalendarProps {}
 
 export const Calendar: React.FC<CalendarProps> = ({}) => {
+    const io = useIo()
     const header = useHeader()
     const navigate = useNavigate()
-    const { listCalls } = useCall()
+
+    //kits
+    const { listKits } = useKits()
+    const [kits, setKits] = useState(listKits?.filter((item) => !!item && item.active) as Kit[])
+    const [selectedKit, setSelectedKit] = useState<Kit | null>(null)
 
     //Users
-    const { userid } = useParams()
-    const { listUsers } = useUsers()
-    const findUser = listUsers?.find((user) => String(user.id) === userid)
+    const { kitid } = useParams()
     const [callsDay, setCallsDay] = useState<Call[] | undefined>([])
 
     //Methods and variables Date
@@ -30,26 +35,27 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
     const dayCurrent = new Date().getDate()
 
     const handleFindCalls = (value: Date | null) => {
-        console.log(findUser?.employee?.kits)
-        if (value && findUser?.employee?.kits?.length !== 0) {
+        console.log(selectedKit?.calls)
+        if (value && selectedKit?.calls?.length !== 0) {
             const callsPerDay =
-                (findUser?.employee?.kits &&
-                    findUser?.employee?.kits[0].calls?.filter(
-                        (item) => item.forecast === new Date(value).getTime().toString()
-                    )) ||
+                (selectedKit?.calls &&
+                    selectedKit?.calls.filter((item) => item.forecast === new Date(value).getTime().toString())) ||
                 []
             setCallsDay(callsPerDay)
             // console.log(callsPerDay)
             return callsPerDay
         }
     }
+    useEffect(() => {
+        if (listKits.length !== 0) setSelectedKit(listKits.find((item) => item.id === Number(kitid)) || null)
+    }, [selectedKit])
 
     const dayRenderer: DatePickerProps["renderDay"] = (date) => {
         const day = date.getDate()
-        if (findUser && findUser?.employee?.kits && findUser?.employee?.kits[0].calls) {
+        if (selectedKit && selectedKit.calls) {
             const callsForDay: Call[] | undefined =
-                findUser?.employee?.kits &&
-                findUser?.employee?.kits[0].calls?.filter((call) => {
+                selectedKit.calls &&
+                selectedKit.calls?.filter((call) => {
                     const callDate = new Date(Number(call.forecast))
                     return (
                         callDate.getDate() === day &&
@@ -61,21 +67,16 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
             const areaDayCalls =
                 callsForDay?.map((item) => Number(item.talhao?.area)).reduce((prev, current) => prev + current, 0) || 0
 
-            // useEffect(() => {
-            //     console.log({ por_dia_temos: areaDayCalls })
-            //     findUser?.employee?.kits && console.log({ limite_kit: findUser?.employee.kits[0].hectareDay })
-            // }, [findUser?.employee])
-
             const indicatorColor =
                 callsForDay &&
                 callsForDay.length > 0 &&
-                findUser?.employee?.kits &&
-                findUser?.employee?.kits[0].hectareDay &&
-                (areaDayCalls < findUser?.employee.kits[0].hectareDay && areaDayCalls !== 0
+                selectedKit.calls &&
+                selectedKit.hectareDay &&
+                (areaDayCalls < selectedKit.hectareDay && areaDayCalls !== 0
                     ? "#FFD700"
-                    : areaDayCalls === findUser?.employee.kits[0].hectareDay
+                    : areaDayCalls === selectedKit.hectareDay
                     ? colors.delete
-                    : findUser?.employee.kits[0].hectareDay - areaDayCalls <= 100
+                    : selectedKit.hectareDay - areaDayCalls <= 100
                     ? "orange"
                     : "#88A486")
 
@@ -84,16 +85,19 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
                     <div>{day}</div>
                 </Indicator>
             )
-        } else if (findUser?.employee?.kits?.length === 0) {
+        } else if (selectedKit?.calls?.length === 0) {
         }
     }
 
+    useEffect(() => {
+        if (listKits.length === 0) io.emit("kit:list")
+    }, [listKits])
     useEffect(() => {
         handleFindCalls(value)
     }, [value])
 
     useEffect(() => {
-        header.setTitle(findUser?.name || "")
+        header.setTitle(selectedKit ? `${selectedKit?.name}` : "Calendário")
     }, [])
 
     return (
@@ -132,28 +136,9 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
                     gap: "4vw",
                 }}
             >
-                <Button
-                    size="small"
-                    variant="contained"
-                    sx={{
-                        alignItems: "center",
-                        gap: "0vw",
-                        backgroundColor: "#88A486",
-                        color: colors.text.white,
-                        textTransform: "none",
-                        borderRadius: "5vw",
-                        fontSize: "3.5vw",
-                        p: "2vw",
-                        width: "100%",
-                    }}
-                    onClick={() => navigate(`/adm/profile/${userid}`)}
-                >
-                    <IconUser fontSize="xs" color="#fff" />
-                    Acessar cadastro colaborador
-                </Button>
                 <DatePicker
                     locale="pt-br"
-                    renderDay={findUser?.employee?.kits?.length !== 0 ? dayRenderer : undefined}
+                    renderDay={dayRenderer}
                     weekendDays={[0]}
                     styles={{
                         day: { borderRadius: "100%" },
@@ -183,11 +168,11 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
                         gap: "3vw",
                     }}
                 >
-                    {findUser?.office === "pilot" || findUser?.office === "copilot"
+                    {selectedKit
                         ? callsDay?.length !== 0
                             ? callsDay?.map((call, index) => <LogsCard key={index} review={false} call={call} />)
                             : "Nenhum chamado aberto para esse dia"
-                        : "Sem compromissos"}
+                        : "Selecione um kit para visualizar o calendário."}
                 </Box>
             </Box>
         </Box>

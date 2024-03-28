@@ -7,7 +7,7 @@ import { ReviewsEmployee } from "./ReviewsEmployee"
 import { Panel } from "./Panel"
 import { ListProducer } from "./Panel/Lists/ListProducer"
 import { NewProducer } from "../../components/NewProducer"
-import { Calendar } from "../../components/Calendar"
+import { Calendar as CalendarUser } from "../../components/Calendar"
 import { ListEmployee } from "./Panel/Lists/ListEmployee"
 import { ReviewsCall } from "./ReviewsCall"
 import { ApproveCall } from "./ReviewsCall/ApproveCall"
@@ -20,6 +20,7 @@ import { CallApproved } from "./ReviewsCall/CallApproved"
 import { NewEmployee } from "../../components/NewEmployee"
 import { ReviewsReports } from "./ReviewsReports"
 import { CalendarKit } from "../../components/Kit/CalendarKit"
+import { Calendar } from "./Panel/Calendar"
 
 interface AdmProps {
     user: User
@@ -39,7 +40,7 @@ export const Adm: React.FC<AdmProps> = ({ user }) => {
             <Route path="/producers" element={<ListProducer />} />
             <Route path="/new_producer/*" element={<NewProducer />} />
             <Route path="/new_employee/*" element={<NewEmployee />} />
-            <Route path="/calendar/:userid" element={<Calendar />} />
+            <Route path="/calendar/:userid" element={<CalendarUser />} />
             <Route path="/calls" element={<ReviewsCall user={user} />} />
             <Route path="/calls/:callid" element={<ApproveCall />} />
             <Route path="/calls/talhao/:talhaoid/:callid" element={<CallApproved />} />
@@ -49,6 +50,7 @@ export const Adm: React.FC<AdmProps> = ({ user }) => {
             <Route path="/producer/:producerid/:tillageid/new_talhao" element={<NewTalhao />} />
             <Route path="/reports" element={<ReviewsReports user={user} />} />
             <Route path="/calendar" element={<CalendarKit />} />
+            <Route path="/kit/calendar/:kitid" element={<Calendar />} />
         </ReactRoutes>
     )
 }

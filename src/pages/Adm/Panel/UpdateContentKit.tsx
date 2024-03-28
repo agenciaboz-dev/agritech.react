@@ -13,6 +13,7 @@ import { ModalObjectUpdate } from "../../../components/Kit/ModalObjectUpdate"
 import { useNumberMask } from "burgos-masks"
 import MaskedInputNando from "../../../components/MaskedNando"
 import { ModalEmployeeUpdate } from "../../../components/Kit/ModalEmployeeU"
+import { useNavigate } from "react-router-dom"
 
 interface UpdateContentKitProps {
     edit?: boolean
@@ -38,6 +39,7 @@ const style_p = {
 
 export const UpdateContentKit: React.FC<UpdateContentKitProps> = ({ edit, values, handleChange, data, kit }) => {
     const io = useIo()
+    const navigate = useNavigate()
     const floatMask = useNumberMask({ allowDecimal: true, allowLeadingZeroes: true })
     const [openedModalObjects, { open, close }] = useDisclosure(false)
     const [openedModalEmployees, { open: openEmployees, close: closeEmployees }] = useDisclosure(false)
@@ -64,7 +66,15 @@ export const UpdateContentKit: React.FC<UpdateContentKitProps> = ({ edit, values
             />
 
             <Box sx={{ gap: "3vw", height: "30%" }}>
-                <TitleComponents title="Informações Básicas" />
+                <TitleComponents
+                    title="Informações Básicas"
+                    button
+                    textButton="Acessar Calendário"
+                    styleButton={true}
+                    click={() => {
+                        navigate(`/adm/kit/calendar/${kit.id}`)
+                    }}
+                />
                 <Box sx={{ flexDirection: "row", gap: "2vw", width: "100%" }}>
                     {edit ? (
                         <Avatar
