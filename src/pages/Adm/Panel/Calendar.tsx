@@ -120,7 +120,7 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
                     flexDirection: "row",
                 }}
             >
-                <Header back location="../" />
+                <Header back location={`/adm/settings-kit/${kitid}`} />
             </Box>
 
             <Box
