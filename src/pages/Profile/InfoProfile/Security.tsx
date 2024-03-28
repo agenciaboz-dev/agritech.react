@@ -12,9 +12,11 @@ import { useSnackbar } from "burgos-snackbar"
 import { useUsers } from "../../../hooks/useUsers"
 import { useNavigate } from "react-router-dom"
 
-interface SecurityProps {}
+interface SecurityProps {
+    values: Partial<Omit<User, "producer"> & { producer: Partial<Producer> }>
+}
 
-export const Security: React.FC<SecurityProps> = ({}) => {
+export const Security: React.FC<SecurityProps> = ({ values }) => {
     const [open, setOpen] = useState(false)
     const [loading, setLoading] = useState(false)
     const { user, setUser } = useUser()
@@ -42,12 +44,14 @@ export const Security: React.FC<SecurityProps> = ({}) => {
     }, [])
     return (
         <Box sx={{ flexDirection: "column", gap: "1vw" }}>
-            <Box sx={{ flexDirection: "row", alignItems: "center", width: "100%", justifyContent: "space-between" }}>
-                <p style={{ fontSize: "1rem" }}>Atualizar Senha</p>
-                <IconButton>
-                    <ArrowRightIcon />
-                </IconButton>
-            </Box>
+            {/* {user?.cpf === values.cpf && (
+                <Box sx={{ flexDirection: "row", alignItems: "center", width: "100%", justifyContent: "space-between" }}>
+                    <p style={{ fontSize: "1rem" }}>Atualizar Senha</p>
+                    <IconButton>
+                        <ArrowRightIcon />
+                    </IconButton>
+                </Box>
+            )} */}
 
             <Box sx={{ flexDirection: "row", alignItems: "center", width: "100%", justifyContent: "space-between" }}>
                 <p style={{ fontSize: "1rem" }}>Excluir Conta</p>

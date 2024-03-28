@@ -20,9 +20,9 @@ interface InfoProfileProps {
     tab: string
     setTab: React.Dispatch<React.SetStateAction<string>>
     pickDate?: Dayjs | null
-    setPickDate?: React.Dispatch<React.SetStateAction<Dayjs | null>> 
+    setPickDate?: React.Dispatch<React.SetStateAction<Dayjs | null>>
     birthPick?: Dayjs | null
-    setBirthPick?: React.Dispatch<React.SetStateAction<Dayjs | null>> 
+    setBirthPick?: React.Dispatch<React.SetStateAction<Dayjs | null>>
 }
 
 export const InfoProfile: React.FC<InfoProfileProps> = ({
@@ -41,6 +41,7 @@ export const InfoProfile: React.FC<InfoProfileProps> = ({
     const changeTab = (event: React.SyntheticEvent, newValue: string) => {
         setTab(newValue)
     }
+
     return (
         <Box sx={{ gap: "5vw", maxWidth: "100%", color: "black" }}>
             <Tabs
@@ -62,7 +63,9 @@ export const InfoProfile: React.FC<InfoProfileProps> = ({
                 {values.employee !== undefined && values.employee !== undefined && (
                     <Tab sx={tabStyle} value="professional" label="Profissional" />
                 )}
-                {user?.cpf === values.cpf && <Tab sx={tabStyle} value="security" label="Privacidade e Segurança" />}
+                {user?.cpf === values.cpf ||
+                    (user?.isAdmin && <Tab sx={tabStyle} value="security" label="Privacidade e Segurança" />)}
+                {/* {user?.isAdmin && <Tab sx={tabStyle} value="security" label="Privacidade e Segurança" />} */}
             </Tabs>
             {tab === "personal" && (
                 <Personal
@@ -89,7 +92,7 @@ export const InfoProfile: React.FC<InfoProfileProps> = ({
                     setPickDate={setPickDate}
                 />
             )}
-            {user?.cpf === values.cpf && tab == "security" && <Security />}
+            {user?.cpf === values.cpf || (user?.isAdmin && tab == "security" && <Security values={values} />)}
         </Box>
     )
 }

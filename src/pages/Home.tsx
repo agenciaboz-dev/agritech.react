@@ -3,8 +3,9 @@ import { image } from "../image"
 import { colors } from "../style/colors"
 import { Box, Button, useMediaQuery } from "@mui/material"
 import { useNavigate } from "react-router-dom"
-import logo from "../assets/logo/logo.png"
+import LogoIcon from "../assets/logo/logo.svg"
 import { ButtonComponent } from "../components/ButtonComponent"
+import { app_version } from "../app_version"
 
 interface HomeProps {}
 
@@ -25,7 +26,7 @@ export const Home: React.FC<HomeProps> = ({}) => {
             <Box
                 sx={{
                     width: "100%",
-                    height: "90%",
+                    height: "89%",
                     backgroundImage: `linear-gradient(${colors.secondary}, ${colors.primary})`,
                     borderBottomRightRadius: isMobile ? "7vw" : "2vw",
                     borderBottomLeftRadius: isMobile ? "7vw" : "2vw",
@@ -33,17 +34,18 @@ export const Home: React.FC<HomeProps> = ({}) => {
                     justifyContent: "space-between",
                     boxShadow: "3px 3px 6px gray",
                     padding: isMobile ? "4vw" : "1vw",
-                    paddingBottom: isMobile ? "4vw" : "3vw",
+                    paddingBottom: isMobile ? "1vw" : "3vw",
+                    paddingTop: "12vw",
                     flexDirection: "column",
                 }}
             >
                 <img
-                    src={logo}
+                    src={LogoIcon}
                     style={{
                         alignItems: "center",
                         justifyContent: "center",
-                        width: "100%",
-                        height: "80%",
+                        width: isMobile ? "50%" : "30%",
+                        height: isMobile ? "80%" : "50%",
                     }}
                 />
 
@@ -78,9 +80,8 @@ export const Home: React.FC<HomeProps> = ({}) => {
             <Box sx={{ height: "10%", width: isMobile ? "100%" : "20%", alignItems: "center" }}>
                 <Button
                     sx={{
-                        width: "100%",
                         fontWeight: "600",
-                        padding: isMobile ? "2vw" : "1vw",
+                        padding: isMobile ? "0vw 2vw" : "1vw",
                         color: colors.text.black,
                         textTransform: "none",
                         fontSize: isMobile ? "4vw" : "1vw",
@@ -89,6 +90,12 @@ export const Home: React.FC<HomeProps> = ({}) => {
                 >
                     Termos de serviço
                 </Button>
+                <Box sx={{ alignItems: "center", lineHeight: 1.2, fontSize: "0.8rem" }}>
+                    <p>
+                        {new Date().getFullYear()} © Direitos Reservados - {app_version}
+                    </p>
+                    <p>Powered by BOZ</p>
+                </Box>
             </Box>
         </Box>
     )
