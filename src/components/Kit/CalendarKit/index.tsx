@@ -179,11 +179,15 @@ export const CalendarKit: React.FC<CalendarKitProps> = ({}) => {
                         gap: "3vw",
                     }}
                 >
-                    {selectedKit
-                        ? callsDay?.length !== 0
-                            ? callsDay?.map((call, index) => <LogsCard key={index} review={false} call={call} />)
-                            : "Nenhum chamado aberto para esse dia"
-                        : "Selecione um kit para visualizar o calendário."}
+                    {selectedKit ? (
+                        callsDay?.length !== 0 ? (
+                            callsDay?.map((call, index) => <LogsCard key={index} review={false} call={call} />)
+                        ) : (
+                            "Nenhum chamado aberto para esse dia"
+                        )
+                    ) : (
+                        <p style={{ fontSize: "0.9rem" }}>Selecione um kit para visualizar o calendário</p>
+                    )}
                 </Box>
             </Box>
         </Box>
