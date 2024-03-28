@@ -1,5 +1,5 @@
 import React from "react"
-import { Box, Avatar } from "@mui/material"
+import { Box, Avatar, useMediaQuery } from "@mui/material"
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos"
 import { useNavigate } from "react-router-dom"
 import avatar from "../assets/logo/Avatar.png"
@@ -12,16 +12,16 @@ interface CardUserProps {
 }
 
 export const CardUser: React.FC<CardUserProps> = ({ review, user, location }) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
     const navigate = useNavigate()
 
     return (
         <Box
             sx={{
-                height: "15vw",
+                height: isMobile ? "15vw" : "fit-content",
                 flexDirection: "row",
                 gap: "3vw",
-
-                padding: "4vw 2vw",
+                padding: isMobile ? "4vw 2vw" : "1vw",
                 alignItems: "center",
                 borderBottom: "1px solid #88A486",
                 justifyContent: "space-between",
@@ -29,12 +29,12 @@ export const CardUser: React.FC<CardUserProps> = ({ review, user, location }) =>
             key={user.id}
         >
             <Box sx={{ flexDirection: "row", gap: "3vw", alignItems: "center" }}>
-                <Avatar src={user.image} sx={{ width: "10vw", height: "10vw" }} />
+                <Avatar src={user.image} sx={{ width: isMobile ? "10vw" : "5vw", height: isMobile ? "10vw" : "5vw" }} />
                 <Box sx={{ flexDirection: "column", gap: "1vw" }}>
                     {!user.producer && <OfficeDot office={user.office} />}
                     <p
                         style={{
-                            fontSize: "3.7vw",
+                            fontSize: isMobile ? "3.7vw" : "1rem",
                             width: "40vw",
                             overflow: "hidden",
                             textOverflow: "ellipsis",
@@ -46,9 +46,9 @@ export const CardUser: React.FC<CardUserProps> = ({ review, user, location }) =>
                     </p>
                 </Box>
             </Box>
-            <Box sx={{ alignItems: "center", flexDirection: "row" }}>
+            <Box sx={{ alignItems: "center", flexDirection: "row", cursor: "pointer" }}>
                 <p
-                    style={{ fontSize: "3.0vw" }}
+                    style={{ fontSize: isMobile ? "3.0vw" : "1rem" }}
                     onClick={() => {
                         navigate(location)
                     }}
