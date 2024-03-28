@@ -32,6 +32,15 @@ export const ModalEmployee: React.FC<ModalEmployeeProps> = ({ opened, close, emp
         (item) => item.employee?.kits?.length === 0 && (item.office === "copilot" || item.office === "pilot")
     )
 
+    const handleCheckboxChange = (id: number) => {
+        if (selectedRows.includes(id)) {
+            setSelectedRows(selectedRows.filter((rowId) => rowId !== id))
+        } else if (selectedRows.length < 2) {
+            // Limita a seleção para no máximo 2 valores
+            setSelectedRows([...selectedRows, id])
+        }
+    }
+
     const rows = freeEmployees?.map((element) => (
         <Table.Tr
             key={element.name}
@@ -41,13 +50,8 @@ export const ModalEmployee: React.FC<ModalEmployeeProps> = ({ opened, close, emp
                 <Checkbox
                     aria-label="Select row"
                     checked={selectedRows.includes(element.employee?.id || 0)}
-                    onChange={(event) => {
-                        const newSelectedRows = event.currentTarget.checked
-                            ? [...selectedRows, element.employee?.id].filter((id): id is number => id !== undefined)
-                            : selectedRows.filter((id) => id !== element.employee?.id)
-
-                        setSelectedRows(newSelectedRows)
-                    }}
+                    disabled={selectedRows.length >= 2 && !selectedRows.includes(element.employee?.id || 0)}
+                    onChange={() => handleCheckboxChange(element.employee?.id || 0)}
                 />
             </Table.Td>
             <Table.Td>
