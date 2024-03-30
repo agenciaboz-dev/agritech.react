@@ -96,10 +96,14 @@ export const KitProvider: React.FC<KitProviderProps> = ({ children }) => {
                 replaceKit(data)
             }
         })
+        io.on("kit:list", (data: Kit[]) => {
+            setListKits(data)
+        })
 
         return () => {
             io.off("kit:new")
             io.off("kit:update")
+            io.off("kit:list")
         }
     }, [listKits])
 
