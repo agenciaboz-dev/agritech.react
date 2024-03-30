@@ -87,25 +87,17 @@ export const KitProvider: React.FC<KitProviderProps> = ({ children }) => {
     }
 
     useEffect(() => {
-        // io.on("kit:creation:success", (data: Kit) => {
-        //     console.log("entrei on add")
-        //     if (user?.isAdmin || data.employees?.find((employee) => employee.id == user?.employee?.id)) {
-        //         addKit(data)
-        //     }
-        // })
-        io.on("kit:update", (data: Kit) => {
+        io.on("kit:update:success", (data: Kit) => {
             if (user?.isAdmin || data.employees?.find((employee) => employee.id == user?.employee?.id)) {
                 replaceKit(data)
             }
         })
         io.on("kit:list:success", (data: Kit[]) => {
             setListKits(data)
-            console.log("tou no contetxo")
         })
 
         return () => {
-            io.off("kit:creation:success")
-            io.off("kit:update")
+            io.off("kit:update:success")
             io.off("kit:list:success")
         }
     }, [listKits])
