@@ -47,6 +47,10 @@ export const KitProvider: React.FC<KitProviderProps> = ({ children }) => {
         setListKits((kits) => [...kits, newKit])
     }
 
+    const replaceKit = (data: Kit) => {
+        setListKits((list) => [...list.filter((item) => item.id !== data.id), data])
+    }
+
     const toggleKit = (id: number) => {
         io.emit("kit:toggle", { id: id })
     }
@@ -80,6 +84,24 @@ export const KitProvider: React.FC<KitProviderProps> = ({ children }) => {
             return updatedKits
         })
     }
+
+    useEffect(() => {
+        io.on("kit:new", (data: Kit) => {
+            if (user?.isAdmin || data.employees?.find((employee) => employee.id == user?.employee?.id)) {
+                addKit(data)
+            }
+        })
+        io.on("kit:update", (data: Kit) => {
+            if (user?.isAdmin || data.employees?.find((employee) => employee.id == user?.employee?.id)) {
+                replaceKit(data)
+            }
+        })
+
+        return () => {
+            io.off("kit:new")
+            io.off("kit:update")
+        }
+    }, [listKits])
 
     return (
         <KitContext.Provider value={{ listKits, setListKits, toggleKit, addKit, updateKit }}>{children}</KitContext.Provider>

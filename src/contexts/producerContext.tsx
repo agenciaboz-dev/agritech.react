@@ -36,7 +36,6 @@ export const ProducerProvider: React.FC<ProducerProviderProps> = ({ children }) 
     const [listTillages, setListTillages] = useState<Tillage[]>([])
 
     useEffect(() => {
-
         io.on("tillage:list:success", (data: Tillage[]) => {
             if (user?.producer) {
                 const listId = data.filter((item) => item.producerId === user?.producer?.id) //lista de lavoura do respectivo usuário Cliente
@@ -74,6 +73,30 @@ export const ProducerProvider: React.FC<ProducerProviderProps> = ({ children }) 
     const addTillageProd = (newTillage: Tillage) => {
         setListTillages((tillages) => [...tillages, newTillage])
     }
+    const addTillageSync = (newTillage: any) => {
+        setListTillages((tillages) => [...tillages, newTillage])
+    }
+
+    const replaceTillage = (tillage: Tillage) => {
+        setListTillages((list) => [...list.filter((item) => item.id !== tillage.id), tillage])
+    }
+    useEffect(() => {
+        io.on("tillage:new", (data: Tillage) => {
+            if (user?.producer?.id === data.producerId || user?.isAdmin) addTillageSync(data)
+        })
+        io.on("tillage:cover", (data: Tillage) => {
+            if (user?.producer?.id === data.producerId || user?.isAdmin) replaceTillage(data)
+        })
+        io.on("tillage:update", (data: Tillage) => {
+            if (user?.producer?.id === data.producerId || user?.isAdmin) replaceTillage(data)
+        })
+
+        return () => {
+            io.off("tillage:new")
+            io.off("tillage:cover")
+            io.off("tillage:update")
+        }
+    }, [listTillages])
 
     return (
         <ProducerContext.Provider
