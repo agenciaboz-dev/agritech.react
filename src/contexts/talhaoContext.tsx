@@ -40,21 +40,21 @@ export const TalhaoProvider: React.FC<TalhaoProviderProps> = ({ children }) => {
     }, [])
 
     useEffect(() => {
-        io.on("talhao:new", (data: Talhao) => {
+        io.on("talhao:create:success", (data: Talhao) => {
             if (user?.producer?.id === data.tillage?.producerId || user?.isAdmin) addTalhao(data)
         })
-        io.on("talhao:update", (data: Talhao) => {
+        io.on("talhao:update:success", (data: Talhao) => {
             if (user?.producer?.id === data.tillage?.producerId || user?.isAdmin) replaceTalhao(data)
         })
         io.on("talhao:cover", (data: Talhao) => {
             if (user?.producer?.id === data.tillage?.producerId || user?.isAdmin) replaceTalhao(data)
         })
-        io.on("talhao:list", (data: Talhao[]) => {
+        io.on("talhao:list:success", (data: Talhao[]) => {
             setList(data)
         })
 
         return () => {
-            io.off("talhao:new")
+            io.off("talhao:create:success")
             io.off("talhao:update")
             io.off("talhao:cover")
             io.off("talhao:list")
