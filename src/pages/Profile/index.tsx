@@ -139,7 +139,7 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
 
     useEffect(() => {
         io.on("user:update:success", (dataUser: User) => {
-            setUser(dataUser)
+            // setUser(dataUser)
             console.log("atualizado", dataUser)
             setLoading(false)
             snackbar({ severity: "success", text: "Dados alterados!" })

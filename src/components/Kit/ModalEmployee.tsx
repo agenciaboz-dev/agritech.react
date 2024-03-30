@@ -27,7 +27,7 @@ export const ModalEmployee: React.FC<ModalEmployeeProps> = ({ opened, close, emp
         setSelectedRows(filteredIds)
     }, [employees])
 
-    console.log(filteredEmployeeIds)
+    // console.log(filteredEmployeeIds)
     const freeEmployees = allEmployees?.filter(
         (item) => item.employee?.kits?.length === 0 && (item.office === "copilot" || item.office === "pilot")
     )
@@ -102,7 +102,7 @@ export const ModalEmployee: React.FC<ModalEmployeeProps> = ({ opened, close, emp
     const saveList = () => {
         if (allEmployees) {
             const selectedEmployees = allEmployees.filter((element) => selectedRows.includes(element.employee?.id || 0))
-            console.log({ time: selectedEmployees })
+            // console.log({ time: selectedEmployees })
             setEmployees(selectedEmployees)
             close()
         }

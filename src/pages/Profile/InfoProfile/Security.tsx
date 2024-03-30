@@ -44,14 +44,14 @@ export const Security: React.FC<SecurityProps> = ({ values }) => {
     }, [])
     return (
         <Box sx={{ flexDirection: "column", gap: "1vw" }}>
-            {/* {user?.cpf === values.cpf && (
+            {user?.cpf === values.cpf && (
                 <Box sx={{ flexDirection: "row", alignItems: "center", width: "100%", justifyContent: "space-between" }}>
                     <p style={{ fontSize: "1rem" }}>Atualizar Senha</p>
                     <IconButton>
                         <ArrowRightIcon />
                     </IconButton>
                 </Box>
-            )} */}
+            )}
 
             <Box sx={{ flexDirection: "row", alignItems: "center", width: "100%", justifyContent: "space-between" }}>
                 <p style={{ fontSize: "1rem" }}>Excluir Conta</p>

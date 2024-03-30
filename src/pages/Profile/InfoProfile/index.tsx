@@ -63,8 +63,9 @@ export const InfoProfile: React.FC<InfoProfileProps> = ({
                 {values.employee !== undefined && values.employee !== undefined && (
                     <Tab sx={tabStyle} value="professional" label="Profissional" />
                 )}
-                {user?.cpf === values.cpf ||
-                    (user?.isAdmin && <Tab sx={tabStyle} value="security" label="Privacidade e Segurança" />)}
+                {(user?.cpf === values.cpf || user?.isAdmin) && (
+                    <Tab sx={tabStyle} value="security" label="Privacidade e Segurança" />
+                )}
                 {/* {user?.isAdmin && <Tab sx={tabStyle} value="security" label="Privacidade e Segurança" />} */}
             </Tabs>
             {tab === "personal" && (
@@ -92,7 +93,7 @@ export const InfoProfile: React.FC<InfoProfileProps> = ({
                     setPickDate={setPickDate}
                 />
             )}
-            {user?.cpf === values.cpf || (user?.isAdmin && tab == "security" && <Security values={values} />)}
+            {(user?.cpf === values.cpf || user?.isAdmin) && tab == "security" && <Security values={values} />}
         </Box>
     )
 }
