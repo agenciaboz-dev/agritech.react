@@ -80,27 +80,27 @@ export const ProducerProvider: React.FC<ProducerProviderProps> = ({ children }) 
     const replaceTillage = (tillage: Tillage) => {
         setListTillages((list) => [...list.filter((item) => item.id !== tillage.id), tillage])
     }
-    useEffect(() => {
-        io.on("tillage:new", (data: Tillage) => {
-            if (user?.producer?.id === data.producerId || user?.isAdmin) addTillageSync(data)
-        })
-        io.on("tillage:cover", (data: Tillage) => {
-            if (user?.producer?.id === data.producerId || user?.isAdmin) replaceTillage(data)
-        })
-        io.on("tillage:update", (data: Tillage) => {
-            if (user?.producer?.id === data.producerId || user?.isAdmin) replaceTillage(data)
-        })
-        io.on("tillage:list", (data: Tillage[]) => {
-            setListTillages(data)
-        })
+    // useEffect(() => {
+    //     io.on("tillage:new", (data: Tillage) => {
+    //         if (user?.producer?.id === data.producerId || user?.isAdmin) addTillageSync(data)
+    //     })
+    //     io.on("tillage:cover", (data: Tillage) => {
+    //         if (user?.producer?.id === data.producerId || user?.isAdmin) replaceTillage(data)
+    //     })
+    //     io.on("tillage:update", (data: Tillage) => {
+    //         if (user?.producer?.id === data.producerId || user?.isAdmin) replaceTillage(data)
+    //     })
+    //     io.on("tillage:list", (data: Tillage[]) => {
+    //         setListTillages(data)
+    //     })
 
-        return () => {
-            io.off("tillage:new")
-            io.off("tillage:cover")
-            io.off("tillage:update")
-            io.off("tillage:list")
-        }
-    }, [listTillages])
+    //     return () => {
+    //         io.off("tillage:new")
+    //         io.off("tillage:cover")
+    //         io.off("tillage:update")
+    //         io.off("tillage:list")
+    //     }
+    // }, [listTillages])
 
     return (
         <ProducerContext.Provider
