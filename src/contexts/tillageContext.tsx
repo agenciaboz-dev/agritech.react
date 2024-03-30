@@ -28,14 +28,14 @@ export const TillageContextProvider: React.FC<TillageContextProviderProps> = ({ 
     const addTillage = (newTillage: any) => {
         setTillages((tillages) => [...tillages, newTillage])
     }
-
+    
+    const replaceTillage = (tillage: Tillage) => {
+        setTillages((list) => [...list.filter((item) => item.id !== tillage.id), tillage])
+    }
     const updateTillages = (updatedTillages: any) => {
         setTillages(updatedTillages)
     }
 
-    const replaceTillage = (tillage: Tillage) => {
-        setTillages((list) => [...list.filter((item) => item.id !== tillage.id), tillage])
-    }
 
     useEffect(() => {
         io.on("tillage:new", (data: Tillage) => {
@@ -45,7 +45,7 @@ export const TillageContextProvider: React.FC<TillageContextProviderProps> = ({ 
             if (user?.producer?.id === data.producerId || user?.isAdmin) replaceTillage(data)
         })
         io.on("tillage:update", (data: Tillage) => {
-            if (user?.isAdmin || user?.id === data.id) replaceTillage(data)
+            if (user?.producer?.id === data.producerId || user?.isAdmin) replaceTillage(data)
         })
 
         return () => {
