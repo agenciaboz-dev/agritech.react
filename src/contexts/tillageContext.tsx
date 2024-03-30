@@ -28,7 +28,7 @@ export const TillageContextProvider: React.FC<TillageContextProviderProps> = ({ 
     const addTillage = (newTillage: any) => {
         setTillages((tillages) => [...tillages, newTillage])
     }
-    
+
     const replaceTillage = (tillage: Tillage) => {
         setTillages((list) => [...list.filter((item) => item.id !== tillage.id), tillage])
     }
@@ -36,22 +36,25 @@ export const TillageContextProvider: React.FC<TillageContextProviderProps> = ({ 
         setTillages(updatedTillages)
     }
 
-
     useEffect(() => {
-        io.on("tillage:new", (data: Tillage) => {
+        io.on("tillage:creation:success", (data: Tillage) => {
             if (user?.producer?.id === data.producerId || user?.isAdmin) addTillage(data)
         })
-        io.on("tillage:cover", (data: Tillage) => {
+        io.on("tillage:cover:success", (data: Tillage) => {
             if (user?.producer?.id === data.producerId || user?.isAdmin) replaceTillage(data)
         })
-        io.on("tillage:update", (data: Tillage) => {
+        io.on("tillage:update:success", (data: Tillage) => {
             if (user?.producer?.id === data.producerId || user?.isAdmin) replaceTillage(data)
+        })
+        io.on("tillage:list:success", (data: Tillage[]) => {
+            setTillages(data)
         })
 
         return () => {
-            io.off("tillage:new")
-            io.off("tillage:cover")
-            io.off("tillage:update")
+            io.off("tillage:creation:success")
+            io.off("tillage:cover:success")
+            io.off("tillage:update:success")
+            io.off("tillage:list:success")
         }
     }, [ListTillages])
     return (
