@@ -65,6 +65,9 @@ export const ReportProvider: React.FC<ReportsProviderProps> = ({ children }) => 
                 replaceReport(data)
             }
         })
+        io.on("report:list", (data: Report[]) => {
+            setListReports(data)
+        })
 
         return () => {
             io.off("report:new")

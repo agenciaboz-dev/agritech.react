@@ -49,11 +49,15 @@ export const TalhaoProvider: React.FC<TalhaoProviderProps> = ({ children }) => {
         io.on("talhao:cover", (data: Talhao) => {
             if (user?.producer?.id === data.tillage?.producerId || user?.isAdmin) replaceTalhao(data)
         })
+        io.on("talhao:list", (data: Talhao[]) => {
+            setList(data)
+        })
 
         return () => {
             io.off("talhao:new")
             io.off("talhao:update")
             io.off("talhao:cover")
+            io.off("talhao:list")
         }
     }, [listTalhao])
 
