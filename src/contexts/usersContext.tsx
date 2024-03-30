@@ -86,6 +86,12 @@ export const UsersProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         io.on("user:update", (data: User) => {
             if (user?.isAdmin || user?.id === data.id) replaceUser(data)
         })
+        io.on("users:list:approved", (data: User[]) => {
+            setListUsers(data)
+        })
+        io.on("users:list:pending", (data: User[]) => {
+            setPendingUsers(data)
+        })
 
         return () => {
             io.off("admin:list:update")
@@ -94,6 +100,8 @@ export const UsersProvider: React.FC<{ children: ReactNode }> = ({ children }) =
             io.off("user:approve")
             io.off("user:reject")
             io.off("user:update")
+            io.off("user:list:approved")
+            io.off("user:pending")
         }
     }, [listUsers])
 
