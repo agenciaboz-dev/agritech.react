@@ -45,35 +45,35 @@ export const ReportProvider: React.FC<ReportsProviderProps> = ({ children }) => 
     }, [])
 
     useEffect(() => {
-        io.on("report:new", (data: Report) => {
+        io.on("report:creation:success", (data: Report) => {
             if (user?.isAdmin || data.call?.kit?.employees?.find((employee) => employee.id == user?.employee?.id)) {
                 addReport(data)
             }
         })
-        io.on("report:approve", (data: Report) => {
+        io.on("report:approve:success", (data: Report) => {
             if (user?.isAdmin || data.call?.kit?.employees?.find((employee) => employee.id == user?.employee?.id)) {
                 replaceReport(data)
             }
         })
-        io.on("report:closed", (data: Report) => {
+        io.on("report:closed:success", (data: Report) => {
             if (user?.isAdmin || data.call?.kit?.employees?.find((employee) => employee.id == user?.employee?.id)) {
                 replaceReport(data)
             }
         })
-        io.on("report:update", (data: Report) => {
+        io.on("report:update:success", (data: Report) => {
             if (user?.isAdmin || data.call?.kit?.employees?.find((employee) => employee.id == user?.employee?.id)) {
                 replaceReport(data)
             }
         })
-        io.on("report:list", (data: Report[]) => {
+        io.on("report:list:success", (data: Report[]) => {
             setListReports(data)
         })
 
         return () => {
-            io.off("report:new")
-            io.off("report:approve")
-            io.off("report:closed")
-            io.off("report:update")
+            io.off("report:creation:success")
+            io.off("report:approve:success")
+            io.off("report:closed:success")
+            io.off("report:update:success")
         }
     }, [listReports])
 
