@@ -90,11 +90,15 @@ export const ProducerProvider: React.FC<ProducerProviderProps> = ({ children }) 
         io.on("tillage:update", (data: Tillage) => {
             if (user?.producer?.id === data.producerId || user?.isAdmin) replaceTillage(data)
         })
+        io.on("tillage:list", (data: Tillage[]) => {
+            setListTillages(data)
+        })
 
         return () => {
             io.off("tillage:new")
             io.off("tillage:cover")
             io.off("tillage:update")
+            io.off("tillage:list")
         }
     }, [listTillages])
 
