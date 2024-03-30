@@ -40,7 +40,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         setUser(user)
     }
 
-    io.on("user:update", (data: User) => {
+    io.on("user:update:success", (data: User) => {
         if (user?.id === data.id) setUser(data)
     })
 

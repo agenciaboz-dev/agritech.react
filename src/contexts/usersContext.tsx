@@ -77,19 +77,19 @@ export const UsersProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         io.on("user:delete", (data: User) => {
             if (user?.isAdmin || user?.id === data.id) removeUser(data)
         })
-        io.on("user:approve", (data: User) => {
+        io.on("user:approve:success", (data: User) => {
             if (user?.isAdmin || user?.id === data.id) replaceUser(data)
         })
-        io.on("user:reject", (data: User) => {
+        io.on("user:reject:success", (data: User) => {
             if (user?.isAdmin || user?.id === data.id) replaceUser(data)
         })
-        io.on("user:update", (data: User) => {
+        io.on("user:update:success", (data: User) => {
             if (user?.isAdmin || user?.id === data.id) replaceUser(data)
         })
-        io.on("users:list:approved", (data: User[]) => {
+        io.on("users:list:success", (data: User[]) => {
             setListUsers(data)
         })
-        io.on("users:list:pending", (data: User[]) => {
+        io.on("user:pendingApprovalList:success", (data: User[]) => {
             setPendingUsers(data)
         })
 
@@ -97,11 +97,11 @@ export const UsersProvider: React.FC<{ children: ReactNode }> = ({ children }) =
             io.off("admin:list:update")
             io.off("admin:new:user")
             io.off("user:delete")
-            io.off("user:approve")
-            io.off("user:reject")
-            io.off("user:update")
-            io.off("user:list:approved")
-            io.off("user:pending")
+            io.off("user:approve:success")
+            io.off("user:reject:success")
+            io.off("user:update:success")
+            io.off("users:list:success")
+            io.off("user:pendingApprovalList:success")
         }
     }, [listUsers])
 
