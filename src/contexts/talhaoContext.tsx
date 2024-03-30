@@ -46,7 +46,7 @@ export const TalhaoProvider: React.FC<TalhaoProviderProps> = ({ children }) => {
         io.on("talhao:update:success", (data: Talhao) => {
             if (user?.producer?.id === data.tillage?.producerId || user?.isAdmin) replaceTalhao(data)
         })
-        io.on("talhao:cover", (data: Talhao) => {
+        io.on("talhao:cover:success", (data: Talhao) => {
             if (user?.producer?.id === data.tillage?.producerId || user?.isAdmin) replaceTalhao(data)
         })
         io.on("talhao:list:success", (data: Talhao[]) => {
