@@ -12,6 +12,7 @@ import { NewLavoura } from "../../../../definitions/newTillage"
 import { useFormikContext } from "formik"
 import leafletImage from "leaflet-image"
 import { ButtonAgritech } from "../../../../components/ButtonAgritech"
+import leaflet from "../../../../api/leaflet"
 
 interface GeolocalProps {
     infoCep: CepAbertoApi | undefined
@@ -23,9 +24,22 @@ interface GeolocalProps {
     setCurrentStep: React.Dispatch<React.SetStateAction<number>>
 }
 
+import L from "leaflet"
+import icon from "leaflet/dist/images/marker-icon.png"
+import iconShadow from "leaflet/dist/images/marker-shadow.png"
+
+let DefaultIcon = L.icon({
+    iconUrl: icon,
+    shadowUrl: iconShadow,
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+})
+
+L.Marker.prototype.options.icon = DefaultIcon
+
 export const Geolocal: React.FC<GeolocalProps> = ({ setCurrentStep, origin, coordinates, setCoordinates }) => {
-    const mapboxStyleId = import.meta.env.VITE_STYLE
-    const mapboxToken = import.meta.env.VITE_API_TOKEN
+    const mapboxStyleId = leaflet.style
+    const mapboxToken = leaflet.TOKEN
 
     const { setFieldValue } = useFormikContext<NewLavoura>()
 
@@ -41,12 +55,16 @@ export const Geolocal: React.FC<GeolocalProps> = ({ setCurrentStep, origin, coor
     }
 
     const captureMapImage = () => {
+        console.log("desgraça 1")
         if (mapRef.current) {
+            console.log("desgraça 2")
             leafletImage(mapRef.current, function (err, canvas) {
                 if (err) {
+                    console.log("desgraça 2.5")
                     console.log(err)
                     return
                 }
+                console.log("desgraça 3")
                 const imageUrl = canvas.toDataURL()
                 console.log(imageUrl)
                 setFieldValue("cover", imageUrl)
@@ -78,16 +96,12 @@ export const Geolocal: React.FC<GeolocalProps> = ({ setCurrentStep, origin, coor
 
     return (
         <Box sx={{ width: "100%", height: "100%", zIndex: 0 }}>
-            <MapContainer center={origin} zoom={16} scrollWheelZoom={true} style={{ height: "100%" }} ref={mapRef}>
-                <TileLayer
-                    url={`https://api.mapbox.com/styles/v1/${mapboxStyleId}/tiles/{z}/{x}/{y}?access_token=${mapboxToken}`}
-                />
+            <MapContainer center={origin} zoom={16} scrollWheelZoom={true} style={{ height: "100%" }} ref={mapRef} preferCanvas>
+                <TileLayer url={`https://api.mapbox.com/styles/v1/${mapboxStyleId}/tiles/{z}/{x}/{y}?access_token=${mapboxToken}`} />
                 {coordinates.map((coord, index) => (
                     <Marker key={index} position={coord} />
                 ))}
-                {coordinates.length > 0 && (
-                    <Polygon positions={coordinates} color="blue" fillColor="lightblue" fillOpacity={0.5} />
-                )}
+                {coordinates.length > 0 && <Polygon positions={coordinates} color="blue" fillColor="lightblue" fillOpacity={0.5} />}
 
                 <MapClickHandler />
             </MapContainer>

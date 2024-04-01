@@ -11,6 +11,7 @@ import { colors } from "../../../style/colors"
 import { useFormikContext } from "formik"
 import leafletImage from "leaflet-image"
 import { ButtonAgritech } from "../../../components/ButtonAgritech"
+import leaflet from "../../../api/leaflet"
 
 interface GeolocalTalhaoProps {
     infoCep: CepAbertoApi | undefined
@@ -28,8 +29,9 @@ interface MapRefType {
     }
 }
 export const GeolocalTalhao: React.FC<GeolocalTalhaoProps> = ({ setCurrentStep, origin, coordinates, setCoordinates }) => {
-    const mapboxStyleId = import.meta.env.VITE_STYLE
-    const mapboxToken = import.meta.env.VITE_API_TOKEN
+    const mapboxStyleId = leaflet.style
+    const mapboxToken = leaflet.TOKEN
+    // console.log(`https://api.mapbox.com/styles/v1/${mapboxStyleId}/tiles/{z}/{x}/{y}?access_token=${mapboxToken}`)
 
     const { setFieldValue } = useFormikContext<NewTalhao>()
 
@@ -83,15 +85,11 @@ export const GeolocalTalhao: React.FC<GeolocalTalhaoProps> = ({ setCurrentStep, 
     return (
         <Box sx={{ width: "100%", height: "100%", zIndex: 0 }}>
             <MapContainer center={origin} zoom={16} scrollWheelZoom={true} style={{ height: "100%" }} ref={mapRef}>
-                <TileLayer
-                    url={`https://api.mapbox.com/styles/v1/${mapboxStyleId}/tiles/{z}/{x}/{y}?access_token=${mapboxToken}`}
-                />
+                <TileLayer url={`https://api.mapbox.com/styles/v1/${mapboxStyleId}/tiles/{z}/{x}/{y}?access_token=${mapboxToken}`} />
                 {coordinates.map((coord, index) => (
                     <Marker key={index} position={coord} />
                 ))}
-                {coordinates.length > 0 && (
-                    <Polygon positions={coordinates} color="blue" fillColor="lightblue" fillOpacity={0.5} />
-                )}
+                {coordinates.length > 0 && <Polygon positions={coordinates} color="blue" fillColor="lightblue" fillOpacity={0.5} />}
 
                 <MapClickHandler />
             </MapContainer>
