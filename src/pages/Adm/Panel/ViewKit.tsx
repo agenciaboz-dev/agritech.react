@@ -188,7 +188,7 @@ export const ViewKit: React.FC<ViewKitProps> = ({}) => {
                                     >
                                         {kit !== null ? kit?.name : "Kit"}
                                     </p>
-                                    {!edit ? (
+                                    {!edit && user?.isAdmin ? (
                                         <Button
                                             type="button"
                                             size="small"
@@ -212,26 +212,28 @@ export const ViewKit: React.FC<ViewKitProps> = ({}) => {
                                             </Box>
                                         </Button>
                                     ) : (
-                                        <Button
-                                            type={"submit"}
-                                            size="small"
-                                            variant="contained"
-                                            sx={{
-                                                alignItems: "center",
-                                                gap: "1vw",
-                                                backgroundColor: colors.primary,
-                                                textTransform: "none",
-                                                borderRadius: "5vw",
-                                                fontSize: "3vw",
-                                                width: "fit-content",
-                                                color: edit ? colors.text.white : colors.text.black,
-                                            }}
-                                            // onClick={}
-                                        >
-                                            <Box sx={{ flexDirection: "row", alignItems: "center", gap: "2vw" }}>
-                                                <p style={{ fontSize: "3.5vw" }}>Salvar Informações</p>
-                                            </Box>
-                                        </Button>
+                                        user?.isAdmin && (
+                                            <Button
+                                                type={"submit"}
+                                                size="small"
+                                                variant="contained"
+                                                sx={{
+                                                    alignItems: "center",
+                                                    gap: "1vw",
+                                                    backgroundColor: colors.primary,
+                                                    textTransform: "none",
+                                                    borderRadius: "5vw",
+                                                    fontSize: "3vw",
+                                                    width: "fit-content",
+                                                    color: edit ? colors.text.white : colors.text.black,
+                                                }}
+                                                // onClick={}
+                                            >
+                                                <Box sx={{ flexDirection: "row", alignItems: "center", gap: "2vw" }}>
+                                                    <p style={{ fontSize: "3.5vw" }}>Salvar Informações</p>
+                                                </Box>
+                                            </Button>
+                                        )
                                     )}
                                 </Box>
                                 <Box
