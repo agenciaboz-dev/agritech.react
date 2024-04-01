@@ -471,7 +471,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                                 scrollButtons="auto"
                                 allowScrollButtonsMobile
                             >
-                                <Tab sx={{ ...tabStyle, width: "50%" }} value="history" label="Histórico" />
+                                {/* <Tab sx={{ ...tabStyle, width: "50%" }} value="history" label="Histórico" /> */}
                                 <Tab sx={{ ...tabStyle, width: "50%" }} value="calls" label="Chamados" />
                             </Tabs>
                             {tab === "calls" && selectedTalhao?.calls.length === 0 ? (
@@ -553,24 +553,24 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                                                         />
                                                     )}
                                                 />
-                                                        <DemoItem label="Previsão da visita">
-                                                                <MobileDatePicker
-                                                                    sx={{ ...textField }}
-                                                                    format="DD/MM/YYYY"
-                                                                    value={pickDate}
-                                                                    onChange={(newDate) => {
-                                                                        if (newDate !== null) {
-                                                                            setPickDate(newDate)
-                                                                        }
-                                                                    }}
-                                                                    timezone="system"
-                                                                    disabled={selectedKit === null ? true : false}
-                                                                    slots={{
-                                                                        day: ServerDay,
-                                                                    }}
-                                                                    disablePast
-                                                                />
-                                                        </DemoItem>
+                                                <DemoItem label="Previsão da visita">
+                                                    <MobileDatePicker
+                                                        sx={{ ...textField }}
+                                                        format="DD/MM/YYYY"
+                                                        value={pickDate}
+                                                        onChange={(newDate) => {
+                                                            if (newDate !== null) {
+                                                                setPickDate(newDate)
+                                                            }
+                                                        }}
+                                                        timezone="system"
+                                                        disabled={selectedKit === null ? true : false}
+                                                        slots={{
+                                                            day: ServerDay,
+                                                        }}
+                                                        disablePast
+                                                    />
+                                                </DemoItem>
                                                 <Box sx={{ flexDirection: "row", gap: "2vw", color: colors.text.white }}>
                                                     <p style={{ fontSize: "4vw" }}>Custo por hectare: </p>
                                                     {"  "}

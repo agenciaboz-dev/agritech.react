@@ -46,12 +46,6 @@ export const useNavigationList = () => {
                 location: "/adm/reports",
                 icon: <CiViewTable style={{ width: "7vw", height: "6vw", paddingLeft: 0, paddingRight: 0 }} />,
             },
-            {
-                id: 6,
-                title: "Histórico",
-                location: "/adm/history",
-                icon: <img src={Timer} style={{ width: "6vw" }} />,
-            },
         ],
         bottom: [
             {

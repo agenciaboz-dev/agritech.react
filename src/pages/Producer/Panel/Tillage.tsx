@@ -18,7 +18,7 @@ import { LogsCard } from "../../TillageDetails/LogsCard"
 import { content, openCall, progress } from "../../../tools/contenModals"
 import { DialogConfirm } from "../../../components/DialogConfirm"
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
-import {  MobileDatePicker, ptBR } from "@mui/x-date-pickers"
+import { MobileDatePicker, ptBR } from "@mui/x-date-pickers"
 import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo"
 import { CurrencyText } from "../../../components/CurrencyText"
 import { textField, input } from "../../../style/input"
@@ -261,8 +261,8 @@ export const Tillage: React.FC<TillageProps> = ({}) => {
                                 scrollButtons="auto"
                                 allowScrollButtonsMobile
                             >
-                                <Tab sx={{ ...tabStyle, width: "50%" }} value="history" label="Histórico" />
-                                <Tab sx={{ ...tabStyle, width: "50%" }} value="calls" label="Chamados" />
+                                {/* <Tab sx={{ ...tabStyle, width: "50%" }} value="history" label="Histórico" /> */}
+                                <Tab sx={{ ...tabStyle, width: "100%" }} value="calls" label="Chamados" />
                             </Tabs>
                             {findTillage?.talhao?.length === 0 && tab === "calls" && (
                                 <p>É necessário ter talhões cadastrados para abrir chamados.</p>
@@ -328,20 +328,20 @@ export const Tillage: React.FC<TillageProps> = ({}) => {
                                     <Box sx={{ gap: "3vw" }}>
                                         {user?.isAdmin && (
                                             <Box sx={{ gap: "2vw" }}>
-                                                        <DemoItem label="Previsão da visita">
-                                                                <MobileDatePicker
-                                                                    sx={{ ...textField }}
-                                                                    format="DD/MM/YYYY"
-                                                                    value={pickDate}
-                                                                    onChange={(newDate) => {
-                                                                        if (newDate !== null) {
-                                                                            setPickDate(newDate)
-                                                                        }
-                                                                    }}
-                                                                    timezone="system"
-                                                                    disablePast
-                                                                />
-                                                        </DemoItem>
+                                                <DemoItem label="Previsão da visita">
+                                                    <MobileDatePicker
+                                                        sx={{ ...textField }}
+                                                        format="DD/MM/YYYY"
+                                                        value={pickDate}
+                                                        onChange={(newDate) => {
+                                                            if (newDate !== null) {
+                                                                setPickDate(newDate)
+                                                            }
+                                                        }}
+                                                        timezone="system"
+                                                        disablePast
+                                                    />
+                                                </DemoItem>
                                                 <Box sx={{ flexDirection: "row", gap: "2vw", color: colors.text.white }}>
                                                     <p style={{ fontSize: "4vw" }}>Custo por hectare: </p>
                                                     {"  "}

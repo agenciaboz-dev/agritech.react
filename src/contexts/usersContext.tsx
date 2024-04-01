@@ -77,10 +77,13 @@ export const UsersProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         io.on("user:delete", (data: User) => {
             if (user?.isAdmin || user?.id === data.id) removeUser(data)
         })
-        io.on("user:approve:success", (data: User) => {
-            if (user?.isAdmin || user?.id === data.id) replaceUser(data)
+        io.on("application:status:approved", (data: User) => {
+            if (user?.isAdmin || user?.id === data.id) {
+                // replaceUser(data)
+                addUser(data)
+            }
         })
-        io.on("user:reject:success", (data: User) => {
+        io.on("application:status:rejected", (data: User) => {
             if (user?.isAdmin || user?.id === data.id) replaceUser(data)
         })
         io.on("user:update:success", (data: User) => {
@@ -97,8 +100,8 @@ export const UsersProvider: React.FC<{ children: ReactNode }> = ({ children }) =
             io.off("admin:list:update")
             io.off("admin:new:user")
             io.off("user:delete")
-            io.off("user:approve:success")
-            io.off("user:reject:success")
+            io.off("application:status:approved")
+            io.off("application:status:rejected")
             io.off("user:update:success")
             io.off("users:list:success")
             io.off("user:pendingApprovalList:success")

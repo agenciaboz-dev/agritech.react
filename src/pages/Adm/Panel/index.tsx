@@ -88,10 +88,14 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                     </p>
                 </Box>
                 <Box style={{ flexDirection: "row", gap: "4vw" }}>
-                    <SearchIcon sx={{ color: "#fff", width: isMobile ? "8vw" : "2vw", height: isMobile ? "8vw" : "2vw", cursor: "pointer" }} />
                     <Badge badgeContent={recents?.length} color="success">
                         <NotificationsNoneIcon
-                            sx={{ color: "#fff", width: isMobile ? "8vw" : "2vw", height: isMobile ? "8vw" : "2vw", cursor: "pointer" }}
+                            sx={{
+                                color: "#fff",
+                                width: isMobile ? "8vw" : "2vw",
+                                height: isMobile ? "8vw" : "2vw",
+                                cursor: "pointer",
+                            }}
                             onClick={() => {
                                 notificationDrawer.toggle()
                             }}
@@ -99,7 +103,12 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                     </Badge>
                     <Avatar
                         src={user.image}
-                        style={{ color: "#fff", width: isMobile ? "8vw" : "2vw", height: isMobile ? "8vw" : "2vw", cursor: "pointer" }}
+                        style={{
+                            color: "#fff",
+                            width: isMobile ? "8vw" : "2vw",
+                            height: isMobile ? "8vw" : "2vw",
+                            cursor: "pointer",
+                        }}
                         onClick={() => {
                             menu.toggle()
                             console.log("abriu")
@@ -127,7 +136,13 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                         padding: isMobile ? "1vw 3vw 3vw" : "1vw 1vw 1.5vw",
                     }}
                 >
-                    <p style={{ color: colors.text.white, fontSize: isMobile ? "5vw" : "1.5rem", fontFamily: "MalgunGothic2" }}>
+                    <p
+                        style={{
+                            color: colors.text.white,
+                            fontSize: isMobile ? "5vw" : "1.5rem",
+                            fontFamily: "MalgunGothic2",
+                        }}
+                    >
                         Configuração de Kits
                     </p>
                     <IconButton onClick={() => navigate("/adm/settings-kit")}>
@@ -163,7 +178,9 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                                 {listEmployee?.length !== 0 &&
                                     listEmployee
                                         ?.slice(0, 3)
-                                        .map((user) => <CardUser user={user} key={user.id} location={`/adm/calendar/${user.id}`} />)}
+                                        .map((user) => (
+                                            <CardUser user={user} key={user.id} location={`/adm/calendar/${user.id}`} />
+                                        ))}
                             </Box>
                             <Box
                                 style={{
@@ -233,7 +250,9 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                                 {listProducer?.length !== 0 &&
                                     listProducer
                                         ?.slice(0, 3)
-                                        .map((user) => <CardUser user={user} key={user.id} location={`/adm/profile/${user.id}`} />)}
+                                        .map((user) => (
+                                            <CardUser user={user} key={user.id} location={`/adm/profile/${user.id}`} />
+                                        ))}
                             </Box>
                             <Box
                                 style={{
