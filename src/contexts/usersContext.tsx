@@ -43,16 +43,16 @@ export const UsersProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         }
     }, [listUsers])
 
-    useEffect(() => {
-        // Atualiza a lista quando um novo usuário é adicionado à lista de pendentes e transmitido via broadcast
-        const handleNewUserBroadcast = (newUser: User) => {
-            setPendingUsers((prevUsers) => [...prevUsers, newUser])
-        }
-        io.on("admin:list:update", handleNewUserBroadcast)
-        return () => {
-            io.off("admin:list:update", handleNewUserBroadcast)
-        }
-    }, [pendingUsers])
+    // useEffect(() => {
+    //     // Atualiza a lista quando um novo usuário é adicionado à lista de pendentes e transmitido via broadcast
+    //     const handleNewUserBroadcast = (newUser: User) => {
+    //         setPendingUsers((prevUsers) => [...prevUsers, newUser])
+    //     }
+    //     io.on("admin:list:update", handleNewUserBroadcast)
+    //     return () => {
+    //         io.off("admin:list:update", handleNewUserBroadcast)
+    //     }
+    // }, [pendingUsers])
 
     useEffect(() => {
         // Atualiza a lista completa de usuários pendentes

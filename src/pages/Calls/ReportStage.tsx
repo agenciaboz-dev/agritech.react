@@ -107,7 +107,6 @@ export const ReportStage: React.FC<ReportStageProps> = ({ user }) => {
             // duration: durationTimestamp.toString(),
         }
 
-        console.log("porr1")
         io.emit("stage:new", data, 2)
         setLoading(true)
         console.log({ STEP1: data })

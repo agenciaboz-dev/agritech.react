@@ -420,7 +420,6 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                                     />
                                 </Box>
                                         <DemoItem label={"Previsão da visita"}>
-                                            <ThemeProvider theme={newTheme}>
                                                 <MobileDatePicker
                                                     sx={{ ...textField }}
                                                     format="DD/MM/YYYY"
@@ -437,7 +436,6 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                                                     }}
                                                     disablePast
                                                 />
-                                            </ThemeProvider>
                                         </DemoItem>
                             </Box>
                         )}

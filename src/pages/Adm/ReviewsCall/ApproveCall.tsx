@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { Accordion, Box, Button, Radio, TextField } from "@mui/material"
+import { Accordion, Badge, Box, Button, Radio, TextField } from "@mui/material"
 import { Avatar } from "@files-ui/react"
 import GeoImage from "../../../assets/geo.svg"
 import { Header } from "../../../components/Header"
@@ -20,13 +20,14 @@ import { useIo } from "../../../hooks/useIo"
 import { useSnackbar } from "burgos-snackbar"
 import { useUsers } from "../../../hooks/useUsers"
 import { textField } from "../../../style/input"
-import { MobileDatePicker, ptBR } from "@mui/x-date-pickers"
+import { MobileDatePicker, PickersDay, ptBR } from "@mui/x-date-pickers"
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo"
-import dayjs from "dayjs"
+import dayjs, { Dayjs } from "dayjs"
 import MaskedInputNando from "../../../components/MaskedNando"
 import { useCurrencyMask } from "burgos-masks"
 import { unmaskCurrency } from "../../../hooks/unmaskNumber"
+import { Indicator } from "@mantine/core"
 
 interface ApproveCallProps {}
 
@@ -65,6 +66,9 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
     const kitsActived = listKits.filter((item) => item.active)
     console.log(tillageSelected)
     const [hectare, setHectare] = useState("")
+    const [pickDate, setPickDate] = useState<Dayjs | null>(null)
+    const [selectedKit, setSelectedKit] = useState<Kit | null>(null)
+    const [kitId, setKitId] = useState<number>(0)
 
     useEffect(() => {
         setHectare(findCall?.tillage?.hectarePrice || "")
@@ -81,11 +85,15 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
         id: Number(callid),
         kitId: findCall?.kitId || 0,
         hectarePrice: findCall?.tillage?.hectarePrice || "",
-        forecast: findCall?.forecast || "",
+        forecast: new Date(Number(findCall?.forecast) || 0).toLocaleDateString("pt-br") || "",
     }
     const approveCall = (values: ApprovedCall) => {
         console.log(values)
-        const data = { ...values, hectarePrice: unmaskCurrency(values.hectarePrice || "") }
+        const data = {
+            ...values,
+            hectarePrice: unmaskCurrency(values.hectarePrice || ""),
+            forecast: dayjs(pickDate).valueOf().toString(),
+        }
         io.emit("call:approve", data)
         setLoading(true)
     }
@@ -111,6 +119,52 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
     useEffect(() => {
         if (kitsActived.length == 0) io.emit("kit:list")
     }, [listKits])
+
+    const ServerDay = (props: any) => {
+        const { day, outsideCurrentMonth, ...other } = props
+
+        const currentDate = dayjs()
+        const isToday = day.isSame(currentDate, "day")
+
+        const isFutureDate = day.isAfter(currentDate, "day")
+        if (!isFutureDate && !isToday) {
+            return <PickersDay {...other} outsideCurrentMonth={outsideCurrentMonth} day={day} />
+        }
+
+        const callsForDay = selectedKit?.calls?.filter((call: Call) => {
+            const callDate = new Date(Number(call.forecast))
+            return (
+                callDate.getDate() === day.date() &&
+                callDate.getMonth() === day.month() &&
+                callDate.getFullYear() === day.year()
+            )
+        })
+
+        const areaDayCalls =
+            callsForDay
+                ?.map((item: any) => Number(item.talhao?.area))
+                .reduce((prev: number, current: number) => prev + current, 0) || 0
+
+        const totalArea = areaDayCalls + Number(findCall?.talhao?.area)
+
+        const indicatorColor =
+            callsForDay &&
+            callsForDay.length > 0 &&
+            selectedKit &&
+            selectedKit.hectareDay &&
+            (totalArea <= selectedKit.hectareDay ? "#88A486" : totalArea > selectedKit.hectareDay && colors.delete)
+
+        return (
+            <Badge
+                key={day.toString()}
+                overlap="circular"
+                badgeContent={<Indicator color={indicatorColor || "#88A486"} size={7} offset={5} />}
+            >
+                <PickersDay {...other} outsideCurrentMonth={outsideCurrentMonth} day={day} />
+            </Badge>
+        )
+    }
+
     return (
         <Box
             sx={{
@@ -195,11 +249,24 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
                                 <Form>
                                     <Box sx={{ gap: "5vw" }}>
                                         <Box sx={{ gap: "3vw" }}>
-                                            <TextField
-                                                label="Previsão da visita"
-                                                sx={{ ...textField }}
-                                                value={dateForecast}
-                                            />
+                                            <DemoItem label={"Previsão da visita"}>
+                                                <MobileDatePicker
+                                                    sx={{ ...textField }}
+                                                    format="DD/MM/YYYY"
+                                                    value={pickDate}
+                                                    onChange={(newDate) => {
+                                                        if (newDate !== null) {
+                                                            setPickDate(newDate)
+                                                        }
+                                                    }}
+                                                    timezone="system"
+                                                    disabled={selectedKit === null ? true : false}
+                                                    slots={{
+                                                        day: ServerDay,
+                                                    }}
+                                                    disablePast
+                                                />
+                                            </DemoItem>
                                             <TextField
                                                 label={"Custo por hectare"}
                                                 name="hectarePrice"
@@ -218,7 +285,7 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
                                         </Box>
 
                                         <TitleComponents
-                                            title="Escolha o kit para enviar"
+                                            title="Escolha o kit responsável"
                                             button
                                             textButton="Salvar Kit"
                                             submit
@@ -240,6 +307,8 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
                                                             checked={values.kitId === kit.id}
                                                             onChange={() => {
                                                                 setFieldValue("kitId", kit.id)
+                                                                setSelectedKit(kit)
+                                                                if (kit.id) setKitId(kit.id)
                                                                 handleChange
                                                             }}
                                                         />
