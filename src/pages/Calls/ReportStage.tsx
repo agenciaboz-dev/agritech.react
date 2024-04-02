@@ -151,7 +151,7 @@ export const ReportStage: React.FC<ReportStageProps> = ({ user }) => {
         }
 
         if (report?.stage === 3) {
-            navigate(user.isAdmin ? `/adm/call/${callid}/laudo/${reportid}` : `/employee/call/${callid}/laudo`)
+            navigate(user.isAdmin ? `/adm/call/${callid}/laudo/${reportid}` : `/employee/call/${callid}/laudo/${report.id}`)
         }
 
         io.on("stage:new", (report: Report) => {

@@ -500,7 +500,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                                         <Box gap={"2vw"}>
                                             <Box sx={{}}>
                                                 <p>{new Date(Number(report?.date)).toLocaleDateString("pt-br")}</p>
-                                                <Box
+                                                {/* <Box
                                                     sx={{
                                                         flexDirection: "row",
                                                         justifyContent: "space-between",
@@ -523,7 +523,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                                                             )}{" "}
                                                         </p>
                                                     )}
-                                                </Box>
+                                                </Box> */}
                                             </Box>
                                             <TextField
                                                 label="Contratante"

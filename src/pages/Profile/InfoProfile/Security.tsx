@@ -67,9 +67,9 @@ export const Security: React.FC<SecurityProps> = ({ values }) => {
                 open={open}
                 setOpen={setOpen}
                 data={{
-                    title: "Tem certeza que deseja excluir sua conta? ",
+                    title: "Tem certeza que deseja excluir a conta? ",
                     submitTitle: "Sim, excluir",
-                    content: "Ao excluir conta você perderá todos os seus dados e acessos. Esse processo é irreversível.",
+                    content: "Ao excluir a conta você perderá todos os dados e acessos. Esse processo é irreversível.",
                     cancelTitle: "Não, cancelar",
                 }}
                 click={() => {

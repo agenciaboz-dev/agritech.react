@@ -476,7 +476,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                             </Tabs>
                             {tab === "calls" && selectedTalhao?.calls.length === 0 ? (
                                 <OpenCallBox
-                                    click={user?.isAdmin && callStatus ? handleOpenApprove : handleClickOpen}
+                                    click={() => navigate("/adm/call/new")}
                                     data={content}
                                     callStatus={callStatus}
                                     call={selectedTalhao.calls[0]}
@@ -528,7 +528,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                             )}
                             {/* {tab === "history" && <p>Nenhum Registro</p>} */}
 
-                            <DialogConfirm
+                            {/* <DialogConfirm
                                 user={user}
                                 open={open}
                                 setOpen={setOpen}
@@ -587,8 +587,8 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                                     setOpen(false)
                                     handleSubmit(initialValues)
                                 }}
-                            />
-                            {user?.isAdmin && (
+                            /> */}
+                            {/* {user?.isAdmin && (
                                 <DialogConfirm
                                     user={user}
                                     open={openApproved}
@@ -596,12 +596,12 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                                     data={approveCall}
                                     click={() => {
                                         setVariant(true)
-                                        setOpenApproved(false)
+                                        // setOpenApproved(false)
                                         console.log("cria")
-                                        navigate(`/adm/calls/${call?.id}`)
+                                        navigate(`/call/new`)
                                     }}
                                 />
-                            )}
+                            )} */}
                         </>
                     )}
                     <IconButton

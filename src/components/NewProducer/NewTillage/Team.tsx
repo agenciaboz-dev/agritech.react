@@ -17,8 +17,8 @@ export const Team: React.FC<TeamProps> = ({ data, handleChange, producerName }) 
                 name="owner"
                 value={data.owner}
                 sx={textField}
-                InputProps={{ readOnly: true }}
-                // onChange={handleChange}
+                // InputProps={{ readOnly: true }}
+                onChange={handleChange}
             />
             <TextField label={"CEO"} name="ceo" value={data.ceo} sx={textField} onChange={handleChange} />
             <TextField

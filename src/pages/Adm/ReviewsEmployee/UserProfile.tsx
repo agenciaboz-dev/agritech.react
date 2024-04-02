@@ -214,7 +214,7 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
             >
                 <Box sx={{ flexDirection: "row", justifyContent: "space-between", width: "100%", alignItems: "center" }}>
                     <p style={{ fontSize: "4.5vw", fontFamily: "MalgunGothic2", textAlign: "left" }}>Informações Pessoais</p>
-                    {view && userSelect[0].producer && (
+                    {view && userSelect[0] && (
                         <Button
                             variant="contained"
                             size="small"

@@ -269,7 +269,7 @@ export const Tillage: React.FC<TillageProps> = ({}) => {
                             )}
                             {tab === "calls" && selectedTalhao?.calls.length === 0 ? (
                                 <OpenCallBox
-                                    click={handleClickOpen}
+                                    click={() => navigate("/call/new")}
                                     data={content}
                                     callStatus={callStatus}
                                     call={selectedTalhao.calls[0]}
@@ -319,7 +319,7 @@ export const Tillage: React.FC<TillageProps> = ({}) => {
 
                             {/* {tab === "history" && <p>Nenhum Registro</p>} */}
 
-                            <DialogConfirm
+                            {/* <DialogConfirm
                                 user={user}
                                 open={open}
                                 setOpen={setOpen}
@@ -358,7 +358,7 @@ export const Tillage: React.FC<TillageProps> = ({}) => {
                                     setOpen(false)
                                     handleSubmit(initialValues)
                                 }}
-                            />
+                            /> */}
                         </>
                     )}
                     <IconButton
