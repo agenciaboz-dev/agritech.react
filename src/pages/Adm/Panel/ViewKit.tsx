@@ -157,7 +157,7 @@ export const ViewKit: React.FC<ViewKitProps> = ({}) => {
                                     flexDirection: "row",
                                 }}
                             >
-                                <Header back location={user?.isAdmin ? `/adm/settings-kit/13` : "/employee/settings-kit"} />
+                                <Header back location={user?.isAdmin ? `/adm/settings-kit` : "/employee/settings-kit"} />
                             </Box>
                             <Box
                                 style={{

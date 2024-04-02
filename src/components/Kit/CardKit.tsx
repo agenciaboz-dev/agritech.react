@@ -51,10 +51,7 @@ export const CardKit: React.FC<CardKitProps> = ({ kit }) => {
     }
 
     return (
-        <Box
-            sx={{ padding: "3vw 1vw", flexDirection: "row", alignItems: "center", borderBottom: "1px solid #88A486" }}
-            onClick={() => navigate(user?.isAdmin ? `/adm/settings-kit/${kit.id}` : `/employee/settings-kit/${kit.id}`)}
-        >
+        <Box sx={{ padding: "3vw 1vw", flexDirection: "row", alignItems: "center", borderBottom: "1px solid #88A486" }}>
             <FormGroup sx={{ width: "90%" }}>
                 <FormControlLabel
                     checked={kit.active}
@@ -78,7 +75,10 @@ export const CardKit: React.FC<CardKitProps> = ({ kit }) => {
                     }
                 />
             </FormGroup>
-            <ArrowForwardIos fontSize="small" />
+            <ArrowForwardIos
+                fontSize="small"
+                onClick={() => navigate(user?.isAdmin ? `/adm/settings-kit/${kit.id}` : `/employee/settings-kit/${kit.id}`)}
+            />
         </Box>
     )
 }

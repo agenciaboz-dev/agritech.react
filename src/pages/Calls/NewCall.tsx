@@ -180,6 +180,27 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
         )
     }
 
+    // Função para verificar se um dia deve ser desabilitado
+    const shouldDisableDate = (day: dayjs.Dayjs) => {
+        const callsForDay = selectedKit?.calls?.filter((call: Call) => {
+            const callDate = new Date(Number(call.forecast))
+            return (
+                callDate.getDate() === day.date() &&
+                callDate.getMonth() === day.month() &&
+                callDate.getFullYear() === day.year()
+            )
+        })
+       
+        const areaDayCalls =
+            callsForDay
+                ?.map((item: any) => Number(item.talhao?.area))
+                .reduce((prev: number, current: number) => prev + current, 0) || 0
+
+        const totalArea = areaDayCalls + Number(selectedTalhao?.area)
+        // console.log(selectedKit?.hectareDay)
+        // Retorna true se o total da área para o dia exceder o limite diário
+        return selectedKit?.hectareDay ? totalArea > selectedKit?.hectareDay : false
+    }
     useEffect(() => {
         console.log(
             selectedProducer?.tillage?.length !== 0
@@ -317,6 +338,7 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                                     timezone="system"
                                     localeText={ptBR.components.MuiLocalizationProvider.defaultProps.localeText}
                                     disablePast
+                                    shouldDisableDate={shouldDisableDate}
                                 />
                             </DemoItem>
                         )}
