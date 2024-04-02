@@ -67,5 +67,17 @@ export const IoProvider: React.FC<IoProviderProps> = ({ children }) => {
         })
     }
 
+    useEffect(() => {
+        if (socketRef.current) {
+            socketRef.current.onAny((event, args) => {
+                console.log(event)
+            })
+
+            return () => {
+                socketRef.current?.offAny()
+            }
+        }
+    }, [socketRef.current])
+
     return <IoContext.Provider value={{ io: socketRef.current as Socket }}>{children}</IoContext.Provider>
 }
