@@ -8,6 +8,9 @@ import { textField } from "../../style/input"
 import { useRelationship } from "../../hooks/useRelationship"
 import MaskedInputNando from "../../components/MaskedNando"
 import { useCnpjMask, useCpfMask } from "burgos-masks"
+import dayjs, { Dayjs } from "dayjs"
+import { DemoItem } from "@mui/x-date-pickers/internals/demo"
+import { MobileDatePicker, ptBR } from "@mui/x-date-pickers"
 
 interface StepOneProps {
     data: SignupValues
@@ -16,9 +19,11 @@ interface StepOneProps {
     typeUser: string
     image: File | undefined
     setImage: React.Dispatch<React.SetStateAction<File | undefined>>
+    pickDate: Dayjs | null
+    setPickDate: React.Dispatch<React.SetStateAction<dayjs.Dayjs | null>>
 }
 
-export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, image, setImage }) => {
+export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, image, setImage, pickDate, setPickDate }) => {
     const gender = useGender()
     const typeRelationship = useRelationship()
 
@@ -109,21 +114,20 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, image, set
                         />
                     </>
                 )}
-                <Box sx={{ flexDirection: "row", gap: "2vw" }}>
-                    <TextField
-                        label={"Data de Nascimento"}
-                        name="birth"
-                        value={data.birth}
-                        sx={{ ...textField, width: "100%" }}
-                        InputProps={{
-                            inputComponent: MaskedInput,
-                            inputProps: { mask: "00/00/0000" },
-                            inputMode: "numeric",
-                        }}
-                        onChange={handleChange}
-                        required
-                    />
-                </Box>
+                    <DemoItem label={"Data de Nascimento"}>
+                        <MobileDatePicker
+                            sx={{ ...textField, width: "100%" }}
+                            format="DD/MM/YYYY"
+                            value={pickDate}
+                            onChange={(newDate) => {
+                                if (newDate !== null) {
+                                    setPickDate(newDate)
+                                }
+                            }}
+                            timezone="system"
+                            localeText={ptBR.components.MuiLocalizationProvider.defaultProps.localeText}
+                        />
+                    </DemoItem>
                 <TextField
                     label={"E-mail"}
                     name="email"

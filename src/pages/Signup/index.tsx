@@ -17,6 +17,7 @@ import { useRelationship } from "../../hooks/useRelationship"
 import { useDateValidator } from "../../hooks/useDateValidator"
 import { SelectAccount } from "./SelectAccount"
 import { unmaskNumber } from "../../hooks/unmaskNumber"
+import dayjs, { Dayjs } from "dayjs"
 
 interface SignupProps {}
 
@@ -37,6 +38,7 @@ export const Signup: React.FC<SignupProps> = ({}) => {
     const [loading, setLoading] = useState(false)
 
     const [image, setImage] = useState<File>()
+    const [pickDate, setPickDate] = useState<Dayjs | null>(null)
 
     const initialValues: SignupValues = {
         name: "",
@@ -89,17 +91,13 @@ export const Signup: React.FC<SignupProps> = ({}) => {
 
     const handleSignup = async (values: SignupValues) => {
         console.log(values.office)
-        if (!isValidDateString(values.birth)) {
-            console.log("Data de nascimento inválida")
-            snackbar({ severity: "error", text: "Data de nascimento inválida" })
-            return
-        }
+
         const data = {
             ...values,
             cpf: unmask(values.cpf),
             phone: unmask(values.phone),
             approved: typeUser === "employee" ? false : true,
-            birth: values.birth ? new Date(values.birth).getTime().toString() : undefined,
+            birth: dayjs(pickDate).valueOf().toString(),
 
             address: {
                 street: values.address.street,
@@ -134,7 +132,7 @@ export const Signup: React.FC<SignupProps> = ({}) => {
             })
             console.log(data)
         } else if (typeUser === "producer") {
-            console.log(data)
+            console.log({ producer: data })
             io.emit("user:signup", {
                 ...data,
                 producer: {
@@ -291,6 +289,8 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                                             setImage={setImage}
                                             typeUser={typeUser}
                                             setCurrentStep={setCurrentStep}
+                                            pickDate={pickDate}
+                                            setPickDate={setPickDate}
                                         />
                                         <Box sx={{ width: "100%", gap: "2vw" }}>
                                             <Button

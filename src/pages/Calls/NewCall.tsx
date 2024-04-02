@@ -135,41 +135,6 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
         })
     }, [])
 
-    const newTheme = (theme: any) =>
-        createTheme({
-            ...theme,
-            components: {
-                MuiPickersToolbar: {
-                    styleOverrides: {
-                        root: {
-                            color: "#fff",
-                            // borderRadius: 5,
-                            borderWidth: 0,
-                            backgroundColor: colors.primary,
-                        },
-                    },
-                },
-                MuiPickersMonth: {
-                    styleOverrides: {
-                        monthButton: {
-                            borderRadius: 20,
-                            borderWidth: 0,
-                            border: "0px solid",
-                        },
-                    },
-                },
-                MuiPickersDay: {
-                    styleOverrides: {
-                        root: {
-                            color: colors.primary,
-                            borderRadius: 20,
-                            borderWidth: 0,
-                        },
-                    },
-                },
-            },
-        })
-
     const ServerDay = (props: any) => {
         const { day, outsideCurrentMonth, ...other } = props
 
@@ -419,24 +384,24 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                                         disabled={selectedTalhao ? false : true}
                                     />
                                 </Box>
-                                        <DemoItem label={"Previsão da visita"}>
-                                                <MobileDatePicker
-                                                    sx={{ ...textField }}
-                                                    format="DD/MM/YYYY"
-                                                    value={pickDate}
-                                                    onChange={(newDate) => {
-                                                        if (newDate !== null) {
-                                                            setPickDate(newDate)
-                                                        }
-                                                    }}
-                                                    timezone="system"
-                                                    disabled={selectedKit === null ? true : false}
-                                                    slots={{
-                                                        day: ServerDay,
-                                                    }}
-                                                    disablePast
-                                                />
-                                        </DemoItem>
+                                <DemoItem label={"Previsão da visita"}>
+                                    <MobileDatePicker
+                                        sx={{ ...textField }}
+                                        format="DD/MM/YYYY"
+                                        value={pickDate}
+                                        onChange={(newDate) => {
+                                            if (newDate !== null) {
+                                                setPickDate(newDate)
+                                            }
+                                        }}
+                                        timezone="system"
+                                        disabled={selectedKit === null ? true : false}
+                                        slots={{
+                                            day: ServerDay,
+                                        }}
+                                        disablePast
+                                    />
+                                </DemoItem>
                             </Box>
                         )}
                         {user.producer && (
