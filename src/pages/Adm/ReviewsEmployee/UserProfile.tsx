@@ -29,6 +29,7 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
     const { listUsers, setListUsers } = useUsers()
 
     const userSelect = listUsers?.filter((item) => item.id === Number(userId)) || []
+    const selectedUser = listUsers?.find((item) => item.id === Number(userId))
 
     const { snackbar } = useSnackbar()
 
@@ -214,7 +215,7 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
             >
                 <Box sx={{ flexDirection: "row", justifyContent: "space-between", width: "100%", alignItems: "center" }}>
                     <p style={{ fontSize: "4.5vw", fontFamily: "MalgunGothic2", textAlign: "left" }}>Informações Pessoais</p>
-                    {view && userSelect[0] && (
+                    {view && selectedUser?.producer && (
                         <Button
                             variant="contained"
                             size="small"
