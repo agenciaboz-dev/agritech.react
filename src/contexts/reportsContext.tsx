@@ -31,9 +31,6 @@ export const ReportProvider: React.FC<ReportsProviderProps> = ({ children }) => 
         setListReports((report) => [...report, data])
     }
 
-    const replaceReport = (data: Report) => {
-        setListReports((list) => [...list.filter((item) => item.id !== data.id), data])
-    }
     useEffect(() => {
         io.on("report:list:success", (reports: Report[]) => {
             console.log("resposta")
@@ -54,13 +51,13 @@ export const ReportProvider: React.FC<ReportsProviderProps> = ({ children }) => 
         })
         io.on("report:approve:success", (data: Report) => {
             if (user?.isAdmin || data.call?.kit?.employees?.find((employee) => employee.id == user?.employee?.id)) {
-                replaceReport(data)
+                update(data)
             }
         })
 
         io.on("report:closed", (data: Report) => {
             if (user?.isAdmin || data.call?.kit?.employees?.find((employee) => employee.id == user?.employee?.id)) {
-                replaceReport(data)
+                update(data)
             }
         })
 
@@ -81,7 +78,7 @@ export const ReportProvider: React.FC<ReportsProviderProps> = ({ children }) => 
 
         io.on("report:update:success", (data: Report) => {
             if (user?.isAdmin || data.call?.kit?.employees?.find((employee) => employee.id == user?.employee?.id)) {
-                replaceReport(data)
+                update(data)
             }
         })
         io.on("report:list:success", (data: Report[]) => {
