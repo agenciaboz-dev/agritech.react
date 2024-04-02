@@ -9,6 +9,8 @@ import { Call } from "../../definitions/call"
 import { useKits } from "../../hooks/useKits"
 import { useUsers } from "../../hooks/useUsers"
 import { userInfo } from "os"
+import { useIo } from "../../hooks/useIo"
+import { useCall } from "../../hooks/useCall"
 
 interface LogsCardProps {
     review?: boolean
@@ -22,10 +24,23 @@ export const LogsCard: React.FC<LogsCardProps> = ({ review, call, variant }) => 
     const { listKits } = useKits()
     const { listUsers } = useUsers()
     const { user } = useUser()
+    const { removeCallApprove } = useCall()
+    const io = useIo()
     const producerSelected = listUsers?.find((item) => item.producer?.id === call?.producerId)
     const kitSelected = listKits.find((item) => item.id === call?.kitId)
 
     const tillageSelected = producerSelected?.producer?.tillage?.find((item) => item.id === call?.tillageId)
+
+    const cancelCall = (call: Call) => {
+        io.emit("call:cancel", call)
+        console.log({ cancel: call })
+    }
+
+    useEffect(() => {
+        io.on("call:cancel:success", (call: Call) => {
+            removeCallApprove(call)
+        })
+    }, [])
 
     return !variant ? (
         <Box sx={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
@@ -53,7 +68,14 @@ export const LogsCard: React.FC<LogsCardProps> = ({ review, call, variant }) => 
                             </ActionIcon>
                         </Menu.Target>
                         <Menu.Dropdown>
-                            <Menu.Item color="red">Cancelar</Menu.Item>
+                            <Menu.Item
+                                color="red"
+                                onClick={() => {
+                                    call && cancelCall(call)
+                                }}
+                            >
+                                Cancelar
+                            </Menu.Item>
                         </Menu.Dropdown>
                     </Menu>
                 </Group>

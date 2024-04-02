@@ -55,65 +55,65 @@ export const CallProvider: React.FC<CallProviderProps> = ({ children }) => {
         }
     }, [listCallsPending])
 
-    // useEffect(() => {
-    //     io.on("call:new", (data: Call) => {
-    //         if (
-    //             user?.isAdmin ||
-    //             data.producerId == user?.producer?.id ||
-    //             data.kit?.employees?.find((employee) => employee.id == user?.employee?.id)
-    //         ) {
-    //             user?.isAdmin ? addCallApprove(data) : addCallPending(data)
-    //         }
-    //     })
-    //     io.on("call:update", (data: Call) => {
-    //         if (
-    //             user?.isAdmin ||
-    //             data.producerId == user?.producer?.id ||
-    //             data.kit?.employees?.find((employee) => employee.id == user?.employee?.id)
-    //         ) {
-    //             replaceCall(data)
-    //         }
-    //     })
-    //     io.on("call:approved", (call: Call) => {
-    //         if (
-    //             call.producerId == user?.producer?.id ||
-    //             call.kit?.employees?.find((employee) => employee.id == user?.employee?.id)
-    //         ) {
-    //             replaceCall(call)
-    //         }
-    //     })
-    //     io.on("call:closed", (call: Call) => {
-    //         if (
-    //             call.producerId == user?.producer?.id ||
-    //             call.kit?.employees?.find((employee) => employee.id == user?.employee?.id)
-    //         ) {
-    //             replaceCall(call)
-    //         }
-    //     })
-    //     io.on("call:cancel", (call: Call) => {
-    //         if (
-    //             call.producerId == user?.producer?.id ||
-    //             call.kit?.employees?.find((employee) => employee.id == user?.employee?.id)
-    //         ) {
-    //             replaceCall(call)
-    //         }
-    //     })
+    useEffect(() => {
+        io.on("call:new", (data: Call) => {
+            if (
+                user?.isAdmin ||
+                data.producerId == user?.producer?.id ||
+                data.kit?.employees?.find((employee) => employee.id == user?.employee?.id)
+            ) {
+                user?.isAdmin ? addCallApprove(data) : addCallPending(data)
+            }
+        })
+        io.on("call:update", (data: Call) => {
+            if (
+                user?.isAdmin ||
+                data.producerId == user?.producer?.id ||
+                data.kit?.employees?.find((employee) => employee.id == user?.employee?.id)
+            ) {
+                replaceCall(data)
+            }
+        })
+        io.on("call:approved", (call: Call) => {
+            if (
+                call.producerId == user?.producer?.id ||
+                call.kit?.employees?.find((employee) => employee.id == user?.employee?.id)
+            ) {
+                replaceCall(call)
+            }
+        })
+        io.on("call:closed", (call: Call) => {
+            if (
+                call.producerId == user?.producer?.id ||
+                call.kit?.employees?.find((employee) => employee.id == user?.employee?.id)
+            ) {
+                replaceCall(call)
+            }
+        })
+        io.on("call:cancel", (call: Call) => {
+            if (
+                call.producerId == user?.producer?.id ||
+                call.kit?.employees?.find((employee) => employee.id == user?.employee?.id)
+            ) {
+                replaceCall(call)
+            }
+        })
 
-    //     io.on("call:list:approved", (data: Call[]) => {
-    //         setCalls(data)
-    //     })
-    //     io.on("call:list:pending", (data: Call[]) => {
-    //         setCallsPending(data)
-    //     })
+        io.on("call:listApproved:success", (data: Call[]) => {
+            setCalls(data)
+        })
+        io.on("call:listPending:success", (data: Call[]) => {
+            setCallsPending(data)
+        })
 
-    //     return () => {
-    //         io.off("call:new")
-    //         io.off("call:update")
-    //         io.off("call:approve")
-    //         io.off("call:cancel")
-    //         io.off("call:listApproved:success")
-    //     }
-    // }, [listCalls])
+        return () => {
+            io.off("call:new")
+            io.off("call:update")
+            io.off("call:approve")
+            io.off("call:cancel")
+            io.off("call:listApproved:success")
+        }
+    }, [listCalls])
 
     return (
         <CallContext.Provider

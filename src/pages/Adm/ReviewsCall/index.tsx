@@ -17,12 +17,13 @@ export const ReviewsCall: React.FC<ReviewsCallProps> = ({ user }) => {
     const header = useHeader()
     const { listCalls, listCallsPending } = useCall()
 
-    
     const [tab, setTab] = useState("pending")
     const sortedPendingCalls = listCallsPending
         .filter((item) => !item.approved)
         .sort((a, b) => Number(a.open) - Number(b.open))
-    const sortedApprovedCalls = listCalls.sort((a, b) => Number(a.open) - Number(b.open))
+    const sortedApprovedCalls = listCalls
+        .filter((item) => item.status !== "CANCELED")
+        .sort((a, b) => Number(a.open) - Number(b.open))
     const changeTab = (event: React.SyntheticEvent, newValue: string) => {
         setTab(newValue)
     }
@@ -37,7 +38,6 @@ export const ReviewsCall: React.FC<ReviewsCallProps> = ({ user }) => {
         if (listCalls.length == 0) io.emit("call:listApproved")
         if (listCallsPending.length == 0) io.emit("call:listPending")
     }, [])
-  
 
     return (
         <Box

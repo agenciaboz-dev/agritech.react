@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { Accordion, Badge, Box, Button, Radio, TextField } from "@mui/material"
+import { Accordion, Autocomplete, Badge, Box, Button, Radio, TextField } from "@mui/material"
 import { Avatar } from "@files-ui/react"
 import GeoImage from "../../../assets/geo.svg"
 import { Header } from "../../../components/Header"
@@ -64,10 +64,12 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
     const producerSelected = listUsers?.find((item) => item.producer?.id === findCall?.producerId)
     const tillageSelected = producerSelected?.producer?.tillage?.find((item) => item.id === findCall?.talhaoId)
     const kitsActived = listKits.filter((item) => item.active)
+    const [kits, setKits] = useState(listKits.filter((item) => !!item && item.active))
+    const [selectedKit, setSelectedKit] = useState<Kit | null>(null)
+
     console.log(tillageSelected)
     const [hectare, setHectare] = useState("")
     const [pickDate, setPickDate] = useState<Dayjs | null>(null)
-    const [selectedKit, setSelectedKit] = useState<Kit | null>(null)
     const [kitId, setKitId] = useState<number>(0)
 
     useEffect(() => {
@@ -83,7 +85,7 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
         userId: findCall?.userId,
 
         id: Number(callid),
-        kitId: findCall?.kitId || 0,
+        kitId: undefined || 0,
         hectarePrice: findCall?.tillage?.hectarePrice || "",
         forecast: new Date(Number(findCall?.forecast) || 0).toLocaleDateString("pt-br") || "",
     }
@@ -93,10 +95,12 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
             ...values,
             hectarePrice: unmaskCurrency(values.hectarePrice || ""),
             forecast: dayjs(pickDate).valueOf().toString(),
+            kitId: selectedKit?.id ? selectedKit?.id : undefined,
         }
         io.emit("call:approve", data)
         setLoading(true)
     }
+
     const dateForecast = findCall?.forecast
         ? new Date(Number(findCall?.forecast) || 0).toLocaleDateString("pt-Br")
         : new Date().toLocaleDateString("pt-br")
@@ -247,8 +251,28 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
                         <Formik initialValues={initialValues} onSubmit={approveCall}>
                             {({ values, handleChange, setFieldValue }) => (
                                 <Form>
+                                    <TitleComponents
+                                        title="Escolha o kit responsável"
+                                        button
+                                        textButton="Salvar Kit"
+                                        submit
+                                    />
                                     <Box sx={{ gap: "5vw" }}>
                                         <Box sx={{ gap: "3vw" }}>
+                                            <p style={{ color: colors.primary, fontSize: "3.3vw" }}>
+                                                Selecione um kit para marcar a data de visita.
+                                            </p>
+                                            <Autocomplete
+                                                value={selectedKit}
+                                                options={kits || []}
+                                                getOptionLabel={(option) => option.name || ""}
+                                                // inputValue={inputValue}
+                                                onChange={(event, selected) => setSelectedKit(selected)}
+                                                isOptionEqualToValue={(option, value) => option.id == value.id}
+                                                renderInput={(params) => (
+                                                    <TextField {...params} sx={{ ...textField }} label="kit" required />
+                                                )}
+                                            />
                                             <DemoItem label={"Previsão da visita"}>
                                                 <MobileDatePicker
                                                     sx={{ ...textField }}
@@ -282,47 +306,6 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
                                                 }}
                                                 required
                                             />
-                                        </Box>
-
-                                        <TitleComponents
-                                            title="Escolha o kit responsável"
-                                            button
-                                            textButton="Salvar Kit"
-                                            submit
-                                            disabled={!values.kitId}
-                                        />
-                                        <Box sx={{ height: "100%", overflowY: "auto" }}>
-                                            {kitsActived.map((kit, index) => (
-                                                <Accordion
-                                                    elevation={0}
-                                                    key={index}
-                                                    expanded={expanded === String(index)}
-                                                    onChange={expandendChange(String(index))}
-                                                >
-                                                    <AccordionSummary aria-controls="panel1d-content" id={String(index)}>
-                                                        <Typography>{kit.name}</Typography>
-                                                        <Radio
-                                                            name="kitId"
-                                                            value={kit.id}
-                                                            checked={values.kitId === kit.id}
-                                                            onChange={() => {
-                                                                setFieldValue("kitId", kit.id)
-                                                                setSelectedKit(kit)
-                                                                if (kit.id) setKitId(kit.id)
-                                                                handleChange
-                                                            }}
-                                                        />
-                                                    </AccordionSummary>
-                                                    <AccordionDetails>
-                                                        <p>Objetos</p>
-                                                        {kit.objects?.map((obj: NewObject, index) => (
-                                                            <p key={index}>
-                                                                {obj.quantity}x {obj.name}
-                                                            </p>
-                                                        ))}
-                                                    </AccordionDetails>
-                                                </Accordion>
-                                            ))}
                                         </Box>
                                     </Box>
                                 </Form>

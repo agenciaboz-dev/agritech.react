@@ -120,6 +120,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
 
     useEffect(() => {
         setReport(listReports.find((item) => item.id === Number(reportid)))
+        console.log({ REport: reportid })
     }, [listReports])
 
     useEffect(() => {
@@ -136,9 +137,13 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
             }
             io.emit("operation:update", data)
             console.log({ data })
+        } else {
+            console.log("sem report")
         }
     }
-
+    useEffect(() => {
+        console.log({ aquiauiq: selectedCall?.reports })
+    }, [report])
     useEffect(() => {
         io.on("operation:update:success", (data: Report) => {
             console.log(data)

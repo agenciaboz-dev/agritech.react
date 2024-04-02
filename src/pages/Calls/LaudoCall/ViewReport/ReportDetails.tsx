@@ -179,7 +179,14 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                     flexDirection: "row",
                 }}
             >
-                <Header back location={`/adm/producer/${call?.producerId}/${call?.talhao?.tillageId}`} />
+                <Header
+                    back
+                    location={
+                        user?.isAdmin
+                            ? `/adm/producer/${call?.producerId}/${call?.talhao?.tillageId}`
+                            : `/call/${call?.id}/laudos`
+                    }
+                />
             </Box>
             <Box
                 style={{
@@ -201,7 +208,7 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                         borderTopRightRadius: "7vw",
                         overflow: "hidden",
                         gap: "3vw",
-                        height: "100%",
+                        height: "80%",
                     }}
                 >
                     <Box sx={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>

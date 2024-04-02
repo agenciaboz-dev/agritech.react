@@ -66,7 +66,7 @@ export const ReportProvider: React.FC<ReportsProviderProps> = ({ children }) => 
             }
         })
         io.on("report:list:success", (data: Report[]) => {
-            setListReports(data)
+            // setListReports(data)
         })
 
         return () => {

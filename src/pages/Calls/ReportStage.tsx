@@ -127,6 +127,20 @@ export const ReportStage: React.FC<ReportStageProps> = ({ user }) => {
     }
 
     useEffect(() => {
+        console.log({ Call: listCalls })
+    }, [call])
+
+    useEffect(() => {
+        if (listCalls.length == 0) {
+            io.emit("call:listApproved")
+            console.log("emitiu call")
+        }
+        // if (listReports.length == 0) {
+        //     io.emit("report:list")
+        //     console.log("emitiu report")
+        // }
+    }, [])
+    useEffect(() => {
         console.log({ Estágio: report })
         console.log(report?.stage)
     }, [report?.stage])
@@ -151,7 +165,9 @@ export const ReportStage: React.FC<ReportStageProps> = ({ user }) => {
             io.off("stage:new")
         }
     }, [report])
-
+    useEffect(() => {
+        console.log(report)
+    }, [report])
     useEffect(() => {
         header.setTitle("Painel")
     }, [])
@@ -227,7 +243,7 @@ export const ReportStage: React.FC<ReportStageProps> = ({ user }) => {
                             <TextField
                                 label="Fazenda"
                                 name="tillage"
-                                value={tillage ? tillage?.name : " "}
+                                value={report ? report.call?.talhao?.tillage?.name : " "}
                                 sx={{ ...textField }}
                                 disabled={!user?.producer ? false : true}
                             />

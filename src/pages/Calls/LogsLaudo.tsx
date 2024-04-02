@@ -40,7 +40,7 @@ export const LogsLaudo: React.FC<LogsLaudoProps> = ({ report, talhao, id, tillag
             <IconButton
                 onClick={() => {
                     if (user?.employee) {
-                        if (report && report.stage === 1) {
+                        if ((report && report.stage === 1) || report.stage === 2) {
                             console.log({ Report: report })
                             user.isAdmin
                                 ? navigate(`/adm/call/${report.call?.id}/stages/${report.id}`)
@@ -49,13 +49,14 @@ export const LogsLaudo: React.FC<LogsLaudoProps> = ({ report, talhao, id, tillag
                         } else if (report && report.stage === 4) {
                             console.log("report finalizado")
                             navigate(`/adm/call/${report.call?.id}/report/${report.id}`)
-                        } else {
+                            navigate(`/employee/call/${report.call?.id}/report/${report.id}`)
+                        } else if (report && report.stage === 3) {
                             // navigate(`/adm/call/${call?.id}/report/${call?.reports && call.reports[0].id}`)
                             console.log({ Relatorio_aqui: report })
                             navigate(
                                 user.isAdmin
                                     ? `/adm/call/${report.call?.id}/laudo/${report.id}`
-                                    : `/employee/call/${report.call?.id}/laudo`
+                                    : `/employee/call/${report.call?.id}/laudo/${report.id}`
                             )
                             // call && setSelectedCall(call)
                         }
