@@ -62,6 +62,7 @@ export const ModalStage: React.FC<ModalStageProps> = ({ opened, close, report })
         setLoading(true)
         console.log(data)
     }
+    console.log("opaopaopa")
 
     useEffect(() => {
         io.on("stage:new", (report: Report) => {
@@ -72,19 +73,20 @@ export const ModalStage: React.FC<ModalStageProps> = ({ opened, close, report })
             console.log("Finalizado")
 
             if (report.stage == 4) {
-                io.emit("report:close", report.id)
                 setLoading(true)
+                io.emit("report:close", report.id)
             }
         })
 
         io.on("report:closed:success", (updatedReport: Report) => {
+            console.log("bateu aqui")
             reports.update(updatedReport)
             setLoading(false)
             console.log("report closed success")
             console.log(updatedReport)
-            // if (updatedReport.pdf_path) {
-            //     window.open(updatedReport.pdf_path, "_blank")?.focus()
-            // }
+            if (updatedReport.pdf_path) {
+                window.open(updatedReport.pdf_path, "_blank")?.focus()
+            }
             navigate(
                 user?.isAdmin
                     ? `/adm/call/${report?.callId}/report/${report?.id}`

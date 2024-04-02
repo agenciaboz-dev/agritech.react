@@ -131,10 +131,6 @@ export const ReportStage: React.FC<ReportStageProps> = ({ user }) => {
     }, [call])
 
     useEffect(() => {
-        if (listCalls.length == 0) {
-            io.emit("call:listApproved")
-            console.log("emitiu call")
-        }
         // if (listReports.length == 0) {
         //     io.emit("report:list")
         //     console.log("emitiu report")
@@ -157,6 +153,7 @@ export const ReportStage: React.FC<ReportStageProps> = ({ user }) => {
         io.on("stage:new", (report: Report) => {
             setLoading(false)
             update(report)
+            console.log(report)
             setReport(report)
             report.stage && setstage(report.stage)
         })

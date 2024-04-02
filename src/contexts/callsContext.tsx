@@ -115,6 +115,13 @@ export const CallProvider: React.FC<CallProviderProps> = ({ children }) => {
         }
     }, [listCalls])
 
+    useEffect(() => {
+        if (user) {
+            io.emit("call:listApproved", user)
+            console.log("emitiu call")
+        }
+    }, [user])
+
     return (
         <CallContext.Provider
             value={{
