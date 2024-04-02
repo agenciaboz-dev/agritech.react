@@ -120,6 +120,7 @@ export const Login: React.FC<LoginProps> = ({}) => {
                             <TextField
                                 placeholder="E-mail, nome de usuário ou CPF"
                                 name="login"
+                                InputProps={{ inputMode: "email" }}
                                 label="E-mail, nome de usuário ou CPF"
                                 value={values.login}
                                 sx={textField}
