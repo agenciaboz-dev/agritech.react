@@ -3,6 +3,7 @@ import React from "react"
 import { useIo } from "../hooks/useIo"
 import { useUser } from "../hooks/useUser"
 import { Notification, NotificationClass } from "../types/server/class/Notification"
+import { useTalhao } from "../hooks/useTalhao"
 
 interface NotificationDrawerContextValue {
     open: boolean
@@ -28,6 +29,7 @@ export const NotificationDrawerProvider: React.FC<NotificationDrawerProviderProp
 
     const io = useIo()
     const { user } = useUser()
+    const { listTalhao } = useTalhao()
     const [listNotifications, setListNotifications] = useState<NotificationClass[]>([])
     const [recents, setRecents] = useState<NotificationClass[]>([])
 
@@ -42,6 +44,7 @@ export const NotificationDrawerProvider: React.FC<NotificationDrawerProviderProp
 
     useEffect(() => {
         user?.id && io.emit("notification:list", user.id)
+        if (user) io.emit("talhao:list", user)
     }, [user])
 
     useEffect(() => {

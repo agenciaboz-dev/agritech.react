@@ -53,9 +53,8 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
         setTalhao(listTalhao?.find((item) => item.id === notification.target_id))
         setKit(listKits?.find((item) => item.id === notification.target_id))
     }, [notification])
-    useEffect(() => {
-        if (listTalhao?.length == 0) io.emit("talhao:list")
-    }, [])
+
+    
 
     const messageTemplates: any = {
         new: {
