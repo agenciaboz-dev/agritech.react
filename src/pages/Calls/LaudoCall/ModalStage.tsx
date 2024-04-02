@@ -79,11 +79,12 @@ export const ModalStage: React.FC<ModalStageProps> = ({ opened, close, report })
 
         io.on("report:closed:success", (updatedReport: Report) => {
             reports.update(updatedReport)
+            setLoading(false)
             console.log("report closed success")
             console.log(updatedReport)
-            if (updatedReport.pdf_path) {
-                window.open(updatedReport.pdf_path, "_blank")?.focus()
-            }
+            // if (updatedReport.pdf_path) {
+            //     window.open(updatedReport.pdf_path, "_blank")?.focus()
+            // }
             navigate(
                 user?.isAdmin
                     ? `/adm/call/${report?.callId}/report/${report?.id}`
