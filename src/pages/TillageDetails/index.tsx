@@ -1,50 +1,22 @@
-import {
-    Autocomplete,
-    Avatar,
-    Badge,
-    Box,
-    IconButton,
-    Tab,
-    Tabs,
-    TextField,
-    ThemeProvider,
-    createTheme,
-} from "@mui/material"
+import { Avatar, Box, IconButton, Tab, Tabs } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { colors } from "../../style/colors"
 import { Header } from "../../components/Header"
 import { useHeader } from "../../hooks/useHeader"
 import { useParams } from "react-router"
-// import GeoImage from "../../assets/geo.svg"
-import { useArray } from "burgos-array"
 import { tabStyle } from "../../style/tabStyle"
 import { WeatherComponent } from "../../components/WeatherComponent"
-import { DialogConfirm } from "../../components/DialogConfirm"
 import { useNavigate } from "react-router-dom"
-import { LaudoCall, OpenCallBox, ProgressCall } from "../../components/OpenCallBox"
+import { OpenCallBox, ProgressCall } from "../../components/OpenCallBox"
 import { useUser } from "../../hooks/useUser"
-import { useProducer } from "../../hooks/useProducer"
-import findProducer from "../../hooks/filterProducer"
 import { useIo } from "../../hooks/useIo"
 import { useSnackbar } from "burgos-snackbar"
 import { useCall } from "../../hooks/useCall"
-import { Call, CreateCall } from "../../definitions/call"
-import { approveCall, content, openCall, progress } from "../../tools/contenModals"
+import { Call } from "../../definitions/call"
+import { content, progress } from "../../tools/contenModals"
 import { LogsCard } from "./LogsCard"
 import { PiPlant } from "react-icons/pi"
-import { MobileDatePicker, PickersDay } from "@mui/x-date-pickers"
-import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo"
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
-import { ptBR } from "@mui/x-date-pickers/locales"
-import { textField, input } from "../../style/input"
 import "../../style/styles.css"
-import dayjs, { Dayjs } from "dayjs"
-import { useKits } from "../../hooks/useKits"
-import { unmaskCurrency } from "../../hooks/unmaskNumber"
-import { useCurrencyMask } from "burgos-masks"
-import MaskedInputNando from "../../components/MaskedNando"
-import { CurrencyText } from "../../components/CurrencyText"
-import { Indicator } from "@mantine/core"
 import GeoImage from "../../assets/default.png"
 
 interface TillageDetailsProps {}
@@ -58,19 +30,12 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
     const { snackbar } = useSnackbar()
     const { user } = useUser()
     const { addCallApprove } = useCall()
-    const { listKits } = useKits()
 
-    const [open, setOpen] = useState(false)
-    const [openApproved, setOpenApproved] = useState(false)
     const [loading, setLoading] = useState(false)
-    const [variant, setVariant] = useState(false)
 
     const [tillageSelect, setTillageSelect] = useState<Tillage>()
     const [selectedCall, setSelectedCall] = useState<Call | null>(null)
 
-    const [selectedKit, setSelectedKit] = useState<Kit | null>(null) // Estado para o valor selecionado
-    const [kits, setKits] = useState(listKits?.filter((item) => !!item && item.active) as Kit[])
-    const [kitValue, setKitValue] = useState("") // Estado para o texto do campo de entrada
     const [listTillages, setListTillages] = useState<Tillage[]>([])
     const [tillageUpdate, setTillageUpdate] = useState<Boolean>(false)
 
@@ -96,23 +61,11 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
         }
     }, [])
 
-    const handleKitChange = (event: any, selected: any) => {
-        if (selected) {
-            setSelectedKit(selected)
-            setKitValue(selected.name)
-        }
-    }
-    const getOptionSelected = (option: any, value: any) => option.id === value.id
-
     const [selectedTalhao, setSelectedTalhao] = useState<Talhao>()
     const [selectedAvatar, setSelectedAvatar] = useState(0)
-    const [pickDate, setPickDate] = useState<Dayjs | null>(null)
 
-    const [pickHectarePrice, setPickHectarePrice] = useState<string>("")
     const [weatherData, setWeatherData] = useState<CurrentConditions>()
     const [icon, setIcon] = useState<string>("")
-    const [loadingIcon, setLoadingIcon] = useState(false)
-    const [cover, setCover] = useState<String[]>([])
 
     const toggleSelection = (talhao: Talhao) => {
         if (selectedAvatar === talhao.id) {
@@ -126,10 +79,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
 
     const [call, setCall] = useState<Call>()
 
-    //only producer
     const [tillageSelectProd, setTillageSelectProd] = useState<Tillage>()
-    // const { listTillages, setProducerid } = useProducer()
-    // //only employee and adm
 
     const [callStatus, setCallStatus] = useState(false)
 
@@ -142,19 +92,13 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
         const findTillage = listTillages.find((item) => item.id === Number(tillageid))
         setTillageSelectProd(findTillage)
         setTillageSelect(findTillage)
-    }, [tillageid, listTillages])
+    }, [tillageid])
 
     useEffect(() => {
-        tillageSelect?.talhao?.map((item) => {
-            io.emit("tillage:cover", item.id)
-        })
+        io.emit("talhao:cover", Number(tillageid))
 
-        tillageSelect?.talhao?.map((item) => {
-            io.on("tillage:cover:success", (data: { tillageId: number; cover: string }) => {
-                // if (data.tillageId === tillage.id) {
-                //     setCover(data.cover)
-                // }
-            })
+        io.on("talhao:cover:success", (data) => {
+            setTillageSelect(data)
         })
 
         return () => {
@@ -162,10 +106,6 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
         }
     }, [tillageid])
 
-    useEffect(() => {
-        console.log(listTillages)
-    }, [listTillages])
-    //
     useEffect(() => {
         console.log(call)
         selectedCall ? setCallStatus(true) : setCallStatus(false)
@@ -175,128 +115,9 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
     useEffect(() => {
         setCallStatus(false)
     }, [selectedAvatar])
-    const handleClickOpen = () => {
-        setOpen(true)
-    }
-    const handleOpenApprove = () => {
-        setOpenApproved(true)
-    }
-    const initialValues: CreateCall = {
-        approved: false,
-        open: new Date().toLocaleDateString("pt-br"),
-        comments: "",
-        producerId: user?.producer ? user.producer.id || 0 : Number(producerid),
-        talhaoId: selectedTalhao?.id || 0,
-        kitId: undefined,
-        userId: Number(user?.id),
-        hectarePrice: "",
-        forecast: call?.forecast || "",
-    }
-
-    const handleSubmit = (values: CreateCall) => {
-        const data = {
-            ...values,
-            kitId: Number(selectedKit?.id),
-            hectarePrice: unmaskCurrency(pickHectarePrice),
-            forecast: dayjs(pickDate).valueOf().toString(),
-        }
-        console.log(data)
-        io.emit(user?.isAdmin ? "admin:call:create" : "call:create", data)
-        setLoading(true)
-    }
-
-    const newTheme = (theme: any) =>
-        createTheme({
-            ...theme,
-            components: {
-                MuiPickersToolbar: {
-                    styleOverrides: {
-                        root: {
-                            color: "#fff",
-                            // borderRadius: 5,
-                            borderWidth: 0,
-                            backgroundColor: colors.primary,
-                        },
-                    },
-                },
-                MuiPickersMonth: {
-                    styleOverrides: {
-                        monthButton: {
-                            borderRadius: 20,
-                            borderWidth: 0,
-                            border: "0px solid",
-                        },
-                    },
-                },
-                MuiPickersDay: {
-                    styleOverrides: {
-                        root: {
-                            color: colors.primary,
-                            borderRadius: 20,
-                            borderWidth: 0,
-                        },
-                    },
-                },
-            },
-        })
-
-    const ServerDay = (props: any) => {
-        const { day, outsideCurrentMonth, ...other } = props
-
-        const currentDate = dayjs()
-        const isToday = day.isSame(currentDate, "day")
-        const isFutureDate = day.isAfter(currentDate, "day")
-
-        if (!isFutureDate && !isToday) {
-            return <PickersDay {...other} outsideCurrentMonth={outsideCurrentMonth} day={day} />
-        }
-
-        // Retorna null se selectedKit não estiver definido ainda
-        if (!selectedKit) {
-            return null
-        }
-        useEffect(() => {
-            console.log(selectedKit)
-        }, [selectedKit])
-
-        // Lógica para determinar a cor do indicador
-        const callsForDay = selectedKit.calls?.filter((call: Call) => {
-            const callDate = new Date(Number(call.forecast))
-            return (
-                callDate.getDate() === day.date() &&
-                callDate.getMonth() === day.month() &&
-                callDate.getFullYear() === day.year()
-            )
-        })
-
-        const areaDayCalls =
-            callsForDay
-                ?.map((item: any) => Number(item.talhao?.area))
-                .reduce((prev: number, current: number) => prev + current, 0) || 0
-
-        const totalArea = areaDayCalls + Number(selectedTalhao?.area)
-
-        const indicatorColor =
-            callsForDay &&
-            callsForDay.length > 0 &&
-            selectedKit.hectareDay &&
-            (totalArea <= selectedKit.hectareDay ? "#88A486" : colors.delete) // Cor vermelha
-
-        return (
-            <Badge
-                key={day.toString()}
-                overlap="circular"
-                badgeContent={<Indicator color={indicatorColor || "#88A486"} size={7} offset={5} />}
-            >
-                <PickersDay {...other} outsideCurrentMonth={outsideCurrentMonth} day={day} />
-            </Badge>
-        )
-    }
 
     useEffect(() => {
         header.setTitle(!tillageSelect ? `Informações` : tillageSelect.name)
-        // setProducerid(Number(producerid))
-        // console.log(tillageSelect)
     }, [tillageSelect])
 
     useEffect(() => {
@@ -329,14 +150,15 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
     }, [])
 
     useEffect(() => {
-        // console.log({ location: tillageSelect?.address.city })
         tillageSelect?.address.city && io.emit("weather:find", { data: tillageSelect?.address.city })
 
         io.on("weather:find:success", (data: any) => {
             setWeatherData(data.currentConditions)
             setIcon(data.currentConditions.icon)
         })
-        io.on("weather:find:failed", (data: any) => {})
+        io.on("weather:find:failed", (error: any) => {
+            console.log(error)
+        })
 
         return () => {
             io.off("weather:find:success")
@@ -402,18 +224,8 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                             fontWeight: "bold",
                         }}
                     >
-                        {/* {!user?.producer ? tillageSelect?.name : tillageSelectProd?.name} */}
                         {!user?.producer ? selectedTalhao?.name : ""}
                     </p>
-
-                    {/* <p
-                        style={{ color: "white", fontSize: "3vw", textDecoration: "underline" }}
-                        // onClick={() =>
-                        //     navigate(user?.producer !== null ? `/producer/call/${call?.id}` : `/${producerid}/tillage/list`)
-                        // }
-                    >
-                        Detalhes
-                    </p> */}
                 </Box>
                 {tillageSelect?.talhao?.length !== 0 ? (
                     <Box sx={{ flexDirection: "row", gap: "2vw", width: "100%", overflow: "auto", p: "0vw 4vw 8vw" }}>
@@ -527,81 +339,6 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                                 <p>É necessário ter talhões cadastrados para abrir chamados.</p>
                             )}
                             {/* {tab === "history" && <p>Nenhum Registro</p>} */}
-
-                            {/* <DialogConfirm
-                                user={user}
-                                open={open}
-                                setOpen={setOpen}
-                                data={openCall}
-                                children={
-                                    <Box sx={{ gap: "3vw" }}>
-                                        {user?.isAdmin && (
-                                            <Box sx={{ gap: "2vw" }}>
-                                                <Autocomplete
-                                                    value={selectedKit}
-                                                    getOptionLabel={(option) => option.name}
-                                                    options={kits || []}
-                                                    onChange={(event, selected) => setSelectedKit(selected)}
-                                                    isOptionEqualToValue={getOptionSelected}
-                                                    renderInput={(params) => (
-                                                        <TextField
-                                                            {...params}
-                                                            label="Kit"
-                                                            value={kitValue}
-                                                            onChange={(e) => setKitValue(e.target.value)}
-                                                            sx={{ ...textField, ...input }}
-                                                        />
-                                                    )}
-                                                />
-                                                <DemoItem label="Previsão da visita">
-                                                    <MobileDatePicker
-                                                        sx={{ ...textField }}
-                                                        format="DD/MM/YYYY"
-                                                        value={pickDate}
-                                                        onChange={(newDate) => {
-                                                            if (newDate !== null) {
-                                                                setPickDate(newDate)
-                                                            }
-                                                        }}
-                                                        timezone="system"
-                                                        disabled={selectedKit === null ? true : false}
-                                                        slots={{
-                                                            day: ServerDay,
-                                                        }}
-                                                        disablePast
-                                                    />
-                                                </DemoItem>
-                                                <Box sx={{ flexDirection: "row", gap: "2vw", color: colors.text.white }}>
-                                                    <p style={{ fontSize: "4vw" }}>Custo por hectare: </p>
-                                                    {"  "}
-                                                    <p style={{ fontSize: "4vw" }}>
-                                                        <CurrencyText value={tillageSelect?.hectarePrice || ""} />
-                                                    </p>
-                                                </Box>
-                                            </Box>
-                                        )}
-                                    </Box>
-                                }
-                                click={() => {
-                                    setVariant(true)
-                                    setOpen(false)
-                                    handleSubmit(initialValues)
-                                }}
-                            /> */}
-                            {/* {user?.isAdmin && (
-                                <DialogConfirm
-                                    user={user}
-                                    open={openApproved}
-                                    setOpen={setOpenApproved}
-                                    data={approveCall}
-                                    click={() => {
-                                        setVariant(true)
-                                        // setOpenApproved(false)
-                                        console.log("cria")
-                                        navigate(`/call/new`)
-                                    }}
-                                />
-                            )} */}
                         </>
                     )}
                     <IconButton
@@ -622,7 +359,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                             )
                         }
                     >
-                        <PiPlant color={"#fff"} sx={{ width: "6vw", height: "6vw" }} />
+                        <PiPlant color={"#fff"} style={{ width: "6vw", height: "6vw" }} />
                     </IconButton>
                 </Box>
             </Box>
