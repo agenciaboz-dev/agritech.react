@@ -14,16 +14,14 @@ import { useSnackbar } from "burgos-snackbar"
 import { useNavigate } from "react-router-dom"
 import { useCall } from "../../hooks/useCall"
 import dayjs, { Dayjs } from "dayjs"
-import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo"
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
+import { DemoItem } from "@mui/x-date-pickers/internals/demo"
 import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker"
 import { ptBR } from "@mui/x-date-pickers/locales"
 import { unmaskCurrency } from "../../hooks/unmaskNumber"
 import { Test } from "./Test"
 import { useUsers } from "../../hooks/useUsers"
 import { Indicator } from "@mantine/core"
-import { ThemeProvider, createTheme } from "@mui/material/styles"
-import { PickersDay, PickersDayProps } from "@mui/x-date-pickers"
+import { PickersDay } from "@mui/x-date-pickers"
 interface NewCallProps {
     user: User
 }
@@ -38,16 +36,12 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
     const { listKits } = useKits()
     const { addCallPending, addCallApprove } = useCall()
 
-    const [highlightedDays, setHighlightedDays] = React.useState()
-
     const [loading, setLoading] = useState(false)
     const [selectedProducer, setSelectedProducer] = useState<Producer | null>(null)
     const [selectedKit, setSelectedKit] = useState<Kit | null>(null)
     const [selectedTalhao, setSelectedTalhao] = useState<Talhao | null>(null)
 
-    const [producers, setProducers] = useState(
-        listUsers?.map((user: User) => user.producer).filter((item) => !!item) as Producer[]
-    )
+    const [producers] = useState(listUsers?.map((user: User) => user.producer).filter((item) => !!item) as Producer[])
     const [kits, setKits] = useState(listKits.filter((item) => !!item && item.active))
     const [tillages, setTillages] = useState<Tillage[]>([])
     const [tillagesProducer, setTillagesProducer] = useState<Tillage[]>([])
@@ -55,11 +49,10 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
     const [talhoesProducer, setTalhoesProducer] = useState<Talhao[]>([])
 
     const [tillageId, setTillageId] = useState<number | null>(null)
-    const [talhaoId, setTalhaoId] = useState<number | null>(null)
+    const [talhaoId] = useState<number | null>(null)
     const [pickDate, setPickDate] = useState<Dayjs | null>(null)
 
     const findTillageInfo = selectedProducer?.tillage?.find((item) => item.id === tillageId)
-    const talhaoSelect = findTillageInfo?.talhao?.find((item) => item.id === talhaoId)
 
     useEffect(() => {
         if (listKits.length == 0) io.emit("kit:list")
@@ -180,8 +173,7 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
         )
     }
 
-    // Função para verificar se um dia deve ser desabilitado
-    const shouldDisableDate = (day: dayjs.Dayjs) => {
+    const shouldDisableDate = (day: dayjs.Dayjs): boolean => {
         const callsForDay = selectedKit?.calls?.filter((call: Call) => {
             const callDate = new Date(Number(call.forecast))
             return (
@@ -190,17 +182,23 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                 callDate.getFullYear() === day.year()
             )
         })
-       
+
         const areaDayCalls =
             callsForDay
                 ?.map((item: any) => Number(item.talhao?.area))
                 .reduce((prev: number, current: number) => prev + current, 0) || 0
 
         const totalArea = areaDayCalls + Number(selectedTalhao?.area)
-        // console.log(selectedKit?.hectareDay)
-        // Retorna true se o total da área para o dia exceder o limite diário
-        return selectedKit?.hectareDay ? totalArea > selectedKit?.hectareDay : false
+
+        const indicatorColor =
+            callsForDay &&
+            callsForDay.length > 0 &&
+            selectedKit &&
+            selectedKit.hectareDay &&
+            (totalArea <= selectedKit.hectareDay ? "#88A486" : totalArea > selectedKit.hectareDay && colors.delete)
+        return indicatorColor === colors.delete ? true : false // Garantindo que selectedKit?.hectareDay não seja undefined
     }
+
     useEffect(() => {
         console.log(
             selectedProducer?.tillage?.length !== 0
@@ -325,7 +323,7 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                 <form onSubmit={formik.handleSubmit}>
                     <Box sx={{ gap: "4vw" }}>
                         {!user.isAdmin && (
-                            <DemoItem label={"Previsão da visita"}>
+                            <DemoItem label={"Previsão da visita (Obrigatório)"}>
                                 <MobileDatePicker
                                     sx={{ ...textField }}
                                     format="DD/MM/YYYY"
@@ -338,7 +336,6 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                                     timezone="system"
                                     localeText={ptBR.components.MuiLocalizationProvider.defaultProps.localeText}
                                     disablePast
-                                    shouldDisableDate={shouldDisableDate}
                                 />
                             </DemoItem>
                         )}
@@ -406,7 +403,7 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                                         disabled={selectedTalhao ? false : true}
                                     />
                                 </Box>
-                                <DemoItem label={"Previsão da visita"}>
+                                <DemoItem label={"Previsão da visita*"}>
                                     <MobileDatePicker
                                         sx={{ ...textField }}
                                         format="DD/MM/YYYY"
@@ -422,6 +419,7 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                                             day: ServerDay,
                                         }}
                                         disablePast
+                                        shouldDisableDate={shouldDisableDate}
                                     />
                                 </DemoItem>
                             </Box>
@@ -479,7 +477,7 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                                 },
                             }}
                         />
-                        {user.producer && tillagesProducer.length !== 0 && (
+                        {user.producer && tillagesProducer.length !== 0 && pickDate && (
                             <Button
                                 variant="contained"
                                 type="submit"
@@ -495,7 +493,7 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                                 {loading ? <CircularProgress sx={{ color: "#fff" }} /> : "Abrir Chamado"}
                             </Button>
                         )}
-                        {user.employee && tillages.length !== 0 && (
+                        {user.employee && tillages.length !== 0 && pickDate && (
                             <Button
                                 variant="contained"
                                 type="submit"
