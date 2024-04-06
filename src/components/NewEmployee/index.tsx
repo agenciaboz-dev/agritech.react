@@ -1,29 +1,14 @@
-import {
-    Box,
-    Button,
-    CircularProgress,
-    FormControlLabel,
-    FormGroup,
-    MenuItem,
-    Switch,
-    TextField,
-    styled,
-} from "@mui/material"
+import { Box, Button, CircularProgress, MenuItem, Switch, TextField, styled } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { colors } from "../../style/colors"
 import { Header } from "../Header"
-import { Formik, useFormik } from "formik"
-import { useFormAction, useNavigate } from "react-router-dom"
-import { LoadingOverlay, Stepper } from "@mantine/core"
+import { useFormik } from "formik"
+import { useNavigate } from "react-router-dom"
+import { Stepper } from "@mantine/core"
 import { useHeader } from "../../hooks/useHeader"
-import MaskedInputNando from "../MaskedNando"
-import { usePhoneMask } from "burgos-masks"
 import { textField } from "../../style/input"
 import { useDataHandler } from "../../hooks/useDataHandler"
 import { useSnackbar } from "burgos-snackbar"
-import { useDateValidator } from "../../hooks/useDateValidator"
-import { useEstadosBrasil } from "../../hooks/useEstadosBrasil"
-import { useGender } from "../../hooks/useGender"
 import { useRelationship } from "../../hooks/useRelationship"
 import { StepOne } from "./StepOne"
 import { useOffices } from "../../hooks/useOffices"
@@ -31,41 +16,15 @@ import { StepTwo } from "./StepTwo"
 import { StepThree } from "./StepThree"
 import { StepFour } from "./StepFour"
 import { StepFive } from "./StepFive"
-import { PiCpuFill } from "react-icons/pi"
 import { unmaskCurrency } from "../../hooks/unmaskNumber"
 import { useIo } from "../../hooks/useIo"
 import { useUsers } from "../../hooks/useUsers"
 import { Avatar } from "@files-ui/react"
 import dayjs, { Dayjs } from "dayjs"
+import { useGender } from "../../hooks/useGender"
 
 interface NewEmployeeProps {}
 
-const Android12Switch = styled(Switch)(({ theme }) => ({
-    padding: 8,
-    "& .MuiSwitch-track": {
-        borderRadius: 22 / 2,
-        "&:before, &:after": {
-            content: '""',
-            position: "absolute",
-            top: "50%",
-            transform: "translateY(-50%)",
-            width: 16,
-            height: 16,
-        },
-        "&:before": {
-            left: 12,
-        },
-        "&:after": {
-            right: 12,
-        },
-    },
-    "& .MuiSwitch-thumb": {
-        boxShadow: "none",
-        width: 16,
-        height: 16,
-        margin: 2,
-    },
-}))
 export const NewEmployee: React.FC<NewEmployeeProps> = ({}) => {
     const navigate = useNavigate()
     const header = useHeader()
@@ -74,13 +33,10 @@ export const NewEmployee: React.FC<NewEmployeeProps> = ({}) => {
 
     const { unmask } = useDataHandler()
     const { snackbar } = useSnackbar()
-    const { isValidDateString } = useDateValidator()
-    const estados = useEstadosBrasil()
-    const gender = useGender()
     const typeRelationship = useRelationship()
     const offices = useOffices()
+    const gender = useGender()
 
-    const [typeOffice, setTypeOffice] = useState("")
     const [currentStep, setCurrentStep] = useState(0)
     const [loading, setLoading] = useState(false)
     const [image, setImage] = useState<File>()
@@ -142,7 +98,6 @@ export const NewEmployee: React.FC<NewEmployeeProps> = ({}) => {
     })
 
     const handleSubmit = (values: NewEmployee) => {
-      
         const data = {
             ...values,
             isAdmin: adminStatus,
@@ -387,7 +342,7 @@ export const NewEmployee: React.FC<NewEmployeeProps> = ({}) => {
                                 </Button>
                                 <Button
                                     variant="contained"
-                                    type={currentStep === 4 ? "submit" : "button"}
+                                    type={"submit"}
                                     sx={{
                                         fontSize: 17,
                                         color: colors.text.white,
