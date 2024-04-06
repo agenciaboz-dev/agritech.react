@@ -4,16 +4,11 @@ import { colors } from "../../style/colors"
 import { useHeader } from "../../hooks/useHeader"
 import { Header } from "../../components/Header"
 import { useIo } from "../../hooks/useIo"
-import { useUser } from "../../hooks/useUser"
 import { useSnackbar } from "burgos-snackbar"
 import { Formik, Form } from "formik"
 import { HeaderProfile } from "./HeaderProfile"
 import { InfoProfile } from "./InfoProfile"
 import { useDataHandler } from "../../hooks/useDataHandler"
-import { useEstadosBrasil } from "../../hooks/useEstadosBrasil"
-import { useGender } from "../../hooks/useGender"
-import { useNavigate } from "react-router-dom"
-import { useRelationship } from "../../hooks/useRelationship"
 import { unmaskCurrency } from "../../hooks/unmaskNumber"
 import dayjs, { Dayjs } from "dayjs"
 
@@ -24,7 +19,6 @@ interface ProfileProps {
 export const Profile: React.FC<ProfileProps> = ({ user }) => {
     const header = useHeader()
     const io = useIo()
-    const { setUser } = useUser()
 
     const { unmask } = useDataHandler()
     const { snackbar } = useSnackbar()
