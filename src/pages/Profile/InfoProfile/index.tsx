@@ -1,10 +1,8 @@
 import React, { ChangeEventHandler } from "react"
-import { Box, Button, MenuItem, Tab, Tabs, TextField } from "@mui/material"
+import { Box,  Tab, Tabs } from "@mui/material"
 import { tabStyle } from "../../../style/tabStyle"
-import { textField } from "../../../style/input"
 import { Personal } from "./Personal"
 import { Documentation } from "./Documentation"
-import { colors } from "../../../style/colors"
 import { Contact } from "./Contact"
 import { Address } from "./Address"
 import { Bank } from "./Bank"
@@ -28,7 +26,6 @@ interface InfoProfileProps {
 export const InfoProfile: React.FC<InfoProfileProps> = ({
     values,
     handleChange,
-    review,
     tab,
     setTab,
     pickDate,

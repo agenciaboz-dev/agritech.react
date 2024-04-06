@@ -61,20 +61,20 @@ export const Personal: React.FC<PersonalProps> = ({ values, handleChange, birthP
 
     return (
         <Box sx={{ flexDirection: "column", gap: "2.5vw" }}>
-                    <DemoItem label="Data de Nascimento">
-                            <MobileDatePicker
-                                sx={{ ...textField }}
-                                format="DD/MM/YYYY"
-                                value={birthPick}
-                                onChange={(newDate) => {
-                                    if (newDate !== null && setBirthPick) {
-                                        setBirthPick(newDate)
-                                    }
-                                }}
-                                timezone="system"
-                                readOnly={user?.cpf !== values.cpf}
-                            />
-                    </DemoItem>
+            <DemoItem label="Data de Nascimento">
+                <MobileDatePicker
+                    sx={{ ...textField }}
+                    format="DD/MM/YYYY"
+                    value={birthPick}
+                    onChange={(newDate) => {
+                        if (newDate !== null && setBirthPick) {
+                            setBirthPick(newDate)
+                        }
+                    }}
+                    timezone="system"
+                    readOnly={user?.cpf !== values.cpf}
+                />
+            </DemoItem>
             {values.employee === undefined && (
                 <TextField
                     label={"CPF"}
@@ -89,13 +89,13 @@ export const Personal: React.FC<PersonalProps> = ({ values, handleChange, birthP
                     }}
                 />
             )}
-            {values.employee === undefined && (
+            {values.employee === undefined && values.producer && (
                 <>
                     <TextField
                         label={"CNPJ"}
                         name={"producer.cnpj"}
                         sx={textField}
-                        value={values.producer?.cnpj}
+                        value={values.producer.cnpj}
                         InputProps={{
                             inputComponent: MaskedInputNando,
                             inputProps: { mask: useCnpjMask, inputMode: "numeric" },
@@ -106,7 +106,7 @@ export const Personal: React.FC<PersonalProps> = ({ values, handleChange, birthP
                         label={"Inscrição Estadual"}
                         name={"producer.inscricaoEstadual"}
                         sx={textField}
-                        value={values.producer?.inscricaoEstadual}
+                        value={values.producer.inscricaoEstadual}
                         InputProps={{
                             readOnly: true,
                         }}

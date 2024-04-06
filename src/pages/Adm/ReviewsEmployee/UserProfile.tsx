@@ -59,8 +59,8 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
         console.log({ atualizou: profile })
     }, [profile])
 
-    const [isAdmin, setIsAdmin] = useState(profile?.isAdmin)
-    const [isManager, setIsManager] = useState(profile?.isManager)
+    const [isAdmin, setIsAdmin] = useState(profile?.isAdmin || false)
+    const [isManager, setIsManager] = useState(profile?.isManager || false)
 
     const valuesUser: User = {
         name: profile?.name || "",
@@ -233,27 +233,7 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
                             Acessar Fazendas
                         </Button>
                     )}
-                    {/* {view && userSelect[0].employee && user?.isAdmin && (
-                        <Button
-                            size="small"
-                            variant="contained"
-                            sx={{
-                                alignItems: "center",
-                                gap: "0vw",
-                                backgroundColor: colors.button,
-                                color: colors.text.white,
-                                textTransform: "none",
-                                borderRadius: "5vw",
-                                fontSize: "3.0vw",
-                                p: "1vw 3vw",
-                                width: "fit-content",
-                                zIndex: 1,
-                            }}
-                            onClick={() => {}}
-                        >
-                            Gerenciar acesso
-                        </Button>
-                    )} */}
+                  
                 </Box>
                 <HeaderProfile
                     values={valuesUser}
