@@ -1,4 +1,4 @@
-import { Avatar, Box, IconButton, Tab, Tabs, ThemeProvider, createTheme } from "@mui/material"
+import { Avatar, Box, IconButton, Tab, Tabs } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { colors } from "../../../style/colors"
 import { Header } from "../../../components/Header"
@@ -9,20 +9,12 @@ import { tabStyle } from "../../../style/tabStyle"
 import { WeatherComponent } from "../../../components/WeatherComponent"
 import { useNavigate } from "react-router-dom"
 import { useUser } from "../../../hooks/useUser"
-import { useProducer } from "../../../hooks/useProducer"
 import { useIo } from "../../../hooks/useIo"
 import { PiPlant } from "react-icons/pi"
-import { Call, CreateCall } from "../../../definitions/call"
+import { Call } from "../../../definitions/call"
 import { OpenCallBox, ProgressCall } from "../../../components/OpenCallBox"
 import { LogsCard } from "../../TillageDetails/LogsCard"
-import { content, openCall, progress } from "../../../tools/contenModals"
-import { DialogConfirm } from "../../../components/DialogConfirm"
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
-import { MobileDatePicker, ptBR } from "@mui/x-date-pickers"
-import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo"
-import { CurrencyText } from "../../../components/CurrencyText"
-import { textField, input } from "../../../style/input"
-import dayjs, { Dayjs } from "dayjs"
+import { content, progress } from "../../../tools/contenModals"
 
 interface TillageProps {}
 
@@ -38,8 +30,6 @@ export const Tillage: React.FC<TillageProps> = ({}) => {
     const findTillage = user?.producer?.tillage?.find((item) => item.id === Number(tillageid))
     const [weatherData, setWeatherData] = useState<CurrentConditions>()
     const [icon, setIcon] = useState<string>("")
-    const [pickDate, setPickDate] = useState<Dayjs | null>(null)
-    const [variant, setVariant] = useState(false)
 
     const [tab, setTab] = React.useState("calls")
     const changeTab = (event: React.SyntheticEvent, newValue: string) => {
@@ -49,10 +39,6 @@ export const Tillage: React.FC<TillageProps> = ({}) => {
     const [selectedAvatar, setSelectedAvatar] = useState(0)
     const [selectedCall, setSelectedCall] = useState<Call | null>(null)
     const [callStatus, setCallStatus] = useState(false)
-    const [loading, setLoading] = useState(false)
-
-    const [open, setOpen] = useState(false)
-    const [openApproved, setOpenApproved] = useState(false)
 
     const toggleSelection = (talhao: Talhao) => {
         if (selectedAvatar === talhao.id) {
@@ -69,14 +55,15 @@ export const Tillage: React.FC<TillageProps> = ({}) => {
     }, [])
 
     useEffect(() => {
-        // console.log({ location: tillageSelect?.address.city })
         findTillage?.address.city && io.emit("weather:find", { data: findTillage?.address.city })
 
         io.on("weather:find:success", (data: any) => {
             setWeatherData(data.currentConditions)
             setIcon(data.currentConditions.icon)
         })
-        io.on("weather:find:failed", (data: any) => {})
+        io.on("weather:find:failed", (error) => {
+            console.log(error)
+        })
 
         return () => {
             io.off("weather:find:success")
@@ -84,65 +71,6 @@ export const Tillage: React.FC<TillageProps> = ({}) => {
         }
     }, [findTillage])
 
-    const handleClickOpen = () => {
-        setOpen(true)
-    }
-
-    const initialValues = {
-        approved: false,
-        open: "",
-        comments: "",
-        producerId: user?.id,
-        talhaoId: selectedTalhao?.id,
-        kitId: undefined,
-        userId: user?.id,
-        hectarePrice: "",
-        forecast: "",
-    }
-    const handleSubmit = (values: any) => {
-        const data = {
-            ...values,
-            forecast: dayjs(pickDate).valueOf().toString(),
-        }
-        console.log(data)
-        io.emit("call:create", data)
-        setLoading(true)
-    }
-
-    const newTheme = (theme: any) =>
-        createTheme({
-            ...theme,
-            components: {
-                MuiPickersToolbar: {
-                    styleOverrides: {
-                        root: {
-                            color: "#fff",
-                            // borderRadius: 5,
-                            borderWidth: 0,
-                            backgroundColor: colors.primary,
-                        },
-                    },
-                },
-                MuiPickersMonth: {
-                    styleOverrides: {
-                        monthButton: {
-                            borderRadius: 20,
-                            borderWidth: 0,
-                            border: "0px solid",
-                        },
-                    },
-                },
-                MuiPickersDay: {
-                    styleOverrides: {
-                        root: {
-                            color: colors.primary,
-                            borderRadius: 20,
-                            borderWidth: 0,
-                        },
-                    },
-                },
-            },
-        })
     return (
         <Box
             sx={{
@@ -195,15 +123,6 @@ export const Tillage: React.FC<TillageProps> = ({}) => {
                         {/* {!user?.producer ? tillageSelect?.name : tillageSelectProd?.name} */}
                         {!user?.producer ? selectedTalhao?.name : ""}
                     </p>
-
-                    {/* <p
-                        style={{ color: "white", fontSize: "3vw", textDecoration: "underline" }}
-                        onClick={() =>
-                            navigate(user?.producer !== null ? `/producer/call/${call?.id}` : `/${producerid}/tillage/list`)
-                        }
-                    >
-                        Detalhes
-                    </p> */}
                 </Box>
                 {findTillage?.talhao?.length !== 0 ? (
                     <Box sx={{ flexDirection: "row", gap: "2vw", width: "100%", overflow: "auto", p: "0vw 4vw 8vw" }}>
@@ -318,47 +237,6 @@ export const Tillage: React.FC<TillageProps> = ({}) => {
                             )}
 
                             {/* {tab === "history" && <p>Nenhum Registro</p>} */}
-
-                            {/* <DialogConfirm
-                                user={user}
-                                open={open}
-                                setOpen={setOpen}
-                                data={openCall}
-                                children={
-                                    <Box sx={{ gap: "3vw" }}>
-                                        {user?.isAdmin && (
-                                            <Box sx={{ gap: "2vw" }}>
-                                                <DemoItem label="Previsão da visita">
-                                                    <MobileDatePicker
-                                                        sx={{ ...textField }}
-                                                        format="DD/MM/YYYY"
-                                                        value={pickDate}
-                                                        onChange={(newDate) => {
-                                                            if (newDate !== null) {
-                                                                setPickDate(newDate)
-                                                            }
-                                                        }}
-                                                        timezone="system"
-                                                        disablePast
-                                                    />
-                                                </DemoItem>
-                                                <Box sx={{ flexDirection: "row", gap: "2vw", color: colors.text.white }}>
-                                                    <p style={{ fontSize: "4vw" }}>Custo por hectare: </p>
-                                                    {"  "}
-                                                    <p style={{ fontSize: "4vw" }}>
-                                                        <CurrencyText value={findTillage?.hectarePrice || ""} />
-                                                    </p>
-                                                </Box>
-                                            </Box>
-                                        )}
-                                    </Box>
-                                }
-                                click={() => {
-                                    setVariant(true)
-                                    setOpen(false)
-                                    handleSubmit(initialValues)
-                                }}
-                            /> */}
                         </>
                     )}
                     <IconButton
@@ -373,7 +251,7 @@ export const Tillage: React.FC<TillageProps> = ({}) => {
                         }}
                         onClick={() => navigate(`/producer/${findTillage?.id}/new_talhao`)}
                     >
-                        <PiPlant color={"#fff"} sx={{ width: "6vw", height: "6vw" }} />
+                        <PiPlant color={"#fff"} style={{ width: "6vw", height: "6vw" }} />
                     </IconButton>
                 </Box>
             </Box>

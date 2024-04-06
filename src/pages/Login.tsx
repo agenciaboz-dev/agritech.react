@@ -1,10 +1,9 @@
 import React, { useContext, useEffect, useState } from "react"
 import { useIo } from "../hooks/useIo"
-import { useUser } from "../hooks/useUser"
 import UserContext from "../contexts/userContext"
 import { Box, Button, CircularProgress, TextField, useMediaQuery } from "@mui/material"
 import { colors } from "../style/colors"
-import logo from "../assets/logo/logo.svg"
+import Logo from "../assets/logo/logo.svg"
 import { useNavigate } from "react-router-dom"
 import { Formik, Form } from "formik"
 import { useSnackbar } from "burgos-snackbar"
@@ -25,7 +24,6 @@ export const Login: React.FC<LoginProps> = ({}) => {
     const { snackbar } = useSnackbar()
     const io = useIo()
 
-    const { user } = useUser()
     const { setUser } = useContext(UserContext)
 
     const [loading, setLoading] = useState(false)
@@ -83,7 +81,7 @@ export const Login: React.FC<LoginProps> = ({}) => {
             >
                 <img
                     onClick={() => navigate("../home")}
-                    src={logo}
+                    src={Logo}
                     style={{
                         alignItems: "center",
                         justifyContent: "center",
