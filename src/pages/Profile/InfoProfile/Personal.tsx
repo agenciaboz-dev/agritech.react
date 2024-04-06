@@ -1,4 +1,4 @@
-import { Box, Button, MenuItem, TextField, ThemeProvider, createTheme } from "@mui/material"
+import { Box,  MenuItem, TextField} from "@mui/material"
 import React, { ChangeEventHandler } from "react"
 import { textField } from "../../../style/input"
 import { useGender } from "../../../hooks/useGender"
@@ -8,10 +8,8 @@ import { useUser } from "../../../hooks/useUser"
 import MaskedInputNando from "../../../components/MaskedNando"
 import { useCnpjMask } from "burgos-masks"
 import { Dayjs } from "dayjs"
-import { LocalizationProvider, MobileDatePicker, ptBR } from "@mui/x-date-pickers"
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
-import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo"
-import { colors } from "../../../style/colors"
+import {  MobileDatePicker } from "@mui/x-date-pickers"
+import { DemoItem } from "@mui/x-date-pickers/internals/demo"
 
 interface PersonalProps {
     values: Partial<Omit<User, "producer"> & { producer: Partial<Producer> }>
@@ -20,40 +18,7 @@ interface PersonalProps {
     setBirthPick?: React.Dispatch<React.SetStateAction<Dayjs | null>>
 }
 
-const newTheme = (theme: any) =>
-    createTheme({
-        ...theme,
-        components: {
-            MuiPickersToolbar: {
-                styleOverrides: {
-                    root: {
-                        color: "#fff",
-                        // borderRadius: 5,
-                        borderWidth: 0,
-                        backgroundColor: colors.primary,
-                    },
-                },
-            },
-            MuiPickersMonth: {
-                styleOverrides: {
-                    monthButton: {
-                        borderRadius: 20,
-                        borderWidth: 0,
-                        border: "0px solid",
-                    },
-                },
-            },
-            MuiPickersDay: {
-                styleOverrides: {
-                    root: {
-                        color: colors.primary,
-                        borderRadius: 20,
-                        borderWidth: 0,
-                    },
-                },
-            },
-        },
-    })
+
 export const Personal: React.FC<PersonalProps> = ({ values, handleChange, birthPick, setBirthPick }) => {
     const gender = useGender()
     const typeRelationship = useRelationship()

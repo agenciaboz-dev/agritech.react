@@ -1,17 +1,15 @@
 import React, { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { useUsers } from "../../../hooks/useUsers"
-import { Box, Button, ButtonBase, CircularProgress } from "@mui/material"
+import { Box, Button, CircularProgress } from "@mui/material"
 import { colors } from "../../../style/colors"
 import { Header } from "../../../components/Header"
 import { useHeader } from "../../../hooks/useHeader"
-import { useDataHandler } from "../../../hooks/useDataHandler"
 import { useSnackbar } from "burgos-snackbar"
 import { HeaderProfile } from "../../Profile/HeaderProfile"
 import { InfoProfile } from "../../Profile/InfoProfile"
 import { useIo } from "../../../hooks/useIo"
 import { useUser } from "../../../hooks/useUser"
-import { unmaskCurrency } from "../../../hooks/unmaskNumber"
 import dayjs, { Dayjs } from "dayjs"
 
 interface UserprofileProps {
@@ -25,8 +23,8 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
     const io = useIo()
     const { user } = useUser()
     const { userId } = useParams()
-    const { pendingUsers, setPendingUsers } = useUsers()
-    const { listUsers, setListUsers } = useUsers()
+    const { pendingUsers } = useUsers()
+    const { listUsers } = useUsers()
 
     const userSelect = listUsers?.filter((item) => item.id === Number(userId)) || []
     const selectedUser = listUsers?.find((item) => item.id === Number(userId))
@@ -233,7 +231,6 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
                             Acessar Fazendas
                         </Button>
                     )}
-                  
                 </Box>
                 <HeaderProfile
                     values={valuesUser}
