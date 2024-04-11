@@ -1,5 +1,5 @@
 import React, { useEffect } from "react"
-import { Avatar, Box, Drawer, IconButton, MenuItem, SwipeableDrawer, SxProps, useRadioGroup } from "@mui/material"
+import { Avatar, Box, Drawer, IconButton, MenuItem, SwipeableDrawer, SxProps, useMediaQuery, useRadioGroup } from "@mui/material"
 import { useMenuDrawer } from "../hooks/useMenuDrawer"
 import { useUser } from "../hooks/useUser"
 import { useNavigationList } from "../hooks/useNavigationList"
@@ -13,6 +13,7 @@ import LogoutIcon from "@mui/icons-material/Logout"
 interface MenuDrawerProps {}
 
 export const MenuDrawer: React.FC<MenuDrawerProps> = ({}) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
     const navigationItems = useNavigationList()
     const admDrawerItems = navigationItems.admin.drawer
     const employeeDrawer = navigationItems.employee.drawer
@@ -24,25 +25,25 @@ export const MenuDrawer: React.FC<MenuDrawerProps> = ({}) => {
     const { user, logout } = useUser()
 
     const iconStyle: SxProps = {
-        width: "5vw",
+        width: isMobile ? "5vw" : "2vw",
         height: "auto",
     }
 
     const iconButtonStyle: SxProps = {
-        height: "9vw",
-        width: "9vw",
+        height: isMobile ? "9vw" : "3vw",
+        width: isMobile ? "9vw" : "3vw",
         padding: "1.5vw",
         color: "#fff",
     }
 
     const menuItemStyle: SxProps = {
-        fontSize: "3.8vw",
+        fontSize: isMobile ? "3.8vw" : "1rem",
         fontFamily: "MalgunGothicBold",
         height: "fit-content",
         alignItems: "center",
-        padding: "0 4vw",
+        padding: isMobile ? "0 4vw" : "1vw",
         color: "#fff",
-        gap: "2vw",
+        gap: isMobile ? "2vw" : "1vw",
     }
 
     const handleClose = () => {
@@ -58,11 +59,11 @@ export const MenuDrawer: React.FC<MenuDrawerProps> = ({}) => {
             onClose={handleClose}
             PaperProps={{
                 sx: {
-                    padding: "6vw 3vw",
-                    width: "75vw",
+                    padding: isMobile ? "6vw 3vw" : "1vw",
+                    width: isMobile ? "75vw" : "33vw",
                     height: "100%",
-                    borderTopLeftRadius: "10vw",
-                    borderBottomLeftRadius: "10vw",
+                    borderTopLeftRadius: isMobile ? "10vw" : "2vw",
+                    borderBottomLeftRadius: isMobile ? "10vw" : "2vw",
                     overflowX: "hidden",
                     backgroundColor: "#232323",
                     justifyContent: "space-between",
@@ -72,18 +73,20 @@ export const MenuDrawer: React.FC<MenuDrawerProps> = ({}) => {
             keepMounted
         >
             <Box>
-                <Box sx={{ justifyContent: "space-between", width: "100%", padding: "4vw" }}>
+                <Box sx={{ justifyContent: "space-between", width: "100%", padding: isMobile ? "4vw" : "1vw" }}>
                     <IconButton color="default" sx={iconButtonStyle} onClick={handleClose}>
                         <KeyboardBackspaceIcon sx={iconStyle} />
                     </IconButton>
-                    <Box sx={{ alignItems: "center", gap: "6vw" }}>
+                    <Box sx={{ alignItems: "center", gap: isMobile ? "6vw" : "1vw" }}>
                         {/* <Avatar src={user?.image} sx={{ width: "50vw", height: "50vw", alignSelf: "center" }} /> */}
-                        <Avatar src={user?.image} sx={{ width: "50vw", height: "50vw", alignSelf: "center" }} />
-                        <p style={{ color: "#fff", fontSize: "5vw" }}>{user?.name}</p>
+                        <Avatar
+                            src={user?.image}
+                            sx={{ width: isMobile ? "50vw" : "10vw", height: isMobile ? "50vw" : "10vw", alignSelf: "center" }}
+                        />
+                        <p style={{ color: "#fff", fontSize: isMobile ? "5vw" : "2rem" }}>{user?.name}</p>
                     </Box>
                 </Box>
-                {/*  */}
-                <Box sx={{ flexDirection: "column", paddingTop: "4vw" }}>
+                <Box sx={{ flexDirection: "column", paddingTop: isMobile ? "4vw" : "1vw" }}>
                     {user?.isAdmin
                         ? admDrawerItems.map((menu) => (
                               <MenuItem
@@ -149,9 +152,9 @@ export const MenuDrawer: React.FC<MenuDrawerProps> = ({}) => {
                 </MenuItem> */}
                 <MenuItem
                     sx={{
-                        fontSize: "3.8vw",
+                        fontSize: isMobile ? "3.8vw" : "1.2rem",
                         height: "fit-content",
-                        padding: "0 4vw",
+                        padding: isMobile ? "0 4vw" : "1vw",
                         marginTop: "auto",
                         fontFamily: "MalgunGothicBold",
                         color: "#fff",

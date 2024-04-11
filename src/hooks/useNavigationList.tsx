@@ -9,9 +9,10 @@ import { PiPlantLight } from "react-icons/pi"
 import { CiCalendarDate, CiCircleAlert, CiGrid41, CiViewTable } from "react-icons/ci"
 import { SlDocs } from "react-icons/sl"
 
-import { SxProps } from "@mui/material"
+import { SxProps, useMediaQuery } from "@mui/material"
 
 export const useNavigationList = () => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
     const iconStyle: SxProps = { color: "#232323" }
 
     const admin: NavigationMenu = {
@@ -25,26 +26,31 @@ export const useNavigationList = () => {
                 id: 1,
                 title: "Meu Perfil",
                 location: "/adm/profile",
-                icon: <img src={User} style={{ padding: "0 1.5vw", width: "7vw" }} />,
+                icon: (
+                    <img
+                        src={User}
+                        style={{ padding: isMobile ? "0 1.5vw" : 0, width: isMobile ? "7vw" : "3vw", height: isMobile ? "auto" : "3vw" }}
+                    />
+                ),
             },
             {
                 id: 2,
                 title: "Cadastrar Colaborador",
                 location: "/adm/new_employee",
-                icon: <img src={AddEmployee} style={{ width: "6vw" }} />,
+                icon: <img src={AddEmployee} style={{ width: isMobile ? "7vw" : "3vw" }} />,
             },
             {
                 id: 3,
                 title: "Cadastrar Cliente",
                 location: "/adm/new_producer",
-                icon: <img src={AddUser} style={{ width: "6vw" }} />,
+                icon: <img src={AddUser} style={{ width: isMobile ? "6vw" : "3vw" }} />,
             },
 
             {
                 id: 5,
                 title: "Relatórios",
                 location: "/adm/reports",
-                icon: <CiViewTable style={{ width: "7vw", height: "6vw", paddingLeft: 0, paddingRight: 0 }} />,
+                icon: <CiViewTable style={{ width: isMobile ? "7vw" : "3vw", height: isMobile ? "6vw" : "auto", paddingLeft: 0, paddingRight: 0 }} />,
             },
         ],
         bottom: [
@@ -52,27 +58,27 @@ export const useNavigationList = () => {
                 id: 1,
                 title: "Painel",
                 location: "/panel",
-                icon: <CiGrid41 alt="Logotipo do App" style={{ width: "6vw", height: "6vw" }} />,
+                icon: <CiGrid41 style={{ width: isMobile ? "6vw" : "3vw", height: isMobile ? "6vw" : "3vw" }} />,
             },
 
             {
                 id: 2,
                 title: "Calendário",
                 location: "/calendar",
-                icon: <CiCalendarDate style={{ width: "6vw", height: "6vw" }} />,
+                icon: <CiCalendarDate style={{ width: isMobile ? "6vw" : "3vw", height: isMobile ? "6vw" : "3vw" }} />,
             },
 
             {
                 id: 3,
                 title: "Chamados",
                 location: "/calls",
-                icon: <CiCircleAlert style={{ width: "6vw", height: "6vw" }} />,
+                icon: <CiCircleAlert style={{ width: isMobile ? "6vw" : "3vw", height: isMobile ? "6vw" : "3vw" }} />,
             },
             {
                 id: 4,
                 title: "Análises",
                 location: "/reviews",
-                icon: <SlDocs style={{ width: "5vw", height: "5vw" }} />,
+                icon: <SlDocs style={{ width: isMobile ? "5vw" : "3vw", height: isMobile ? "6vw" : "5vw" }} />,
             },
         ],
     }
