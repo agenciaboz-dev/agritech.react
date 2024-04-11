@@ -1,4 +1,4 @@
-import { Avatar, Badge, Box, Button, IconButton, useMediaQuery } from "@mui/material"
+import { Avatar, Badge, Box, Button, IconButton, Skeleton, useMediaQuery } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { colors } from "../../../style/colors"
 import drone from "../../../assets/logo/droneIcon.png"
@@ -16,6 +16,7 @@ import { CardUser } from "../../../components/CardUser"
 import { useNotificationDrawer } from "../../../hooks/useNotificationDrawer"
 import PostAddIcon from "@mui/icons-material/PostAdd"
 import { useNotification } from "../../../hooks/useNotifications"
+import { useArray } from "burgos-array"
 
 interface PanelProps {
     user: User
@@ -28,6 +29,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
     const { setUser } = useUser()
     const { snackbar } = useSnackbar()
     const navigate = useNavigate()
+    const skeletons = useArray().newArray(3)
 
     const menu = useMenuDrawer()
     const notificationDrawer = useNotificationDrawer()
@@ -59,7 +61,15 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
     }, [listUsers])
 
     return (
-        <Box style={{ flex: 1, backgroundColor: colors.button, paddingTop: isMobile ? "4vw" : "1vw", position: "relative" }}>
+        <Box
+            style={{
+                flex: 1,
+                backgroundColor: colors.button,
+                paddingTop: isMobile ? "3vw" : "1vw",
+                position: "relative",
+                overflowY: isMobile ? "hidden" : "inherit",
+            }}
+        >
             <Box
                 style={{
                     flexDirection: "row",
@@ -174,13 +184,21 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                             >
                                 Colaboradores Fixados
                             </p>
-                            <Box style={{ width: "100%" }}>
-                                {listEmployee?.length !== 0 &&
-                                    listEmployee
-                                        ?.slice(0, 3)
-                                        .map((user) => (
-                                            <CardUser user={user} key={user.id} location={`/adm/calendar/${user.id}`} />
-                                        ))}
+                            <Box style={{ width: "100%", gap: "1vw" }}>
+                                {listEmployee?.length == 0
+                                    ? listEmployee
+                                          ?.slice(0, 3)
+                                          .map((user) => (
+                                              <CardUser user={user} key={user.id} location={`/adm/calendar/${user.id}`} />
+                                          ))
+                                    : skeletons.map((_, index) => (
+                                          <Skeleton
+                                              animation="wave"
+                                              key={index}
+                                              variant="rounded"
+                                              sx={{ width: 1, height: "13.5vw" }}
+                                          />
+                                      ))}
                             </Box>
                             <Box
                                 style={{
@@ -246,13 +264,21 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                             >
                                 Clientes Fixados
                             </p>
-                            <Box style={{ width: "100%" }}>
-                                {listProducer?.length !== 0 &&
-                                    listProducer
-                                        ?.slice(0, 3)
-                                        .map((user) => (
-                                            <CardUser user={user} key={user.id} location={`/adm/profile/${user.id}`} />
-                                        ))}
+                            <Box style={{ width: "100%", gap: "1vw" }}>
+                                {listProducer?.length == 0
+                                    ? listProducer
+                                          ?.slice(0, 3)
+                                          .map((user) => (
+                                              <CardUser user={user} key={user.id} location={`/adm/profile/${user.id}`} />
+                                          ))
+                                    : skeletons.map((_, index) => (
+                                          <Skeleton
+                                              animation="wave"
+                                              key={index}
+                                              variant="rounded"
+                                              sx={{ width: 1, height: "13.5vw" }}
+                                          />
+                                      ))}
                             </Box>
                             <Box
                                 style={{

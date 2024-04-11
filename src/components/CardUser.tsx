@@ -18,10 +18,10 @@ export const CardUser: React.FC<CardUserProps> = ({ review, user, location }) =>
     return (
         <Box
             sx={{
-                height: isMobile ? "15vw" : "fit-content",
+                height: isMobile ? "13.5vw" : "fit-content",
                 flexDirection: "row",
                 gap: "3vw",
-                padding: isMobile ? "4vw 2vw" : "1vw",
+                padding: isMobile ? "2vw 2vw" : "1vw",
                 alignItems: "center",
                 borderBottom: "1px solid #88A486",
                 justifyContent: "space-between",
@@ -29,8 +29,8 @@ export const CardUser: React.FC<CardUserProps> = ({ review, user, location }) =>
             key={user.id}
         >
             <Box sx={{ flexDirection: "row", gap: "3vw", alignItems: "center" }}>
-                <Avatar src={user.image} sx={{ width: isMobile ? "10vw" : "5vw", height: isMobile ? "10vw" : "5vw" }} />
-                <Box sx={{ flexDirection: "column", gap: "1vw" }}>
+                <Avatar src={user.image} sx={{ width: isMobile ? "9.5vw" : "5vw", height: isMobile ? "9.5vw" : "5vw" }} />
+                <Box sx={{ flexDirection: "column" }}>
                     {!user.producer && <OfficeDot office={user.office} />}
                     <p
                         style={{
@@ -48,7 +48,7 @@ export const CardUser: React.FC<CardUserProps> = ({ review, user, location }) =>
             </Box>
             <Box sx={{ alignItems: "center", flexDirection: "row", cursor: "pointer" }}>
                 <p
-                    style={{ fontSize: isMobile ? "3.0vw" : "1rem" }}
+                    style={{ fontSize: isMobile ? "2.5vw" : "1rem" }}
                     onClick={() => {
                         navigate(location)
                     }}
