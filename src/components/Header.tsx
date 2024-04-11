@@ -1,4 +1,4 @@
-import { Avatar, Badge, Box, IconButton, Paper, SxProps } from "@mui/material"
+import { Avatar, Badge, Box, IconButton, Paper, SxProps, useMediaQuery } from "@mui/material"
 import NotificationsIcon from "@mui/icons-material/Notifications"
 import { useHeader } from "../hooks/useHeader"
 import { useMenuDrawer } from "../hooks/useMenuDrawer"
@@ -21,6 +21,7 @@ interface HeaderProps {
 }
 
 export const Header: React.FC<HeaderProps> = ({ back, location, style }) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
     const header = useHeader()
     const menuDrawer = useMenuDrawer()
     const notificationDrawer = useNotificationDrawer()
@@ -29,7 +30,7 @@ export const Header: React.FC<HeaderProps> = ({ back, location, style }) => {
     const { listNotifications, recents } = useNotification()
 
     const iconStyle: SxProps = {
-        width: "7vw",
+        width: isMobile ? "7vw" : "3vw",
         height: "auto",
         color: "#fff",
     }
@@ -42,8 +43,8 @@ export const Header: React.FC<HeaderProps> = ({ back, location, style }) => {
                 justifyContent: "space-between",
                 width: "100%",
                 alignItems: "center",
-                padding: "4vw",
-                fontSize: "5vw",
+                padding: isMobile ? "4vw" : "1vw",
+                fontSize: isMobile ? "5vw" : "1.5rem",
                 fontWeight: "bold",
                 background: "transparent",
                 borderRadius: 0,
@@ -63,7 +64,12 @@ export const Header: React.FC<HeaderProps> = ({ back, location, style }) => {
                 <Badge badgeContent={recents?.length} color="success">
                     {" "}
                     <NotificationsNoneIcon
-                        sx={{ color: "#fff" }}
+                        sx={{
+                            color: "#fff",
+                            width: isMobile ? "8vw" : "2vw",
+                            height: isMobile ? "8vw" : "2vw",
+                            cursor: "pointer",
+                        }}
                         onClick={() => {
                             notificationDrawer.toggle()
                             console.log("tem qe abrir")
@@ -72,7 +78,7 @@ export const Header: React.FC<HeaderProps> = ({ back, location, style }) => {
                 </Badge>
                 <Avatar
                     src={user?.image}
-                    style={{ color: "#fff", width: "8vw", height: "8vw" }}
+                    style={{ color: "#fff", width: isMobile ? "8vw" : "2vw", height: isMobile ? "8vw" : "2vw" }}
                     onClick={() => {
                         menuDrawer.toggle()
                         console.log("abriu")

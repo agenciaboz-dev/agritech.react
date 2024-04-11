@@ -1,4 +1,4 @@
-import { Box, Button } from "@mui/material"
+import { Box, Button, useMediaQuery } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { Header } from "../../../components/Header"
 import { colors } from "../../../style/colors"
@@ -14,6 +14,7 @@ import { useIo } from "../../../hooks/useIo"
 interface SettingsKitProps {}
 
 export const SettingsKit: React.FC<SettingsKitProps> = ({}) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
     const io = useIo()
     const header = useHeader()
     const navigate = useNavigate()
@@ -29,9 +30,7 @@ export const SettingsKit: React.FC<SettingsKitProps> = ({}) => {
     }, [listKits])
 
     useEffect(() => {
-        const filteredList = listKits?.filter(
-            (kit) => kit.name !== null && kit.name.toLowerCase().includes(searchText.toLowerCase())
-        )
+        const filteredList = listKits?.filter((kit) => kit.name !== null && kit.name.toLowerCase().includes(searchText.toLowerCase()))
         setKits(filteredList || [])
     }, [listKits, searchText])
 
@@ -57,10 +56,10 @@ export const SettingsKit: React.FC<SettingsKitProps> = ({}) => {
                     height: "8%",
                     justifyContent: "center",
                     alignItems: "center",
-                    gap: "1vw",
-                    padding: "4vw",
+                    gap: isMobile ? "1vw" : "0.5vw",
+                    padding: isMobile ? "4vw" : "1vw",
                     flexDirection: "row",
-                    paddingBottom: "13vw",
+                    paddingBottom: isMobile ? "13vw" : "5vw",
                 }}
             >
                 <Header back location="../panel" />
@@ -70,8 +69,8 @@ export const SettingsKit: React.FC<SettingsKitProps> = ({}) => {
                     justifyContent: "center",
                     flex: 1,
                     backgroundColor: colors.secondary,
-                    borderTopLeftRadius: "5vw",
-                    borderTopRightRadius: "5vw",
+                    borderTopLeftRadius: isMobile ? "5vw" : "2vw",
+                    borderTopRightRadius: isMobile ? "5vw" : "2vw",
                     paddingTop: 10,
                 }}
             >
@@ -79,13 +78,13 @@ export const SettingsKit: React.FC<SettingsKitProps> = ({}) => {
                     style={{
                         flexDirection: "row",
                         alignItems: "center",
-                        paddingBottom: "5vw",
+                        paddingBottom: isMobile ? "5vw" : "1vw",
                         justifyContent: "space-between",
-                        padding: "3vw",
+                        padding: isMobile ? "3vw" : "0 1vw 1vw",
                         overflowY: "hidden",
                     }}
                 >
-                    <p style={{ color: colors.text.white, fontSize: "5vw", fontFamily: "MalgunGothic2" }}>
+                    <p style={{ color: colors.text.white, fontSize: isMobile ? "5vw" : "1.5rem", fontFamily: "MalgunGothic2" }}>
                         Configuração de Kits
                     </p>
                     {user?.isAdmin && (
@@ -102,20 +101,19 @@ export const SettingsKit: React.FC<SettingsKitProps> = ({}) => {
                             }}
                             onClick={() => navigate("/adm/settings-kit/addkit")}
                         >
-                            <img src={addIcon} style={{ width: "5vw" }} />
+                            <img src={addIcon} style={{ width: isMobile ? "5vw" : "3vw" }} />
                             Adicionar kit
                         </Button>
                     )}
                 </Box>
                 <Box
                     style={{
-                        padding: " 4vw",
+                        padding: isMobile ? "4vw" : "1vw",
                         width: "100%",
                         backgroundColor: "#fff",
-                        borderTopLeftRadius: "7vw",
-                        borderTopRightRadius: "7vw",
-                        height: "100%",
-                        gap: "3vw",
+                        borderTopLeftRadius: isMobile ? "7vw" : "2vw",
+                        borderTopRightRadius: isMobile ? "7vw" : "2vw",
+                        gap: isMobile ? "3vw" : "1vw",
                     }}
                 >
                     {listKits && (
@@ -125,7 +123,7 @@ export const SettingsKit: React.FC<SettingsKitProps> = ({}) => {
                             placeholder="kit"
                         />
                     )}
-                    <Box sx={{ overflowY: "auto", height: "72%" }}>
+                    <Box sx={{ overflowY: "auto", height: "33%" }}>
                         {user?.isAdmin
                             ? kits.length !== 0
                                 ? kits.map((kit, index) => <CardKit key={index} kit={kit} />)

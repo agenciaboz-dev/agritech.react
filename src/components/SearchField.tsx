@@ -18,7 +18,14 @@ export const SearchField: React.FC<SearchFieldProps> = ({ searchText, setSearchT
         <TextField
             fullWidth
             label="Buscar"
-            sx={{ ...textField, width: "100%", borderRadius: "15vw" }}
+            sx={{
+                ...textField,
+                width: "100%",
+                borderRadius: "15vw",
+                "& .MuiOutlinedInput-input": {
+                    height: "1vw",
+                },
+            }}
             placeholder={`Buscar ${placeholder ? placeholder : ""}`}
             value={searchText}
             InputProps={{
@@ -28,6 +35,11 @@ export const SearchField: React.FC<SearchFieldProps> = ({ searchText, setSearchT
                         <MdCancel />
                     </IconButton>
                 ),
+            }}
+            InputLabelProps={{
+                style: {
+                    fontSize: "1rem",
+                },
             }}
             onChange={(e) => setSearchText(e.target.value)}
         />

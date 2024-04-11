@@ -1,4 +1,4 @@
-import { Box, FormControl, FormControlLabel, FormGroup, Stack, styled } from "@mui/material"
+import { Box, FormControl, FormControlLabel, FormGroup, Stack, styled, useMediaQuery } from "@mui/material"
 import React, { useState } from "react"
 import Switch, { SwitchProps } from "@mui/material/Switch"
 import { colors } from "../../style/colors"
@@ -40,6 +40,7 @@ interface CardKitProps {
     kit: Kit
 }
 export const CardKit: React.FC<CardKitProps> = ({ kit }) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
     const navigate = useNavigate()
     const { user } = useUser()
     const { toggleKit } = useKits()
@@ -51,18 +52,18 @@ export const CardKit: React.FC<CardKitProps> = ({ kit }) => {
     }
 
     return (
-        <Box sx={{ padding: "3vw 1vw", flexDirection: "row", alignItems: "center", borderBottom: "1px solid #88A486" }}>
-            <FormGroup sx={{ width: "90%" }}>
+        <Box sx={{ padding: isMobile ? "3vw 1vw" : "1vw", flexDirection: "row", alignItems: "center", borderBottom: "1px solid #88A486" }}>
+            <FormGroup sx={{ width: isMobile ? "90%" : "100%" }}>
                 <FormControlLabel
                     checked={kit.active}
                     control={<Android12Switch />}
                     onChange={user?.isAdmin ? handleChange : () => {}}
                     label={
                         <Box sx={{ width: "100%" }}>
-                            <p style={{ fontSize: "4vw", width: "100%" }}>{kit.name}</p>
+                            <p style={{ fontSize: isMobile ? "4vw" : "1.2rem", width: "100%" }}>{kit.name}</p>
                             <p
                                 style={{
-                                    fontSize: "3vw",
+                                    fontSize: isMobile ? "3vw" : "1rem",
                                     whiteSpace: "nowrap",
                                     textOverflow: "ellipsis",
                                     // overflow: "hidden",
