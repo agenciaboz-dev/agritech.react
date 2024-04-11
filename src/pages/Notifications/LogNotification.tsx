@@ -1,4 +1,4 @@
-import { Avatar, Box, IconButton } from "@mui/material"
+import { Avatar, Box, IconButton, useMediaQuery } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { useKits } from "../../hooks/useKits"
 import { useCall } from "../../hooks/useCall"
@@ -28,6 +28,7 @@ interface LogNotificationProps {
 }
 
 export const LogNotification: React.FC<LogNotificationProps> = ({ notification, drawer }) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
     const io = useIo()
     const { user } = useUser()
     const navigate = useNavigate()
@@ -54,8 +55,6 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
         setKit(listKits?.find((item) => item.id === notification.target_id))
     }, [notification])
 
-    
-
     const messageTemplates: any = {
         new: {
             employee: {
@@ -63,11 +62,7 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                     user && io.emit("notification:viewed", notification.id, user.id)
                     removeNotification(notification.id)
                     removeNotification(notification.id)
-                    navigate(
-                        !employee?.approved
-                            ? `/adm/review/profile/${notification.target_id}`
-                            : `/adm/profile/${notification.target_id}`
-                    )
+                    navigate(!employee?.approved ? `/adm/review/profile/${notification.target_id}` : `/adm/profile/${notification.target_id}`)
                 },
             },
             talhao: {
@@ -213,15 +208,10 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
         <Box
             sx={{
                 width: "100%",
-                height: "13vw",
-                bgcolor:
-                    !drawer && findBy
-                        ? "transparent"
-                        : !drawer && findBy === undefined
-                        ? "#F0F9F2"
-                        : drawer && "transparent",
-                p: "3vw",
-                borderRadius: "4vw",
+                height: isMobile ? "13vw" : "4vw",
+                bgcolor: !drawer && findBy ? "transparent" : !drawer && findBy === undefined ? "#F0F9F2" : drawer && "transparent",
+                padding: isMobile ? "3vw" : "1vw",
+                borderRadius: isMobile ? "4vw" : "2vw",
                 flexDirection: "row",
                 alignItems: "center",
                 justifyContent: "space-between",
@@ -231,13 +221,13 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
             <Box sx={{ flexDirection: "row", gap: drawer ? "3vw" : "1.5vw", width: "90%", alignItems: "center" }}>
                 <Box width="13%">
                     {notification.target_key === "employee" ? (
-                        <Avatar src={employee?.image} sx={{ width: "8vw", height: "8vw" }} />
+                        <Avatar src={employee?.image} sx={{ width: isMobile ? "8vw" : "3vw", height: isMobile ? "8vw" : "3vw" }} />
                     ) : notification.target_key === "report" && notification.action === "close" ? (
                         <HiOutlineClipboardDocument
                             style={{
                                 color: drawer ? colors.text.white : colors.text.black,
-                                width: "7vw",
-                                height: "7vw",
+                                width: isMobile ? "7vw" : "3vw",
+                                height: isMobile ? "7vw" : "3vw",
                                 paddingLeft: 0,
                                 paddingRight: 0,
                             }}
@@ -246,8 +236,8 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                         <HiOutlineClipboardDocumentCheck
                             style={{
                                 color: drawer ? colors.text.white : colors.text.black,
-                                width: "7vw",
-                                height: "7vw",
+                                width: isMobile ? "7vw" : "3vw",
+                                height: isMobile ? "7vw" : "3vw",
                                 paddingLeft: 0,
                                 paddingRight: 0,
                             }}
@@ -256,8 +246,8 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                         <RiCustomerServiceLine
                             style={{
                                 color: drawer ? colors.text.white : colors.text.black,
-                                width: "6vw",
-                                height: "6vw",
+                                width: isMobile ? "6vw" : "3vw",
+                                height: isMobile ? "6vw" : "3vw",
                                 paddingLeft: 0,
                                 paddingRight: 0,
                             }}
@@ -266,8 +256,8 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                         <PiPlant
                             style={{
                                 color: drawer ? colors.text.white : colors.text.black,
-                                width: "8.5vw",
-                                height: "7vw",
+                                width: isMobile ? "8.5vw" : "3vw",
+                                height: isMobile ? "7vw" : "3vw",
                                 paddingLeft: 0,
                                 paddingRight: 0,
                             }}
@@ -276,8 +266,8 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                         <PiPlugsConnectedDuotone
                             style={{
                                 color: drawer ? colors.text.white : colors.text.black,
-                                width: "7vw",
-                                height: "7vw",
+                                width: isMobile ? "7vw" : "3vw",
+                                height: isMobile ? "7vw" : "3vw",
                                 paddingLeft: 0,
                                 paddingRight: 0,
                             }}
@@ -286,8 +276,8 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                         <VscDebugDisconnect
                             style={{
                                 color: drawer ? colors.text.white : colors.text.black,
-                                width: "7vw",
-                                height: "7vw",
+                                width: isMobile ? "7vw" : "3vw",
+                                height: isMobile ? "7vw" : "3vw",
                                 paddingLeft: 0,
                                 paddingRight: 0,
                             }}
@@ -296,8 +286,8 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                         <TbPlaylistAdd
                             style={{
                                 color: drawer ? colors.text.white : colors.text.black,
-                                width: "7vw",
-                                height: "7vw",
+                                width: isMobile ? "7vw" : "3vw",
+                                height: isMobile ? "7vw" : "3vw",
                                 paddingLeft: 0,
                                 paddingRight: 0,
                             }}
@@ -306,8 +296,8 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                         <TbCrown
                             style={{
                                 color: drawer ? colors.text.white : colors.text.black,
-                                width: "7vw",
-                                height: "7vw",
+                                width: isMobile ? "7vw" : "3vw",
+                                height: isMobile ? "7vw" : "3vw",
                                 paddingLeft: 0,
                                 paddingRight: 0,
                             }}
@@ -316,8 +306,8 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                         <TbCrown
                             style={{
                                 color: drawer ? colors.text.white : colors.text.black,
-                                width: "7vw",
-                                height: "7vw",
+                                width: isMobile ? "7vw" : "3vw",
+                                height: isMobile ? "7vw" : "3vw",
                                 paddingLeft: 0,
                                 paddingRight: 0,
                             }}
@@ -326,8 +316,8 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                         <TbCrown
                             style={{
                                 color: drawer ? colors.text.white : colors.text.black,
-                                width: "7vw",
-                                height: "7vw",
+                                width: isMobile ? "7vw" : "3vw",
+                                height: isMobile ? "7vw" : "3vw",
                                 paddingLeft: 0,
                                 paddingRight: 0,
                             }}
@@ -336,8 +326,8 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                         <TbCrown
                             style={{
                                 color: drawer ? colors.text.white : colors.text.black,
-                                width: "7vw",
-                                height: "7vw",
+                                width: isMobile ? "7vw" : "3vw",
+                                height: isMobile ? "7vw" : "3vw",
                                 paddingLeft: 0,
                                 paddingRight: 0,
                             }}
@@ -348,8 +338,8 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                             <MdUpdate
                                 style={{
                                     color: drawer ? colors.text.white : colors.text.black,
-                                    width: "7vw",
-                                    height: "7vw",
+                                    width: isMobile ? "7vw" : "3vw",
+                                    height: isMobile ? "7vw" : "3vw",
                                     paddingLeft: 0,
                                     paddingRight: 0,
                                 }}
@@ -362,7 +352,7 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                         <p
                             style={{
                                 // display: "flex",
-                                fontSize: "2.5vw",
+                                fontSize: isMobile ? "2.5vw" : "1.2rem",
                                 textOverflow: "ellipsis",
                                 overflowX: "hidden",
                                 whiteSpace: "nowrap",
@@ -375,7 +365,7 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                         <p
                             style={{
                                 // display: "flex",
-                                fontSize: "2.5vw",
+                                fontSize: isMobile ? "2.5vw" : "1.2rem",
                                 textOverflow: "ellipsis",
                                 overflowX: "hidden",
                                 whiteSpace: "nowrap",
@@ -410,8 +400,7 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                                 fontWeight: findBy === undefined ? "800" : "0",
                             }}
                         >
-                            Relatório fechado para {report?.call?.talhao?.tillage?.owner} -{" "}
-                            {report?.call?.talhao?.tillage?.name}
+                            Relatório fechado para {report?.call?.talhao?.tillage?.owner} - {report?.call?.talhao?.tillage?.name}
                         </p>
                     ) : notification.action === "active" && notification.target_key === "admin" ? (
                         <p
