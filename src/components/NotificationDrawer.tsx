@@ -75,7 +75,7 @@ export const NotificationDrawer: React.FC<NotificationDrawerProps> = ({}) => {
             </Box>
             <Box sx={{ overflowY: "auto", gap: "8vw", height: "90%" }}>
                 <Box>
-                    <Box sx={{ flexDirection: "column", paddingTop: "2vw", gap: "vw" }}>
+                    <Box sx={{ flexDirection: "column", paddingTop: "2vw", gap: "1vw" }}>
                         {sorted_list?.map((item, index) => (
                             <LogNotification notification={item} drawer key={index} />
                         ))}

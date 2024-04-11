@@ -25,7 +25,7 @@ export const MenuDrawer: React.FC<MenuDrawerProps> = ({}) => {
     const { user, logout } = useUser()
 
     const iconStyle: SxProps = {
-        width: isMobile ? "5vw" : "2vw",
+        width: isMobile ? "5vw" : "3vw",
         height: "auto",
     }
 
@@ -167,7 +167,7 @@ export const MenuDrawer: React.FC<MenuDrawerProps> = ({}) => {
                         handleClose()
                     }}
                 >
-                    <LogoutIcon sx={{ color: "#fff", width: "6vw" }} />
+                    <LogoutIcon sx={{ color: "#fff", width: isMobile ? "6vw" : "3vw", height: "auto" }} />
                 </MenuItem>
             </Box>
         </SwipeableDrawer>

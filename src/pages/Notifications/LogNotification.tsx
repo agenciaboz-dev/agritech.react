@@ -218,7 +218,7 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
             }}
             onClick={onClick}
         >
-            <Box sx={{ flexDirection: "row", gap: drawer ? "3vw" : "1.5vw", width: "90%", alignItems: "center" }}>
+            <Box sx={{ flexDirection: "row", gap: drawer ? (isMobile ? "3vw" : "1vw") : "1.5vw", width: "90%", alignItems: "center" }}>
                 <Box width="13%">
                     {notification.target_key === "employee" ? (
                         <Avatar src={employee?.image} sx={{ width: isMobile ? "8vw" : "3vw", height: isMobile ? "8vw" : "3vw" }} />
