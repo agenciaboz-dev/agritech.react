@@ -15,6 +15,7 @@ import { Call } from "../../../definitions/call"
 import { OpenCallBox, ProgressCall } from "../../../components/OpenCallBox"
 import { LogsCard } from "../../TillageDetails/LogsCard"
 import { content, progress } from "../../../tools/contenModals"
+import { useProducer } from "../../../hooks/useProducer"
 
 interface TillageProps {}
 
@@ -24,10 +25,13 @@ export const Tillage: React.FC<TillageProps> = ({}) => {
     const navigate = useNavigate()
 
     const { user } = useUser()
+    const { listTillages } = useProducer()
     const { tillageid } = useParams()
     const [selectedTalhao, setSelectedTalhao] = useState<Talhao>()
 
-    const findTillage = user?.producer?.tillage?.find((item) => item.id === Number(tillageid))
+    const findTillage = listTillages.find((item) => item.id === Number(tillageid))
+    const [tillageSelect, setTillageSelect] = useState<Tillage>()
+
     const [weatherData, setWeatherData] = useState<CurrentConditions>()
     const [icon, setIcon] = useState<string>("")
 
@@ -70,6 +74,18 @@ export const Tillage: React.FC<TillageProps> = ({}) => {
             io.off("weather:find:failed")
         }
     }, [findTillage])
+
+    useEffect(() => {
+        io.emit("talhao:cover", Number(tillageid))
+
+        io.on("talhao:cover:success", (data) => {
+            setTillageSelect(data)
+        })
+
+        return () => {
+            io.off("tillage:cover:success")
+        }
+    }, [tillageid])
 
     return (
         <Box
@@ -126,8 +142,8 @@ export const Tillage: React.FC<TillageProps> = ({}) => {
                 </Box>
                 {findTillage?.talhao?.length !== 0 ? (
                     <Box sx={{ flexDirection: "row", gap: "2vw", width: "100%", overflow: "auto", p: "0vw 4vw 8vw" }}>
-                        {findTillage?.talhao &&
-                            findTillage.talhao.map((item, index) => (
+                        {tillageSelect?.talhao &&
+                            tillageSelect.talhao.map((item, index) => (
                                 <Box sx={{ alignItems: "center" }} key={index}>
                                     <Avatar
                                         src={item.cover || GeoImage}

@@ -102,7 +102,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
         })
 
         return () => {
-            io.off("tillage:cover:success")
+            io.off("talhao:cover:success")
         }
     }, [tillageid])
 
