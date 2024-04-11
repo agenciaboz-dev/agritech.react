@@ -16,8 +16,7 @@ export const Home: React.FC<HomeProps> = ({}) => {
         <Box
             sx={{
                 alignItems: "center",
-                justifyContent: "center",
-                gap: isMobile ? "3vw" : "1vw",
+                justifyContent: "start",
                 height: "100%",
                 flexDirection: "column",
                 width: "100%",
@@ -26,16 +25,16 @@ export const Home: React.FC<HomeProps> = ({}) => {
             <Box
                 sx={{
                     width: "100%",
-                    height: "89%",
+                    height: isMobile ? "89%" : "80%",
                     backgroundImage: `linear-gradient(${colors.secondary}, ${colors.primary})`,
                     borderBottomRightRadius: isMobile ? "7vw" : "2vw",
                     borderBottomLeftRadius: isMobile ? "7vw" : "2vw",
                     alignItems: "center",
-                    justifyContent: "space-between",
+                    justifyContent: isMobile ? "space-between" : "space-around",
                     boxShadow: "3px 3px 6px gray",
                     padding: isMobile ? "4vw" : "1vw",
                     paddingBottom: isMobile ? "1vw" : "3vw",
-                    paddingTop: "12vw",
+                    paddingTop: isMobile ? "12vw" : "3vw",
                     flexDirection: "column",
                 }}
             >
@@ -77,7 +76,7 @@ export const Home: React.FC<HomeProps> = ({}) => {
                 </Box>
             </Box>
 
-            <Box sx={{ height: "10%", width: isMobile ? "100%" : "20%", alignItems: "center" }}>
+            <Box sx={{ height: isMobile ? "10%" : "20%", width: "100%", alignItems: "center", justifyContent: "center" }}>
                 <Button
                     sx={{
                         fontWeight: "600",
