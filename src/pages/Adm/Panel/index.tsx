@@ -185,7 +185,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                                 Colaboradores Fixados
                             </p>
                             <Box style={{ width: "100%", gap: "1vw" }}>
-                                {listEmployee?.length == 0
+                                {listEmployee?.length !== 0
                                     ? listEmployee
                                           ?.slice(0, 3)
                                           .map((user) => (
@@ -265,7 +265,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                                 Clientes Fixados
                             </p>
                             <Box style={{ width: "100%", gap: "1vw" }}>
-                                {listProducer?.length == 0
+                                {listProducer?.length !== 0
                                     ? listProducer
                                           ?.slice(0, 3)
                                           .map((user) => (
