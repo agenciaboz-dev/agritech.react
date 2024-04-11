@@ -1,4 +1,4 @@
-import { Autocomplete, Box, Button, TextField } from "@mui/material"
+import { Autocomplete, Box, Button, IconButton, TextField } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { colors } from "../../../style/colors"
 import { Header } from "../../Header"
@@ -13,6 +13,9 @@ import { Call } from "../../../definitions/call"
 import { useKits } from "../../../hooks/useKits"
 import { textField } from "../../../style/input"
 import { useIo } from "../../../hooks/useIo"
+import { BsFillInfoCircleFill } from "react-icons/bs"
+import { useDisclosure } from "@mantine/hooks"
+import { ModalLegend } from "../../Calendar/ModalLegend"
 
 interface CalendarKitProps {}
 
@@ -35,6 +38,8 @@ export const CalendarKit: React.FC<CalendarKitProps> = ({}) => {
     //Methods and variables Date
     const [value, setValue] = useState<Date | null>(null)
     const dayCurrent = new Date().toLocaleDateString("pt-br")
+
+    const [opened, { open, close }] = useDisclosure()
 
     const handleFindCalls = (value: Date | null) => {
         console.log(selectedKit?.calls)
@@ -73,12 +78,10 @@ export const CalendarKit: React.FC<CalendarKitProps> = ({}) => {
                 callsForDay.length > 0 &&
                 selectedKit.calls &&
                 selectedKit.hectareDay &&
-                (areaDayCalls < selectedKit.hectareDay && areaDayCalls !== 0
+                (areaDayCalls >= selectedKit.hectareDay / 2 && areaDayCalls > 0 
                     ? "#FFD700"
-                    : areaDayCalls === selectedKit.hectareDay
+                    : areaDayCalls >= selectedKit.hectareDay
                     ? colors.delete
-                    : selectedKit.hectareDay - areaDayCalls <= 100
-                    ? "orange"
                     : "#88A486")
 
             return (
@@ -137,7 +140,10 @@ export const CalendarKit: React.FC<CalendarKitProps> = ({}) => {
                     gap: "4vw",
                 }}
             >
-                <Box gap="4vw" sx={{ width: "100%" }}>
+                <Box
+                    gap="4vw"
+                    sx={{ width: "100%", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}
+                >
                     <Autocomplete
                         value={selectedKit}
                         options={kits || []}
@@ -145,7 +151,14 @@ export const CalendarKit: React.FC<CalendarKitProps> = ({}) => {
                         onChange={(event, selected) => setSelectedKit(selected)}
                         isOptionEqualToValue={(option, value) => option.id == value.id}
                         renderInput={(params) => <TextField {...params} sx={{ ...textField }} label="kit" required />}
+                        sx={{ width: "90%" }}
                     />
+                    <Box>
+                        <IconButton onClick={open}>
+                            <BsFillInfoCircleFill color={colors.button} style={{ width: "6vw", height: "6vw" }} />
+                        </IconButton>
+                        <ModalLegend opened={opened} close={close} />
+                    </Box>
                 </Box>
                 <DatePicker
                     locale="pt-br"

@@ -1,4 +1,4 @@
-import { Box, Button } from "@mui/material"
+import { Box, Button, IconButton } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { colors } from "../../style/colors"
 import { Header } from "../Header"
@@ -8,9 +8,11 @@ import { useUsers } from "../../hooks/useUsers"
 import { DatePicker, DatePickerProps } from "@mantine/dates"
 import { Indicator } from "@mantine/core"
 import { LogsCard } from "../../pages/Calls/LogsCard"
-import { IconUser } from "@tabler/icons-react"
 import { useCall } from "../../hooks/useCall"
 import { Call } from "../../definitions/call"
+import { BsFillInfoCircleFill } from "react-icons/bs"
+import { useDisclosure } from "@mantine/hooks"
+import { ModalLegend } from "./ModalLegend"
 
 interface CalendarProps {}
 
@@ -24,6 +26,8 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
     const { listUsers } = useUsers()
     const findUser = listUsers?.find((user) => String(user.id) === userid)
     const [callsDay, setCallsDay] = useState<Call[] | undefined>([])
+
+    const [opened, { open, close }] = useDisclosure()
 
     //Methods and variables Date
     const [value, setValue] = useState<Date | null>(null)
@@ -61,24 +65,22 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
             const areaDayCalls =
                 callsForDay?.map((item) => Number(item.talhao?.area)).reduce((prev, current) => prev + current, 0) || 0
 
-            // useEffect(() => {
-            //     console.log({ por_dia_temos: areaDayCalls })
-            //     findUser?.employee?.kits && console.log({ limite_kit: findUser?.employee.kits[0].hectareDay })
-            // }, [findUser?.employee])
+            useEffect(() => {
+                console.log({ por_dia_temos: areaDayCalls })
+                findUser?.employee?.kits && console.log({ limite_kit: findUser?.employee.kits[0].hectareDay })
+            }, [findUser?.employee])
 
             const indicatorColor =
                 callsForDay &&
                 callsForDay.length > 0 &&
                 findUser?.employee?.kits &&
                 findUser?.employee?.kits[0].hectareDay &&
-                (areaDayCalls < findUser?.employee.kits[0].hectareDay && areaDayCalls !== 0
+                (areaDayCalls >= findUser?.employee.kits[0].hectareDay / 2 && areaDayCalls > 0
                     ? "#FFD700"
-                    : areaDayCalls === findUser?.employee.kits[0].hectareDay
+                    : areaDayCalls >= findUser?.employee.kits[0].hectareDay
                     ? colors.delete
-                    : findUser?.employee.kits[0].hectareDay - areaDayCalls <= 100
-                    ? "orange"
                     : "#88A486")
-
+            // console.log({ dia: { day, areaDayCalls } })
             return (
                 <Indicator size={7} color={indicatorColor || "#88A486"} offset={-3}>
                     <div>{day}</div>
@@ -105,6 +107,7 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
                 flexDirection: "column",
             }}
         >
+            <ModalLegend close={close} opened={opened} />
             <Box
                 sx={{
                     width: "100%",
@@ -120,7 +123,7 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
             </Box>
 
             <Box
-                style={{
+                sx={{
                     padding: "4vw",
                     width: "100%",
                     flex: 1,
@@ -132,25 +135,42 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
                     gap: "4vw",
                 }}
             >
-                <Button
-                    size="small"
-                    variant="contained"
+                <Box
                     sx={{
-                        alignItems: "center",
-                        gap: "0vw",
-                        backgroundColor: "#88A486",
-                        color: colors.text.white,
-                        textTransform: "none",
-                        borderRadius: "5vw",
-                        fontSize: "3.5vw",
-                        p: "2vw",
                         width: "100%",
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        gap: "4vw",
+                        p: "1vw",
                     }}
-                    onClick={() => navigate(`/adm/profile/${userid}`)}
                 >
-                    <IconUser fontSize="xs" color="#fff" />
-                    Acessar cadastro colaborador
-                </Button>
+                    <Box>
+                        {(findUser?.office === "pilot" || findUser?.office === "copilot") && (
+                            <IconButton onClick={open}>
+                                <BsFillInfoCircleFill color={colors.button} style={{ width: "6vw", height: "6vw" }} />
+                            </IconButton>
+                        )}
+                    </Box>
+                    <Button
+                        size="small"
+                        variant="contained"
+                        sx={{
+                            alignItems: "center",
+                            gap: "0vw",
+                            backgroundColor: colors.button,
+                            color: colors.text.white,
+                            textTransform: "none",
+                            borderRadius: "5vw",
+                            fontSize: "0.8rem",
+                            p: "2vw",
+                            width: "fit-content",
+                        }}
+                        onClick={() => navigate(`/adm/profile/${userid}`)}
+                    >
+                        {/* <IconUser fontSize="xs" color="#fff" /> */}
+                        Acessar colaborador
+                    </Button>
+                </Box>
                 <DatePicker
                     locale="pt-br"
                     renderDay={findUser?.employee?.kits?.length !== 0 ? dayRenderer : undefined}
