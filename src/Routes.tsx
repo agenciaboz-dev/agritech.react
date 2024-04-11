@@ -17,6 +17,7 @@ import { Calls } from "./pages/Calls"
 import { NotificationsList } from "./pages/Notifications/NotificationsList"
 import { Terms } from "./pages/Terms"
 import { Box } from "@mui/material"
+import "./transition.css"
 
 interface RoutesProps {}
 
@@ -25,6 +26,7 @@ const AdminRoutes: React.FC<{ user: User }> = ({ user }) => {
 
     return (
         <Box
+            className="page-transition"
             sx={{
                 position: "relative",
                 height: "100%",
@@ -74,9 +76,8 @@ const UnauthenticatedRoutes = () => (
         <Route path="/home" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/*" element={ <Home /> } />
-        <Route path="/terms" element={ <Terms /> } />
-        
+        <Route path="/*" element={<Home />} />
+        <Route path="/terms" element={<Terms />} />
     </ReactRoutes>
 )
 
