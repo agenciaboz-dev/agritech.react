@@ -1,5 +1,5 @@
 import React from "react"
-import { Box, Card, MenuItem, SwipeableDrawer, SxProps } from "@mui/material"
+import { Box, Card, MenuItem, SwipeableDrawer, SxProps, useMediaQuery } from "@mui/material"
 import { useNavigationList } from "../hooks/useNavigationList"
 import { useNavigate } from "react-router-dom"
 import { useNotificationDrawer } from "../hooks/useNotificationDrawer"
@@ -13,6 +13,7 @@ import { useUser } from "../hooks/useUser"
 interface NotificationDrawerProps {}
 
 export const NotificationDrawer: React.FC<NotificationDrawerProps> = ({}) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
     const navigationItems = useNavigationList()
     const { user } = useUser()
     const notifications = navigationItems.notifications.drawer
@@ -48,11 +49,11 @@ export const NotificationDrawer: React.FC<NotificationDrawerProps> = ({}) => {
             onClose={handleClose}
             PaperProps={{
                 sx: {
-                    padding: "6vw 3vw",
-                    width: "78vw",
+                    padding: isMobile ? "6vw 3vw" : "1vw",
+                    width: isMobile ? "78vw" : "33vw",
                     height: "100%",
-                    borderTopLeftRadius: "10vw",
-                    borderBottomLeftRadius: "10vw",
+                    borderTopLeftRadius: isMobile ? "10vw" : "2vw",
+                    borderBottomLeftRadius: isMobile ? "10vw" : "2vw",
                     overflowX: "hidden",
                     backgroundColor: "#232323",
                 },
@@ -60,13 +61,13 @@ export const NotificationDrawer: React.FC<NotificationDrawerProps> = ({}) => {
             // ModalProps={{ BackdropProps: { sx: backdropStyle } }}
             keepMounted
         >
-            <Box sx={{ p: "4vw 4vw 2vw", flexDirection: "row", justifyContent: "space-between" }}>
+            <Box sx={{ padding: isMobile ? "4vw 4vw 2vw" : "1vw" }}>
                 <p
                     style={{
                         fontWeight: "800",
                         color: colors.text.white,
                         fontFamily: "MalgunGothicBold",
-                        fontSize: "1.2rem",
+                        fontSize: isMobile ? "4.5vw" : "1.5rem",
                     }}
                 >
                     {navigationItems.notifications.title} Recentes
@@ -81,22 +82,25 @@ export const NotificationDrawer: React.FC<NotificationDrawerProps> = ({}) => {
                     </Box>
                 </Box>
             </Box>
-            <p
-                style={{
-                    fontWeight: "800",
-                    color: colors.text.white,
-                    fontFamily: "MalgunGothicBold",
-                    fontSize: "3.5vw",
-                    alignSelf: "end",
-                    marginRight: "5vw",
-                }}
-                onClick={() => {
-                    navigate("/notifications/list")
-                    setOpen(false)
-                }}
-            >
-                Ver todas
-            </p>
+            <Box sx={{ padding: isMobile ? "4vw" : "1vw", flexDirection: "row", justifyContent: "flex-end" }}>
+                <p
+                    style={{
+                        fontWeight: "800",
+                        color: colors.text.white,
+                        fontFamily: "MalgunGothicBold",
+                        fontSize: isMobile ? "3.5vw" : "1.5rem",
+                        alignSelf: "end",
+                        marginRight: "5vw",
+                        cursor: "pointer",
+                    }}
+                    onClick={() => {
+                        navigate("/notifications/list")
+                        setOpen(false)
+                    }}
+                >
+                    Ver todas
+                </p>
+            </Box>
         </SwipeableDrawer>
     )
 }
