@@ -214,21 +214,6 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                     <Box sx={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
                         <h3>Relatório Operacional</h3>
 
-                        {user?.isAdmin && !selectedReport?.approved && (
-                            <ButtonAgritech
-                                size="small"
-                                variant="contained"
-                                sx={{
-                                    bgcolor: colors.secondary,
-                                    textTransform: "none",
-                                    borderRadius: "5vw",
-                                    padding: "0.5vw",
-                                }}
-                                onClick={handleApprove}
-                            >
-                                Aprovar Relatório
-                            </ButtonAgritech>
-                        )}
                         <Group gap={0} justify="flex-end">
                             <Menu
                                 transitionProps={{ transition: "pop" }}
@@ -283,7 +268,7 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                             </p>
                         </Box>
 
-                        <hr />
+                        {tab === "operation" && <hr />}
                     </Box>
                     <Box sx={{ gap: "2vw" }}>
                         <Box sx={{ justifyContent: "space-between", width: "100%", flexDirection: "row" }}>
@@ -302,7 +287,7 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                         <hr />
                     </Box>
 
-                    <Box sx={{ gap: "0vw", justifyContent: "space-between", height: "53%" }}>
+                    <Box sx={{ gap: "0vw", justifyContent: "space-between", height: "52%" }}>
                         <Box sx={{ gap: "3vw", height: "100%" }}>
                             {tab === "operation" && (
                                 <>
@@ -384,6 +369,21 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                                 </ButtonAgritech>
                             )}
                         </Box>
+                        {user?.isAdmin && !selectedReport?.approved && (
+                            <ButtonAgritech
+                                size="small"
+                                variant="contained"
+                                sx={{
+                                    bgcolor: colors.secondary,
+                                    textTransform: "none",
+                                    borderRadius: "5vw",
+                                    padding: "0.5vw",
+                                }}
+                                onClick={handleApprove}
+                            >
+                                Aprovar Relatório
+                            </ButtonAgritech>
+                        )}
                     </Box>
                 </Box>
             </Box>
