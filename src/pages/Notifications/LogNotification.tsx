@@ -233,13 +233,13 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                     }}
                 >
                     {notification.target_key === "employee" ? (
-                        <Avatar src={employee?.image} sx={{ width: isMobile ? "8vw" : "3vw", height: isMobile ? "8vw" : "3vw" }} />
+                        <Avatar src={employee?.image} sx={{ width: isMobile ? "8vw" : "2vw", height: isMobile ? "8vw" : "2vw" }} />
                     ) : notification.target_key === "report" && notification.action === "close" ? (
                         <HiOutlineClipboardDocument
                             style={{
                                 color: drawer ? colors.text.white : colors.text.black,
-                                width: isMobile ? "7vw" : "3vw",
-                                height: isMobile ? "7vw" : "3vw",
+                                width: isMobile ? "7vw" : "2vw",
+                                height: isMobile ? "7vw" : "2vw",
                                 paddingLeft: 0,
                                 paddingRight: 0,
                             }}
@@ -248,8 +248,8 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                         <HiOutlineClipboardDocumentCheck
                             style={{
                                 color: drawer ? colors.text.white : colors.text.black,
-                                width: isMobile ? "7vw" : "3vw",
-                                height: isMobile ? "7vw" : "3vw",
+                                width: isMobile ? "7vw" : "2vw",
+                                height: isMobile ? "7vw" : "2vw",
                                 paddingLeft: 0,
                                 paddingRight: 0,
                             }}
@@ -258,8 +258,8 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                         <RiCustomerServiceLine
                             style={{
                                 color: drawer ? colors.text.white : colors.text.black,
-                                width: isMobile ? "6vw" : "3vw",
-                                height: isMobile ? "6vw" : "3vw",
+                                width: isMobile ? "6vw" : "2vw",
+                                height: isMobile ? "6vw" : "2vw",
                                 paddingLeft: 0,
                                 paddingRight: 0,
                             }}
@@ -268,8 +268,8 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                         <PiPlant
                             style={{
                                 color: drawer ? colors.text.white : colors.text.black,
-                                width: isMobile ? "8.5vw" : "3vw",
-                                height: isMobile ? "7vw" : "3vw",
+                                width: isMobile ? "8.5vw" : "2vw",
+                                height: isMobile ? "7vw" : "2vw",
                                 paddingLeft: 0,
                                 paddingRight: 0,
                             }}
@@ -278,8 +278,8 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                         <PiPlugsConnectedDuotone
                             style={{
                                 color: drawer ? colors.text.white : colors.text.black,
-                                width: isMobile ? "7vw" : "3vw",
-                                height: isMobile ? "7vw" : "3vw",
+                                width: isMobile ? "7vw" : "2vw",
+                                height: isMobile ? "7vw" : "2vw",
                                 paddingLeft: 0,
                                 paddingRight: 0,
                             }}
@@ -288,8 +288,8 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                         <VscDebugDisconnect
                             style={{
                                 color: drawer ? colors.text.white : colors.text.black,
-                                width: isMobile ? "7vw" : "3vw",
-                                height: isMobile ? "7vw" : "3vw",
+                                width: isMobile ? "7vw" : "2vw",
+                                height: isMobile ? "7vw" : "2vw",
                                 paddingLeft: 0,
                                 paddingRight: 0,
                             }}
@@ -298,8 +298,8 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                         <TbPlaylistAdd
                             style={{
                                 color: drawer ? colors.text.white : colors.text.black,
-                                width: isMobile ? "7vw" : "3vw",
-                                height: isMobile ? "7vw" : "3vw",
+                                width: isMobile ? "7vw" : "2vw",
+                                height: isMobile ? "7vw" : "2vw",
                                 paddingLeft: 0,
                                 paddingRight: 0,
                             }}
@@ -308,8 +308,8 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                         <TbCrown
                             style={{
                                 color: drawer ? colors.text.white : colors.text.black,
-                                width: isMobile ? "7vw" : "3vw",
-                                height: isMobile ? "7vw" : "3vw",
+                                width: isMobile ? "7vw" : "2vw",
+                                height: isMobile ? "7vw" : "2vw",
                                 paddingLeft: 0,
                                 paddingRight: 0,
                             }}
@@ -318,8 +318,8 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                         <TbCrown
                             style={{
                                 color: drawer ? colors.text.white : colors.text.black,
-                                width: isMobile ? "7vw" : "3vw",
-                                height: isMobile ? "7vw" : "3vw",
+                                width: isMobile ? "7vw" : "2vw",
+                                height: isMobile ? "7vw" : "2vw",
                                 paddingLeft: 0,
                                 paddingRight: 0,
                             }}
@@ -328,8 +328,8 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                         <TbCrown
                             style={{
                                 color: drawer ? colors.text.white : colors.text.black,
-                                width: isMobile ? "7vw" : "3vw",
-                                height: isMobile ? "7vw" : "3vw",
+                                width: isMobile ? "7vw" : "2vw",
+                                height: isMobile ? "7vw" : "2vw",
                                 paddingLeft: 0,
                                 paddingRight: 0,
                             }}
@@ -338,8 +338,8 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                         <TbCrown
                             style={{
                                 color: drawer ? colors.text.white : colors.text.black,
-                                width: isMobile ? "7vw" : "3vw",
-                                height: isMobile ? "7vw" : "3vw",
+                                width: isMobile ? "7vw" : "2vw",
+                                height: isMobile ? "7vw" : "2vw",
                                 paddingLeft: 0,
                                 paddingRight: 0,
                             }}
@@ -350,8 +350,8 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                             <MdUpdate
                                 style={{
                                     color: drawer ? colors.text.white : colors.text.black,
-                                    width: isMobile ? "7vw" : "3vw",
-                                    height: isMobile ? "7vw" : "3vw",
+                                    width: isMobile ? "7vw" : "2vw",
+                                    height: isMobile ? "7vw" : "2vw",
                                     paddingLeft: 0,
                                     paddingRight: 0,
                                 }}

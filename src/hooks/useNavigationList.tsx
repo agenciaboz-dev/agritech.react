@@ -29,7 +29,7 @@ export const useNavigationList = () => {
                 icon: (
                     <img
                         src={User}
-                        style={{ padding: isMobile ? "0 1.5vw" : 0, width: isMobile ? "7vw" : "3vw", height: isMobile ? "auto" : "3vw" }}
+                        style={{ padding: isMobile ? "0 1.5vw" : 0, width: isMobile ? "7vw" : "2vw", height: isMobile ? "auto" : "2vw" }}
                     />
                 ),
             },
@@ -37,20 +37,20 @@ export const useNavigationList = () => {
                 id: 2,
                 title: "Cadastrar Colaborador",
                 location: "/adm/new_employee",
-                icon: <img src={AddEmployee} style={{ width: isMobile ? "7vw" : "3vw" }} />,
+                icon: <img src={AddEmployee} style={{ width: isMobile ? "7vw" : "2vw" }} />,
             },
             {
                 id: 3,
                 title: "Cadastrar Cliente",
                 location: "/adm/new_producer",
-                icon: <img src={AddUser} style={{ width: isMobile ? "6vw" : "3vw" }} />,
+                icon: <img src={AddUser} style={{ width: isMobile ? "6vw" : "2vw" }} />,
             },
 
             {
                 id: 5,
                 title: "Relatórios",
                 location: "/adm/reports",
-                icon: <CiViewTable style={{ width: isMobile ? "7vw" : "3vw", height: isMobile ? "6vw" : "auto", paddingLeft: 0, paddingRight: 0 }} />,
+                icon: <CiViewTable style={{ width: isMobile ? "7vw" : "2vw", height: isMobile ? "6vw" : "auto", paddingLeft: 0, paddingRight: 0 }} />,
             },
         ],
         bottom: [
@@ -58,27 +58,27 @@ export const useNavigationList = () => {
                 id: 1,
                 title: "Painel",
                 location: "/panel",
-                icon: <CiGrid41 style={{ width: isMobile ? "6vw" : "3vw", height: isMobile ? "6vw" : "3vw" }} />,
+                icon: <CiGrid41 style={{ width: isMobile ? "6vw" : "2vw", height: isMobile ? "6vw" : "2vw" }} />,
             },
 
             {
                 id: 2,
                 title: "Calendário",
                 location: "/calendar",
-                icon: <CiCalendarDate style={{ width: isMobile ? "6vw" : "3vw", height: isMobile ? "6vw" : "3vw" }} />,
+                icon: <CiCalendarDate style={{ width: isMobile ? "6vw" : "2vw", height: isMobile ? "6vw" : "2vw" }} />,
             },
 
             {
                 id: 3,
                 title: "Chamados",
                 location: "/calls",
-                icon: <CiCircleAlert style={{ width: isMobile ? "6vw" : "3vw", height: isMobile ? "6vw" : "3vw" }} />,
+                icon: <CiCircleAlert style={{ width: isMobile ? "6vw" : "2vw", height: isMobile ? "6vw" : "2vw" }} />,
             },
             {
                 id: 4,
                 title: "Análises",
                 location: "/reviews",
-                icon: <SlDocs style={{ width: isMobile ? "5vw" : "3vw", height: isMobile ? "6vw" : "5vw" }} />,
+                icon: <SlDocs style={{ width: isMobile ? "5vw" : "2vw", height: isMobile ? "6vw" : "5vw" }} />,
             },
         ],
     }
