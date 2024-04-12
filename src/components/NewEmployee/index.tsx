@@ -281,7 +281,7 @@ export const NewEmployee: React.FC<NewEmployeeProps> = ({}) => {
 
                             <Box
                                 sx={{
-                                    height: isMobile ? "55%" : "35%",
+                                    height: isMobile ? "55%" : "45%",
                                     flexDirection: "row",
                                     gap: "2vw",
                                     alignItems: "start",
@@ -334,7 +334,9 @@ export const NewEmployee: React.FC<NewEmployeeProps> = ({}) => {
                                 </Box>
                             </Box>
 
-                            <Box sx={{ gap: isMobile ? "2vw" : "1vw" }}>
+                            <Box
+                                sx={{ gap: isMobile ? "2vw" : "1vw", flexDirection: isMobile ? "column" : "row", marginLeft: isMobile ? "" : "auto" }}
+                            >
                                 <Button
                                     variant="outlined"
                                     sx={{
@@ -345,6 +347,7 @@ export const NewEmployee: React.FC<NewEmployeeProps> = ({}) => {
                                         textTransform: "none",
                                         borderRadius: "10vw",
                                         height: isMobile ? "10vw" : "fit-content",
+                                        width: isMobile ? "100%" : "fit-content",
                                     }}
                                     onClick={() => {
                                         navigate("/adm")
@@ -359,7 +362,8 @@ export const NewEmployee: React.FC<NewEmployeeProps> = ({}) => {
                                         padding: isMobile ? "3vw" : "0 1vw",
                                         fontSize: isMobile ? "4vw" : "1.5rem",
                                         color: colors.text.white,
-                                        width: "100%",
+                                        height: isMobile ? "10vw" : "fit-content",
+                                        width: isMobile ? "100%" : "fit-content",
                                         backgroundColor: colors.button,
                                         borderRadius: "5vw",
                                         textTransform: "none",
