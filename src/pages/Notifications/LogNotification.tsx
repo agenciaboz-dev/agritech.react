@@ -215,11 +215,23 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                 flexDirection: "row",
                 alignItems: "center",
                 justifyContent: "space-between",
+                cursor: "pointer",
             }}
             onClick={onClick}
         >
-            <Box sx={{ flexDirection: "row", gap: drawer ? (isMobile ? "3vw" : "1vw") : "1.5vw", width: "90%", alignItems: "center" }}>
-                <Box width="13%">
+            <Box
+                sx={{
+                    flexDirection: "row",
+                    gap: drawer ? (isMobile ? "3vw" : "1vw") : "1.5vw",
+                    width: isMobile ? "90%" : "100%",
+                    alignItems: "center",
+                }}
+            >
+                <Box
+                    sx={{
+                        width: isMobile ? "13%" : "fit-content",
+                    }}
+                >
                     {notification.target_key === "employee" ? (
                         <Avatar src={employee?.image} sx={{ width: isMobile ? "8vw" : "3vw", height: isMobile ? "8vw" : "3vw" }} />
                     ) : notification.target_key === "report" && notification.action === "close" ? (
@@ -519,7 +531,7 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                     )}
                 </Box>
             </Box>
-            <Box sx={{ width: "10%" }}>
+            <Box sx={{ width: isMobile ? "10%" : "fit-content" }}>
                 {drawer && findBy === undefined && (
                     <IconButton onClick={onClick}>
                         <ArrowForwardIos fontSize="small" sx={{ color: drawer ? colors.text.white : colors.text.black }} />
