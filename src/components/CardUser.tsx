@@ -28,8 +28,8 @@ export const CardUser: React.FC<CardUserProps> = ({ review, user, location }) =>
             }}
             key={user.id}
         >
-            <Box sx={{ flexDirection: "row", gap: "3vw", alignItems: "center" }}>
-                <Avatar src={user.image} sx={{ width: isMobile ? "10vw" : "5vw", height: isMobile ? "10vw" : "5vw" }} />
+            <Box sx={{ flexDirection: "row", gap: isMobile ? "3vw" : "1vw", alignItems: "center" }}>
+                <Avatar src={user.image} sx={{ width: isMobile ? "10vw" : "3vw", height: isMobile ? "10vw" : "3vw" }} />
                 <Box sx={{ flexDirection: "column", gap: "1vw" }}>
                     {!user.producer && <OfficeDot office={user.office} />}
                     <p

@@ -50,7 +50,7 @@ export const NotificationDrawer: React.FC<NotificationDrawerProps> = ({}) => {
             PaperProps={{
                 sx: {
                     padding: isMobile ? "6vw 3vw" : "1vw",
-                    width: isMobile ? "78vw" : "33vw",
+                    width: isMobile ? "78vw" : "30vw",
                     height: "100%",
                     borderTopLeftRadius: isMobile ? "10vw" : "2vw",
                     borderBottomLeftRadius: isMobile ? "10vw" : "2vw",
@@ -90,7 +90,7 @@ export const NotificationDrawer: React.FC<NotificationDrawerProps> = ({}) => {
                         fontFamily: "MalgunGothicBold",
                         fontSize: isMobile ? "3.5vw" : "1.5rem",
                         alignSelf: "end",
-                        marginRight: "5vw",
+                        marginRight: isMobile ? "5vw" : "1vw",
                         cursor: "pointer",
                     }}
                     onClick={() => {
