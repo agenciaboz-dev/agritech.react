@@ -222,6 +222,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                                             fontSize: isMobile ? "3.5vw" : "1.2rem",
                                             fontFamily: "MalgunGothic2",
                                             fontWeight: "500",
+                                            cursor: "pointer",
                                         }}
                                         onClick={() => {
                                             navigate("/adm/employees")
@@ -300,6 +301,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                                                 fontSize: isMobile ? "3.5vw" : "1.2rem",
                                                 fontFamily: "MalgunGothic2",
                                                 fontWeight: "500",
+                                                cursor: "pointer",
                                             }}
                                             onClick={() => {
                                                 navigate("/adm/producers")
