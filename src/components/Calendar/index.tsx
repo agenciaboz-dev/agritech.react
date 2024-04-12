@@ -1,4 +1,4 @@
-import { Box, Button, IconButton } from "@mui/material"
+import { Box, Button, IconButton, useMediaQuery } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { colors } from "../../style/colors"
 import { Header } from "../Header"
@@ -17,6 +17,7 @@ import { ModalLegend } from "./ModalLegend"
 interface CalendarProps {}
 
 export const Calendar: React.FC<CalendarProps> = ({}) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
     const header = useHeader()
     const navigate = useNavigate()
     const { listCalls } = useCall()
@@ -38,9 +39,7 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
         if (value && findUser?.employee?.kits?.length !== 0) {
             const callsPerDay =
                 (findUser?.employee?.kits &&
-                    findUser?.employee?.kits[0].calls?.filter(
-                        (item) => item.forecast === new Date(value).getTime().toString()
-                    )) ||
+                    findUser?.employee?.kits[0].calls?.filter((item) => item.forecast === new Date(value).getTime().toString())) ||
                 []
             setCallsDay(callsPerDay)
             // console.log(callsPerDay)
@@ -55,15 +54,10 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
                 findUser?.employee?.kits &&
                 findUser?.employee?.kits[0].calls?.filter((call) => {
                     const callDate = new Date(Number(call.forecast))
-                    return (
-                        callDate.getDate() === day &&
-                        callDate.getMonth() === date.getMonth() &&
-                        callDate.getFullYear() === date.getFullYear()
-                    )
+                    return callDate.getDate() === day && callDate.getMonth() === date.getMonth() && callDate.getFullYear() === date.getFullYear()
                 })
 
-            const areaDayCalls =
-                callsForDay?.map((item) => Number(item.talhao?.area)).reduce((prev, current) => prev + current, 0) || 0
+            const areaDayCalls = callsForDay?.map((item) => Number(item.talhao?.area)).reduce((prev, current) => prev + current, 0) || 0
 
             useEffect(() => {
                 console.log({ por_dia_temos: areaDayCalls })
@@ -115,7 +109,7 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
                     justifyContent: "center",
                     alignItems: "center",
                     gap: "1vw",
-                    padding: "4vw",
+                    padding: isMobile ? "4vw" : "3vw",
                     flexDirection: "row",
                 }}
             >
@@ -124,15 +118,15 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
 
             <Box
                 sx={{
-                    padding: "4vw",
+                    padding: isMobile ? "4vw" : "1vw",
                     width: "100%",
                     flex: 1,
                     backgroundColor: "#fff",
-                    borderTopLeftRadius: "7vw",
-                    borderTopRightRadius: "7vw",
+                    borderTopLeftRadius: isMobile ? "7vw" : "2vw",
+                    borderTopRightRadius: isMobile ? "7vw" : "2vw",
                     overflow: "hidden",
                     alignItems: "center",
-                    gap: "4vw",
+                    gap: isMobile ? "4vw" : "1vw",
                 }}
             >
                 <Box
@@ -140,14 +134,17 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
                         width: "100%",
                         flexDirection: "row",
                         justifyContent: "space-between",
-                        gap: "4vw",
-                        p: "1vw",
+                        gap: isMobile ? "4vw" : "1vw",
+                        padding: isMobile ? "1vw" : 0,
                     }}
                 >
                     <Box>
                         {(findUser?.office === "pilot" || findUser?.office === "copilot") && (
                             <IconButton onClick={open}>
-                                <BsFillInfoCircleFill color={colors.button} style={{ width: "6vw", height: "6vw" }} />
+                                <BsFillInfoCircleFill
+                                    color={colors.button}
+                                    style={{ width: isMobile ? "6vw" : "2vw", height: isMobile ? "6vw" : "2vw" }}
+                                />
                             </IconButton>
                         )}
                     </Box>
@@ -156,13 +153,13 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
                         variant="contained"
                         sx={{
                             alignItems: "center",
-                            gap: "0vw",
+                            gap: 0,
                             backgroundColor: colors.button,
                             color: colors.text.white,
                             textTransform: "none",
                             borderRadius: "5vw",
-                            fontSize: "0.8rem",
-                            p: "2vw",
+                            fontSize: isMobile ? "3vw" : "1rem",
+                            padding: isMobile ? "2vw" : "0 1vw",
                             width: "fit-content",
                         }}
                         onClick={() => navigate(`/adm/profile/${userid}`)}
@@ -181,12 +178,7 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
                     getDayProps={(day) => ({
                         style: {
                             border: day.getDate() == dayCurrent ? `1px solid ${colors.secondary}` : "",
-                            color:
-                                day.getDate() == dayCurrent
-                                    ? colors.secondary
-                                    : day.getDate() == value?.getDate()
-                                    ? "white"
-                                    : "",
+                            color: day.getDate() == dayCurrent ? colors.secondary : day.getDate() == value?.getDate() ? "white" : "",
                         },
                     })}
                     value={value}
