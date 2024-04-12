@@ -191,8 +191,8 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
                         width: "100%",
                         height: "38%",
                         overflowY: "auto",
-                        p: "2vw 4vw",
-                        gap: "3vw",
+                        padding: isMobile ? "2vw 4vw" : "1vw",
+                        gap: isMobile ? "3vw" : "1vw",
                     }}
                 >
                     {findUser?.office === "pilot" || findUser?.office === "copilot"

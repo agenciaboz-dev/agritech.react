@@ -1,4 +1,4 @@
-import { Box, IconButton } from "@mui/material"
+import { Box, IconButton, useMediaQuery } from "@mui/material"
 import React, { useEffect } from "react"
 import { ActionIcon, Group, Menu } from "@mantine/core"
 import { IconDots } from "@tabler/icons-react"
@@ -19,6 +19,7 @@ interface LogsCardProps {
 }
 
 export const LogsCard: React.FC<LogsCardProps> = ({ review, call, variant }) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
     const navigate = useNavigate()
     const account = useUser()
     const { listKits } = useKits()
@@ -45,17 +46,15 @@ export const LogsCard: React.FC<LogsCardProps> = ({ review, call, variant }) => 
     return !variant ? (
         <Box sx={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
             <Box sx={{ flexDirection: "column" }}>
-                <Box sx={{ flexDirection: "row", alignItems: "center", gap: "2vw" }}>
-                    <p style={{ fontSize: "3vw", color: "gray" }}>
+                <Box sx={{ flexDirection: "row", alignItems: "center", gap: isMobile ? "2vw" : "1vw" }}>
+                    <p style={{ fontSize: isMobile ? "3vw" : "1rem", color: "gray" }}>
                         {new Date(Number(call?.forecast)).toLocaleDateString("pt-br")}
                     </p>
                 </Box>
-                <p style={{ fontSize: "3.5vw", fontWeight: "600" }}>
-                    {call?.approved
-                        ? `Chamado aberto para ${producerSelected?.name}`
-                        : `Chamado pendente para ${producerSelected?.name}`}
+                <p style={{ fontSize: isMobile ? "3.5vw" : "1.2rem", fontWeight: "600" }}>
+                    {call?.approved ? `Chamado aberto para ${producerSelected?.name}` : `Chamado pendente para ${producerSelected?.name}`}
                 </p>
-                <p style={{ fontSize: "3vw", color: "gray", flexDirection: "column" }}>
+                <p style={{ fontSize: isMobile ? "3vw" : "1rem", color: "gray", flexDirection: "column" }}>
                     {call?.talhao?.name} - {call?.approved ? `Utilizando #Kit ${kitSelected?.name}` : "Selecione um kit"}
                 </p>
             </Box>
@@ -64,7 +63,7 @@ export const LogsCard: React.FC<LogsCardProps> = ({ review, call, variant }) => 
                     <Menu transitionProps={{ transition: "pop" }} withArrow position="bottom-end" withinPortal>
                         <Menu.Target>
                             <ActionIcon variant="subtle" color="gray">
-                                <IconDots style={{ width: "7vw", height: "7vw" }} stroke={2} />
+                                <IconDots style={{ width: isMobile ? "7vw" : "2vw", height: isMobile ? "7vw" : "2vw" }} stroke={2} />
                             </ActionIcon>
                         </Menu.Target>
                         <Menu.Dropdown>
@@ -84,7 +83,7 @@ export const LogsCard: React.FC<LogsCardProps> = ({ review, call, variant }) => 
                     onClick={() => navigate(account.user?.isAdmin ? `/adm/calls/${call?.id}` : `/call/${call?.id}/laudos`)}
                     // onClick={() => navigate(account.user?.isAdmin ? `/adm/call/${user?.id}/report` : `/call/1/report`)}
                 >
-                    <IoIosArrowForward style={{ width: "5vw", height: "5vw" }} />
+                    <IoIosArrowForward style={{ width: isMobile ? "5vw" : "2vw", height: isMobile ? "5vw" : "2vw" }} />
                 </IconButton>
             )}
         </Box>
@@ -94,20 +93,17 @@ export const LogsCard: React.FC<LogsCardProps> = ({ review, call, variant }) => 
             onClick={() => navigate(`/producer/tillage/${call?.talhao?.tillageId}`)}
         >
             <Box sx={{ flexDirection: "column" }}>
-                <Box sx={{ flexDirection: "row", alignItems: "center", gap: "2vw" }}>
-                    <p style={{ fontSize: "3vw", color: "gray" }}>
+                <Box sx={{ flexDirection: "row", alignItems: "center", gap: isMobile ? "2vw" : "1vw" }}>
+                    <p style={{ fontSize: isMobile ? "3vw" : "1rem", color: "gray" }}>
                         {" "}
-                        {new Date(Number(call?.open)).toLocaleDateString("pt-br")} -{" "}
-                        {new Date(Number(call?.open)).toLocaleTimeString("pt-br")}
+                        {new Date(Number(call?.open)).toLocaleDateString("pt-br")} - {new Date(Number(call?.open)).toLocaleTimeString("pt-br")}
                     </p>
                 </Box>
 
-                <p style={{ fontSize: "3.5vw", fontWeight: "600" }}>Chamado aberto para {call?.talhao?.tillage?.name}</p>
+                <p style={{ fontSize: isMobile ? "3vw" : "1.2rem", fontWeight: "600" }}>Chamado aberto para {call?.talhao?.tillage?.name}</p>
 
-                <p style={{ fontSize: "3vw", color: "gray" }}>
-                    {call?.approved
-                        ? `Previsão: ${new Date(Number(call.forecast)).toLocaleDateString("pt-br")}`
-                        : "Aguardando aprovação "}
+                <p style={{ fontSize: isMobile ? "3vw" : "1rem", color: "gray" }}>
+                    {call?.approved ? `Previsão: ${new Date(Number(call.forecast)).toLocaleDateString("pt-br")}` : "Aguardando aprovação "}
                 </p>
             </Box>
 
@@ -115,7 +111,7 @@ export const LogsCard: React.FC<LogsCardProps> = ({ review, call, variant }) => 
                 onClick={() => navigate(`/producer/calls/${call?.id}`)}
                 // onClick={() => navigate(account.user?.isAdmin ? `/adm/call/${user?.id}/report` : `/call/1/report`)}
             >
-                <IoIosArrowForward style={{ width: "5vw", height: "5vw" }} />
+                <IoIosArrowForward style={{ width: isMobile ? "5vw" : "2vw", height: isMobile ? "5vw" : "2vw" }} />
             </IconButton>
         </Box>
     )
