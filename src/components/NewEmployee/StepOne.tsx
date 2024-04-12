@@ -1,14 +1,14 @@
-import { Box, Button, TextField, MenuItem, ThemeProvider, createTheme } from "@mui/material"
+import { Box, Button, TextField, MenuItem, ThemeProvider, createTheme, useMediaQuery } from "@mui/material"
 import React, { ChangeEventHandler, useEffect, useState } from "react"
 import { colors } from "../../style/colors"
 import MaskedInput from "../../components/MaskedInput"
 import { useGender } from "../../hooks/useGender"
-import { textField } from "../../style/input"
 import { useRelationship } from "../../hooks/useRelationship"
 import MaskedInputNando from "../../components/MaskedNando"
 import { useCnpjMask, useCpfMask } from "burgos-masks"
 import { MobileDatePicker, ptBR } from "@mui/x-date-pickers"
 import { Dayjs } from "dayjs"
+import { useResponsiveStyles } from "../../hooks/useResponsiveStyles"
 
 interface StepOneProps {
     data: NewEmployee
@@ -52,15 +52,17 @@ const newTheme = (theme: any) =>
     })
 
 export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, birthPick, setBirthPick }) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
+    const textField = useResponsiveStyles()
     const gender = useGender()
     const typeRelationship = useRelationship()
     return (
-        <Box sx={{ width: "100%", height: "100%", gap: "5vw", flexDirection: "column" }}>
-            <Box sx={{ gap: "2vw", width: "100%", height: "100%" }}>
-                <p style={{ fontSize: "4.5vw", fontWeight: "800", fontFamily: "MalgunGothic2", textAlign: "left" }}>
+        <Box sx={{ width: "100%", height: "100%", gap: isMobile ? "5vw" : "1vw", flexDirection: "column" }}>
+            <Box sx={{ gap: isMobile ? "2vw" : "1vw", width: "100%", height: "100%" }}>
+                <p style={{ fontSize: isMobile ? "4.5vw" : "1.5rem", fontWeight: "800", fontFamily: "MalgunGothic2", textAlign: "left" }}>
                     Dados Pessoais
                 </p>
-                <Box sx={{ flexDirection: "row", gap: "2vw", width: "100%" }}>
+                <Box sx={{ flexDirection: "row", gap: isMobile ? "2vw" : "1vw", width: "100%" }}>
                     <TextField
                         label={"CPF"}
                         name="cpf"
@@ -126,12 +128,12 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, birthPick,
                                 InputProps={{
                                     sx: {
                                         ...textField,
-                                        height: "12vw",
+                                        height: isMobile ? "12vw" : "fit-content",
                                     },
                                 }}
                                 SelectProps={{
                                     MenuProps: {
-                                        MenuListProps: { sx: { width: "100%", maxHeight: "80vw", overflowY: "auto" } },
+                                        MenuListProps: { sx: { width: "100%", maxHeight: isMobile ? "80vw" : "fit-content", overflowY: "auto" } },
                                     },
                                 }}
                                 required
@@ -167,11 +169,11 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, birthPick,
                                 variant="outlined"
                                 value={data.employee.relationship}
                                 InputProps={{
-                                    sx: { ...textField, height: "12vw" },
+                                    sx: { ...textField, height: isMobile ? "12vw" : "fit-content" },
                                 }}
                                 SelectProps={{
                                     MenuProps: {
-                                        MenuListProps: { sx: { width: "100%", maxHeight: "80vw", overflowY: "auto" } },
+                                        MenuListProps: { sx: { width: "100%", maxHeight: isMobile ? "80vw" : "fit-content", overflowY: "auto" } },
                                     },
                                 }}
                             >
@@ -197,7 +199,7 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, birthPick,
                     )}
                 </Box>
             </Box>
-            <p style={{ fontWeight: "800", lineHeight: "1.1", fontSize: "3vw" }}>
+            <p style={{ fontWeight: "800", lineHeight: "1.1", fontSize: isMobile ? "3vw" : "1rem" }}>
                 Obs: A senha do novo colaborador é o seu cpf. Após isso ele(a) pode alterar na conta pessoal.
             </p>
         </Box>
