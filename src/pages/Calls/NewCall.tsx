@@ -276,6 +276,7 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                 height: "100%",
                 backgroundColor: colors.button,
                 flexDirection: "column",
+                overflow: "hidden",
             }}
         >
             <Box
@@ -285,7 +286,7 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                     justifyContent: "center",
                     alignItems: "center",
                     gap: "1vw",
-                    padding: "4vw",
+                    padding: "8vw",
                     flexDirection: "row",
                 }}
             >
@@ -321,7 +322,7 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                     variant
                 />
                 <form onSubmit={formik.handleSubmit}>
-                    <Box sx={{ gap: "4vw" }}>
+                    <Box sx={{ gap: "2vw" }}>
                         {!user.isAdmin && (
                             <DemoItem label={"Previsão da visita (Obrigatório)"}>
                                 <MobileDatePicker
@@ -386,7 +387,7 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                         )}
                         {user.isAdmin && (
                             <Box sx={{ gap: "1vw" }}>
-                                <Box gap="4vw">
+                                <Box gap="3vw">
                                     <p style={{ color: colors.primary, fontSize: "3.3vw" }}>
                                         Selecione um kit para marcar a data de visita.
                                     </p>
@@ -458,8 +459,8 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                             label="Observações"
                             name="comments"
                             value={formik.values.comments}
-                            minRows={5}
-                            maxRows={15}
+                            minRows={2}
+                            maxRows={5}
                             sx={{
                                 ...textField,
                             }}
