@@ -181,7 +181,7 @@ export const ReportStage: React.FC<ReportStageProps> = ({ user }) => {
             <Box
                 sx={{
                     width: "100%",
-                    height: "8%",
+                    height: "10%",
                     justifyContent: "center",
                     alignItems: "center",
                     gap: "1vw",
@@ -218,9 +218,9 @@ export const ReportStage: React.FC<ReportStageProps> = ({ user }) => {
                     variant
                 />
 
-                <Box sx={{ gap: "3vw", height: "85%", overflowY: "auto", p: "2vw 0" }}>
-                    <Box sx={{ justifyContent: "space-between", height: "100%" }}>
-                        <Box sx={{ gap: "4vw" }}>
+                <Box sx={{ gap: "1vw", height: "85%", overflowY: "auto", p: "2vw 0" }}>
+                    <Box sx={{ gap: "7vw", height: "100%" }}>
+                        <Box sx={{ gap: "2vw" }}>
                             <TextField
                                 label="Aberto em"
                                 name="init"
@@ -228,21 +228,21 @@ export const ReportStage: React.FC<ReportStageProps> = ({ user }) => {
                                 value={new Date(Number(call?.init)).toLocaleDateString("pt-br")}
                                 sx={{ ...textField }}
                                 inputProps={{ "aria-readonly": true }}
-                                disabled={!user?.producer ? false : true}
+                                disabled
                             />
                             <TextField
                                 label="Cliente"
                                 name="producer"
                                 value={producerSelect ? producerSelect?.name : ""}
                                 sx={{ ...textField }}
-                                disabled={!user?.producer ? false : true}
+                                disabled
                             />
                             <TextField
                                 label="Fazenda"
                                 name="tillage"
                                 value={report ? report.call?.talhao?.tillage?.name : " "}
                                 sx={{ ...textField }}
-                                disabled={!user?.producer ? false : true}
+                                disabled
                             />
                         </Box>
 
