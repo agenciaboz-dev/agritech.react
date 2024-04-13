@@ -1,8 +1,6 @@
-import { Box, TextField, Button, MenuItem } from "@mui/material"
+import { Box, TextField } from "@mui/material"
 import React, { ChangeEventHandler } from "react"
-import { colors } from "../../style/colors"
 import { textField } from "../../style/input"
-import { useBankAccount } from "../../hooks/useBankAccount"
 import MaskedInput from "../../components/MaskedInput"
 
 interface StepThreeProps {
@@ -11,8 +9,7 @@ interface StepThreeProps {
     setCurrentStep: (value: React.SetStateAction<number>) => void
 }
 
-export const StepThree: React.FC<StepThreeProps> = ({ data, handleChange, setCurrentStep }) => {
-    const bankAccount = useBankAccount()
+export const StepThree: React.FC<StepThreeProps> = ({ data, handleChange }) => {
     return (
         <Box sx={{ width: "100%", height: "100%", gap: "4vw" }}>
             <p style={{ fontSize: "4.5vw", fontWeight: "800", fontFamily: "MalgunGothic2", textAlign: "left" }}>

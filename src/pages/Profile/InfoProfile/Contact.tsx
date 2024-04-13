@@ -16,7 +16,7 @@ export const Contact: React.FC<ContactProps> = ({ values, handleChange }) => {
                 <TextField
                     label={"Nome de Usuário"}
                     name={"username"}
-                    sx={textField}
+                    sx={{ ...textField, width: 0.5 }}
                     value={values.username}
                     onChange={handleChange}
                     InputProps={{ readOnly: true }}
@@ -24,7 +24,7 @@ export const Contact: React.FC<ContactProps> = ({ values, handleChange }) => {
                 <TextField
                     label={"Senha"}
                     name={"password"}
-                    sx={textField}
+                    sx={{ ...textField, width: 0.5 }}
                     value={values.password}
                     onChange={handleChange}
                     type="password"

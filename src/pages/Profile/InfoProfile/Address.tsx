@@ -20,7 +20,7 @@ export const Address: React.FC<AddressProps> = ({ values, handleChange }) => {
                 <TextField
                     label={"CEP"}
                     name={"address.cep"}
-                    sx={textField}
+                    sx={{ ...textField, width: 0.5 }}
                     value={values.address?.cep}
                     onChange={handleChange}
                     InputProps={{
@@ -35,7 +35,7 @@ export const Address: React.FC<AddressProps> = ({ values, handleChange }) => {
                     name={"address.uf"}
                     sx={{
                         ...textField,
-                        width: "48%",
+                        width: "50%",
                     }}
                     value={values.address?.uf}
                     InputProps={{

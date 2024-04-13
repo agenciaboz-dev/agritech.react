@@ -18,8 +18,8 @@ export const StepTwo: React.FC<StepTwoProps> = ({ data, handleChange, typeUser, 
     const estados = useEstadosBrasil()
 
     return (
-        <Box sx={{ width: "100%", height: "100%", gap: "4vw" }}>
-            <p style={{ fontSize: "4.5vw", fontFamily: "MalgunGothic2", textAlign: "left", fontWeight: "800" }}>Login</p>
+        <Box sx={{ width: "100%", height: 1, gap: "2vw", }}>
+            {/* <p style={{ fontSize: "4.5vw", fontFamily: "MalgunGothic2", textAlign: "left", fontWeight: "800" }}>Login</p> */}
 
             <Box sx={{ gap: "3vw" }}>
                 <TextField
@@ -103,7 +103,7 @@ export const StepTwo: React.FC<StepTwoProps> = ({ data, handleChange, typeUser, 
                             name="address.city"
                             label={"Cidade"}
                             value={data.address.city}
-                            sx={textField}
+                            sx={{ ...textField, width: 0.5 }}
                             onChange={handleChange}
                             required
                         />
@@ -114,7 +114,7 @@ export const StepTwo: React.FC<StepTwoProps> = ({ data, handleChange, typeUser, 
                             name="address.uf"
                             sx={{
                                 ...textField,
-                                width: "48%",
+                                width: 0.5,
                             }}
                             value={data.address.uf}
                             InputProps={{
