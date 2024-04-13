@@ -86,8 +86,6 @@ export const ContentKit: React.FC<ContentKitProps> = ({ edit, values, handleChan
                             required
                         />
                         <TextField
-                            multiline
-                            maxRows={3}
                             label={"Hectares por dia"}
                             name="hectareDay"
                             value={edit ? values.hectareDay : "0.0"}

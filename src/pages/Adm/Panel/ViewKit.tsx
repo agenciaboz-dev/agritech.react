@@ -143,6 +143,7 @@ export const ViewKit: React.FC<ViewKitProps> = ({}) => {
                                 height: "100%",
                                 backgroundColor: colors.button,
                                 flexDirection: "column",
+                                overflow: "hidden",
                             }}
                         >
                             <Box
@@ -248,7 +249,7 @@ export const ViewKit: React.FC<ViewKitProps> = ({}) => {
                                         overflowY: "hidden",
                                     }}
                                 >
-                                    <Box sx={{ overflowX: "hidden", overflowY: "auto", height: "88%", p: "0 2vw" }}>
+                                    <Box sx={{ overflowX: "hidden", height: "88%", p: "0 2vw" }}>
                                         {kit && (
                                             <UpdateContentKit
                                                 data={data}

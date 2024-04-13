@@ -22,7 +22,7 @@ export const AddKit: React.FC<AddKitProps> = ({}) => {
     const navigate = useNavigate()
     const io = useIo()
     const { snackbar } = useSnackbar()
-    const { listKits, setListKits, addKit } = useKits()
+    const {  addKit } = useKits()
 
     const [image, setImage] = useState<File>()
     const [opened, { open, close }] = useDisclosure(false)
