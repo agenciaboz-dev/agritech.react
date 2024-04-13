@@ -12,7 +12,7 @@ interface AddressProps {
 export const Address: React.FC<AddressProps> = ({ values, handleChange }) => {
     const estados = useEstadosBrasil()
     return (
-        <Box sx={{ flexDirection: "column", gap: "3vw" }}>
+        <Box sx={{ flexDirection: "column", gap: "3vw", overflowY: "auto", height: 0.8, pb: "5vw" }}>
             <p style={{ fontSize: "4.0vw", fontFamily: "MalgunGothic2", textAlign: "left", fontWeight: "800" }}>
                 Endereço Residencial
             </p>

@@ -119,13 +119,19 @@ export const HeaderProfile: React.FC<HeaderProfileProps> = ({
             }}
         >
             {view && values !== user ? (
-                <ProfileImage src={values.image} style={{ width: "40vw", height: "40vw" }} />
+                <ProfileImage
+                    src={values.image}
+                    style={{
+                        width: values?.employee?.id !== undefined ? "40vw" : "30vw",
+                        height: values?.employee?.id !== undefined ? "40vw" : "30vw",
+                    }}
+                />
             ) : (
                 <Avatar
                     src={image || values.image || null}
                     onChange={(file) => setImage(file)}
                     variant="circle"
-                    style={{ width: "52vw", height: "43vw", alignSelf: "center" }}
+                    style={{ width: "23vw", height: "23vw", alignSelf: "center" }}
                     emptyLabel="enviar imagem"
                     changeLabel="trocar imagem"
                 />
