@@ -54,7 +54,7 @@ export const ListLaudos: React.FC<ListLaudosProps> = ({ user }) => {
             <Box
                 sx={{
                     width: "100%",
-                    height: "8%",
+                    height: "10%",
                     justifyContent: "center",
                     alignItems: "center",
                     gap: "1vw",
@@ -100,7 +100,7 @@ export const ListLaudos: React.FC<ListLaudosProps> = ({ user }) => {
                     }
                     variant
                 />
-                <Box>
+                <Box sx={{ gap: "2vw", overflowY: "auto", pb: "20vw" }}>
                     {sortedReports?.map((item, index) => (
                         <LogsLaudo key={index} id={index + 1} report={item} talhao={item.talhao} />
                     ))}
