@@ -1,4 +1,4 @@
-import { Modal, ModalContent, TextInput } from "@mantine/core"
+import { Modal, ModalContent, TextInput, Textarea } from "@mantine/core"
 import { useDisclosure } from "@mantine/hooks"
 import React, { ChangeEvent, ChangeEventHandler, useState } from "react"
 import { ButtonAgritech } from "../ButtonAgritech"
@@ -25,7 +25,7 @@ export const ModalObject: React.FC<ModalObjectProps> = ({ opened, close, object,
         const newObj = object.filter((_, index) => index !== id)
         setObject(newObj)
     }
-    const handleChange = (index: number, event: ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (index: number, event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
         const { name, value } = event.target
         const newValue = name === "quantity" ? parseInt(value) : value // Parse quantity as integer
         const newObj = object.map((item, idx) => (idx === index ? { ...item, [name]: newValue } : item))
@@ -92,9 +92,10 @@ export const ModalObject: React.FC<ModalObjectProps> = ({ opened, close, object,
                             leftSection={<MdNumbers style={{ width: "4.5vw", height: "4.5vw" }} />}
                         />
                     </Box>
-                    <TextInput
+                    <Textarea
                         label="Descrição"
-                        multiple
+                        autosize
+                        maxRows={2}
                         name="description"
                         value={objeto.description}
                         styles={{ root: { width: "100%" }, input: { border: "1px solid black" } }}
@@ -110,7 +111,7 @@ export const ModalObject: React.FC<ModalObjectProps> = ({ opened, close, object,
                     sx={{
                         width: "50%",
                         alignSelf: "end",
-                        fontSize: "3.6vw",
+                        fontSize: "0.8rem",
                         p: "2vw",
                         bgColor: "red",
                         color: colors.text.black,
@@ -125,7 +126,7 @@ export const ModalObject: React.FC<ModalObjectProps> = ({ opened, close, object,
                     sx={{
                         width: "50%",
                         alignSelf: "end",
-                        fontSize: "3.6vw",
+                        fontSize: "0.8rem",
                         p: "2vw",
                         bgcolor: colors.button,
                         color: colors.text.white,

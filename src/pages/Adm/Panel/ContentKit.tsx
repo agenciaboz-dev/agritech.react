@@ -1,5 +1,5 @@
 import { Box, TextField } from "@mui/material"
-import React, { ChangeEvent, ChangeEventHandler, useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Avatar } from "@files-ui/react"
 import { TitleComponents } from "../../../components/TitleComponents"
 import { textField } from "../../../style/input"
@@ -70,8 +70,8 @@ export const ContentKit: React.FC<ContentKitProps> = ({ edit, values, handleChan
                         emptyLabel="Adicionar foto"
                         variant="square"
                         style={{
-                            width: "42vw",
-                            height: "42vw",
+                            width: "26vw",
+                            height: "26vw",
                             fontSize: "4vw",
                             fontFamily: "MalgunGothic2",
                         }}
@@ -91,7 +91,7 @@ export const ContentKit: React.FC<ContentKitProps> = ({ edit, values, handleChan
                             label={"Hectares por dia"}
                             name="hectareDay"
                             value={edit ? values.hectareDay : "0.0"}
-                            sx={textField}
+                            sx={{ ...textField, width: "100%" }}
                             onChange={handleChange}
                             InputProps={{
                                 inputComponent: MaskedInputNando,
@@ -100,49 +100,51 @@ export const ContentKit: React.FC<ContentKitProps> = ({ edit, values, handleChan
                             }}
                             required
                         />
+                    </Box>
+                </Box>
+                <Box sx={{ width: 1, gap: "2vw" }}>
+                    <TextField
+                        multiline
+                        maxRows={3}
+                        label={"Descrição"}
+                        name="description"
+                        value={edit ? values.description : "Loren impsum dolor sit amet"}
+                        sx={textField}
+                        onChange={handleChange}
+                        required
+                    />
+                    <Box sx={{ flexDirection: "row", justifyContent: "space-between", gap: "2vw" }}>
                         <TextField
-                            multiline
-                            maxRows={3}
-                            label={"Descrição"}
-                            name="description"
-                            value={edit ? values.description : "Loren impsum dolor sit amet"}
-                            sx={textField}
+                            label={"Equipamento"}
+                            name="equipment"
+                            value={edit ? values.equipment : "Loren impsum dolor sit amet"}
+                            sx={{ ...textField, width: "50%" }}
+                            onChange={handleChange}
+                            required
+                        />
+                        <TextField
+                            label={"Modelo"}
+                            name="model"
+                            value={edit ? values.model : "Loren impsum dolor sit amet"}
+                            sx={{ ...textField, width: "50%" }}
                             onChange={handleChange}
                             required
                         />
                     </Box>
-                </Box>
-            </Box>
-            <Box sx={{ overflowY: "auto", gap: "4vw", pt: "4vw" }}>
-                <Box sx={{ flexDirection: "row", justifyContent: "space-between", gap: "2vw" }}>
-                    <TextField
-                        label={"Equipamento"}
-                        name="equipment"
-                        value={edit ? values.equipment : "Loren impsum dolor sit amet"}
-                        sx={{ ...textField, width: "50%" }}
-                        onChange={handleChange}
-                        required
-                    />
-                    <TextField
-                        label={"Modelo"}
-                        name="model"
-                        value={edit ? values.model : "Loren impsum dolor sit amet"}
-                        sx={{ ...textField, width: "50%" }}
-                        onChange={handleChange}
-                        required
-                    />
-                </Box>
-                <Box sx={{}}>
-                    <TitleComponents title="Objetos" button click={open} />
-                    {data.listObjects.map((item, index) => (
-                        <CardObject key={index} object={item} />
-                    ))}
-                </Box>
-                <Box sx={{ gap: "3vw" }}>
-                    <TitleComponents title="Responsáveis" button click={openEmployees} />
-                    {data.team.map((item, index) => (
-                        <CardTeam key={index} employee={item} />
-                    ))}
+                    <Box sx={{ overflowY: "auto", gap: "4vw", pt: "4vw" }}>
+                        <Box sx={{}}>
+                            <TitleComponents title="Objetos" button click={open} />
+                            {data.listObjects.map((item, index) => (
+                                <CardObject key={index} object={item} />
+                            ))}
+                        </Box>
+                        <Box sx={{ gap: "3vw" }}>
+                            <TitleComponents title="Responsáveis" button click={openEmployees} />
+                            {data.team.map((item, index) => (
+                                <CardTeam key={index} employee={item} />
+                            ))}
+                        </Box>
+                    </Box>
                 </Box>
             </Box>
         </Box>
