@@ -12,11 +12,20 @@ interface StepThreeProps {
 
 export const StepThree: React.FC<StepThreeProps> = ({ data, handleChange }) => {
     const isMobile = useMediaQuery("(orientation: portrait)")
-    const textField = useResponsiveStyles()
+    const { textField } = useResponsiveStyles()
     const bankAccount = useBankAccount()
     return (
         <Box sx={{ width: "100%", height: "100%", gap: isMobile ? "4vw" : "1vw" }}>
-            <p style={{ fontSize: isMobile ? "4.5vw" : "1.2rem", fontWeight: "800", fontFamily: "MalgunGothic2", textAlign: "left" }}>Documentação</p>
+            <p
+                style={{
+                    fontSize: isMobile ? "4.5vw" : "1.2rem",
+                    fontWeight: "800",
+                    fontFamily: "MalgunGothic2",
+                    textAlign: "left",
+                }}
+            >
+                Documentação
+            </p>
             <Box sx={{ gap: isMobile ? "2vw" : "1vw" }}>
                 <Box sx={{ gap: isMobile ? "2vw" : "1vw" }}>
                     <TextField

@@ -105,7 +105,7 @@ export const StepFive: React.FC<StepFiveProps> = ({
     setPickDate,
 }) => {
     const isMobile = useMediaQuery("(orientation: portrait)")
-    const textField = useResponsiveStyles()
+    const { textField } = useResponsiveStyles()
     const bankAccount = useBankAccount()
 
     const handleChangeAdmin = (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
@@ -119,11 +119,18 @@ export const StepFive: React.FC<StepFiveProps> = ({
     }
     return (
         <Box sx={{ width: "100%", height: "100%", gap: isMobile ? "4vw" : "1vw" }}>
-            <p style={{ fontSize: isMobile ? "4.5vw" : "1.5rem", fontWeight: "800", fontFamily: "MalgunGothic2", textAlign: "left" }}>
+            <p
+                style={{
+                    fontSize: isMobile ? "4.5vw" : "1.5rem",
+                    fontWeight: "800",
+                    fontFamily: "MalgunGothic2",
+                    textAlign: "left",
+                }}
+            >
                 Informações Profissionais
             </p>
             <Box sx={{ gap: isMobile ? "2vw" : "1vw" }}>
-                <Box sx={{ gap: isMobile ? "3vw" : "1vw" }}>
+                <Box sx={{ gap: isMobile ? "2vw" : "1vw" }}>
                     <TextField
                         label={"Salário"}
                         name="employee.professional.salary"
@@ -164,8 +171,17 @@ export const StepFive: React.FC<StepFiveProps> = ({
                     />
                 </Box>
             </Box>
-            <p style={{ fontSize: isMobile ? "4.5vw" : "1.5rem", fontWeight: "800", fontFamily: "MalgunGothic2", textAlign: "left" }}>Permissões</p>
-            <Box sx={{ flexDirection: "column", justifyContent: "space-between" }}>
+            <p
+                style={{
+                    fontSize: isMobile ? "4.5vw" : "1.5rem",
+                    fontWeight: "800",
+                    fontFamily: "MalgunGothic2",
+                    textAlign: "left",
+                }}
+            >
+                Permissões
+            </p>
+            <Box sx={{ flexDirection: "column", gap:"2vw",justifyContent: "space-between" }}>
                 <FormGroup sx={{ width: "90%" }}>
                     <FormControlLabel
                         checked={adminStatus}

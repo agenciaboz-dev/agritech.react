@@ -14,12 +14,19 @@ interface StepTwoProps {
 
 export const StepTwo: React.FC<StepTwoProps> = ({ data, handleChange }) => {
     const isMobile = useMediaQuery("(orientation: portrait)")
-    const textField = useResponsiveStyles()
+    const { textField } = useResponsiveStyles()
     const estados = useEstadosBrasil()
 
     return (
         <Box sx={{ width: "100%", height: "50%", gap: isMobile ? "2vw" : "1vw", oveflowY: "auto" }}>
-            <p style={{ fontSize: isMobile ? "4.5vw" : "1.5rem", fontFamily: "MalgunGothic2", textAlign: "left", fontWeight: "800" }}>
+            <p
+                style={{
+                    fontSize: isMobile ? "4.5vw" : "1.5rem",
+                    fontFamily: "MalgunGothic2",
+                    textAlign: "left",
+                    fontWeight: "800",
+                }}
+            >
                 Dados para contato
             </p>
 
@@ -77,7 +84,14 @@ export const StepTwo: React.FC<StepTwoProps> = ({ data, handleChange }) => {
                         />
                     </Box>
                     <Box sx={{ width: "100%", flexDirection: "row", gap: isMobile ? "2vw" : "1vw" }}>
-                        <TextField name="address.city" label={"Cidade"} value={data.address.city} sx={textField} onChange={handleChange} required />
+                        <TextField
+                            name="address.city"
+                            label={"Cidade"}
+                            value={data.address.city}
+                            sx={textField}
+                            onChange={handleChange}
+                            required
+                        />
                         <TextField
                             select
                             onChange={handleChange}

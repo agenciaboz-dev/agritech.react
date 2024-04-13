@@ -13,17 +13,30 @@ interface StepFourProps {
 
 export const StepFour: React.FC<StepFourProps> = ({ data, handleChange }) => {
     const isMobile = useMediaQuery("(orientation: portrait)")
-    const textField = useResponsiveStyles()
+    const { textField } = useResponsiveStyles()
     const bankAccount = useBankAccount()
     return (
         <Box sx={{ width: "100%", height: "100%", gap: isMobile ? "4vw" : "1vw" }}>
             <Box sx={{ gap: isMobile ? "4vw" : "1vw" }}>
                 {" "}
-                <p style={{ fontSize: isMobile ? "4.5vw" : "1.5rem", fontWeight: "800", fontFamily: "MalgunGothic2", textAlign: "left" }}>
+                <p
+                    style={{
+                        fontSize: isMobile ? "4.5vw" : "1.5rem",
+                        fontWeight: "800",
+                        fontFamily: "MalgunGothic2",
+                        textAlign: "left",
+                    }}
+                >
                     Dados Bancários
                 </p>
                 <Box sx={{ gap: isMobile ? "2vw" : "1vw" }}>
-                    <TextField label={"Banco"} name="employee.bank.name" value={data.employee?.bank?.name} sx={textField} onChange={handleChange} />
+                    <TextField
+                        label={"Banco"}
+                        name="employee.bank.name"
+                        value={data.employee?.bank?.name}
+                        sx={textField}
+                        onChange={handleChange}
+                    />
 
                     <TextField
                         select
@@ -43,7 +56,9 @@ export const StepFour: React.FC<StepFourProps> = ({ data, handleChange }) => {
                             },
                         }}
                         SelectProps={{
-                            MenuProps: { MenuListProps: { sx: { maxHeight: isMobile ? "80vw" : "fit-content", overflowY: "auto" } } },
+                            MenuProps: {
+                                MenuListProps: { sx: { maxHeight: isMobile ? "80vw" : "fit-content", overflowY: "auto" } },
+                            },
                         }}
                     >
                         <MenuItem

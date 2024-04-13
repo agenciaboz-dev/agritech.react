@@ -29,7 +29,6 @@ interface NewEmployeeProps {}
 export const NewEmployee: React.FC<NewEmployeeProps> = ({}) => {
     const isMobile = useMediaQuery("(orientation: portrait)")
 
-    // const textField = useResponsiveStyles()
     const navigate = useNavigate()
     const header = useHeader()
     const io = useIo()
@@ -177,7 +176,7 @@ export const NewEmployee: React.FC<NewEmployeeProps> = ({}) => {
             <Box
                 sx={{
                     width: "100%",
-                    height: "8%",
+                    height: "10%",
                     justifyContent: "center",
                     alignItems: "center",
                     gap: "1vw",
@@ -212,10 +211,11 @@ export const NewEmployee: React.FC<NewEmployeeProps> = ({}) => {
                     <Box
                         sx={{
                             width: "100%",
-                            height: "100%",
+                            height: "94%",
                             gap: isMobile ? "5vw" : "1vw",
                             flexDirection: "column",
                             padding: "1vw",
+                            overflow: "auto",
                         }}
                     >
                         <form onChange={formik.handleChange} onSubmit={formik.handleSubmit}>
@@ -250,16 +250,10 @@ export const NewEmployee: React.FC<NewEmployeeProps> = ({}) => {
                                         onChange={formik.handleChange}
                                         label="Cargo"
                                         name="office"
-                                        sx={{
-                                            ...textField,
-                                            width: "100%",
-                                        }}
+                                        sx={textField}
                                         required
                                         variant="outlined"
                                         value={formik.values.office}
-                                        InputProps={{
-                                            sx: { ...textField },
-                                        }}
                                         SelectProps={{
                                             MenuProps: {
                                                 MenuListProps: {
@@ -295,11 +289,10 @@ export const NewEmployee: React.FC<NewEmployeeProps> = ({}) => {
 
                             <Box
                                 sx={{
-                                    height: isMobile ? "55%" : "45%",
+                                    height: isMobile ? "60%" : "45%",
                                     flexDirection: "row",
                                     gap: "2vw",
                                     alignItems: "start",
-                                    overflow: "auto",
                                 }}
                             >
                                 <Stepper
@@ -321,7 +314,7 @@ export const NewEmployee: React.FC<NewEmployeeProps> = ({}) => {
                                     <Stepper.Step label="" />
                                     <Stepper.Step label="" />
                                 </Stepper>
-                                <Box sx={{ maxHeight: "80%", width: "100%" }}>
+                                <Box sx={{ width: "100%", height: "50%" }}>
                                     {currentStep === 0 && (
                                         <StepOne
                                             data={formik.values}
@@ -353,11 +346,10 @@ export const NewEmployee: React.FC<NewEmployeeProps> = ({}) => {
                                     )}
                                 </Box>
                             </Box>
-
                             <Box
                                 sx={{
                                     gap: isMobile ? "2vw" : "1vw",
-                                    flexDirection: isMobile ? "column" : "row",
+                                    flexDirection: isMobile ? "row" : "row",
                                     marginLeft: isMobile ? "" : "auto",
                                 }}
                             >

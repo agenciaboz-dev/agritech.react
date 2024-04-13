@@ -16,50 +16,31 @@ interface StepOneProps {
     birthPick?: Dayjs | null
     setBirthPick?: React.Dispatch<React.SetStateAction<Dayjs | null>>
 }
-const newTheme = (theme: any) =>
-    createTheme({
-        ...theme,
-        components: {
-            MuiPickersToolbar: {
-                styleOverrides: {
-                    root: {
-                        color: "#fff",
-                        // borderRadius: 5,
-                        borderWidth: 0,
-                        backgroundColor: colors.primary,
-                    },
-                },
-            },
-            MuiPickersMonth: {
-                styleOverrides: {
-                    monthButton: {
-                        borderRadius: 20,
-                        borderWidth: 0,
-                        border: "0px solid",
-                    },
-                },
-            },
-            MuiPickersDay: {
-                styleOverrides: {
-                    root: {
-                        color: colors.primary,
-                        borderRadius: 20,
-                        borderWidth: 0,
-                    },
-                },
-            },
-        },
-    })
 
 export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, birthPick, setBirthPick }) => {
     const isMobile = useMediaQuery("(orientation: portrait)")
-    const textField = useResponsiveStyles()
+    const { textField } = useResponsiveStyles()
     const gender = useGender()
     const typeRelationship = useRelationship()
     return (
-        <Box sx={{ width: "100%", height: "100%", gap: isMobile ? "5vw" : "1vw", flexDirection: "column" }}>
-            <Box sx={{ gap: isMobile ? "2vw" : "1vw", width: "100%", height: "100%" }}>
-                <p style={{ fontSize: isMobile ? "4.5vw" : "1.5rem", fontWeight: "800", fontFamily: "MalgunGothic2", textAlign: "left" }}>
+        <Box
+            sx={{
+                width: "100%",
+                height: "100%",
+                gap: isMobile ? "30vw" : "1vw",
+                flexDirection: "column",
+                justifyContent: "space-between",
+            }}
+        >
+            <Box sx={{ gap: isMobile ? "2vw" : "1vw", width: "100%", height: "80%" }}>
+                <p
+                    style={{
+                        fontSize: isMobile ? "4.5vw" : "1.5rem",
+                        fontWeight: "800",
+                        fontFamily: "MalgunGothic2",
+                        textAlign: "left",
+                    }}
+                >
                     Dados Pessoais
                 </p>
                 <Box sx={{ flexDirection: "row", gap: isMobile ? "2vw" : "1vw", width: "100%" }}>
@@ -133,7 +114,13 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, birthPick,
                                 }}
                                 SelectProps={{
                                     MenuProps: {
-                                        MenuListProps: { sx: { width: "100%", maxHeight: isMobile ? "80vw" : "fit-content", overflowY: "auto" } },
+                                        MenuListProps: {
+                                            sx: {
+                                                width: "100%",
+                                                maxHeight: isMobile ? "80vw" : "fit-content",
+                                                overflowY: "auto",
+                                            },
+                                        },
                                     },
                                 }}
                                 required
@@ -173,7 +160,13 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, birthPick,
                                 }}
                                 SelectProps={{
                                     MenuProps: {
-                                        MenuListProps: { sx: { width: "100%", maxHeight: isMobile ? "80vw" : "fit-content", overflowY: "auto" } },
+                                        MenuListProps: {
+                                            sx: {
+                                                width: "100%",
+                                                maxHeight: isMobile ? "80vw" : "fit-content",
+                                                overflowY: "auto",
+                                            },
+                                        },
                                     },
                                 }}
                             >
