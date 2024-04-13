@@ -22,7 +22,7 @@ export const AddKit: React.FC<AddKitProps> = ({}) => {
     const navigate = useNavigate()
     const io = useIo()
     const { snackbar } = useSnackbar()
-    const {  addKit } = useKits()
+    const { addKit } = useKits()
 
     const [image, setImage] = useState<File>()
     const [opened, { open, close }] = useDisclosure(false)
@@ -152,7 +152,7 @@ export const AddKit: React.FC<AddKitProps> = ({}) => {
                         <Box
                             sx={{
                                 width: "100%",
-                                height: "8%",
+                                height: "10%",
                                 justifyContent: "center",
                                 alignItems: "center",
                                 gap: "1vw",

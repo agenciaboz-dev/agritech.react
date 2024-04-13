@@ -30,7 +30,9 @@ export const SettingsKit: React.FC<SettingsKitProps> = ({}) => {
     }, [listKits])
 
     useEffect(() => {
-        const filteredList = listKits?.filter((kit) => kit.name !== null && kit.name.toLowerCase().includes(searchText.toLowerCase()))
+        const filteredList = listKits?.filter(
+            (kit) => kit.name !== null && kit.name.toLowerCase().includes(searchText.toLowerCase())
+        )
         setKits(filteredList || [])
     }, [listKits, searchText])
 
@@ -53,7 +55,7 @@ export const SettingsKit: React.FC<SettingsKitProps> = ({}) => {
             <Box
                 sx={{
                     width: "100%",
-                    height: "8%",
+                    height: "10%",
                     justifyContent: "center",
                     alignItems: "center",
                     gap: isMobile ? "1vw" : "0.5vw",
@@ -84,7 +86,13 @@ export const SettingsKit: React.FC<SettingsKitProps> = ({}) => {
                         overflowY: "hidden",
                     }}
                 >
-                    <p style={{ color: colors.text.white, fontSize: isMobile ? "5vw" : "1.5rem", fontFamily: "MalgunGothic2" }}>
+                    <p
+                        style={{
+                            color: colors.text.white,
+                            fontSize: isMobile ? "5vw" : "1.5rem",
+                            fontFamily: "MalgunGothic2",
+                        }}
+                    >
                         Configuração de Kits
                     </p>
                     {user?.isAdmin && (

@@ -24,7 +24,9 @@ export const ListEmployee: React.FC<ListEmployeeProps> = ({}) => {
         setListEmployee(listUsers?.filter((users) => users.employee !== null))
     }, [listUsers])
     useEffect(() => {
-        const filteredList = listUsers?.filter((user) => user.employee !== null && user.name.toLowerCase().includes(searchText.toLowerCase()))
+        const filteredList = listUsers?.filter(
+            (user) => user.employee !== null && user.name.toLowerCase().includes(searchText.toLowerCase())
+        )
         setListEmployee(filteredList || [])
     }, [listUsers, searchText])
 
@@ -45,7 +47,7 @@ export const ListEmployee: React.FC<ListEmployeeProps> = ({}) => {
             <Box
                 sx={{
                     width: "100%",
-                    height: "8%",
+                    height: "10%",
                     justifyContent: "center",
                     alignItems: "center",
                     gap: "1vw",

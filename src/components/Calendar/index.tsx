@@ -39,7 +39,9 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
         if (value && findUser?.employee?.kits?.length !== 0) {
             const callsPerDay =
                 (findUser?.employee?.kits &&
-                    findUser?.employee?.kits[0].calls?.filter((item) => item.forecast === new Date(value).getTime().toString())) ||
+                    findUser?.employee?.kits[0].calls?.filter(
+                        (item) => item.forecast === new Date(value).getTime().toString()
+                    )) ||
                 []
             setCallsDay(callsPerDay)
             // console.log(callsPerDay)
@@ -54,10 +56,15 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
                 findUser?.employee?.kits &&
                 findUser?.employee?.kits[0].calls?.filter((call) => {
                     const callDate = new Date(Number(call.forecast))
-                    return callDate.getDate() === day && callDate.getMonth() === date.getMonth() && callDate.getFullYear() === date.getFullYear()
+                    return (
+                        callDate.getDate() === day &&
+                        callDate.getMonth() === date.getMonth() &&
+                        callDate.getFullYear() === date.getFullYear()
+                    )
                 })
 
-            const areaDayCalls = callsForDay?.map((item) => Number(item.talhao?.area)).reduce((prev, current) => prev + current, 0) || 0
+            const areaDayCalls =
+                callsForDay?.map((item) => Number(item.talhao?.area)).reduce((prev, current) => prev + current, 0) || 0
 
             useEffect(() => {
                 console.log({ por_dia_temos: areaDayCalls })
@@ -105,7 +112,7 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
             <Box
                 sx={{
                     width: "100%",
-                    height: "8%",
+                    height: "10%",
                     justifyContent: "center",
                     alignItems: "center",
                     gap: "1vw",
@@ -178,7 +185,12 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
                     getDayProps={(day) => ({
                         style: {
                             border: day.getDate() == dayCurrent ? `1px solid ${colors.secondary}` : "",
-                            color: day.getDate() == dayCurrent ? colors.secondary : day.getDate() == value?.getDate() ? "white" : "",
+                            color:
+                                day.getDate() == dayCurrent
+                                    ? colors.secondary
+                                    : day.getDate() == value?.getDate()
+                                    ? "white"
+                                    : "",
                         },
                     })}
                     value={value}

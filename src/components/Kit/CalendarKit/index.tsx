@@ -78,7 +78,7 @@ export const CalendarKit: React.FC<CalendarKitProps> = ({}) => {
                 callsForDay.length > 0 &&
                 selectedKit.calls &&
                 selectedKit.hectareDay &&
-                (areaDayCalls >= selectedKit.hectareDay / 2 && areaDayCalls > 0 
+                (areaDayCalls >= selectedKit.hectareDay / 2 && areaDayCalls > 0
                     ? "#FFD700"
                     : areaDayCalls >= selectedKit.hectareDay
                     ? colors.delete
@@ -116,7 +116,7 @@ export const CalendarKit: React.FC<CalendarKitProps> = ({}) => {
             <Box
                 sx={{
                     width: "100%",
-                    height: "8%",
+                    height: "10%",
                     justifyContent: "center",
                     alignItems: "center",
                     gap: "1vw",

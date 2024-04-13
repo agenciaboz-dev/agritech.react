@@ -33,7 +33,7 @@ export const NotificationsList: React.FC<NotificationsListProps> = ({ user }) =>
             <Box
                 sx={{
                     width: "100%",
-                    height: "8%",
+                    height: "10%",
                     justifyContent: "center",
                     alignItems: "center",
                     gap: "1vw",
@@ -64,7 +64,15 @@ export const NotificationsList: React.FC<NotificationsListProps> = ({ user }) =>
                         overflowY: "hidden",
                     }}
                 >
-                    <p style={{ color: colors.text.white, fontSize: isMobile ? "5vw" : "2rem", fontFamily: "MalgunGothic2" }}>Notificações</p>
+                    <p
+                        style={{
+                            color: colors.text.white,
+                            fontSize: isMobile ? "5vw" : "2rem",
+                            fontFamily: "MalgunGothic2",
+                        }}
+                    >
+                        Notificações
+                    </p>
                 </Box>
                 <Box
                     style={{
