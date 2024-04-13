@@ -12,8 +12,8 @@
     box-sizing: border-box;
     font-family: MalgunGothic2;
     /* user-select: none; */
-    transition-timing-function: ease-in-out;
-    transition: 0.5s;
+    /* transition-timing-function: ease-in-out;
+    transition: 0.5s; */
 }
 
 .logo {

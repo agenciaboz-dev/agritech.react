@@ -17,7 +17,7 @@ import { Calls } from "./pages/Calls"
 import { NotificationsList } from "./pages/Notifications/NotificationsList"
 import { Terms } from "./pages/Terms"
 import { Box } from "@mui/material"
-import "./transition.css"
+// import "./transition.css"
 
 interface RoutesProps {}
 
