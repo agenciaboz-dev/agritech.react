@@ -71,6 +71,8 @@ export const ListProducer: React.FC<ListProducerProps> = ({}) => {
                         padding: "4vw",
                         width: "100%",
                         flex: 1,
+                        maxHeight: "100%",
+                        height: "80vw",
                         backgroundColor: "#fff",
                         borderTopLeftRadius: "7vw",
                         borderTopRightRadius: "7vw",
@@ -80,7 +82,7 @@ export const ListProducer: React.FC<ListProducerProps> = ({}) => {
                 >
                     <SearchField searchText={searchText} setSearchText={setSearchText} placeholder="produtor" />
 
-                    <Box sx={{ gap: "2vw", height: "90%", overflow: "auto" }}>
+                    <Box sx={{ gap: "2vw", height: "100%", overflow: "auto", pb: "12vh" }}>
                         {listProducer?.length !== 0
                             ? listProducer?.map((user) => (
                                   <CardUser
