@@ -173,7 +173,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                     }}
                 >
                     <Box sx={{ gap: isMobile ? "4vw" : "2vw" }}>
-                        <Box sx={{ gap: isMobile ? "2vw" : "1vw" }}>
+                        <Box sx={{ gap: isMobile ? "2vw" : 0 }}>
                             <p
                                 style={{
                                     color: colors.text.black,
@@ -215,7 +215,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                                     color="primary"
                                     sx={{
                                         width: isMobile ? "50%" : "fit-content",
-                                        padding: isMobile ? "2.5vw" : "1vw",
+                                        padding: isMobile ? "2.5vw" : "0.5vw 1vw",
                                         color: colors.text.white,
                                         fontWeight: "500",
                                         fontSize: isMobile ? "3vw" : "1.2rem",
@@ -242,6 +242,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                                             fontSize: isMobile ? "3.5vw" : "1.2rem",
                                             fontFamily: "MalgunGothic2",
                                             fontWeight: "500",
+                                            cursor: "pointer",
                                         }}
                                         onClick={() => {
                                             navigate("/adm/employees")
@@ -253,7 +254,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                                 </Box>
                             </Box>
                         </Box>
-                        <Box sx={{ gap: isMobile ? "2vw" : "1vw" }}>
+                        <Box sx={{ gap: isMobile ? "2vw" : 0 }}>
                             <p
                                 style={{
                                     color: colors.text.black,
@@ -303,7 +304,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                                         color="primary"
                                         sx={{
                                             width: isMobile ? "50%" : "fit-content",
-                                            padding: isMobile ? "2.5vw" : "1vw",
+                                            padding: isMobile ? "2.5vw" : "0.5vw 1vw",
                                             color: colors.text.white,
                                             fontWeight: "500",
                                             fontSize: isMobile ? "3vw" : "1.2rem",
@@ -330,6 +331,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                                                 fontSize: isMobile ? "3.5vw" : "1.2rem",
                                                 fontFamily: "MalgunGothic2",
                                                 fontWeight: "500",
+                                                cursor: "pointer",
                                             }}
                                             onClick={() => {
                                                 navigate("/adm/producers")
@@ -348,12 +350,12 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
             <IconButton
                 sx={{
                     bgcolor: colors.button,
-                    width: isMobile ? "12vw" : "5vw",
-                    height: isMobile ? "12vw" : "5vw",
+                    width: isMobile ? "12vw" : "3vw",
+                    height: isMobile ? "12vw" : "3vw",
                     borderRadius: "50%",
                     position: "sticky",
                     bottom: isMobile ? "10vh" : "13vh",
-                    left: isMobile ? "85vw" : "91vw",
+                    left: isMobile ? "85vw" : "95vw",
                 }}
                 onClick={() => navigate("/adm/call/new")}
             >

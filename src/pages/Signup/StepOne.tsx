@@ -28,7 +28,7 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, image, set
     const typeRelationship = useRelationship()
 
     return (
-        <Box sx={{ width: "100%", height: "100%", gap: "4vw", flexDirection: "column" }}>
+        <Box sx={{ width: "100%", height: "100%", gap: "4vw", flexDirection: "column",  }}>
             <p style={{ fontSize: "4.5vw", fontFamily: "MalgunGothic2", textAlign: "left", fontWeight: "800" }}>
                 Informações Pessoais
             </p>
@@ -114,20 +114,20 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, image, set
                         />
                     </>
                 )}
-                    <DemoItem label={"Data de Nascimento"}>
-                        <MobileDatePicker
-                            sx={{ ...textField, width: "100%" }}
-                            format="DD/MM/YYYY"
-                            value={pickDate}
-                            onChange={(newDate) => {
-                                if (newDate !== null) {
-                                    setPickDate(newDate)
-                                }
-                            }}
-                            timezone="system"
-                            localeText={ptBR.components.MuiLocalizationProvider.defaultProps.localeText}
-                        />
-                    </DemoItem>
+                <DemoItem label={"Data de Nascimento"}>
+                    <MobileDatePicker
+                        sx={{ ...textField, width: "100%" }}
+                        format="DD/MM/YYYY"
+                        value={pickDate}
+                        onChange={(newDate) => {
+                            if (newDate !== null) {
+                                setPickDate(newDate)
+                            }
+                        }}
+                        timezone="system"
+                        localeText={ptBR.components.MuiLocalizationProvider.defaultProps.localeText}
+                    />
+                </DemoItem>
                 <TextField
                     label={"E-mail"}
                     name="email"

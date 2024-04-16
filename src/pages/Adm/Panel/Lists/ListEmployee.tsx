@@ -1,4 +1,4 @@
-import { Box, Button } from "@mui/material"
+import { Box, Button, useMediaQuery } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { Header } from "../../../../components/Header"
 import { colors } from "../../../../style/colors"
@@ -12,7 +12,7 @@ import { SearchField } from "../../../../components/SearchField"
 interface ListEmployeeProps {}
 
 export const ListEmployee: React.FC<ListEmployeeProps> = ({}) => {
-  
+    const isMobile = useMediaQuery("(orientation: portrait)")
     const header = useHeader()
 
     const { listUsers } = useUsers()
@@ -41,16 +41,17 @@ export const ListEmployee: React.FC<ListEmployeeProps> = ({}) => {
                 height: "100%",
                 backgroundColor: colors.button,
                 flexDirection: "column",
+                overflow: "hidden",
             }}
         >
             <Box
                 sx={{
                     width: "100%",
-                    height: "8%",
+                    height: "10%",
                     justifyContent: "center",
                     alignItems: "center",
                     gap: "1vw",
-                    padding: "4vw",
+                    padding: isMobile ? "4vw" : "3vw",
                     flexDirection: "row",
                 }}
             >
@@ -61,21 +62,21 @@ export const ListEmployee: React.FC<ListEmployeeProps> = ({}) => {
                     justifyContent: "center",
                     height: "92%",
                     backgroundColor: colors.secondary,
-                    borderTopLeftRadius: "5vw",
-                    borderTopRightRadius: "5vw",
-                    paddingTop: 10,
+                    borderTopLeftRadius: isMobile ? "5vw" : "2vw",
+                    borderTopRightRadius: isMobile ? "5vw" : "2vw",
+                    paddingTop: isMobile ? 10 : "2vw",
                 }}
             >
                 <Box
                     style={{
-                        padding: "4vw",
+                        padding: isMobile ? "4vw" : "1vw",
                         width: "100%",
                         flex: 1,
                         backgroundColor: "#fff",
-                        borderTopLeftRadius: "7vw",
-                        borderTopRightRadius: "7vw",
+                        borderTopLeftRadius: isMobile ? "7vw" : "2vw",
+                        borderTopRightRadius: isMobile ? "7vw" : "2vw",
                         overflow: "hidden",
-                        gap: "3vw",
+                        gap: isMobile ? "3vw" : "1vw",
                     }}
                 >
                     {listEmployee && (
@@ -85,7 +86,7 @@ export const ListEmployee: React.FC<ListEmployeeProps> = ({}) => {
                             placeholder="colaborador"
                         />
                     )}
-                    <Box sx={{ gap: "2vw", height: "90%", overflow: "auto" }}>
+                    <Box sx={{ gap: isMobile ? "2vw" : "1vw", height: "90%", overflow: "auto" }}>
                         {listEmployee?.length !== 0
                             ? listEmployee?.map((user) => (
                                   <CardUser

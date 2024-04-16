@@ -1,4 +1,4 @@
-import { Box, Button, IconButton } from "@mui/material"
+import { Box, Button, IconButton, useMediaQuery } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { colors } from "../../style/colors"
 import { Header } from "../Header"
@@ -17,6 +17,7 @@ import { ModalLegend } from "./ModalLegend"
 interface CalendarProps {}
 
 export const Calendar: React.FC<CalendarProps> = ({}) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
     const header = useHeader()
     const navigate = useNavigate()
     const { listCalls } = useCall()
@@ -111,11 +112,11 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
             <Box
                 sx={{
                     width: "100%",
-                    height: "8%",
+                    height: "10%",
                     justifyContent: "center",
                     alignItems: "center",
                     gap: "1vw",
-                    padding: "4vw",
+                    padding: isMobile ? "4vw" : "3vw",
                     flexDirection: "row",
                 }}
             >
@@ -124,15 +125,15 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
 
             <Box
                 sx={{
-                    padding: "4vw",
+                    padding: isMobile ? "4vw" : "1vw",
                     width: "100%",
                     flex: 1,
                     backgroundColor: "#fff",
-                    borderTopLeftRadius: "7vw",
-                    borderTopRightRadius: "7vw",
+                    borderTopLeftRadius: isMobile ? "7vw" : "2vw",
+                    borderTopRightRadius: isMobile ? "7vw" : "2vw",
                     overflow: "hidden",
                     alignItems: "center",
-                    gap: "4vw",
+                    gap: isMobile ? "4vw" : "1vw",
                 }}
             >
                 <Box
@@ -140,14 +141,17 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
                         width: "100%",
                         flexDirection: "row",
                         justifyContent: "space-between",
-                        gap: "4vw",
-                        p: "1vw",
+                        gap: isMobile ? "4vw" : "1vw",
+                        padding: isMobile ? "1vw" : 0,
                     }}
                 >
                     <Box>
                         {(findUser?.office === "pilot" || findUser?.office === "copilot") && (
                             <IconButton onClick={open}>
-                                <BsFillInfoCircleFill color={colors.button} style={{ width: "6vw", height: "6vw" }} />
+                                <BsFillInfoCircleFill
+                                    color={colors.button}
+                                    style={{ width: isMobile ? "6vw" : "2vw", height: isMobile ? "6vw" : "2vw" }}
+                                />
                             </IconButton>
                         )}
                     </Box>
@@ -156,13 +160,13 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
                         variant="contained"
                         sx={{
                             alignItems: "center",
-                            gap: "0vw",
+                            gap: 0,
                             backgroundColor: colors.button,
                             color: colors.text.white,
                             textTransform: "none",
                             borderRadius: "5vw",
-                            fontSize: "0.8rem",
-                            p: "2vw",
+                            fontSize: isMobile ? "3vw" : "1rem",
+                            padding: isMobile ? "2vw" : "0 1vw",
                             width: "fit-content",
                         }}
                         onClick={() => navigate(`/adm/profile/${userid}`)}
@@ -199,8 +203,8 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
                         width: "100%",
                         height: "38%",
                         overflowY: "auto",
-                        p: "2vw 4vw",
-                        gap: "3vw",
+                        padding: isMobile ? "2vw 4vw" : "1vw",
+                        gap: isMobile ? "3vw" : "1vw",
                     }}
                 >
                     {findUser?.office === "pilot" || findUser?.office === "copilot"

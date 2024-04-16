@@ -58,7 +58,7 @@ export const SettingsKit: React.FC<SettingsKitProps> = ({}) => {
             <Box
                 sx={{
                     width: "100%",
-                    height: "8%",
+                    height: "10%",
                     justifyContent: "center",
                     alignItems: "center",
                     gap: isMobile ? "1vw" : "0.5vw",
@@ -112,8 +112,8 @@ export const SettingsKit: React.FC<SettingsKitProps> = ({}) => {
                             }}
                             onClick={() => navigate("/adm/settings-kit/addkit")}
                         >
-                            <img src={addIcon} style={{ width: isMobile ? "5vw" : "3vw" }} />
-                            Adicionar kit
+                            <img src={addIcon} style={{ width: isMobile ? "5vw" : "2vw" }} />
+                            <p style={{ fontSize: isMobile ? "3.5vw" : "1.2rem" }}>Adicionar kit</p>
                         </Button>
                     )}
                 </Box>

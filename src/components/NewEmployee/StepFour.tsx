@@ -1,10 +1,10 @@
-import { Box, TextField, Button, MenuItem } from "@mui/material"
+import { Box, TextField, Button, MenuItem, useMediaQuery } from "@mui/material"
 import React, { ChangeEventHandler } from "react"
 import { colors } from "../../style/colors"
-import { textField } from "../../style/input"
 import { useBankAccount } from "../../hooks/useBankAccount"
 import MaskedInput from "../MaskedInput"
 import MaskedInputNando from "../MaskedNando"
+import { useResponsiveStyles } from "../../hooks/useResponsiveStyles"
 
 interface StepFourProps {
     data: NewEmployee
@@ -12,15 +12,24 @@ interface StepFourProps {
 }
 
 export const StepFour: React.FC<StepFourProps> = ({ data, handleChange }) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
+    const { textField } = useResponsiveStyles()
     const bankAccount = useBankAccount()
     return (
-        <Box sx={{ width: "100%", height: "100%", gap: "4vw" }}>
-            <Box sx={{ gap: "4vw" }}>
+        <Box sx={{ width: "100%", height: "100%", gap: isMobile ? "4vw" : "1vw" }}>
+            <Box sx={{ gap: isMobile ? "4vw" : "1vw" }}>
                 {" "}
-                <p style={{ fontSize: "4.5vw", fontWeight: "800", fontFamily: "MalgunGothic2", textAlign: "left" }}>
+                <p
+                    style={{
+                        fontSize: isMobile ? "4.5vw" : "1.5rem",
+                        fontWeight: "800",
+                        fontFamily: "MalgunGothic2",
+                        textAlign: "left",
+                    }}
+                >
                     Dados Bancários
                 </p>
-                <Box sx={{ gap: "2vw" }}>
+                <Box sx={{ gap: isMobile ? "2vw" : "1vw" }}>
                     <TextField
                         label={"Banco"}
                         name="employee.bank.name"
@@ -43,11 +52,13 @@ export const StepFour: React.FC<StepFourProps> = ({ data, handleChange }) => {
                         InputProps={{
                             sx: {
                                 ...textField,
-                                height: "10.5vw",
+                                height: isMobile ? "10.5vw" : "fit-content",
                             },
                         }}
                         SelectProps={{
-                            MenuProps: { MenuListProps: { sx: { maxHeight: "80vw", overflowY: "auto" } } },
+                            MenuProps: {
+                                MenuListProps: { sx: { maxHeight: isMobile ? "80vw" : "fit-content", overflowY: "auto" } },
+                            },
                         }}
                     >
                         <MenuItem
@@ -69,12 +80,12 @@ export const StepFour: React.FC<StepFourProps> = ({ data, handleChange }) => {
                         ))}
                     </TextField>
 
-                    <Box sx={{ flexDirection: "row", gap: "2vw" }}>
+                    <Box sx={{ flexDirection: "row", gap: isMobile ? "2vw" : "1vw" }}>
                         <TextField
                             label={"Nº da Conta"}
                             name="employee.bank.account"
                             value={data.employee?.bank?.account}
-                            sx={textField}
+                            sx={{ ...textField, width: "100%" }}
                             InputProps={{
                                 inputComponent: MaskedInput,
                                 inputProps: { mask: "00000000000000000000", inputMode: "numeric" },
@@ -85,7 +96,7 @@ export const StepFour: React.FC<StepFourProps> = ({ data, handleChange }) => {
                             label={"Agência"}
                             name="employee.bank.agency"
                             value={data.employee?.bank?.agency}
-                            sx={textField}
+                            sx={{ ...textField, width: "100%" }}
                             onChange={handleChange}
                             InputProps={{
                                 inputComponent: MaskedInput,

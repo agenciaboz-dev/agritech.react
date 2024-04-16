@@ -12,7 +12,7 @@ interface AddressProps {
 export const Address: React.FC<AddressProps> = ({ values, handleChange }) => {
     const estados = useEstadosBrasil()
     return (
-        <Box sx={{ flexDirection: "column", gap: "3vw" }}>
+        <Box sx={{ flexDirection: "column", gap: "3vw", overflowY: "auto", height: 0.8, pb: "5vw" }}>
             <p style={{ fontSize: "4.0vw", fontFamily: "MalgunGothic2", textAlign: "left", fontWeight: "800" }}>
                 Endereço Residencial
             </p>
@@ -20,7 +20,7 @@ export const Address: React.FC<AddressProps> = ({ values, handleChange }) => {
                 <TextField
                     label={"CEP"}
                     name={"address.cep"}
-                    sx={textField}
+                    sx={{ ...textField, width: 0.5 }}
                     value={values.address?.cep}
                     onChange={handleChange}
                     InputProps={{
@@ -35,7 +35,7 @@ export const Address: React.FC<AddressProps> = ({ values, handleChange }) => {
                     name={"address.uf"}
                     sx={{
                         ...textField,
-                        width: "48%",
+                        width: "50%",
                     }}
                     value={values.address?.uf}
                     InputProps={{

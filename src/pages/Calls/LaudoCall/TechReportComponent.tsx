@@ -1,16 +1,10 @@
-import { Accordion, Box, TextField, Typography } from "@mui/material"
+import { Accordion, Box, Typography } from "@mui/material"
 import { AccordionSummary } from "../../../components/Accordion"
-import React, { ChangeEventHandler, Dispatch, SetStateAction } from "react"
+import React, { ChangeEventHandler } from "react"
 import { TitleComponents } from "../../../components/TitleComponents"
 import MuiAccordionDetails from "@mui/material/AccordionDetails"
 import { styled } from "@mui/material/styles"
-import { textField } from "../../../style/input"
-import MaskedInput from "../../../components/MaskedInput"
 import { Flight, NewReport } from "../../../definitions/report"
-import { LocalizationProvider, TimeField, ptBR } from "@mui/x-date-pickers"
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo"
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
-import { CiClock2 } from "react-icons/ci"
 
 interface TechReportComponentProps {
     user: User
@@ -23,21 +17,11 @@ interface TechReportComponentProps {
     finishPick: React.Dispatch<React.SetStateAction<null>>
     setFinishPick: React.Dispatch<React.SetStateAction<null>>
 }
-const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
+const AccordionDetails = styled(MuiAccordionDetails)(({}) => ({
     // padding: theme.spacing(2),
     borderTop: "1px solid rgba(0, 0, 0, .125)",
 }))
-export const TechReportComponent: React.FC<TechReportComponentProps> = ({
-    values,
-    change,
-    user,
-    listFlights,
-    open,
-    initPick,
-    setInitPick,
-    finishPick,
-    setFinishPick,
-}) => {
+export const TechReportComponent: React.FC<TechReportComponentProps> = ({ listFlights, open }) => {
     const [expanded, setExpanded] = React.useState<string | false>("")
 
     const expandendChange = (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
@@ -49,63 +33,7 @@ export const TechReportComponent: React.FC<TechReportComponentProps> = ({
                 <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
                     <p style={{ fontWeight: "bold", fontSize: "3.5vw" }}>Laudo Técnico</p>
                 </Box>
-                <Box sx={{ height: "100%", overflowY: "auto", gap: "4vw" }}>
-                    {/* <LocalizationProvider
-                        dateAdapter={AdapterDayjs}
-                        localeText={ptBR.components.MuiLocalizationProvider.defaultProps.localeText}
-                    >
-                        <DemoContainer components={["TimeField", "TimeField", "TimeField"]} sx={{ paddingTop: 0 }}>
-                            <Box sx={{ flexDirection: "row", gap: "1vw", paddingTop: "0" }}>
-                                {values?.techReport?.init && (
-                                    <TimeField
-                                        label="Início"
-                                        name="init"
-                                        sx={{ ...textField }}
-                                        value={initPick}
-                                        onChange={(newValue) => setInitPick(newValue)}
-                                        format="HH:mm"
-                                        ampm={false}
-                                        InputProps={{
-                                            inputMode: "numeric",
-                                            endAdornment: (
-                                                <CiClock2
-                                                    style={{
-                                                        color: "black",
-                                                        width: "6vw",
-                                                        height: "6vw",
-                                                    }}
-                                                />
-                                            ),
-                                        }}
-                                    />
-                                )}
-                                {values?.techReport?.finish && (
-                                    <TimeField
-                                        label="Final"
-                                        name="finish"
-                                        sx={{ ...textField }}
-                                        value={finishPick}
-                                        onChange={(newValue) => setFinishPick(newValue)}
-                                        format="HH:mm"
-                                        ampm={false}
-                                        InputProps={{
-                                            inputMode: "numeric",
-                                            endAdornment: (
-                                                <CiClock2
-                                                    style={{
-                                                        color: "black",
-                                                        width: "6vw",
-                                                        height: "6vw",
-                                                    }}
-                                                />
-                                            ),
-                                        }}
-                                    />
-                                )}
-                            </Box>
-                        </DemoContainer>
-                    </LocalizationProvider> */}
-
+                <Box sx={{ height: "80%", gap: "4vw" }}>
                     <TitleComponents title="Voos" button click={open} />
                     {listFlights.map((item, index) => (
                         <Accordion
@@ -118,7 +46,6 @@ export const TechReportComponent: React.FC<TechReportComponentProps> = ({
                                 <Typography>Voo {index + 1}</Typography>
                             </AccordionSummary>
                             <AccordionDetails>
-                                {" "}
                                 <Box key={index}>
                                     <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
                                         <p>Temperatura</p>

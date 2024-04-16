@@ -1,11 +1,11 @@
 import React, { ChangeEventHandler } from "react"
-import { Box, TextField, Button, MenuItem } from "@mui/material"
+import { Box, TextField, Button, MenuItem, useMediaQuery } from "@mui/material"
 import { colors } from "../../style/colors"
 import MaskedInput from "../../components/MaskedInput"
 import { useEstadosBrasil } from "../../hooks/useEstadosBrasil"
-import { textField } from "../../style/input"
 import MaskedInputNando from "../../components/MaskedNando"
 import { useCepMask, usePhoneMask } from "burgos-masks"
+import { useResponsiveStyles } from "../../hooks/useResponsiveStyles"
 
 interface StepTwoProps {
     data: NewEmployee
@@ -13,16 +13,25 @@ interface StepTwoProps {
 }
 
 export const StepTwo: React.FC<StepTwoProps> = ({ data, handleChange }) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
+    const { textField } = useResponsiveStyles()
     const estados = useEstadosBrasil()
 
     return (
-        <Box sx={{ width: "100%", height: "50%", gap: "2vw", oveflowY: "auto" }}>
-            <p style={{ fontSize: "4.5vw", fontFamily: "MalgunGothic2", textAlign: "left", fontWeight: "800" }}>
+        <Box sx={{ width: "100%", height: "50%", gap: isMobile ? "2vw" : "1vw", oveflowY: "auto" }}>
+            <p
+                style={{
+                    fontSize: isMobile ? "4.5vw" : "1.5rem",
+                    fontFamily: "MalgunGothic2",
+                    textAlign: "left",
+                    fontWeight: "800",
+                }}
+            >
                 Dados para contato
             </p>
 
-            <Box sx={{ gap: "2vw" }}>
-                <Box sx={{ gap: "2vw" }}>
+            <Box sx={{ gap: isMobile ? "2vw" : "1vw" }}>
+                <Box sx={{ gap: isMobile ? "2vw" : "1vw" }}>
                     <TextField
                         name="phone"
                         label={"Telefone"}
@@ -52,7 +61,7 @@ export const StepTwo: React.FC<StepTwoProps> = ({ data, handleChange }) => {
                         onChange={handleChange}
                         required
                     />
-                    <Box sx={{ width: "100%", flexDirection: "row", gap: "2vw" }}>
+                    <Box sx={{ width: "100%", flexDirection: "row", gap: isMobile ? "2vw" : "1vw" }}>
                         <TextField
                             name="address.number"
                             label={"Número"}
@@ -65,7 +74,7 @@ export const StepTwo: React.FC<StepTwoProps> = ({ data, handleChange }) => {
                             name="address.cep"
                             label={"CEP"}
                             value={data.address.cep}
-                            sx={{ ...textField, width: "76%" }}
+                            sx={{ ...textField, width: isMobile ? "76%" : "100%" }}
                             InputProps={{
                                 inputComponent: MaskedInputNando,
                                 inputProps: { mask: useCepMask, inputMode: "numeric" },
@@ -74,7 +83,7 @@ export const StepTwo: React.FC<StepTwoProps> = ({ data, handleChange }) => {
                             required
                         />
                     </Box>
-                    <Box sx={{ width: "100%", flexDirection: "row", gap: "2vw" }}>
+                    <Box sx={{ width: "100%", flexDirection: "row", gap: isMobile ? "2vw" : "1vw" }}>
                         <TextField
                             name="address.city"
                             label={"Cidade"}
@@ -90,13 +99,13 @@ export const StepTwo: React.FC<StepTwoProps> = ({ data, handleChange }) => {
                             name="address.uf"
                             sx={{
                                 ...textField,
-                                width: "48%",
+                                width: isMobile ? "48%" : "100%",
                             }}
                             value={data.address.uf}
                             InputProps={{
                                 sx: {
                                     ...textField,
-                                    height: "10.5vw",
+                                    height: isMobile ? "10.5vw" : "fit-content",
                                 },
                             }}
                             SelectProps={{

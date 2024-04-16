@@ -173,17 +173,19 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                 height: "100%",
                 backgroundColor: colors.button,
                 flexDirection: "column",
+                overflow: "hidden",
             }}
         >
             <Box
                 sx={{
                     width: "100%",
-                    height: "8%",
+                    height: "10%",
                     justifyContent: "center",
                     alignItems: "center",
                     gap: "1vw",
                     padding: "4vw",
                     flexDirection: "row",
+                    overflow: "hidden",
                 }}
             >
                 <Header
@@ -205,11 +207,12 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                     borderTopLeftRadius: "5vw",
                     borderTopRightRadius: "5vw",
                     gap: "1vw",
+                    overflow: "hidden",
                 }}
             >
                 <Box
                     sx={{
-                        p: "4vw",
+                        p: "2vw 4vw",
                         flexDirection: "row",
                         width: "100%",
                         justifyContent: "space-between",
@@ -218,7 +221,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                 >
                     <p
                         style={{
-                            fontSize: "5.5vw",
+                            fontSize: "1.2rem",
                             color: colors.text.white,
                             fontFamily: "MalgunGothic2",
                             fontWeight: "bold",
@@ -228,7 +231,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                     </p>
                 </Box>
                 {tillageSelect?.talhao?.length !== 0 ? (
-                    <Box sx={{ flexDirection: "row", gap: "2vw", width: "100%", overflow: "auto", p: "0vw 4vw 8vw" }}>
+                    <Box sx={{ flexDirection: "row", gap: "2vw", width: "100%", overflow: "auto", p: "0vw 3vw 3vw" }}>
                         {tillageSelect?.talhao?.map((item, index) => (
                             <Box sx={{ alignItems: "center" }} key={index}>
                                 <Avatar
@@ -244,7 +247,9 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                                     }}
                                     onClick={() => (selectedTalhao?.id !== item.id ? toggleSelection(item) : () => {})}
                                 />
-                                <p style={{ fontSize: "3.5vw", color: colors.text.white }}>{item.name}</p>
+                                <p style={{ fontSize: "0.9rem", textAlign: "center", color: colors.text.white }}>
+                                    {item.name}
+                                </p>
                             </Box>
                         ))}
                     </Box>

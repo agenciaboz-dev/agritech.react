@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react"
 import { useIo } from "../../hooks/useIo"
-import { useUser } from "../../hooks/useUser"
 import { colors } from "../../style/colors"
 import { useNavigate } from "react-router-dom"
-import { Box, Button, CircularProgress, FormControl, FormControlLabel, Radio, RadioGroup } from "@mui/material"
+import { Box, Button, CircularProgress } from "@mui/material"
 import { StepOne } from "./../Signup/StepOne"
 import { Form, Formik } from "formik"
 import { StepTwo } from "./../Signup/StepTwo"
@@ -14,9 +13,7 @@ import { useGender } from "../../hooks/useGender"
 import { useSnackbar } from "burgos-snackbar"
 import { buttonStyle } from "../../style/button"
 import { useRelationship } from "../../hooks/useRelationship"
-import { useDateValidator } from "../../hooks/useDateValidator"
 import { SelectAccount } from "./SelectAccount"
-import { unmaskNumber } from "../../hooks/unmaskNumber"
 import dayjs, { Dayjs } from "dayjs"
 
 interface SignupProps {}
@@ -24,10 +21,8 @@ interface SignupProps {}
 export const Signup: React.FC<SignupProps> = ({}) => {
     const io = useIo()
     const navigate = useNavigate()
-    const { setUser } = useUser()
     const { unmask } = useDataHandler()
     const { snackbar } = useSnackbar()
-    const { isValidDateString } = useDateValidator()
     const estados = useEstadosBrasil()
     const gender = useGender()
     const typeRelationship = useRelationship()
@@ -201,6 +196,7 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                         height: "100%",
                         textAlign: "start",
                         width: "100%",
+                        overflow: "hidden",
                     }}
                 >
                     Registre-se
@@ -209,30 +205,30 @@ export const Signup: React.FC<SignupProps> = ({}) => {
             <Box
                 sx={{
                     width: "100%",
-                    height: "87%",
+                    height: "90%",
                     padding: "4vw",
                     backgroundColor: "#fff",
                     borderTopLeftRadius: "5vw",
                     borderTopRightRadius: "5vw",
-                    flex: 1,
                     gap: 10,
                     flexDirection: "column",
-                    paddingBottom: "8vw",
+                    paddingBottom: "10vw",
+                    overflow: "auto",
                 }}
             >
-                <Formik initialValues={initialValues} onSubmit={(values) => handleSignup(values)} enableReinitialize>
-                    {({ values, handleChange }) => (
-                        <Form>
-                            <Box
-                                sx={{
-                                    width: "100%",
-                                    height: "100%",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    gap: "12vw",
-                                    flexDirection: "column",
-                                }}
-                            >
+                <Box
+                    sx={{
+                        width: "100%",
+                        height: "100%",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: "12vw",
+                        flexDirection: "column",
+                    }}
+                >
+                    <Formik initialValues={initialValues} onSubmit={(values) => handleSignup(values)} enableReinitialize>
+                        {({ values, handleChange }) => (
+                            <Form>
                                 {currentStep === 0 && (
                                     <>
                                         <SelectAccount
@@ -281,7 +277,7 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                                 )}
 
                                 {currentStep === 1 && (
-                                    <>
+                                    <Box>
                                         <StepOne
                                             data={values}
                                             handleChange={handleChange}
@@ -328,65 +324,63 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                                                 Voltar
                                             </Button>
                                         </Box>
-                                    </>
+                                    </Box>
                                 )}
                                 {currentStep === 2 && (
-                                    <>
+                                    <Box sx={{ gap: "4vw" }}>
                                         <StepTwo
                                             data={values}
                                             handleChange={handleChange}
                                             typeUser={typeUser}
                                             setCurrentStep={setCurrentStep}
                                         />
-                                        <Box sx={{ width: "100%", gap: "2vw" }}>
-                                            {typeUser === "employee" && (
-                                                <>
-                                                    <Button
-                                                        variant="contained"
-                                                        sx={{
-                                                            fontSize: "4vw",
-                                                            color: colors.text.white,
-                                                            width: "100%",
-                                                            backgroundColor: colors.button,
-                                                            borderRadius: "5vw",
-                                                            textTransform: "none",
-                                                        }}
-                                                        onClick={() => {
-                                                            setCurrentStep(3)
-                                                        }}
-                                                    >
-                                                        Próximo
-                                                    </Button>
+                                        {typeUser === "employee" && (
+                                            <Box sx={{ width: "100%", gap: "2vw" }}>
+                                                <Button
+                                                    variant="contained"
+                                                    sx={{
+                                                        fontSize: "4vw",
+                                                        color: colors.text.white,
+                                                        width: "100%",
+                                                        backgroundColor: colors.button,
+                                                        borderRadius: "5vw",
+                                                        textTransform: "none",
+                                                    }}
+                                                    onClick={() => {
+                                                        setCurrentStep(3)
+                                                    }}
+                                                >
+                                                    Próximo
+                                                </Button>
 
-                                                    <Button
-                                                        variant="outlined"
-                                                        sx={{
-                                                            padding: "3vw",
-                                                            color: colors.text.black,
-                                                            fontWeight: "600",
-                                                            fontSize: "4vw",
-                                                            textTransform: "none",
-                                                            borderRadius: "10vw",
-                                                            height: "10vw",
-                                                            width: "100%",
-                                                        }}
-                                                        onClick={() => {
-                                                            setCurrentStep(1)
-                                                        }}
-                                                    >
-                                                        Voltar
-                                                    </Button>
-                                                </>
-                                            )}
-                                        </Box>
-                                    </>
+                                                <Button
+                                                    variant="outlined"
+                                                    sx={{
+                                                        padding: "3vw",
+                                                        color: colors.text.black,
+                                                        fontWeight: "600",
+                                                        fontSize: "4vw",
+                                                        textTransform: "none",
+                                                        borderRadius: "10vw",
+                                                        height: "10vw",
+                                                        width: "100%",
+                                                    }}
+                                                    onClick={() => {
+                                                        setCurrentStep(1)
+                                                    }}
+                                                >
+                                                    Voltar
+                                                </Button>
+                                            </Box>
+                                        )}
+                                    </Box>
                                 )}
                                 {currentStep === 3 && typeUser === "employee" && (
                                     <StepThree data={values} handleChange={handleChange} setCurrentStep={setCurrentStep} />
                                 )}
 
                                 {typeUser == "producer" && currentStep == 2 && (
-                                    <Box sx={{ width: "100%", position: "relative", bottom: "10vw", gap: "2vw" }}>
+                                    <Box sx={{ width: "100%", gap: "2vw" }}>
                                         <Button
                                             type="submit"
                                             variant="contained"
@@ -459,10 +453,10 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                                         </Button>
                                     </Box>
                                 )}
-                            </Box>
-                        </Form>
-                    )}
-                </Formik>
+                            </Form>
+                        )}
+                    </Formik>
+                </Box>
             </Box>
         </Box>
     )

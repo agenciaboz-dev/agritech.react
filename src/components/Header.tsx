@@ -30,7 +30,7 @@ export const Header: React.FC<HeaderProps> = ({ back, location, style }) => {
     const { listNotifications, recents } = useNotification()
 
     const iconStyle: SxProps = {
-        width: isMobile ? "7vw" : "3vw",
+        width: isMobile ? "7vw" : "2vw",
         height: "auto",
         color: "#fff",
     }

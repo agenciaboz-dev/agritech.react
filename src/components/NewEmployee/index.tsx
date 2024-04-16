@@ -1,4 +1,4 @@
-import { Box, Button, CircularProgress, MenuItem, Switch, TextField, styled } from "@mui/material"
+import { Box, Button, CircularProgress, MenuItem, Switch, TextField, styled, useMediaQuery } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { colors } from "../../style/colors"
 import { Header } from "../Header"
@@ -6,7 +6,7 @@ import { useFormik } from "formik"
 import { useNavigate } from "react-router-dom"
 import { Stepper } from "@mantine/core"
 import { useHeader } from "../../hooks/useHeader"
-import { textField } from "../../style/input"
+import { useResponsiveStyles } from "../../hooks/useResponsiveStyles"
 import { useDataHandler } from "../../hooks/useDataHandler"
 import { useSnackbar } from "burgos-snackbar"
 import { useRelationship } from "../../hooks/useRelationship"
@@ -22,10 +22,13 @@ import { useUsers } from "../../hooks/useUsers"
 import { Avatar } from "@files-ui/react"
 import dayjs, { Dayjs } from "dayjs"
 import { useGender } from "../../hooks/useGender"
+import { textField } from "../../style/input"
 
 interface NewEmployeeProps {}
 
 export const NewEmployee: React.FC<NewEmployeeProps> = ({}) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
+
     const navigate = useNavigate()
     const header = useHeader()
     const io = useIo()
@@ -167,16 +170,17 @@ export const NewEmployee: React.FC<NewEmployeeProps> = ({}) => {
                 height: "100%",
                 backgroundColor: colors.button,
                 flexDirection: "column",
+                overflow: "hidden",
             }}
         >
             <Box
                 sx={{
                     width: "100%",
-                    height: "8%",
+                    height: "10%",
                     justifyContent: "center",
                     alignItems: "center",
                     gap: "1vw",
-                    padding: "4vw",
+                    padding: isMobile ? "4vw" : "3vw",
                     flexDirection: "row",
                 }}
             >
@@ -187,35 +191,51 @@ export const NewEmployee: React.FC<NewEmployeeProps> = ({}) => {
                     justifyContent: "center",
                     height: "92%",
                     backgroundColor: colors.secondary,
-                    borderTopLeftRadius: "5vw",
-                    borderTopRightRadius: "5vw",
-                    paddingTop: 10,
+                    borderTopLeftRadius: isMobile ? "5vw" : "2vw",
+                    borderTopRightRadius: isMobile ? "5vw" : "2vw",
+                    paddingTop: isMobile ? 10 : "2vw",
                 }}
             >
                 <Box
                     sx={{
-                        padding: "4vw",
+                        padding: isMobile ? "4vw" : "1vw",
                         width: "100%",
                         height: "100%",
                         flex: 1,
                         backgroundColor: "#fff",
-                        borderTopLeftRadius: "7vw",
-                        borderTopRightRadius: "7vw",
+                        borderTopLeftRadius: isMobile ? "7vw" : "2vw",
+                        borderTopRightRadius: isMobile ? "7vw" : "2vw",
                         overflow: "hidden",
                     }}
                 >
-                    <Box sx={{ width: "100%", height: "100%", gap: "5vw", flexDirection: "column", p: "1vw" }}>
+                    <Box
+                        sx={{
+                            width: "100%",
+                            height: "94%",
+                            gap: isMobile ? "5vw" : "1vw",
+                            flexDirection: "column",
+                            padding: "1vw",
+                            overflow: "auto",
+                        }}
+                    >
                         <form onChange={formik.handleChange} onSubmit={formik.handleSubmit}>
-                            <Box sx={{ flexDirection: "row", gap: "3vw", alignItems: "center", width: "100%" }}>
+                            <Box
+                                sx={{
+                                    flexDirection: "row",
+                                    gap: isMobile ? "3vw" : "2vw",
+                                    alignItems: "center",
+                                    width: "100%",
+                                }}
+                            >
                                 <Avatar
                                     src={image}
                                     onChange={(file) => setImage(file)}
                                     variant="circle"
                                     emptyLabel="enviar imagem"
                                     changeLabel="trocar imagem"
-                                    style={{ width: "40vw", height: "30vw" }}
+                                    style={{ width: isMobile ? "30vw" : "10vw", height: isMobile ? "30vw" : "10vw" }}
                                 />
-                                <Box sx={{ flexDirection: "column", gap: "2vw", width: "80%" }}>
+                                <Box sx={{ flexDirection: "column", gap: "2vw", flex: 1 }}>
                                     <TextField
                                         label={"Nome"}
                                         name="name"
@@ -230,20 +250,18 @@ export const NewEmployee: React.FC<NewEmployeeProps> = ({}) => {
                                         onChange={formik.handleChange}
                                         label="Cargo"
                                         name="office"
-                                        sx={{
-                                            ...textField,
-                                            width: "100%",
-                                        }}
+                                        sx={textField}
                                         required
                                         variant="outlined"
                                         value={formik.values.office}
-                                        InputProps={{
-                                            sx: { ...textField, height: "10.5vw" },
-                                        }}
                                         SelectProps={{
                                             MenuProps: {
                                                 MenuListProps: {
-                                                    sx: { width: "100%", maxHeight: "80vw", overflowY: "auto" },
+                                                    sx: {
+                                                        width: "100%",
+                                                        maxHeight: isMobile ? "80vw" : "fit-content",
+                                                        overflowY: "auto",
+                                                    },
                                                 },
                                             },
                                         }}
@@ -269,7 +287,14 @@ export const NewEmployee: React.FC<NewEmployeeProps> = ({}) => {
                                 </Box>
                             </Box>
 
-                            <Box sx={{ height: "55%", flexDirection: "row", gap: "2vw", alignItems: "start" }}>
+                            <Box
+                                sx={{
+                                    height: isMobile ? "60%" : "45%",
+                                    flexDirection: "row",
+                                    gap: "2vw",
+                                    alignItems: "start",
+                                }}
+                            >
                                 <Stepper
                                     active={currentStep}
                                     size="xs"
@@ -289,7 +314,7 @@ export const NewEmployee: React.FC<NewEmployeeProps> = ({}) => {
                                     <Stepper.Step label="" />
                                     <Stepper.Step label="" />
                                 </Stepper>
-                                <Box sx={{ maxHeight: "80%", width: "100%" }}>
+                                <Box sx={{ width: "100%", height: "50%" }}>
                                     {currentStep === 0 && (
                                         <StepOne
                                             data={formik.values}
@@ -321,18 +346,24 @@ export const NewEmployee: React.FC<NewEmployeeProps> = ({}) => {
                                     )}
                                 </Box>
                             </Box>
-
-                            <Box sx={{ gap: "2vw" }}>
+                            <Box
+                                sx={{
+                                    gap: isMobile ? "2vw" : "1vw",
+                                    flexDirection: isMobile ? "row" : "row",
+                                    marginLeft: isMobile ? "" : "auto",
+                                }}
+                            >
                                 <Button
                                     variant="outlined"
                                     sx={{
-                                        padding: "3vw",
+                                        padding: isMobile ? "3vw" : "0 1vw",
                                         color: colors.text.black,
                                         fontWeight: "600",
-                                        fontSize: "4vw",
+                                        fontSize: isMobile ? "4vw" : "1.5rem",
                                         textTransform: "none",
                                         borderRadius: "10vw",
-                                        height: "10vw",
+                                        height: isMobile ? "10vw" : "fit-content",
+                                        width: isMobile ? "100%" : "fit-content",
                                     }}
                                     onClick={() => {
                                         navigate("/adm")
@@ -344,9 +375,11 @@ export const NewEmployee: React.FC<NewEmployeeProps> = ({}) => {
                                     variant="contained"
                                     type={"submit"}
                                     sx={{
-                                        fontSize: 17,
+                                        padding: isMobile ? "3vw" : "0 1vw",
+                                        fontSize: isMobile ? "4vw" : "1.5rem",
                                         color: colors.text.white,
-                                        width: "100%",
+                                        height: isMobile ? "10vw" : "fit-content",
+                                        width: isMobile ? "100%" : "fit-content",
                                         backgroundColor: colors.button,
                                         borderRadius: "5vw",
                                         textTransform: "none",

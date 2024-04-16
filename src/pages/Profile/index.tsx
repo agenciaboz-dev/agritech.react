@@ -193,7 +193,7 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
                     <Formik initialValues={initialValues} onSubmit={handleSubmit} enableReinitialize={true}>
                         {({ values, handleChange }) => (
                             <Form>
-                                <Box sx={{ gap: "4vw" }}>
+                                <Box sx={{ gap: "2vw" }}>
                                     <HeaderProfile
                                         values={values}
                                         handleChange={handleChange}

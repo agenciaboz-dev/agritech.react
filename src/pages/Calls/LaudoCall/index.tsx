@@ -66,7 +66,6 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
     const [listProducts, setListProducts] = useState<Product[]>([])
     const [listFlights, setListFlights] = useState<Flight[]>([])
     const [listMaterials, setListMaterials] = useState<Material[]>([])
-    const [areaTrabalhada, setAreaTrabalhada] = useState("")
     const [initPick, setInitPick] = useState(null)
     const [finishPick, setFinishPick] = useState(null)
     const { update } = useReports()
@@ -384,6 +383,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                 height: "100%",
                 backgroundColor: colors.button,
                 flexDirection: "column",
+                overflow: "hidden",
             }}
         >
             <Modal
@@ -437,7 +437,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
             <Box
                 sx={{
                     width: "100%",
-                    height: "8%",
+                    height: "10%",
                     justifyContent: "center",
                     alignItems: "center",
                     gap: "1vw",
@@ -468,20 +468,6 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                     flexDirection: "column",
                 }}
             >
-                {/* <TitleComponents
-                    title="Preencher dados"
-                    style={{ fontSize: "5vw" }}
-                    button={user?.employee ? true : false}
-                    textButton="Acessar Cliente"
-                    click={() =>
-                        navigate(
-                            user.isAdmin
-                                ? `/adm/profile/${call.producerSelect?.id}`
-                                : `/employee/profile/${call.producerSelect?.id}`
-                        )
-                    }
-                    variant
-                /> */}
                 <TitleComponents
                     title="Preencher dados"
                     style={{ fontSize: "5vw" }}
@@ -493,51 +479,32 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                 />
                 <Formik initialValues={initialValues} onSubmit={handleSubmit} enableReinitialize>
                     {({ values, handleChange }) => (
-                        <Box sx={{ gap: "4vw", height: "85%", overflowY: "auto", p: "2vw 0" }}>
+                        <Box sx={{ gap: "4vw", height: "80%", overflowY: "auto", p: "2vw 0", pb: "10vw" }}>
                             <Form>
-                                <Box sx={{ justifyContent: "space-between", height: "100%" }}>
+                                <Box sx={{ height: "100%", pb: "7vw" }}>
                                     <Box sx={{ gap: "3vw" }}>
                                         <Box gap={"2vw"}>
-                                            <Box sx={{}}>
-                                                <p>{new Date(Number(report?.date)).toLocaleDateString("pt-br")}</p>
-                                                {/* <Box
-                                                    sx={{
-                                                        flexDirection: "row",
-                                                        justifyContent: "space-between",
-                                                        width: "100%",
-                                                    }}
-                                                >
-                                                    {report?.techReport?.init && (
-                                                        <p>
-                                                            <span style={{ fontWeight: "bold" }}>Início: </span>
-                                                            {new Date(Number(report.techReport.init)).toLocaleTimeString(
-                                                                "pt-br"
-                                                            )}{" "}
-                                                        </p>
-                                                    )}
-                                                    {report?.techReport?.finish && (
-                                                        <p>
-                                                            <span style={{ fontWeight: "bold" }}>Final: </span>
-                                                            {new Date(Number(report.techReport.finish)).toLocaleTimeString(
-                                                                "pt-br"
-                                                            )}{" "}
-                                                        </p>
-                                                    )}
-                                                </Box> */}
+                                            <Box sx={{ flexDirection: "row", gap: "2vw" }}>
+                                                <TextField
+                                                    label="Propriedade"
+                                                    name="tillage"
+                                                    value={selectedCall ? selectedCall.talhao?.tillage?.name : " "}
+                                                    sx={{ ...textField, width: 0.5 }}
+                                                    disabled
+                                                />
+                                                <TextField
+                                                    label="Data do relatório"
+                                                    value={new Date(Number(report?.date)).toLocaleDateString("pt-br")}
+                                                    sx={{ ...textField, width: 0.5 }}
+                                                    disabled
+                                                />
                                             </Box>
                                             <TextField
                                                 label="Contratante"
                                                 name="producer"
                                                 value={call.producerSelect ? call.producerSelect?.name : ""}
                                                 sx={{ ...textField }}
-                                                disabled={!user?.producer ? false : true}
-                                            />
-                                            <TextField
-                                                label="Propriedade"
-                                                name="tillage"
-                                                value={selectedCall ? selectedCall.talhao?.tillage?.name : " "}
-                                                sx={{ ...textField }}
-                                                disabled={!user?.producer ? false : true}
+                                                disabled
                                             />
                                         </Box>
 
@@ -565,7 +532,14 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                                         </Stepper>
                                     </Box>
                                     {stage === 0 && (
-                                        <Box sx={{ height: "100%", justifyContent: "space-between", pt: "5vw" }}>
+                                        <Box
+                                            sx={{
+                                                height: "100%",
+                                                pt: "5vw",
+                                                gap: "5vw",
+                                                pb: "5vw",
+                                            }}
+                                        >
                                             <OperationComponent
                                                 user={user}
                                                 values={values}
@@ -586,7 +560,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                                         </Box>
                                     )}
                                     {stage === 1 && (
-                                        <Box sx={{ height: "100%", justifyContent: "space-between", pt: "5vw" }}>
+                                        <Box sx={{ height: "100%", pt: "5vw", pb: "4vw", gap: "5vw" }}>
                                             <TreatmentComponent
                                                 listProducts={listProducts}
                                                 user={user}
@@ -608,7 +582,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                                         </Box>
                                     )}
                                     {stage === 2 && (
-                                        <Box sx={{ height: "100%", justifyContent: "space-between", pt: "5vw" }}>
+                                        <Box sx={{ height: "100%", pb: "10vw", pt: "5vw", gap: "2vw" }}>
                                             <TechReportComponent
                                                 listFlights={listFlights}
                                                 user={user}

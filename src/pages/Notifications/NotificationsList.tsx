@@ -1,6 +1,6 @@
 import React, { useEffect } from "react"
 import { useHeader } from "../../hooks/useHeader"
-import { Box, Button } from "@mui/material"
+import { Box, Button, useMediaQuery } from "@mui/material"
 import { Header } from "../../components/Header"
 import { colors } from "../../style/colors"
 import { LogNotification } from "./LogNotification"
@@ -11,6 +11,7 @@ interface NotificationsListProps {
 }
 
 export const NotificationsList: React.FC<NotificationsListProps> = ({ user }) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
     const header = useHeader()
     const { listNotifications } = useNotification()
     const sortedList = listNotifications?.sort((a, b) => Number(b.datetime) - Number(a.datetime))
@@ -32,13 +33,13 @@ export const NotificationsList: React.FC<NotificationsListProps> = ({ user }) =>
             <Box
                 sx={{
                     width: "100%",
-                    height: "8%",
+                    height: "10%",
                     justifyContent: "center",
                     alignItems: "center",
                     gap: "1vw",
-                    padding: "4vw",
+                    padding: isMobile ? "4vw" : "1vw",
                     flexDirection: "row",
-                    paddingBottom: "13vw",
+                    paddingBottom: isMobile ? "13vw" : "5vw",
                 }}
             >
                 <Header back location={user.isAdmin ? "/adm" : user.producer !== null ? "/producer" : "/employee"} />
@@ -48,35 +49,42 @@ export const NotificationsList: React.FC<NotificationsListProps> = ({ user }) =>
                     justifyContent: "center",
                     flex: 1,
                     backgroundColor: colors.secondary,
-                    borderTopLeftRadius: "5vw",
-                    borderTopRightRadius: "5vw",
-                    paddingTop: 10,
+                    borderTopLeftRadius: isMobile ? "5vw" : "2vw",
+                    borderTopRightRadius: isMobile ? "5vw" : "2vw",
+                    paddingTop: isMobile ? 10 : 0,
                 }}
             >
                 <Box
                     style={{
                         flexDirection: "row",
                         alignItems: "center",
-                        paddingBottom: "5vw",
+                        paddingBottom: isMobile ? "5vw" : "1vw",
                         justifyContent: "space-between",
-                        padding: "3vw",
+                        padding: isMobile ? "3vw" : "1vw",
                         overflowY: "hidden",
                     }}
                 >
-                    <p style={{ color: colors.text.white, fontSize: "5vw", fontFamily: "MalgunGothic2" }}>Notificações</p>
+                    <p
+                        style={{
+                            color: colors.text.white,
+                            fontSize: isMobile ? "5vw" : "2rem",
+                            fontFamily: "MalgunGothic2",
+                        }}
+                    >
+                        Notificações
+                    </p>
                 </Box>
                 <Box
                     style={{
-                        padding: " 3vw",
+                        padding: isMobile ? "3vw" : "1vw",
                         width: "100%",
                         backgroundColor: "#fff",
-                        borderTopLeftRadius: "7vw",
-                        borderTopRightRadius: "7vw",
+                        borderTopLeftRadius: isMobile ? "7vw" : "2vw",
+                        borderTopRightRadius: isMobile ? "7vw" : "2vw",
                         height: "100%",
-                        gap: "3vw",
                     }}
                 >
-                    <Box sx={{ overflowY: "auto", height: "70%", gap: "2vw" }}>
+                    <Box sx={{ overflowY: "auto", height: "70%", gap: isMobile ? "2vw" : "1vw" }}>
                         {sortedList?.map((item) => (
                             <LogNotification drawer={false} notification={item} />
                         ))}

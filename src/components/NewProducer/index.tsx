@@ -289,7 +289,7 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
             <Box
                 sx={{
                     width: "100%",
-                    height: "8%",
+                    height: "10%",
                     justifyContent: "center",
                     alignItems: "center",
                     gap: "1vw",
@@ -342,7 +342,7 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
                                                 image={image}
                                                 setImage={setImage}
                                             />
-                                            <Box sx={{ flexDirection: "column", p: "4vw", gap: "2vw" }}>
+                                            <Box sx={{ flexDirection: "row", width: 1, p: "4vw", gap: "2vw" }}>
                                                 <Button
                                                     variant="outlined"
                                                     sx={{
@@ -353,6 +353,7 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
                                                         textTransform: "none",
                                                         borderRadius: "10vw",
                                                         height: "10vw",
+                                                        width: 0.5,
                                                     }}
                                                     onClick={() => {
                                                         navigate("../")
@@ -366,9 +367,10 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
                                                     sx={{
                                                         fontSize: 17,
                                                         color: colors.text.white,
-                                                        width: "100%",
+
                                                         backgroundColor: colors.button,
                                                         borderRadius: "5vw",
+                                                        width: 0.5,
                                                         textTransform: "none",
                                                     }}
                                                 >
@@ -444,7 +446,7 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
                                                 open={openModal}
                                                 opened={opened}
                                             />
-                                            <Box sx={{ flexDirection: "column", gap: "2vw", p: "0 4vw" }}>
+                                            <Box sx={{ flexDirection: "row", gap: "2vw", p: "0 4vw" }}>
                                                 <Button
                                                     variant="outlined"
                                                     sx={{
