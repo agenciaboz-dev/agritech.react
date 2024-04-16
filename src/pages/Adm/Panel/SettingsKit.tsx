@@ -1,4 +1,4 @@
-import { Box, Button, useMediaQuery } from "@mui/material"
+import { Box, Button, Skeleton, useMediaQuery } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { Header } from "../../../components/Header"
 import { colors } from "../../../style/colors"
@@ -10,6 +10,7 @@ import { useKits } from "../../../hooks/useKits"
 import { useUser } from "../../../hooks/useUser"
 import { SearchField } from "../../../components/SearchField"
 import { useIo } from "../../../hooks/useIo"
+import { useArray } from "burgos-array"
 
 interface SettingsKitProps {}
 
@@ -21,6 +22,8 @@ export const SettingsKit: React.FC<SettingsKitProps> = ({}) => {
     const { listKits, updateKit } = useKits()
     const { user } = useUser()
 
+    const skeletons = useArray().newArray(8)
+
     const kitsEmployee = listKits.filter((kit) => kit.employees?.some((employee) => employee.id === user?.employee?.id))
     const [kits, setKits] = useState<Kit[]>(listKits)
     const [searchText, setSearchText] = useState("") // Estado para controlar a entrada de pesquisa
@@ -30,7 +33,9 @@ export const SettingsKit: React.FC<SettingsKitProps> = ({}) => {
     }, [listKits])
 
     useEffect(() => {
-        const filteredList = listKits?.filter((kit) => kit.name !== null && kit.name.toLowerCase().includes(searchText.toLowerCase()))
+        const filteredList = listKits?.filter(
+            (kit) => kit.name !== null && kit.name.toLowerCase().includes(searchText.toLowerCase())
+        )
         setKits(filteredList || [])
     }, [listKits, searchText])
 
@@ -67,7 +72,7 @@ export const SettingsKit: React.FC<SettingsKitProps> = ({}) => {
             <Box
                 style={{
                     justifyContent: "center",
-                    flex: 1,
+
                     backgroundColor: colors.secondary,
                     borderTopLeftRadius: isMobile ? "5vw" : "2vw",
                     borderTopRightRadius: isMobile ? "5vw" : "2vw",
@@ -84,7 +89,13 @@ export const SettingsKit: React.FC<SettingsKitProps> = ({}) => {
                         overflowY: "hidden",
                     }}
                 >
-                    <p style={{ color: colors.text.white, fontSize: isMobile ? "5vw" : "1.5rem", fontFamily: "MalgunGothic2" }}>
+                    <p
+                        style={{
+                            color: colors.text.white,
+                            fontSize: isMobile ? "5vw" : "1.5rem",
+                            fontFamily: "MalgunGothic2",
+                        }}
+                    >
                         Configuração de Kits
                     </p>
                     {user?.isAdmin && (
@@ -114,23 +125,28 @@ export const SettingsKit: React.FC<SettingsKitProps> = ({}) => {
                         borderTopLeftRadius: isMobile ? "7vw" : "2vw",
                         borderTopRightRadius: isMobile ? "7vw" : "2vw",
                         gap: isMobile ? "3vw" : "1vw",
+                        // height: 1,
                     }}
                 >
-                    {listKits && (
-                        <SearchField
-                            searchText={searchText}
-                            setSearchText={setSearchText} // Passa setSearchText para poder atualizar o estado de pesquisa
-                            placeholder="kit"
-                        />
-                    )}
-                    <Box sx={{ overflowY: "auto", height: "33%" }}>
-                        {user?.isAdmin
-                            ? kits.length !== 0
-                                ? kits.map((kit, index) => <CardKit key={index} kit={kit} />)
-                                : "Nenhum kit encontrado."
-                            : kitsEmployee.length !== 0
-                            ? kitsEmployee.map((kit, index) => <CardKit key={index} kit={kit} />)
-                            : "Nenhum kit encontrado."}
+                    <Box sx={{ width: 1, height: 0.5, gap: "3vw" }}>
+                        {listKits && (
+                            <SearchField
+                                searchText={searchText}
+                                setSearchText={setSearchText} // Passa setSearchText para poder atualizar o estado de pesquisa
+                                placeholder="kit"
+                            />
+                        )}
+                        <Box sx={{ height: "80%" }}>
+                            {user?.isAdmin
+                                ? kits.length !== 0
+                                    ? kits.map((kit, index) => <CardKit key={index} kit={kit} />)
+                                    : kits === undefined
+                                    ? skeletons.map((item) => <Skeleton variant="rounded" animation="wave" />)
+                                    : "Nenhum kit encontrado"
+                                : kitsEmployee.length !== 0
+                                ? kitsEmployee.map((kit, index) => <CardKit key={index} kit={kit} />)
+                                : "Nenhum kit encontrado."}
+                        </Box>
                     </Box>
                 </Box>
             </Box>

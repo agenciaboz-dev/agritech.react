@@ -215,6 +215,8 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
         if (selectedTillage?.talhao) setTalhoes(selectedTillage.talhao)
     }, [selectedProducer, tillageId])
 
+    console.log(selectedProducer)
+
     useEffect(() => {
         console.log(
             user.producer?.tillage?.length !== 0
