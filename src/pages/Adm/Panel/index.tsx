@@ -75,7 +75,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                     flexDirection: "row",
                     alignItems: "center",
                     justifyContent: "space-between",
-                    padding: isMobile ? "3vw 4vw 2vw" : "0 1vw 1vw",
+                    padding: isMobile ? "3vw 4vw 4vw" : "0 1vw 1vw",
                 }}
             >
                 <Box
@@ -128,7 +128,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
             </Box>
             <Box
                 sx={{
-                    p: "1vw 0",
+                    p: "2vw 0",
                     flex: 1,
                     backgroundColor: colors.primary,
                     borderTopLeftRadius: isMobile ? "5vw" : "2vw",

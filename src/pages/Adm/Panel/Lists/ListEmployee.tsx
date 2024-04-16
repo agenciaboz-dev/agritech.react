@@ -47,7 +47,7 @@ export const ListEmployee: React.FC<ListEmployeeProps> = ({}) => {
             <Box
                 sx={{
                     width: "100%",
-                    height: "10%",
+                    height: "6vw",
                     justifyContent: "center",
                     alignItems: "center",
                     gap: "1vw",
@@ -65,6 +65,7 @@ export const ListEmployee: React.FC<ListEmployeeProps> = ({}) => {
                     borderTopLeftRadius: isMobile ? "5vw" : "2vw",
                     borderTopRightRadius: isMobile ? "5vw" : "2vw",
                     paddingTop: isMobile ? 10 : "2vw",
+                    marginTop: "5vh",
                 }}
             >
                 <Box
@@ -72,6 +73,8 @@ export const ListEmployee: React.FC<ListEmployeeProps> = ({}) => {
                         padding: isMobile ? "4vw" : "1vw",
                         width: "100%",
                         flex: 1,
+                        maxHeight: "100%",
+                        height: "80vw",
                         backgroundColor: "#fff",
                         borderTopLeftRadius: isMobile ? "7vw" : "2vw",
                         borderTopRightRadius: isMobile ? "7vw" : "2vw",
@@ -86,7 +89,7 @@ export const ListEmployee: React.FC<ListEmployeeProps> = ({}) => {
                             placeholder="colaborador"
                         />
                     )}
-                    <Box sx={{ gap: isMobile ? "2vw" : "1vw", height: "90%", overflow: "auto" }}>
+                    <Box sx={{ gap: isMobile ? "2vw" : "1vw", height: "100%", overflow: "auto", pb: "12vh" }}>
                         {listEmployee?.length !== 0
                             ? listEmployee?.map((user) => (
                                   <CardUser
