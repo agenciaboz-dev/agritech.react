@@ -76,16 +76,17 @@ export const SettingsKit: React.FC<SettingsKitProps> = ({}) => {
                     backgroundColor: colors.secondary,
                     borderTopLeftRadius: isMobile ? "5vw" : "2vw",
                     borderTopRightRadius: isMobile ? "5vw" : "2vw",
-                    paddingTop: 10,
+                    height: "100%",
+                    paddingTop: "4vh",
                 }}
             >
                 <Box
-                    style={{
+                    sx={{
                         flexDirection: "row",
                         alignItems: "center",
-                        paddingBottom: isMobile ? "5vw" : "1vw",
+                        paddingBottom: isMobile ? "7vw" : "1vw",
                         justifyContent: "space-between",
-                        padding: isMobile ? "3vw" : "0 1vw 1vw",
+                        padding: isMobile ? "7vw 4vw" : "0 1vw 1vw",
                         overflowY: "hidden",
                     }}
                 >
@@ -125,10 +126,12 @@ export const SettingsKit: React.FC<SettingsKitProps> = ({}) => {
                         borderTopLeftRadius: isMobile ? "7vw" : "2vw",
                         borderTopRightRadius: isMobile ? "7vw" : "2vw",
                         gap: isMobile ? "3vw" : "1vw",
+                        height: "100%",
+
                         // height: 1,
                     }}
                 >
-                    <Box sx={{ width: 1, height: 0.5, gap: "3vw" }}>
+                    <Box sx={{ width: 1, gap: "3vw", height: "100%" }}>
                         {listKits && (
                             <SearchField
                                 searchText={searchText}
@@ -136,12 +139,14 @@ export const SettingsKit: React.FC<SettingsKitProps> = ({}) => {
                                 placeholder="kit"
                             />
                         )}
-                        <Box sx={{ height: "80%" }}>
+                        <Box sx={{ height: "80%", overflowY: "auto", pb: "10vh" }}>
                             {user?.isAdmin
                                 ? kits.length !== 0
                                     ? kits.map((kit, index) => <CardKit key={index} kit={kit} />)
                                     : kits === undefined
-                                    ? skeletons.map((item) => <Skeleton variant="rounded" animation="wave" />)
+                                    ? skeletons.map((_, index) => (
+                                          <Skeleton variant="rounded" key={index} animation="wave" />
+                                      ))
                                     : "Nenhum kit encontrado"
                                 : kitsEmployee.length !== 0
                                 ? kitsEmployee.map((kit, index) => <CardKit key={index} kit={kit} />)
