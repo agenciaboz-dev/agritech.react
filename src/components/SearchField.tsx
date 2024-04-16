@@ -21,9 +21,14 @@ export const SearchField: React.FC<SearchFieldProps> = ({ searchText, setSearchT
             sx={{
                 ...textField,
                 width: "100%",
-                borderRadius: "15vw",
                 "& .MuiOutlinedInput-input": {
                     height: "1vw",
+                },
+                "& .MuiOutlinedInput-root": {
+                    fieldset: {
+                        borderColor: "#232323",
+                        borderRadius: "8vw",
+                    },
                 },
             }}
             placeholder={`Buscar ${placeholder ? placeholder : ""}`}
