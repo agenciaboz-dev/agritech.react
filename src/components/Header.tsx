@@ -43,12 +43,13 @@ export const Header: React.FC<HeaderProps> = ({ back, location, style }) => {
                 justifyContent: "space-between",
                 width: "100%",
                 alignItems: "center",
-                padding: isMobile ? "4vw" : "1vw",
+                padding: isMobile ? "5.5vw 4vw" : "1vw",
                 fontSize: isMobile ? "5vw" : "1.5rem",
                 fontWeight: "bold",
                 background: "transparent",
                 borderRadius: 0,
                 position: "fixed",
+
                 top: 0,
                 ...style,
             }}

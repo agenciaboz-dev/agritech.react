@@ -71,11 +71,11 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
             }}
         >
             <Box
-                style={{
+                sx={{
                     flexDirection: "row",
                     alignItems: "center",
                     justifyContent: "space-between",
-                    padding: isMobile ? "0 4vw 4vw" : "0 1vw 1vw",
+                    padding: isMobile ? "3vw 4vw 2vw" : "0 1vw 1vw",
                 }}
             >
                 <Box
@@ -127,13 +127,13 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                 </Box>
             </Box>
             <Box
-                style={{
-                    justifyContent: "center",
+                sx={{
+                    p: "1vw 0",
                     flex: 1,
                     backgroundColor: colors.primary,
                     borderTopLeftRadius: isMobile ? "5vw" : "2vw",
                     borderTopRightRadius: isMobile ? "5vw" : "2vw",
-                    paddingTop: 10,
+
                     height: "100%",
                 }}
             >
@@ -141,9 +141,9 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                     style={{
                         flexDirection: "row",
                         alignItems: "center",
-                        paddingBottom: isMobile ? "5vw" : "1.5vw",
+                        paddingBottom: isMobile ? "2vw" : "1.5vw",
                         justifyContent: "space-between",
-                        padding: isMobile ? "1vw 3vw 3vw" : "1vw 1vw 1.5vw",
+                        padding: isMobile ? "1vw 4vw 3vw" : "1vw 1vw 1.5vw",
                     }}
                 >
                     <p
@@ -160,53 +160,144 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                     </IconButton>
                 </Box>
                 <Box
-                    style={{
+                    sx={{
                         padding: isMobile ? "4vw" : "1vw",
                         width: "100%",
                         backgroundColor: "#fff",
                         borderTopLeftRadius: isMobile ? "7vw" : "2vw",
                         borderTopRightRadius: isMobile ? "7vw" : "2vw",
-                        flex: 1,
-                        height: "100%",
+                        height: "83vh",
+                        maxHeight: "100vh", // Defina uma altura máxima
+                        overflowY: "auto", // Habilita a rolagem vertical quando o conteúdo excede a altura máxima
                         position: "relative",
                         paddingBottom: isMobile ? "10vh" : "20vh",
+                        gap: isMobile ? "4vw" : "2vw",
                     }}
                 >
-                    <Box sx={{ gap: isMobile ? "4vw" : "2vw" }}>
-                        <Box sx={{ gap: isMobile ? "2vw" : 0 }}>
-                            <p
-                                style={{
-                                    color: colors.text.black,
-                                    fontSize: isMobile ? "4.5vw" : "1.5rem",
-                                    fontFamily: "MalgunGothic2",
-                                    textAlign: "left",
+                    {/* <Box sx={{ gap: isMobile ? "4vw" : "2vw", height: "100vw", overflow: "auto" }}> */}
+                    <Box sx={{ gap: isMobile ? "2vw" : 0 }}>
+                        <p
+                            style={{
+                                color: colors.text.black,
+                                fontSize: isMobile ? "4.5vw" : "1.5rem",
+                                fontFamily: "MalgunGothic2",
+                                textAlign: "left",
+                            }}
+                        >
+                            Colaboradores Fixados
+                        </p>
+                        <Box style={{ width: "100%", gap: "1vw" }}>
+                            {listEmployee?.length !== 0
+                                ? listEmployee
+                                      ?.slice(0, 3)
+                                      .map((user) => (
+                                          <CardUser user={user} key={user.id} location={`/adm/calendar/${user.id}`} />
+                                      ))
+                                : skeletons.map((_, index) => (
+                                      <Skeleton
+                                          animation="wave"
+                                          key={index}
+                                          variant="rounded"
+                                          sx={{ width: 1, height: "13.5vw" }}
+                                      />
+                                  ))}
+                        </Box>
+                        <Box
+                            style={{
+                                width: "100%",
+                                flexDirection: "row",
+                                alignItems: "center",
+                                justifyContent: "space-between",
+                                gap: 20,
+                                padding: isMobile ? "2vw 0 0" : "2vw 1vw 0",
+                            }}
+                        >
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                sx={{
+                                    width: isMobile ? "50%" : "fit-content",
+                                    padding: isMobile ? "2.5vw" : "0.5vw 1vw",
+                                    color: colors.text.white,
+                                    fontWeight: "500",
+                                    fontSize: isMobile ? "3vw" : "1.2rem",
+                                    textTransform: "none",
+                                    borderRadius: "10vw",
+                                    height: isMobile ? "10vw" : "fit-content",
+                                }}
+                                onClick={() => navigate("/adm/new_employee")}
+                            >
+                                Cadastrar novo colaborador
+                            </Button>
+                            <Box
+                                sx={{
+                                    flexDirection: "row",
+                                    width: isMobile ? "25%" : "fit-content",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    gap: "1vw",
                                 }}
                             >
-                                Colaboradores Fixados
-                            </p>
-                            <Box style={{ width: "100%", gap: "1vw" }}>
-                                {listEmployee?.length !== 0
-                                    ? listEmployee
-                                          ?.slice(0, 3)
-                                          .map((user) => (
-                                              <CardUser user={user} key={user.id} location={`/adm/calendar/${user.id}`} />
-                                          ))
-                                    : skeletons.map((_, index) => (
-                                          <Skeleton
-                                              animation="wave"
-                                              key={index}
-                                              variant="rounded"
-                                              sx={{ width: 1, height: "13.5vw" }}
-                                          />
-                                      ))}
+                                <p
+                                    style={{
+                                        color: colors.primary,
+                                        fontSize: isMobile ? "3.5vw" : "1.2rem",
+                                        fontFamily: "MalgunGothic2",
+                                        fontWeight: "500",
+                                        cursor: "pointer",
+                                    }}
+                                    onClick={() => {
+                                        navigate("/adm/employees")
+                                    }}
+                                >
+                                    Ver todos
+                                </p>
+                                <ArrowForwardIosIcon color="primary" sx={{ width: "3vw", padding: 0 }} />
                             </Box>
+                        </Box>
+                    </Box>
+                    <Box sx={{ gap: isMobile ? "2vw" : 0 }}>
+                        <p
+                            style={{
+                                color: colors.text.black,
+                                fontSize: isMobile ? "4.5vw" : "1.5rem",
+                                fontFamily: "MalgunGothic2",
+                                textAlign: "left",
+                            }}
+                        >
+                            Clientes Fixados
+                        </p>
+                        <Box style={{ width: "100%", gap: "1vw" }}>
+                            {listProducer?.length !== 0
+                                ? listProducer
+                                      ?.slice(0, 3)
+                                      .map((user) => (
+                                          <CardUser user={user} key={user.id} location={`/adm/profile/${user.id}`} />
+                                      ))
+                                : skeletons.map((_, index) => (
+                                      <Skeleton
+                                          animation="wave"
+                                          key={index}
+                                          variant="rounded"
+                                          sx={{ width: 1, height: "13.5vw" }}
+                                      />
+                                  ))}
+                        </Box>
+                        <Box
+                            style={{
+                                width: "100%",
+                                flexDirection: "row",
+                                alignItems: "center",
+                                justifyContent: "space-between",
+                                gap: 20,
+                            }}
+                        >
                             <Box
                                 style={{
                                     width: "100%",
                                     flexDirection: "row",
                                     alignItems: "center",
                                     justifyContent: "space-between",
-                                    gap: 20,
                                     padding: isMobile ? "2vw 0 0" : "2vw 1vw 0",
                                 }}
                             >
@@ -223,9 +314,9 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                                         borderRadius: "10vw",
                                         height: isMobile ? "10vw" : "fit-content",
                                     }}
-                                    onClick={() => navigate("/adm/new_employee")}
+                                    onClick={() => navigate("/adm/new_producer")}
                                 >
-                                    Cadastrar novo colaborador
+                                    Cadastrar novo cliente
                                 </Button>
                                 <Box
                                     sx={{
@@ -245,7 +336,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                                             cursor: "pointer",
                                         }}
                                         onClick={() => {
-                                            navigate("/adm/employees")
+                                            navigate("/adm/producers")
                                         }}
                                     >
                                         Ver todos
@@ -254,97 +345,8 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                                 </Box>
                             </Box>
                         </Box>
-                        <Box sx={{ gap: isMobile ? "2vw" : 0 }}>
-                            <p
-                                style={{
-                                    color: colors.text.black,
-                                    fontSize: isMobile ? "4.5vw" : "1.5rem",
-                                    fontFamily: "MalgunGothic2",
-                                    textAlign: "left",
-                                }}
-                            >
-                                Clientes Fixados
-                            </p>
-                            <Box style={{ width: "100%", gap: "1vw" }}>
-                                {listProducer?.length !== 0
-                                    ? listProducer
-                                          ?.slice(0, 3)
-                                          .map((user) => (
-                                              <CardUser user={user} key={user.id} location={`/adm/profile/${user.id}`} />
-                                          ))
-                                    : skeletons.map((_, index) => (
-                                          <Skeleton
-                                              animation="wave"
-                                              key={index}
-                                              variant="rounded"
-                                              sx={{ width: 1, height: "13.5vw" }}
-                                          />
-                                      ))}
-                            </Box>
-                            <Box
-                                style={{
-                                    width: "100%",
-                                    flexDirection: "row",
-                                    alignItems: "center",
-                                    justifyContent: "space-between",
-                                    gap: 20,
-                                }}
-                            >
-                                <Box
-                                    style={{
-                                        width: "100%",
-                                        flexDirection: "row",
-                                        alignItems: "center",
-                                        justifyContent: "space-between",
-                                        padding: isMobile ? "2vw 0 0" : "2vw 1vw 0",
-                                    }}
-                                >
-                                    <Button
-                                        variant="contained"
-                                        color="primary"
-                                        sx={{
-                                            width: isMobile ? "50%" : "fit-content",
-                                            padding: isMobile ? "2.5vw" : "0.5vw 1vw",
-                                            color: colors.text.white,
-                                            fontWeight: "500",
-                                            fontSize: isMobile ? "3vw" : "1.2rem",
-                                            textTransform: "none",
-                                            borderRadius: "10vw",
-                                            height: isMobile ? "10vw" : "fit-content",
-                                        }}
-                                        onClick={() => navigate("/adm/new_producer")}
-                                    >
-                                        Cadastrar novo cliente
-                                    </Button>
-                                    <Box
-                                        sx={{
-                                            flexDirection: "row",
-                                            width: isMobile ? "25%" : "fit-content",
-                                            alignItems: "center",
-                                            justifyContent: "center",
-                                            gap: "1vw",
-                                        }}
-                                    >
-                                        <p
-                                            style={{
-                                                color: colors.primary,
-                                                fontSize: isMobile ? "3.5vw" : "1.2rem",
-                                                fontFamily: "MalgunGothic2",
-                                                fontWeight: "500",
-                                                cursor: "pointer",
-                                            }}
-                                            onClick={() => {
-                                                navigate("/adm/producers")
-                                            }}
-                                        >
-                                            Ver todos
-                                        </p>
-                                        <ArrowForwardIosIcon color="primary" sx={{ width: "3vw", padding: 0 }} />
-                                    </Box>
-                                </Box>
-                            </Box>
-                        </Box>
                     </Box>
+                    {/* </Box> */}
                 </Box>
             </Box>
             <IconButton
