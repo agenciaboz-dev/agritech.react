@@ -1,4 +1,4 @@
-import { Box, Button, CircularProgress } from "@mui/material"
+import { Box, Button, CircularProgress, useMediaQuery } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { colors } from "../../../style/colors"
 import { Header } from "../../../components/Header"
@@ -19,6 +19,7 @@ import { unmaskNumber } from "../../../hooks/unmaskNumber"
 interface AddKitProps {}
 
 export const AddKit: React.FC<AddKitProps> = ({}) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
     const navigate = useNavigate()
     const io = useIo()
     const { snackbar } = useSnackbar()
@@ -147,6 +148,7 @@ export const AddKit: React.FC<AddKitProps> = ({}) => {
                             height: "100%",
                             backgroundColor: colors.button,
                             flexDirection: "column",
+                            overflow: "hidden",
                         }}
                     >
                         <Box
@@ -156,7 +158,7 @@ export const AddKit: React.FC<AddKitProps> = ({}) => {
                                 justifyContent: "center",
                                 alignItems: "center",
                                 gap: "1vw",
-                                padding: "4vw",
+                                padding: isMobile ? "4vw" : "3vw",
                                 flexDirection: "row",
                             }}
                         >
@@ -167,9 +169,9 @@ export const AddKit: React.FC<AddKitProps> = ({}) => {
                                 justifyContent: "center",
                                 flex: 1,
                                 backgroundColor: colors.secondary,
-                                borderTopLeftRadius: "5vw",
-                                borderTopRightRadius: "5vw",
-                                paddingTop: 10,
+                                borderTopLeftRadius: isMobile ? "5vw" : "2vw",
+                                borderTopRightRadius: isMobile ? "5vw" : "2vw",
+                                paddingTop: isMobile ? 10 : 0,
                             }}
                         >
                             <Box
@@ -178,10 +180,10 @@ export const AddKit: React.FC<AddKitProps> = ({}) => {
                                     alignItems: "center",
                                     paddingBottom: "5vw",
                                     justifyContent: "space-between",
-                                    padding: "2vw 3vw",
+                                    padding: isMobile ? "2vw 3vw" : "1vw",
                                 }}
                             >
-                                <p style={{ color: colors.text.white, fontSize: "4vw", fontFamily: "MalgunGothic2" }}>
+                                <p style={{ color: colors.text.white, fontSize: isMobile ? "4vw" : "1.2rem", fontFamily: "MalgunGothic2" }}>
                                     Adicionar novo kit
                                 </p>
                                 <Box sx={{ width: "60%", gap: "1.5vw", flexDirection: "row" }}>
@@ -190,12 +192,12 @@ export const AddKit: React.FC<AddKitProps> = ({}) => {
                                         variant="contained"
                                         sx={{
                                             alignItems: "center",
-                                            gap: "0vw",
+                                            gap: "0.5vw",
                                             backgroundColor: colors.delete,
                                             color: colors.text.white,
                                             textTransform: "none",
                                             borderRadius: "5vw",
-                                            fontSize: "3vw",
+                                            fontSize: isMobile ? "3vw" : "1rem",
                                             width: "55%",
                                         }}
                                         onClick={() => navigate("../")}
@@ -209,16 +211,16 @@ export const AddKit: React.FC<AddKitProps> = ({}) => {
                                         variant="contained"
                                         sx={{
                                             alignItems: "center",
-                                            gap: "1vw",
+                                            gap: isMobile ? "1vw" : "0.5vw",
                                             backgroundColor: "#fff",
                                             textTransform: "none",
                                             borderRadius: "5vw",
-                                            fontSize: "3vw",
+                                            fontSize: isMobile ? "3vw" : "1rem",
                                             width: "45%",
                                             color: colors.text.black,
                                         }}
                                     >
-                                        <img src={SaveIcon} style={{ width: "5vw" }} />
+                                        <img src={SaveIcon} style={{ width: isMobile ? "5vw" : "1.2rem" }} />
                                         Salvar kit
                                     </Button>
                                 </Box>
@@ -226,17 +228,17 @@ export const AddKit: React.FC<AddKitProps> = ({}) => {
 
                             <Box
                                 style={{
-                                    padding: "6vw 4vw 0",
+                                    padding: isMobile ? "6vw 4vw 0" : "1vw",
                                     width: "100%",
                                     backgroundColor: "#fff",
-                                    borderTopLeftRadius: "7vw",
-                                    borderTopRightRadius: "7vw",
+                                    borderTopLeftRadius: isMobile ? "7vw" : "2vw",
+                                    borderTopRightRadius: isMobile ? "7vw" : "2vw",
                                     height: "100%",
-                                    gap: "1vw",
+                                    gap: isMobile ? "1vw" : "0.5vw",
                                     overflowY: "hidden",
                                 }}
                             >
-                                <Box sx={{ overflowX: "hidden", overflowY: "auto", height: "95%", p: "0 2vw" }}>
+                                <Box sx={{ overflowX: "hidden", overflowY: "auto", height: "95%", p: isMobile ? "0 2vw" : "0" }}>
                                     <ContentKit edit values={values} handleChange={handleChange} data={data} />
                                 </Box>
                             </Box>

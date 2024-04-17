@@ -30,7 +30,7 @@ export const Home: React.FC<HomeProps> = ({}) => {
                     borderBottomRightRadius: isMobile ? "7vw" : "2vw",
                     borderBottomLeftRadius: isMobile ? "7vw" : "2vw",
                     alignItems: "center",
-                    justifyContent: isMobile ? "space-between" : "space-around",
+                    justifyContent: "space-between",
                     boxShadow: "3px 3px 6px gray",
                     padding: isMobile ? "4vw" : "1vw",
                     paddingBottom: isMobile ? "1vw" : "3vw",
@@ -45,6 +45,7 @@ export const Home: React.FC<HomeProps> = ({}) => {
                         justifyContent: "center",
                         width: isMobile ? "50%" : "30%",
                         height: isMobile ? "80%" : "50%",
+                        marginTop: isMobile ? "" : "3vw",
                     }}
                 />
 
@@ -59,7 +60,7 @@ export const Home: React.FC<HomeProps> = ({}) => {
                     <Button
                         variant="outlined"
                         sx={{
-                            padding: isMobile ? "2vw" : "1vw",
+                            padding: isMobile ? "2vw" : "0.5vw",
                             borderColor: "#fff",
                             width: "100%",
                             color: colors.text.white,
@@ -80,7 +81,7 @@ export const Home: React.FC<HomeProps> = ({}) => {
                 <Button
                     sx={{
                         fontWeight: "600",
-                        padding: isMobile ? "0vw 2vw" : "1vw",
+                        padding: isMobile ? "0vw 2vw" : "0.5vw",
                         color: colors.text.black,
                         textTransform: "none",
                         fontSize: isMobile ? "4vw" : "1vw",

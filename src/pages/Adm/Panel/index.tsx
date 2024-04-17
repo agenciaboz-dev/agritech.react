@@ -67,7 +67,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                 backgroundColor: colors.button,
                 paddingTop: isMobile ? "3vw" : "1vw",
                 position: "relative",
-                overflowY: isMobile ? "hidden" : "inherit",
+                overflowY: "hidden",
             }}
         >
             <Box
@@ -128,7 +128,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
             </Box>
             <Box
                 sx={{
-                    p: "2vw 0",
+                    p: isMobile ? "2vw 0" : "0.5vw 0",
                     flex: 1,
                     backgroundColor: colors.primary,
                     borderTopLeftRadius: isMobile ? "5vw" : "2vw",
@@ -186,20 +186,13 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                         >
                             Colaboradores Fixados
                         </p>
-                        <Box style={{ width: "100%", gap: "1vw" }}>
+                        <Box style={{ width: "100%", gap: isMobile ? "1vw" : "0.5vw" }}>
                             {listEmployee?.length !== 0
                                 ? listEmployee
                                       ?.slice(0, 3)
-                                      .map((user) => (
-                                          <CardUser user={user} key={user.id} location={`/adm/calendar/${user.id}`} />
-                                      ))
+                                      .map((user) => <CardUser user={user} key={user.id} location={`/adm/calendar/${user.id}`} />)
                                 : skeletons.map((_, index) => (
-                                      <Skeleton
-                                          animation="wave"
-                                          key={index}
-                                          variant="rounded"
-                                          sx={{ width: 1, height: "13.5vw" }}
-                                      />
+                                      <Skeleton animation="wave" key={index} variant="rounded" sx={{ width: 1, height: "13.5vw" }} />
                                   ))}
                         </Box>
                         <Box
@@ -209,7 +202,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                                 alignItems: "center",
                                 justifyContent: "space-between",
                                 gap: 20,
-                                padding: isMobile ? "2vw 0 0" : "2vw 1vw 0",
+                                padding: isMobile ? "2vw 0 0" : "2vw 0.5vw 0",
                             }}
                         >
                             <Button
@@ -267,20 +260,11 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                         >
                             Clientes Fixados
                         </p>
-                        <Box style={{ width: "100%", gap: "1vw" }}>
+                        <Box style={{ width: "100%", gap: isMobile ? "1vw" : "0.5vw" }}>
                             {listProducer?.length !== 0
-                                ? listProducer
-                                      ?.slice(0, 3)
-                                      .map((user) => (
-                                          <CardUser user={user} key={user.id} location={`/adm/profile/${user.id}`} />
-                                      ))
+                                ? listProducer?.slice(0, 3).map((user) => <CardUser user={user} key={user.id} location={`/adm/profile/${user.id}`} />)
                                 : skeletons.map((_, index) => (
-                                      <Skeleton
-                                          animation="wave"
-                                          key={index}
-                                          variant="rounded"
-                                          sx={{ width: 1, height: "13.5vw" }}
-                                      />
+                                      <Skeleton animation="wave" key={index} variant="rounded" sx={{ width: 1, height: "13.5vw" }} />
                                   ))}
                         </Box>
                         <Box
@@ -298,7 +282,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                                     flexDirection: "row",
                                     alignItems: "center",
                                     justifyContent: "space-between",
-                                    padding: isMobile ? "2vw 0 0" : "2vw 1vw 0",
+                                    padding: isMobile ? "2vw 0 0" : "2vw 0.5vw 0",
                                 }}
                             >
                                 <Button

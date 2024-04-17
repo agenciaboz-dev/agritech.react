@@ -1,8 +1,7 @@
-import { Box, TextField } from "@mui/material"
+import { Box, TextField, useMediaQuery } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { Avatar } from "@files-ui/react"
 import { TitleComponents } from "../../../components/TitleComponents"
-import { textField } from "../../../style/input"
 import { useDisclosure } from "@mantine/hooks"
 import { ModalObject } from "../../../components/Kit/ModalObject"
 import { NewObject } from "../../../definitions/object"
@@ -12,6 +11,7 @@ import { useHeader } from "../../../hooks/useHeader"
 import { useNumberMask } from "burgos-masks"
 import MaskedInputNando from "../../../components/MaskedNando"
 import { ModalEmployee } from "../../../components/Kit/ModalEmployee"
+import { useResponsiveStyles } from "../../../hooks/useResponsiveStyles"
 
 interface ContentKitProps {
     edit?: boolean
@@ -29,8 +29,10 @@ interface ContentKitProps {
 }
 
 export const ContentKit: React.FC<ContentKitProps> = ({ edit, values, handleChange, data }) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
     const header = useHeader()
     const floatMask = useNumberMask({ allowDecimal: true, allowLeadingZeroes: true })
+    const textField = useResponsiveStyles()
 
     const [openedModalObjects, { open, close }] = useDisclosure(false)
     const [openedModalEmployees, { open: openEmployees, close: closeEmployees }] = useDisclosure(false)
@@ -46,12 +48,7 @@ export const ContentKit: React.FC<ContentKitProps> = ({ edit, values, handleChan
 
     return (
         <Box sx={{ flexDirection: "column", gap: "12vw", width: "100%", height: "92%" }}>
-            <ModalObject
-                opened={openedModalObjects}
-                close={close}
-                object={data.listObjects}
-                setObject={data.setListObjects}
-            />
+            <ModalObject opened={openedModalObjects} close={close} object={data.listObjects} setObject={data.setListObjects} />
             <ModalEmployee
                 opened={openedModalEmployees}
                 close={closeEmployees}
@@ -60,9 +57,9 @@ export const ContentKit: React.FC<ContentKitProps> = ({ edit, values, handleChan
                 allEmployees={data.list}
             />
 
-            <Box sx={{ gap: "3vw", height: "30%" }}>
+            <Box sx={{ gap: "3vw", height: "100%", overflowY: "auto" }}>
                 <TitleComponents title="Informações Básicas" />
-                <Box sx={{ flexDirection: "row", gap: "2vw", width: "100%" }}>
+                <Box sx={{ flexDirection: "row", gap: isMobile ? "2vw" : "1vw", width: "100%" }}>
                     <Avatar
                         src={data.image}
                         onChange={(file) => data.setImage(file)}
@@ -70,13 +67,13 @@ export const ContentKit: React.FC<ContentKitProps> = ({ edit, values, handleChan
                         emptyLabel="Adicionar foto"
                         variant="square"
                         style={{
-                            width: "26vw",
-                            height: "26vw",
-                            fontSize: "4vw",
+                            width: isMobile ? "26vw" : "10vw",
+                            height: isMobile ? "26vw" : "10vw",
+                            fontSize: isMobile ? "4vw" : "1rem",
                             fontFamily: "MalgunGothic2",
                         }}
                     />
-                    <Box sx={{ flexDirection: "column", gap: "2vw", width: "70%" }}>
+                    <Box sx={{ flexDirection: "column", gap: isMobile ? "2vw" : "1vw", width: "70%" }}>
                         <TextField
                             label={"Nome do Kit"}
                             name="name"
@@ -100,7 +97,7 @@ export const ContentKit: React.FC<ContentKitProps> = ({ edit, values, handleChan
                         />
                     </Box>
                 </Box>
-                <Box sx={{ width: 1, gap: "2vw" }}>
+                <Box sx={{ width: 1, gap: isMobile ? "2vw" : "1vw" }}>
                     <TextField
                         multiline
                         maxRows={3}
@@ -111,7 +108,7 @@ export const ContentKit: React.FC<ContentKitProps> = ({ edit, values, handleChan
                         onChange={handleChange}
                         required
                     />
-                    <Box sx={{ flexDirection: "row", justifyContent: "space-between", gap: "2vw" }}>
+                    <Box sx={{ flexDirection: "row", justifyContent: "space-between", gap: isMobile ? "2vw" : "1vw" }}>
                         <TextField
                             label={"Equipamento"}
                             name="equipment"
@@ -129,7 +126,7 @@ export const ContentKit: React.FC<ContentKitProps> = ({ edit, values, handleChan
                             required
                         />
                     </Box>
-                    <Box sx={{ overflowY: "auto", gap: "4vw", pt: "4vw" }}>
+                    <Box sx={{ overflowY: "auto", gap: isMobile ? "4vw" : "1vw", pt: isMobile ? "4vw" : "1vw" }}>
                         <Box sx={{}}>
                             <TitleComponents title="Objetos" button click={open} />
                             {data.listObjects.map((item, index) => (
