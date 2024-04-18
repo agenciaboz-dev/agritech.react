@@ -1933,6 +1933,11 @@ burgos-snackbar@^2.1.0:
   resolved "https://registry.yarnpkg.com/burgos-snackbar/-/burgos-snackbar-2.1.0.tgz#156aec377af4c0bc337f704dc336da73f1bcfbd3"
   integrity sha512-Gu0QKDEehjRtPp2YvEc7Q7WNNFnZRWEe3huBg42ExL5fLgMAmJPfCCJP0yPRmwvbNfZEaTCg6tJ+07RuDcK5Iw==
 
+burgos-use-visible-callback@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/burgos-use-visible-callback/-/burgos-use-visible-callback-1.0.0.tgz#97aa6c15f6390088dbbad7ea9c3d9aab0f759a10"
+  integrity sha512-TTI6Ou60lq25zmZPx9zcYADN5J2G+Mxjf1JldqXjHj//CoPTQad0y8Dm0xrvOZJeDPiITcwOYlqOfNVKNSFYNw==
+
 cacache@^18.0.0, cacache@^18.0.2:
   version "18.0.2"
   resolved "https://registry.yarnpkg.com/cacache/-/cacache-18.0.2.tgz#fd527ea0f03a603be5c0da5805635f8eef00c60c"

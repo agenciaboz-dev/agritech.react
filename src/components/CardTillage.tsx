@@ -4,6 +4,7 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos"
 import { useNavigate } from "react-router-dom"
 import { useIo } from "../hooks/useIo"
 import { useDynamicImage } from "../hooks/useDynamicImage"
+import { useVisibleCallback } from "burgos-use-visible-callback"
 
 interface CardTillageProps {
     tillage: Tillage
@@ -14,11 +15,8 @@ interface CardTillageProps {
 export const CardTillage: React.FC<CardTillageProps> = ({ tillage, location }) => {
     const navigate = useNavigate()
     const io = useIo()
-    const dynamicImageRef = useDynamicImage({
-        no_observe: !!tillage.cover,
-        callback: () => {
-            io.emit("tillage:cover", tillage.id)
-        },
+    const dynamicImageRef = useVisibleCallback(() => io.emit("tillage:cover", tillage.id), {
+        no_observe: !!tillage.cover, 
     })
     const [cover, setCover] = useState("")
 
