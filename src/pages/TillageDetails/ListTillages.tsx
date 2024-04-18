@@ -68,6 +68,7 @@ export const ListTillages: React.FC<ListTillagesProps> = ({}) => {
                 height: "100%",
                 backgroundColor: colors.button,
                 flexDirection: "column",
+                overflow: "hidden",
             }}
         >
             <Box
@@ -93,13 +94,14 @@ export const ListTillages: React.FC<ListTillagesProps> = ({}) => {
                 />
             </Box>
             <Box
-                style={{
+                sx={{
                     justifyContent: "center",
                     height: "92%",
                     backgroundColor: colors.secondary,
                     borderTopLeftRadius: "5vw",
                     borderTopRightRadius: "5vw",
-                    paddingTop: 10,
+                    paddingTop: "4vw",
+                    mt: "10vw",
                 }}
             >
                 <Box

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react"
-import { Box, Avatar } from "@mui/material"
+import { Box, Avatar, Skeleton } from "@mui/material"
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos"
 import { useNavigate } from "react-router-dom"
-import geo from "../assets/geo.svg"
 import { useIo } from "../hooks/useIo"
+import { useDynamicImage } from "../hooks/useDynamicImage"
 
 interface CardTillageProps {
     tillage: Tillage
@@ -14,11 +14,13 @@ interface CardTillageProps {
 export const CardTillage: React.FC<CardTillageProps> = ({ tillage, location }) => {
     const navigate = useNavigate()
     const io = useIo()
+    const dynamicImageRef = useDynamicImage({
+        no_observe: !!tillage.cover,
+        callback: () => {
+            io.emit("tillage:cover", tillage.id)
+        },
+    })
     const [cover, setCover] = useState("")
-
-    useEffect(() => {
-        io.emit("tillage:cover", tillage.id)
-    }, [])
 
     useEffect(() => {
         io.on("tillage:cover:success", (data: { tillageId: number; cover: string }) => {
@@ -31,10 +33,11 @@ export const CardTillage: React.FC<CardTillageProps> = ({ tillage, location }) =
         }
     }, [tillage])
 
-    return (
+    return cover ? (
         <Box
+            ref={dynamicImageRef}
             sx={{
-                height: "15vw",
+                height: "22vw",
                 flexDirection: "row",
                 gap: "3vw",
 
@@ -46,7 +49,7 @@ export const CardTillage: React.FC<CardTillageProps> = ({ tillage, location }) =
             key={tillage.id}
         >
             <Box sx={{ flexDirection: "row", gap: "3vw", alignItems: "center" }}>
-                <Avatar variant="rounded" src={cover} sx={{ width: "12vw", height: "12vw" }} />
+                <Avatar variant="rounded" src={cover} sx={{ width: "18vw", height: "18vw", borderRadius: "3vw" }} />
                 <Box sx={{ flexDirection: "column", gap: "1vw" }}>
                     <p style={{ fontSize: "3.7vw", fontWeight: "bold" }}>{tillage.name}</p>
                     <p style={{ fontSize: "3.5vw" }}> {tillage.area} ha</p>
@@ -63,6 +66,42 @@ export const CardTillage: React.FC<CardTillageProps> = ({ tillage, location }) =
                 </p>
                 <ArrowForwardIosIcon sx={{ width: "3vw", padding: 0 }} />
             </Box>
+        </Box>
+    ) : (
+        <Box
+            ref={dynamicImageRef}
+            sx={{
+                height: "22vw",
+                flexDirection: "row",
+                gap: "3vw",
+
+                padding: "4vw 2vw",
+                alignItems: "center",
+                borderBottom: "1px solid #88A486",
+                justifyContent: "space-between",
+            }}
+            key={tillage.id}
+        >
+            <Box sx={{ flexDirection: "row", gap: "3vw", alignItems: "center" }}>
+                <Skeleton animation="wave" variant="rounded" sx={{ width: "18vw", height: "18vw" }} />
+                <Box sx={{ flexDirection: "column", gap: "1vw" }}>
+                    <Skeleton animation="wave" variant="rounded" sx={{ width: "30vw", height: "4vw" }} />
+                    <Skeleton animation="wave" variant="rounded" sx={{ width: "22vw", height: "3vw" }} />
+                </Box>
+            </Box>
+            {cover && (
+                <Box sx={{ alignItems: "center", flexDirection: "row" }}>
+                    <p
+                        style={{ fontSize: "3.0vw" }}
+                        onClick={() => {
+                            navigate(location)
+                        }}
+                    >
+                        Ver
+                    </p>
+                    <ArrowForwardIosIcon sx={{ width: "3vw", padding: 0 }} />
+                </Box>
+            )}
         </Box>
     )
 }

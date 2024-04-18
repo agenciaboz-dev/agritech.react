@@ -57,7 +57,7 @@ export const KitProvider: React.FC<KitProviderProps> = ({ children }) => {
     }
 
     useEffect(() => {
-        if (listKits.length === 0) io.emit("kit:list")
+        if (listKits.length === 0 && user) io.emit("kit:list")
     }, [])
 
     useEffect(() => {

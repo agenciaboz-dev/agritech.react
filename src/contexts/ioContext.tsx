@@ -70,7 +70,7 @@ export const IoProvider: React.FC<IoProviderProps> = ({ children }) => {
     useEffect(() => {
         if (socketRef.current) {
             socketRef.current.onAny((event, args) => {
-                console.log(event)
+                console.log({ event, args })
             })
 
             return () => {
