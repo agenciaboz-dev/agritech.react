@@ -19,6 +19,9 @@ import { PiPlant } from "react-icons/pi"
 import "../../style/styles.css"
 import GeoImage from "../../assets/default.png"
 import { useArray } from "burgos-array"
+import { ButtonAgritech } from "../../components/ButtonAgritech"
+import { FiMoreHorizontal } from "react-icons/fi"
+import { VscAdd } from "react-icons/vsc"
 
 interface TillageDetailsProps {}
 
@@ -213,18 +216,28 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                     marginTop: "1.5vw",
                 }}
             >
-                <Box
-                    sx={{
-                        p: "2vw 4vw",
-                        flexDirection: "row",
-                        width: "100%",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                    }}
-                >
-                    {!selectedTalhao ? (
-                        <Skeleton sx={{ width: 0.5, height: "8vw" }} />
-                    ) : (
+                {!selectedTalhao ? (
+                    <Box
+                        sx={{
+                            p: "2vw 4vw",
+                            flexDirection: "row",
+                            width: "90%",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                        }}
+                    >
+                        <Skeleton sx={{ width: 0.5, height: "8vw", marginLeft: "1vw" }} />
+                    </Box>
+                ) : (
+                    <Box
+                        sx={{
+                            p: "2vw 4vw",
+                            flexDirection: "row",
+                            width: "100%",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                        }}
+                    >
                         <p
                             style={{
                                 fontSize: "1.2rem",
@@ -235,8 +248,30 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                         >
                             {!user?.producer ? selectedTalhao?.name : ""}
                         </p>
-                    )}
-                </Box>
+                        <ButtonAgritech
+                            sx={{
+                                width: "20%",
+                                color: colors.text.white,
+                                height: "12vw",
+                                fontSize: "0.7rem",
+                                gap: "1vw",
+                                bgcolor: "gray",
+                                p: 0,
+                                textDecoration: "underline",
+                            }}
+                            onClick={() =>
+                                navigate(
+                                    user?.isAdmin
+                                        ? `/adm/producer/${tillageSelect?.producerId}/${tillageSelect?.id}/new_talhao`
+                                        : `/employee/producer/${tillageSelect?.producerId}/${tillageSelect?.id}/new_talhao`
+                                )
+                            }
+                        >
+                            <VscAdd color={"#fff"} style={{ width: "4vw", height: "4vw" }} />
+                            Talhão
+                        </ButtonAgritech>
+                    </Box>
+                )}
                 {tillageSelect?.talhao?.length !== 0 ? (
                     <Box sx={{ flexDirection: "row", gap: "2vw", width: "100%", overflow: "auto", p: "0vw 3vw 3vw" }}>
                         {tillageSelect?.talhao
@@ -368,26 +403,6 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                             {/* {tab === "history" && <p>Nenhum Registro</p>} */}
                         </>
                     )}
-                    <IconButton
-                        sx={{
-                            bgcolor: colors.button,
-                            width: "12vw",
-                            height: "12vw",
-                            borderRadius: "10vw",
-                            position: "absolute",
-                            bottom: "22vw",
-                            right: "5vw",
-                        }}
-                        onClick={() =>
-                            navigate(
-                                user?.isAdmin
-                                    ? `/adm/producer/${tillageSelect?.producerId}/${tillageSelect?.id}/new_talhao`
-                                    : `/employee/producer/${tillageSelect?.producerId}/${tillageSelect?.id}/new_talhao`
-                            )
-                        }
-                    >
-                        <PiPlant color={"#fff"} style={{ width: "6vw", height: "6vw" }} />
-                    </IconButton>
                 </Box>
             </Box>
         </Box>

@@ -77,11 +77,15 @@ export const LogsCard: React.FC<LogsCardProps> = ({ review, call, variant, talha
                 </p>
                 {user?.employee ? (
                     <p style={{ fontSize: "3vw", color: "gray", flexDirection: "column" }}>
-                        {talhao.name} -{" "}
+                        {talhao.name}
                         {call?.approved && Number(call.talhao?.area) !== sumTotal
-                            ? `Utilizando #Kit ${kitSelected?.name}`
+                            ? kitSelected
+                                ? `- Utilizando #Kit ${kitSelected && kitSelected?.name}`
+                                : ""
                             : call?.approved && Number(call?.talhao?.area) >= sumTotal
-                            ? `Utilizado #Kit ${kitSelected?.name}`
+                            ? kitSelected
+                                ? `- Utilizado #Kit ${kitSelected && kitSelected?.name}`
+                                : ""
                             : user?.isAdmin
                             ? "Selecione um kit"
                             : "Aguarde a seleção do kit"}

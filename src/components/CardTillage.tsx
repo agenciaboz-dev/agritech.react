@@ -15,7 +15,7 @@ export const CardTillage: React.FC<CardTillageProps> = ({ tillage, location }) =
     const navigate = useNavigate()
     const io = useIo()
     const dynamicImageRef = useVisibleCallback(() => io.emit("tillage:cover", tillage.id), {
-        no_observe: !!tillage.cover, 
+        no_observe: !!tillage.cover,
     })
     const [cover, setCover] = useState("")
 
@@ -44,12 +44,15 @@ export const CardTillage: React.FC<CardTillageProps> = ({ tillage, location }) =
                 justifyContent: "space-between",
             }}
             key={tillage.id}
+            onClick={() => {
+                navigate(location)
+            }}
         >
             <Box sx={{ flexDirection: "row", gap: "3vw", alignItems: "center" }}>
                 <Avatar variant="rounded" src={cover} sx={{ width: "18vw", height: "18vw", borderRadius: "3vw" }} />
-                <Box sx={{ flexDirection: "column", gap: "1vw" }}>
-                    <p style={{ fontSize: "3.7vw", fontWeight: "bold" }}>{tillage.name}</p>
-                    <p style={{ fontSize: "3.5vw" }}> {tillage.area} ha</p>
+                <Box sx={{ flexDirection: "column", gap: "0vw" }}>
+                    <p style={{ fontSize: "4vw", fontWeight: "bold" }}>{tillage.name}</p>
+                    <p style={{ fontSize: "3.8vw" }}> {tillage.area} ha</p>
                 </Box>
             </Box>
             <Box sx={{ alignItems: "center", flexDirection: "row" }}>

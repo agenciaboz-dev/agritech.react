@@ -55,22 +55,32 @@ export const OpenCallBox: React.FC<OpenCallBoxProps> = ({ data, click, callStatu
         <Box
             sx={{
                 bgcolor: "rgba(136, 164, 134, 0.29)",
-                p: "6vw",
+                p: "4vw",
                 borderRadius: "5vw",
                 gap: "3vw",
                 height: "45%",
                 justifyContent: "space-between",
+                marginTop: "2vw",
             }}
         >
             <Box sx={{ gap: "3vw" }}>
-                <p style={{ fontSize: "4.5vw", fontWeight: "600" }}>{data.title}</p>
-                <p style={{ fontSize: "3.2vw", textAlign: "justify" }}>
+                <p style={{ fontSize: "1rem", fontWeight: "600" }}>{data.title}</p>
+                <p style={{ fontSize: "0.8rem", textAlign: "justify" }}>
                     {" "}
                     Abra um chamado para que nossa equipe encaminhe-se até o local da fazenda {tillage?.name}, o prazo mínimo
                     do chamado é de de 48 horas segundo o contrato vigente.
                 </p>
             </Box>
-            <p style={{ fontSize: "3.2vw", textAlign: "end", width: "100%", color: colors.primary }} onClick={click}>
+            <p
+                style={{
+                    fontSize: "0.9rem",
+                    textAlign: "end",
+                    width: "100%",
+                    color: colors.primary,
+                    textDecoration: "underline",
+                }}
+                onClick={click}
+            >
                 {data.buttonTitle}
             </p>
         </Box>
@@ -149,8 +159,8 @@ export const LaudoCall: React.FC<OpenCallBoxProps> = ({ data, click, call, user 
                 <p style={{ fontSize: "3.2vw", textAlign: "justify" }}>
                     {" "}
                     {user?.producer
-                        ? `Seu chamado está em processo de finalização. Em breve você terá acesso aos dados coletados durante os voos realizados pelo drone.`
-                        : `Este chamado está em processo de finalização. O relatório operacional já foi preenchido e está aguardando aprovação.`}
+                        ? `Seu chamado está em processo de finalização. `
+                        : `Este chamado está em processo de finalização. `}
                 </p>
             </Box>
             <Box sx={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>

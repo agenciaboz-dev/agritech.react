@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { colors } from "../../style/colors"
-import { Box } from "@mui/material"
+import { Box, Skeleton } from "@mui/material"
 import { Header } from "../../components/Header"
 import { TitleComponents } from "../../components/TitleComponents"
 import { useNavigate, useParams } from "react-router-dom"
@@ -9,6 +9,7 @@ import { LogsLaudo } from "./LogsLaudo"
 import { useIo } from "../../hooks/useIo"
 import { useReports } from "../../hooks/useReports"
 import { Report } from "../../definitions/report"
+import { useArray } from "burgos-array"
 
 interface ListLaudosProps {
     user: User
@@ -20,6 +21,7 @@ export const ListLaudos: React.FC<ListLaudosProps> = ({ user }) => {
     const { callid } = useParams()
     const { listReports } = useReports()
 
+    const skeletons = useArray().newArray(3)
     const { listCalls } = useCall()
 
     useEffect(() => {
@@ -100,10 +102,17 @@ export const ListLaudos: React.FC<ListLaudosProps> = ({ user }) => {
                     }
                     variant
                 />
-                <Box sx={{ gap: "2vw", overflowY: "auto", pb: "20vw" }}>
-                    {sortedReports?.map((item, index) => (
-                        <LogsLaudo key={index} id={index + 1} report={item} talhao={item.talhao} />
-                    ))}
+                <Box sx={{ gap: "4vw", overflowY: "auto", pb: "20vw" }}>
+                    {sortedReports.length != 0
+                        ? sortedReports?.map((item, index) => (
+                              <LogsLaudo key={index} id={index + 1} report={item} talhao={item.talhao} />
+                          ))
+                        : skeletons.map((_, index) => (
+                              <Box sx={{ flexDirection: "column", justifyContent: "start", gap: "2vw" }} key={index}>
+                                  <Skeleton variant="rounded" animation="wave" sx={{ width: "28vw", height: "3vw" }} />
+                                  <Skeleton variant="rounded" animation="wave" sx={{ width: "40vw", height: "5vw" }} />
+                              </Box>
+                          ))}
                 </Box>
             </Box>
         </Box>
