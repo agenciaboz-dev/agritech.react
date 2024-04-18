@@ -15,7 +15,7 @@ export const ButtonComponent: React.FC<ButtonComponentProps> = ({ title, locatio
         <Button
             variant="contained"
             sx={{
-                padding: isMobile ? "3vw" : "1vw",
+                padding: isMobile ? "3vw" : "0.5vw",
                 borderColor: colors.button,
                 width: "100%",
                 backgroundColor: "#232323",

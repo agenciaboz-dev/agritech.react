@@ -72,7 +72,7 @@ export const Login: React.FC<LoginProps> = ({}) => {
         >
             <Box
                 sx={{
-                    height: isMobile ? "40%" : "30%",
+                    height: isMobile ? "40%" : "80%",
                     width: "100%",
                     alignItems: "center",
                     justifyContent: "center",
@@ -139,7 +139,7 @@ export const Login: React.FC<LoginProps> = ({}) => {
                                 sx={{
                                     ...buttonStyle,
                                     backgroundColor: colors.button,
-                                    padding: isMobile ? "3vw" : "1vw",
+                                    padding: isMobile ? "3vw" : "0.5vw",
                                     fontSize: isMobile ? "4vw" : "1.2vw",
                                     fontWeight: "600",
                                     borderRadius: "10vw",
@@ -155,7 +155,7 @@ export const Login: React.FC<LoginProps> = ({}) => {
                 </Formik>
                 <Button
                     sx={{
-                        padding: isMobile ? "3vw" : "1vw",
+                        padding: isMobile ? "3vw" : "0.5vw",
                         color: colors.text.black,
                         fontWeight: "600",
                         fontSize: isMobile ? "4vw" : "1.2vw",

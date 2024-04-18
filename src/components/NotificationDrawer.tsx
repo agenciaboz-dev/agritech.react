@@ -50,7 +50,7 @@ export const NotificationDrawer: React.FC<NotificationDrawerProps> = ({}) => {
             PaperProps={{
                 sx: {
                     padding: isMobile ? "6vw 3vw" : "1vw",
-                    width: isMobile ? "78vw" : "30vw",
+                    width: isMobile ? "78vw" : "25vw",
                     height: "100%",
                     borderTopLeftRadius: isMobile ? "10vw" : "2vw",
                     borderBottomLeftRadius: isMobile ? "10vw" : "2vw",
