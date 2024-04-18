@@ -3,7 +3,6 @@ import { Box, Avatar, Skeleton } from "@mui/material"
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos"
 import { useNavigate } from "react-router-dom"
 import { useIo } from "../hooks/useIo"
-import { useDynamicImage } from "../hooks/useDynamicImage"
 import { useVisibleCallback } from "burgos-use-visible-callback"
 
 interface CardTillageProps {

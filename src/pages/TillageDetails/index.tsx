@@ -1,4 +1,4 @@
-import { Avatar, Box, IconButton, Tab, Tabs } from "@mui/material"
+import { Avatar, Box, IconButton, Skeleton, Tab, Tabs } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { colors } from "../../style/colors"
 import { Header } from "../../components/Header"
@@ -18,6 +18,7 @@ import { LogsCard } from "./LogsCard"
 import { PiPlant } from "react-icons/pi"
 import "../../style/styles.css"
 import GeoImage from "../../assets/default.png"
+import { useArray } from "burgos-array"
 
 interface TillageDetailsProps {}
 
@@ -30,6 +31,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
     const { snackbar } = useSnackbar()
     const { user } = useUser()
     const { addCallApprove } = useCall()
+    const skeletons = useArray().newArray(3)
 
     const [loading, setLoading] = useState(false)
 
@@ -208,6 +210,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                     borderTopRightRadius: "5vw",
                     gap: "1vw",
                     overflow: "hidden",
+                    marginTop: "1.5vw",
                 }}
             >
                 <Box
@@ -219,39 +222,54 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                         alignItems: "center",
                     }}
                 >
-                    <p
-                        style={{
-                            fontSize: "1.2rem",
-                            color: colors.text.white,
-                            fontFamily: "MalgunGothic2",
-                            fontWeight: "bold",
-                        }}
-                    >
-                        {!user?.producer ? selectedTalhao?.name : ""}
-                    </p>
+                    {!selectedTalhao ? (
+                        <Skeleton sx={{ width: 0.5, height: "8vw" }} />
+                    ) : (
+                        <p
+                            style={{
+                                fontSize: "1.2rem",
+                                color: colors.text.white,
+                                fontFamily: "MalgunGothic2",
+                                fontWeight: "bold",
+                            }}
+                        >
+                            {!user?.producer ? selectedTalhao?.name : ""}
+                        </p>
+                    )}
                 </Box>
                 {tillageSelect?.talhao?.length !== 0 ? (
                     <Box sx={{ flexDirection: "row", gap: "2vw", width: "100%", overflow: "auto", p: "0vw 3vw 3vw" }}>
-                        {tillageSelect?.talhao?.map((item, index) => (
-                            <Box sx={{ alignItems: "center" }} key={index}>
-                                <Avatar
-                                    src={item.cover || GeoImage}
-                                    style={{
-                                        width: "28vw",
-                                        height: "38vw",
-                                        fontSize: "4vw",
-                                        fontFamily: "MalgunGothic2",
-                                        marginLeft: "0vw",
-                                        borderRadius: "8vw",
-                                        border: selectedTalhao?.id === item.id ? `5px solid ${colors.secondary}` : "",
-                                    }}
-                                    onClick={() => (selectedTalhao?.id !== item.id ? toggleSelection(item) : () => {})}
-                                />
-                                <p style={{ fontSize: "0.9rem", textAlign: "center", color: colors.text.white }}>
-                                    {item.name}
-                                </p>
-                            </Box>
-                        ))}
+                        {tillageSelect?.talhao
+                            ? tillageSelect?.talhao?.map((item, index) => (
+                                  <Box sx={{ alignItems: "center" }} key={index}>
+                                      <Avatar
+                                          src={item.cover || GeoImage}
+                                          style={{
+                                              width: "24vw",
+                                              height: "34vw",
+                                              fontSize: "4vw",
+                                              fontFamily: "MalgunGothic2",
+                                              marginLeft: "0vw",
+                                              borderRadius: "8vw",
+                                              border: selectedTalhao?.id === item.id ? `5px solid ${colors.secondary}` : "",
+                                          }}
+                                          onClick={() => (selectedTalhao?.id !== item.id ? toggleSelection(item) : () => {})}
+                                      />
+                                      <p style={{ fontSize: "0.9rem", textAlign: "center", color: colors.text.white }}>
+                                          {item.name}
+                                      </p>
+                                  </Box>
+                              ))
+                            : skeletons.map((_, index) => (
+                                  <Box sx={{ alignItems: "center", gap: "2vw" }} key={index}>
+                                      <Skeleton
+                                          animation="wave"
+                                          variant="rounded"
+                                          sx={{ width: "24vw", height: "34vw", borderRadius: "8vw" }}
+                                      />
+                                      <Skeleton animation="wave" variant="rounded" sx={{ width: "23vw", height: "3vw" }} />
+                                  </Box>
+                              ))}
                     </Box>
                 ) : (
                     <Box sx={{ p: "2vw 4vw 8vw" }}>
@@ -268,14 +286,14 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                         borderTopLeftRadius: "7vw",
                         borderTopRightRadius: "7vw",
                         overflow: "hidden",
-                        gap: "4vw",
+                        gap: "0vw",
                         height: "100%",
                     }}
                 >
                     <WeatherComponent dataWeather={weatherData} icon={icon} />
 
                     {selectedAvatar === 0 && tillageSelect?.talhao?.length !== 0 ? (
-                        <p>Selecione um talhão</p>
+                        <p style={{ marginTop: "4vw" }}>Selecione um talhão</p>
                     ) : (
                         <>
                             <Tabs
@@ -326,17 +344,21 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                                 />
                             ) : (
                                 tab === "calls" && (
-                                    <Box sx={{ overflowY: "auto", height: "50%" }}>
-                                        {selectedTalhao?.calls.map((item, index) => (
-                                            <LogsCard
-                                                user={user}
-                                                key={index}
-                                                call={item}
-                                                talhao={selectedTalhao}
-                                                tillage={tillageSelect}
-                                                setSelectedCall={setSelectedCall}
-                                            />
-                                        ))}
+                                    <Box sx={{ overflowY: "auto", height: "60%", pb: "8vh", gap: "3vw", pt: "2.5vw" }}>
+                                        {selectedTalhao?.calls.length !== 0
+                                            ? selectedTalhao?.calls.map((item, index) => (
+                                                  <LogsCard
+                                                      user={user}
+                                                      key={index}
+                                                      call={item}
+                                                      talhao={selectedTalhao}
+                                                      tillage={tillageSelect}
+                                                      setSelectedCall={setSelectedCall}
+                                                  />
+                                              ))
+                                            : skeletons.map((_, index) => (
+                                                  <Skeleton key={index} variant="rounded" animation="wave" />
+                                              ))}
                                     </Box>
                                 )
                             )}

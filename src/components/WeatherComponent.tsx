@@ -26,7 +26,7 @@ import thunder_showers_day from "../assets/icons/SVG/2nd Set - Color/thunder-sho
 import thunder_showers_night from "../assets/icons/SVG/2nd Set - Color/thunder-showers-night.svg"
 import thunder from "../assets/icons/SVG/2nd Set - Color/thunder.svg"
 import wind from "../assets/icons/SVG/2nd Set - Color/wind.svg"
-import { CircularProgress } from "@mui/material"
+import { CircularProgress, Skeleton } from "@mui/material"
 import { colors } from "../style/colors"
 
 interface WeatherComponentProps {
@@ -98,38 +98,47 @@ export const WeatherComponent: React.FC<WeatherComponentProps> = ({ dataWeather,
     }, [dataWeather])
 
     return (
-        data !== null && (
-            <Box
-                sx={{
-                    height: "18%",
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    p: "0vw",
-                }}
-            >
-                <Box sx={{ flexDirection: "row", alignItems: "center", gap: "3vw", width: "65%" }}>
-                    {loading ? (
-                        <CircularProgress sx={{ color: colors.text.black }} />
-                    ) : (
-                        <img src={iconMappings[icon]} style={{ width: "17vw", height: "17vw" }} />
-                    )}
-                    <Box sx={{ flexDirection: "row", gap: "1vw" }}>
-                        <p style={{ fontSize: "8vw" }}>{data?.temp && ((data?.temp - 32) / 1.8).toFixed(0)}</p>
-                        <p style={{ fontSize: "2.8vw", paddingTop: "3vw" }}>°C </p>
+        <Box
+            sx={{
+                height: "18%",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                p: "0vw",
+            }}
+        >
+            <Box sx={{ flexDirection: "row", alignItems: "center", gap: "3vw", width: "65%" }}>
+                {data ? (
+                    <img src={iconMappings[icon]} style={{ width: "17vw", height: "17vw" }} />
+                ) : (
+                    <Skeleton animation="wave" variant="rounded" sx={{ width: "17vw", height: "17vw" }} />
+                )}
+
+                {data ? (
+                    <Box sx={{ display: "contents" }}>
+                        <Box sx={{ flexDirection: "row", gap: "1vw" }}>
+                            <p style={{ fontSize: "8vw" }}>{data?.temp && ((data?.temp - 32) / 1.8).toFixed(0)}</p>
+                            <p style={{ fontSize: "2.8vw", paddingTop: "3vw" }}>°C </p>
+                        </Box>
+                        <Box>
+                            <p style={style}>Chuva: {data && data.preciptype === null ? 0 : data?.preciptype}%</p>
+                            <p style={style}>Umidade: {data && data.humidity}%</p>
+                            <p style={style}>Vento: {data && data.windspeed === null ? 0 : data?.windspeed} km/h</p>
+                        </Box>
                     </Box>
-                    <Box>
-                        <p style={style}>Chuva: {data && data.preciptype === null ? 0 : data?.preciptype}%</p>
-                        <p style={style}>Umidade: {data && data.humidity}%</p>
-                        <p style={style}>Vento: {data && data.windspeed === null ? 0 : data?.windspeed} km/h</p>
-                    </Box>
-                </Box>
-                <Box sx={{ width: "35%", alignItems: "end" }}>
-                    <p style={{ fontWeight: "600", fontSize: "3.5vw" }}>Clima</p>
-                    <p style={{ fontSize: "2.9vw" }}>{dateTime}</p>
-                    <p style={{ fontSize: "3vw" }}> {data?.icon && climaMappings[data.icon]}</p>
-                </Box>
+                ) : (
+                    <Skeleton animation="wave" variant="rounded" sx={{ width: "40vw", height: "17vw" }} />
+                )}
             </Box>
-        )
+            <Box sx={{ width: "35%", alignItems: "end" }}>
+                <p style={{ fontWeight: "600", fontSize: "3.5vw" }}>Clima</p>
+                <p style={{ fontSize: "2.9vw" }}>{dateTime}</p>
+                {data ? (
+                    <p style={{ fontSize: "3vw" }}> {data?.icon && climaMappings[data.icon]}</p>
+                ) : (
+                    <Skeleton animation="wave" variant="rounded" sx={{ width: "25vw", height: "4vw" }} />
+                )}
+            </Box>
+        </Box>
     )
 }
