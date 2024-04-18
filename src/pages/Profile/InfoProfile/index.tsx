@@ -1,5 +1,5 @@
 import React, { ChangeEventHandler } from "react"
-import { Box,  Tab, Tabs } from "@mui/material"
+import { Box, Tab, Tabs } from "@mui/material"
 import { tabStyle } from "../../../style/tabStyle"
 import { Personal } from "./Personal"
 import { Documentation } from "./Documentation"
@@ -40,7 +40,7 @@ export const InfoProfile: React.FC<InfoProfileProps> = ({
     }
 
     return (
-        <Box sx={{ gap: "5vw", maxWidth: "100%", color: "black" }}>
+        <Box sx={{ gap: "5vw", maxWidth: "100%", maxHeight: "100%", height: "85%", color: "black" }}>
             <Tabs
                 value={tab}
                 onChange={changeTab}

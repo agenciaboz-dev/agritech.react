@@ -158,6 +158,7 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
                 height: "100%",
                 backgroundColor: colors.button,
                 flexDirection: "column",
+                overflowY: "hidden",
             }}
         >
             <Box
@@ -169,6 +170,7 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
                     gap: "1vw",
                     padding: "4vw",
                     flexDirection: "row",
+                    marginTop: "5vh",
                 }}
             >
                 <Header back location={user.isAdmin ? "../adm/" : user.employee ? "../employee/" : "../producer/"} />

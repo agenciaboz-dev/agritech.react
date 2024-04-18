@@ -56,11 +56,11 @@ export const Bank: React.FC<BankProps> = ({ values, handleChange }) => {
                     </MenuItem>
                 ))}
             </TextField>
-            <Box sx={{ flexDirection: "row", gap: "3vw" }}>
+            <Box sx={{ flexDirection: "row", gap: "2vw" }}>
                 <TextField
                     label={"Agência"}
                     name={"employee.bank.agency"}
-                    sx={textField}
+                    sx={{ ...textField, width: 0.5 }}
                     value={values.employee?.bank?.agency}
                     onChange={handleChange}
                     InputProps={{
@@ -71,7 +71,7 @@ export const Bank: React.FC<BankProps> = ({ values, handleChange }) => {
                 <TextField
                     label={"Nº da conta"}
                     name={"employee.bank.account"}
-                    sx={textField}
+                    sx={{ ...textField, width: 0.5 }}
                     value={values.employee?.bank?.account}
                     onChange={handleChange}
                     InputProps={{
