@@ -6,9 +6,6 @@ import { IoIosArrowForward } from "react-icons/io"
 import { useNavigate } from "react-router-dom"
 import { useUser } from "../../hooks/useUser"
 import { Call } from "../../definitions/call"
-import { useKits } from "../../hooks/useKits"
-import { useUsers } from "../../hooks/useUsers"
-import { userInfo } from "os"
 import { useIo } from "../../hooks/useIo"
 import { useCall } from "../../hooks/useCall"
 
@@ -39,7 +36,7 @@ export const LogsCard: React.FC<LogsCardProps> = ({ review, call, variant }) => 
     return !variant ? (
         <Box
             sx={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}
-            onClick={() => navigate(call?.approved ? `/adm/producer/${call.producerId}/${call?.talhao?.tillageId}` : "")}
+            // onClick={() => navigate(call?.approved ? `/adm/producer/${call.producerId}/${call?.talhao?.tillageId}` : "")}
         >
             <Box sx={{ flexDirection: "column" }}>
                 <Box sx={{ flexDirection: "row", alignItems: "center", gap: isMobile ? "2vw" : "1vw" }}>
@@ -68,6 +65,20 @@ export const LogsCard: React.FC<LogsCardProps> = ({ review, call, variant }) => 
                             </ActionIcon>
                         </Menu.Target>
                         <Menu.Dropdown>
+                            <Menu.Item
+                                onClick={() => {
+                                    navigate(`/adm/producer/${call?.producerId}/${call?.talhao?.tillageId}`)
+                                }}
+                            >
+                                Ver Fazenda
+                            </Menu.Item>
+                            <Menu.Item
+                                onClick={() => {
+                                    navigate(`/adm/profile/${call?.producer?.user?.id}`)
+                                }}
+                            >
+                                Ver Cliente
+                            </Menu.Item>
                             <Menu.Item
                                 color="red"
                                 onClick={() => {

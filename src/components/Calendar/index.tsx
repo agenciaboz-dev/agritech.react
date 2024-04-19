@@ -7,12 +7,11 @@ import { useNavigate, useParams } from "react-router-dom"
 import { useUsers } from "../../hooks/useUsers"
 import { DatePicker, DatePickerProps } from "@mantine/dates"
 import { Indicator } from "@mantine/core"
-import { LogsCard } from "../../pages/Calls/LogsCard"
-import { useCall } from "../../hooks/useCall"
 import { Call } from "../../definitions/call"
 import { BsFillInfoCircleFill } from "react-icons/bs"
 import { useDisclosure } from "@mantine/hooks"
 import { ModalLegend } from "./ModalLegend"
+import { ModalCalls } from "./ModalCalls"
 
 interface CalendarProps {}
 
@@ -27,6 +26,7 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
     const findUser = listUsers?.find((user) => String(user.id) === userid)
     const [callsDay, setCallsDay] = useState<Call[] | undefined>([])
 
+    const [openedCalls, { open: openCalls, close: closeCalls }] = useDisclosure()
     const [opened, { open, close }] = useDisclosure()
 
     //Methods and variables Date
@@ -98,6 +98,13 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
         header.setTitle(findUser?.name || "")
     }, [])
 
+    const handleDaySelect = (selectedDate: Date | null) => {
+        setValue(selectedDate) // Atualize o estado com a data selecionada
+        if (selectedDate) {
+            openCalls() // Abra o modal de chamadas
+        }
+    }
+
     return (
         <Box
             sx={{
@@ -108,6 +115,7 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
             }}
         >
             <ModalLegend close={close} opened={opened} />
+            <ModalCalls close={closeCalls} opened={openedCalls} callsDay={callsDay} user={findUser} />
             <Box
                 sx={{
                     width: "100%",
@@ -132,7 +140,7 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
                     borderTopRightRadius: isMobile ? "7vw" : "2vw",
                     overflow: "hidden",
                     alignItems: "center",
-                    gap: isMobile ? "4vw" : "1vw",
+                    gap: isMobile ? "0vw" : "1vw",
                 }}
             >
                 <Box
@@ -193,25 +201,9 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
                         },
                     })}
                     value={value}
-                    onChange={setValue}
+                    onChange={handleDaySelect}
                     size={"lg"}
                 />
-                <Box
-                    sx={{
-                        flexDirection: "column",
-                        width: "100%",
-                        height: "38%",
-                        overflowY: "auto",
-                        padding: isMobile ? "2vw 4vw" : "1vw",
-                        gap: isMobile ? "3vw" : "1vw",
-                    }}
-                >
-                    {findUser?.office === "pilot" || findUser?.office === "copilot"
-                        ? callsDay?.length !== 0
-                            ? callsDay?.map((call, index) => <LogsCard key={index} review={false} call={call} />)
-                            : "Nenhum chamado aberto para esse dia"
-                        : "Sem compromissos"}
-                </Box>
             </Box>
         </Box>
     )

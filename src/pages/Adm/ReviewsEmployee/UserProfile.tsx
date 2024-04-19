@@ -202,11 +202,12 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
                 style={{
                     padding: "5vw",
                     width: "100%",
-                    height: "100%",
+                    maxHeight: "100%",
+                    height: "80%",
                     backgroundColor: "#fff",
                     borderTopLeftRadius: "7vw",
                     borderTopRightRadius: "7vw",
-
+                    overflowY: "auto",
                     flexDirection: "column",
                     gap: "5vw",
                 }}

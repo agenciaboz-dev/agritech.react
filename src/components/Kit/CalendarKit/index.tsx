@@ -1,4 +1,4 @@
-import { Autocomplete, Box, Button, IconButton, Skeleton, TextField } from "@mui/material"
+import { Autocomplete, Box, IconButton, Skeleton, TextField } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { colors } from "../../../style/colors"
 import { Header } from "../../Header"
@@ -8,7 +8,6 @@ import { useUsers } from "../../../hooks/useUsers"
 import { DatePicker, DatePickerProps } from "@mantine/dates"
 import { Indicator } from "@mantine/core"
 import { LogsCard } from "../../../pages/Calls/LogsCard"
-import { IconUser } from "@tabler/icons-react"
 import { Call } from "../../../definitions/call"
 import { useKits } from "../../../hooks/useKits"
 import { textField } from "../../../style/input"
@@ -16,13 +15,13 @@ import { useIo } from "../../../hooks/useIo"
 import { BsFillInfoCircleFill } from "react-icons/bs"
 import { useDisclosure } from "@mantine/hooks"
 import { ModalLegend } from "../../Calendar/ModalLegend"
+import { ModalCalls } from "./ModalCalls"
 
 interface CalendarKitProps {}
 
 export const CalendarKit: React.FC<CalendarKitProps> = ({}) => {
     const io = useIo()
     const header = useHeader()
-    const navigate = useNavigate()
 
     //kits
     const { listKits } = useKits()
@@ -35,11 +34,11 @@ export const CalendarKit: React.FC<CalendarKitProps> = ({}) => {
     const findUser = listUsers?.find((user) => String(user.id) === userid)
     const [callsDay, setCallsDay] = useState<Call[] | undefined>([])
 
-    //Methods and variables Date
     const [value, setValue] = useState<Date | null>(null)
     const dayCurrent = new Date().toLocaleDateString("pt-br")
 
     const [opened, { open, close }] = useDisclosure()
+    const [openedCalls, { open: openCalls, close: closeCalls }] = useDisclosure()
 
     const handleFindCalls = (value: Date | null) => {
         console.log(selectedKit?.calls)
@@ -105,6 +104,12 @@ export const CalendarKit: React.FC<CalendarKitProps> = ({}) => {
         header.setTitle("Calendários")
     }, [])
 
+    const handleDaySelect = (selectedDate: Date | null) => {
+        setValue(selectedDate) // Atualize o estado com a data selecionada
+        if (selectedDate) {
+            openCalls() // Abra o modal de chamadas
+        }
+    }
     return (
         <Box
             sx={{
@@ -114,6 +119,8 @@ export const CalendarKit: React.FC<CalendarKitProps> = ({}) => {
                 flexDirection: "column",
             }}
         >
+            <ModalCalls close={closeCalls} opened={openedCalls} callsDay={callsDay} kit={selectedKit} />
+
             <Box
                 sx={{
                     width: "100%",
@@ -181,29 +188,9 @@ export const CalendarKit: React.FC<CalendarKitProps> = ({}) => {
                         },
                     })}
                     value={value}
-                    onChange={setValue}
+                    onChange={handleDaySelect}
                     size={"lg"}
                 />
-                <Box
-                    sx={{
-                        flexDirection: "column",
-                        width: "100%",
-                        height: "38%",
-                        overflowY: "auto",
-                        p: "2vw 4vw",
-                        gap: "3vw",
-                    }}
-                >
-                    {selectedKit ? (
-                        callsDay?.length !== 0 ? (
-                            callsDay?.map((call, index) => <LogsCard key={index} review={false} call={call} />)
-                        ) : (
-                            "Nenhum chamado aberto para esse dia"
-                        )
-                    ) : (
-                        <p style={{ fontSize: "0.9rem" }}>Selecione um kit para visualizar o calendário</p>
-                    )}
-                </Box>
             </Box>
         </Box>
     )

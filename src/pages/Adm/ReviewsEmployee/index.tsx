@@ -45,6 +45,7 @@ export const ReviewsEmployee: React.FC<ReviewsEmployeeProps> = ({ user }) => {
                 height: "100%",
                 backgroundColor: colors.button,
                 flexDirection: "column",
+                overflow: "hidden",
             }}
         >
             <Box
@@ -70,7 +71,7 @@ export const ReviewsEmployee: React.FC<ReviewsEmployeeProps> = ({ user }) => {
                     borderTopLeftRadius: "7vw",
                     borderTopRightRadius: "7vw",
                     gap: "2vw",
-                    overflow: "hidden",
+                    overflowY: "auto",
                     flexDirection: "column",
                 }}
             >

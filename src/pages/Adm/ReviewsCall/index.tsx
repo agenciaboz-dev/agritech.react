@@ -19,7 +19,6 @@ export const ReviewsCall: React.FC<ReviewsCallProps> = ({ user }) => {
     const header = useHeader()
     const skeletons = useArray().newArray(3)
     const { listCalls, listCallsPending } = useCall()
-    const { listKits } = useKits()
 
     const [tab, setTab] = useState("pending")
     const sortedPendingCalls = listCallsPending
@@ -71,7 +70,7 @@ export const ReviewsCall: React.FC<ReviewsCallProps> = ({ user }) => {
             </Box>
 
             <Box
-                style={{
+                sx={{
                     padding: "5vw",
                     width: "100%",
                     height: "100%",
@@ -81,6 +80,7 @@ export const ReviewsCall: React.FC<ReviewsCallProps> = ({ user }) => {
                     gap: "2vw",
                     overflow: "hidden",
                     flexDirection: "column",
+                    mt: "4vw",
                 }}
             >
                 {/* <Box sx={{ alignItems: "center", width: "100%", justifyContent: "space-between", flexDirection: "row" }}>
