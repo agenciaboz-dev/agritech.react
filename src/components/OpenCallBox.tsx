@@ -58,7 +58,7 @@ export const OpenCallBox: React.FC<OpenCallBoxProps> = ({ data, click, callStatu
                 p: "4vw",
                 borderRadius: "5vw",
                 gap: "3vw",
-                height: "45%",
+                height: "25vh",
                 justifyContent: "space-between",
                 marginTop: "2vw",
             }}

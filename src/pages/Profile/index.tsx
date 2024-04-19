@@ -155,7 +155,7 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
         <Box
             sx={{
                 width: "100%",
-                height: "100%",
+                height: "85%",
                 backgroundColor: colors.button,
                 flexDirection: "column",
                 overflowY: "hidden",
@@ -170,7 +170,9 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
                     gap: "1vw",
                     padding: "4vw",
                     flexDirection: "row",
+                    overflow: "hidden",
                     marginTop: "5vh",
+                    maxHeight: "100vh",
                 }}
             >
                 <Header back location={user.isAdmin ? "../adm/" : user.employee ? "../employee/" : "../producer/"} />
@@ -179,6 +181,7 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
                 sx={{
                     width: "100%",
                     height: "100%",
+
                     padding: "4vw",
                     backgroundColor: "#fff",
                     borderTopLeftRadius: "5vw",

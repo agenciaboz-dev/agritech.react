@@ -131,7 +131,7 @@ export const HeaderProfile: React.FC<HeaderProfileProps> = ({
                     src={image || values.image || null}
                     onChange={(file) => setImage(file)}
                     variant="circle"
-                    style={{ width: "23vw", height: "23vw", alignSelf: "center" }}
+                    style={{ width: "30vw", height: "28vw", alignSelf: "center" }}
                     emptyLabel="enviar imagem"
                     changeLabel="trocar imagem"
                 />
