@@ -103,7 +103,18 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
 
     const exportPDF = async () => {
         console.log(selectedReport?.pdf_path)
-        selectedReport?.pdf_path && window.open(selectedReport.pdf_path, "_blank")?.focus()
+        selectedReport?.pdf_path && openPDFLink(selectedReport.pdf_path)
+    }
+
+    const openPDFLink = (url: string) => {
+        //@ts-ignore
+        if (window.ReactNativeWebView) {
+            const data = { type: "pdf", url }
+            // @ts-ignore
+            window.ReactNativeWebView.postMessage(JSON.stringify(data))
+        } else {
+            window.open(url, "_blank")?.focus()
+        }
     }
 
     useEffect(() => {
