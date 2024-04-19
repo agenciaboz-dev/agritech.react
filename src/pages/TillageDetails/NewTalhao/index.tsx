@@ -128,6 +128,7 @@ export const NewTalhao: React.FC<NewTalhaoProps> = ({}) => {
                 height: "100%",
                 backgroundColor: colors.button,
                 flexDirection: "column",
+                overflow: "hidden",
             }}
         >
             <Box
@@ -153,13 +154,13 @@ export const NewTalhao: React.FC<NewTalhaoProps> = ({}) => {
                 />
             </Box>
             <Box
-                style={{
+                sx={{
                     justifyContent: "center",
-                    height: "92%",
+                    height: "100%",
                     backgroundColor: colors.secondary,
                     borderTopLeftRadius: "5vw",
                     borderTopRightRadius: "5vw",
-                    paddingTop: 10,
+                    mt: "10vw",
                 }}
             >
                 {currentStep === 1 && (
@@ -171,15 +172,15 @@ export const NewTalhao: React.FC<NewTalhaoProps> = ({}) => {
                     sx={{
                         padding: "0vw",
                         width: "100%",
-                        flex: 1,
-                        height: "100%",
+                        // flex: 1,
+                        height: "100vh",
                         backgroundColor: "#fff",
                         borderTopLeftRadius: "7vw",
                         borderTopRightRadius: "7vw",
-                        overflow: "hidden",
+                        overflowY: "auto",
                     }}
                 >
-                    <Box sx={{ width: "100%", height: "90%", gap: "4vw", flexDirection: "column" }}>
+                    <Box sx={{ width: "100%", height: "80%", gap: "4vw", flexDirection: "column", pb: "2vh" }}>
                         <ModalGallery images={images} close={close} opened={opened} setImages={setImages} />
                         <Formik initialValues={initialValues} onSubmit={handleSubmit}>
                             {({ values, handleChange }) => (
@@ -203,7 +204,15 @@ export const NewTalhao: React.FC<NewTalhaoProps> = ({}) => {
                                             </>
                                         ))}
                                     {currentStep === 2 && (
-                                        <Box sx={{ height: "100%", justifyContent: "space-between" }}>
+                                        <Box
+                                            sx={{
+                                                height: "100%",
+                                                maxHeight: "100%",
+                                                // justifyContent: "space-between",
+                                                overflowY: "auto",
+                                                flexDirection: "column",
+                                            }}
+                                        >
                                             <FormTalhao
                                                 data={values}
                                                 change={handleChange}
@@ -211,7 +220,9 @@ export const NewTalhao: React.FC<NewTalhaoProps> = ({}) => {
                                                 open={open}
                                                 opened={opened}
                                             />
-                                            <Box sx={{ flexDirection: "column", gap: "2vw", p: "0 4vw" }}>
+                                            <Box
+                                                sx={{ flexDirection: "column", gap: "2vw", p: "0 4vw", width: 1, pb: "3vh" }}
+                                            >
                                                 <Button
                                                     variant="outlined"
                                                     sx={{

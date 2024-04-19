@@ -48,7 +48,7 @@ export const FormTalhao: React.FC<FormTalhaoProps> = ({ data, change, images, op
 
     useEffect(() => {}, [])
     return (
-        <Box sx={{ width: "100%", height: "74%", gap: "3vw", flexDirection: "column", p: "4vw" }}>
+        <Box sx={{ width: "100%", height: "90%", gap: "6vw", flexDirection: "column", p: "4vw" }}>
             <p>Informações do Talhão</p>
 
             <Box

@@ -101,7 +101,6 @@ export const ListTillages: React.FC<ListTillagesProps> = ({}) => {
                     borderTopLeftRadius: "5vw",
                     borderTopRightRadius: "5vw",
                     paddingTop: "4vw",
-                    mt: "10vw",
                 }}
             >
                 <Box

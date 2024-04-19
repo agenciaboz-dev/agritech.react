@@ -403,6 +403,24 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                             {/* {tab === "history" && <p>Nenhum Registro</p>} */}
                         </>
                     )}
+                    {tillageSelect?.talhao?.length == 0 && (
+                        <IconButton
+                            sx={{
+                                bgcolor: colors.button,
+                                width: "12vw",
+                                height: "12vw",
+                                borderRadius: "10vw",
+                                position: "absolute",
+                                bottom: "22vw",
+                                right: "5vw",
+                            }}
+                            onClick={() =>
+                                navigate(`/adm/producer/${tillageSelect?.producerId}/${tillageSelect?.id}/new_talhao`)
+                            }
+                        >
+                            <PiPlant color={"#fff"} style={{ width: "6vw", height: "6vw" }} />
+                        </IconButton>
+                    )}
                 </Box>
             </Box>
         </Box>
