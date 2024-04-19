@@ -20,7 +20,6 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
     const isMobile = useMediaQuery("(orientation: portrait)")
     const header = useHeader()
     const navigate = useNavigate()
-    const { listCalls } = useCall()
 
     //Users
     const { userid } = useParams()

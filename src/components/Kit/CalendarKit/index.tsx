@@ -1,4 +1,4 @@
-import { Autocomplete, Box, Button, IconButton, TextField } from "@mui/material"
+import { Autocomplete, Box, Button, IconButton, Skeleton, TextField } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { colors } from "../../../style/colors"
 import { Header } from "../../Header"
@@ -26,7 +26,7 @@ export const CalendarKit: React.FC<CalendarKitProps> = ({}) => {
 
     //kits
     const { listKits } = useKits()
-    const [kits, setKits] = useState(listKits?.filter((item) => !!item && item.active) as Kit[])
+    const [kits, setKits] = useState<Kit[]>([])
     const [selectedKit, setSelectedKit] = useState<Kit | null>(null)
 
     //Users
@@ -95,6 +95,7 @@ export const CalendarKit: React.FC<CalendarKitProps> = ({}) => {
 
     useEffect(() => {
         if (listKits.length === 0) io.emit("kit:list")
+        setKits(listKits?.filter((item) => !!item && item.active) as Kit[])
     }, [listKits])
     useEffect(() => {
         handleFindCalls(value)
@@ -140,19 +141,20 @@ export const CalendarKit: React.FC<CalendarKitProps> = ({}) => {
                     gap: "4vw",
                 }}
             >
-                <Box
-                    gap="4vw"
-                    sx={{ width: "100%", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}
-                >
-                    <Autocomplete
-                        value={selectedKit}
-                        options={kits || []}
-                        getOptionLabel={(option) => option.name || ""}
-                        onChange={(event, selected) => setSelectedKit(selected)}
-                        isOptionEqualToValue={(option, value) => option.id == value.id}
-                        renderInput={(params) => <TextField {...params} sx={{ ...textField }} label="kit" required />}
-                        sx={{ width: "90%" }}
-                    />
+                <Box sx={{ width: "99%", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+                    {kits.length !== 0 ? (
+                        <Autocomplete
+                            value={selectedKit}
+                            options={kits || []}
+                            getOptionLabel={(option) => option.name || ""}
+                            onChange={(event, selected) => setSelectedKit(selected)}
+                            isOptionEqualToValue={(option, value) => option.id == value.id}
+                            renderInput={(params) => <TextField {...params} sx={{ ...textField }} label="kit" required />}
+                            sx={{ width: "85%" }}
+                        />
+                    ) : (
+                        <Skeleton animation="wave" variant="rounded" sx={{ width: 0.85, height: "6vh" }} />
+                    )}
                     <Box>
                         <IconButton onClick={open}>
                             <BsFillInfoCircleFill color={colors.button} style={{ width: "6vw", height: "6vw" }} />
