@@ -99,7 +99,7 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
             approved: false,
             open: new Date().getTime().toString(),
             comments: values.comments,
-            producerId: user.id,
+            producerId: user.producer?.id,
             talhaoId: selectedTalhao?.id,
             userId: user?.id,
             forecast: dayjs(pickDate).valueOf().toString(),
