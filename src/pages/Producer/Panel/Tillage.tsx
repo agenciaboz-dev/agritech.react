@@ -297,7 +297,7 @@ export const Tillage: React.FC<TillageProps> = ({}) => {
                                 />
                             ) : (
                                 tab === "calls" && (
-                                    <Box sx={{ overflowY: "auto", height: "50%" }}>
+                                    <Box sx={{ overflowY: "auto", height: "50%", pt: "2vw" }}>
                                         {selectedTalhao?.calls.map((item, index) => (
                                             <LogsCard
                                                 user={user}

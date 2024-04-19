@@ -68,7 +68,7 @@ export const LogsCard: React.FC<LogsCardProps> = ({ review, call, variant, talha
                         {new Date(Number(call?.open)).toLocaleTimeString("pt-br")}
                     </p>
                 </Box>
-                <p style={{ fontSize: "3.5vw", fontWeight: "600" }}>
+                <p style={{ fontSize: "1rem", fontWeight: "600" }}>
                     {call?.approved && Number(call.talhao?.area) !== sumTotal
                         ? `Chamado Aberto`
                         : call?.approved && Number(call?.talhao?.area) >= sumTotal

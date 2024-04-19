@@ -1,4 +1,4 @@
-import { Box, Tab, Tabs, Avatar, Button } from "@mui/material"
+import { Box, Tab, Tabs, Avatar, Button, Skeleton } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { colors } from "../../../style/colors"
 import { Header } from "../../../components/Header"
@@ -9,6 +9,7 @@ import { useCall } from "../../../hooks/useCall"
 import { useIo } from "../../../hooks/useIo"
 import { useUser } from "../../../hooks/useUser"
 import { Call } from "../../../definitions/call"
+import { useArray } from "burgos-array"
 
 interface RequestsProps {}
 
@@ -19,8 +20,7 @@ export const Requests: React.FC<RequestsProps> = ({}) => {
     const { listCallsPending, listCalls } = useCall()
     // const [callsPending, setCallsPending] = useState<Call[]>([])
 
-    const callsApprove = listCalls.filter((item) => item.producerId === user?.producer?.id)
-    const callsPending = listCallsPending.filter((item) => item.producerId === user?.producer?.id)
+    const skeletons = useArray().newArray(3)
 
     const [tab, setTab] = useState("pending")
     const changeTab = (event: React.SyntheticEvent, newValue: string) => {
@@ -29,7 +29,7 @@ export const Requests: React.FC<RequestsProps> = ({}) => {
     const sortedPendingCalls = listCallsPending
         .filter((item) => !item.approved)
         .sort((a, b) => Number(a.open) - Number(b.open))
-    
+
     const sortedApprovedCalls = listCalls.sort((a, b) => Number(a.open) - Number(b.open))
 
     useEffect(() => {
@@ -67,7 +67,7 @@ export const Requests: React.FC<RequestsProps> = ({}) => {
             </Box>
 
             <Box
-                style={{
+                sx={{
                     padding: "5vw",
                     width: "100%",
                     height: "100%",
@@ -77,6 +77,7 @@ export const Requests: React.FC<RequestsProps> = ({}) => {
                     gap: "2vw",
                     overflow: "hidden",
                     flexDirection: "column",
+                    mt: "2vw",
                 }}
             >
                 {/* <Box sx={{ alignItems: "center", width: "100%", justifyContent: "space-between", flexDirection: "row" }}>
@@ -119,10 +120,14 @@ export const Requests: React.FC<RequestsProps> = ({}) => {
                     <Box sx={{ width: "100%", height: "100%", overflow: "auto", gap: "1vw" }}>
                         {tab === "pending" && sortedPendingCalls.length !== 0
                             ? sortedPendingCalls?.map((call, index) => <LogsCard key={index} call={call} variant />)
-                            : tab === "pending" && "Nenhum chamado pendente"}
+                            : tab === "pending" && (
+                                  <Skeleton animation="wave" variant="rounded" sx={{ width: 1, height: "13vw" }} />
+                              )}
                         {tab === "calls" && listCalls.length !== 0
                             ? sortedApprovedCalls?.map((call, index) => <LogsCard key={index} call={call} variant />)
-                            : tab === "calls" && "Nenhum chamado aberto"}
+                            : tab === "calls" && (
+                                  <Skeleton animation="wave" variant="rounded" sx={{ width: 1, height: "13vw" }} />
+                              )}
                     </Box>
                 </Box>
             </Box>

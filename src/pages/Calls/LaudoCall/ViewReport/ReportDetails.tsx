@@ -132,6 +132,7 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                 height: "100%",
                 backgroundColor: colors.button,
                 flexDirection: "column",
+                overflow: "hidden",
             }}
         >
             <Modal
@@ -177,6 +178,7 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                     gap: "1vw",
                     padding: "4vw",
                     flexDirection: "row",
+                    overflow: "auto",
                 }}
             >
                 <Header
@@ -197,12 +199,12 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                     backgroundColor: "#fff",
                     borderTopLeftRadius: "7vw",
                     borderTopRightRadius: "7vw",
-                    overflow: "hidden",
+                    overflow: "auto",
                     gap: "3vw",
-                    height: "100%",
+                    height: "80%",
                 }}
             >
-                <Box sx={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", overflowY: "auto" }}>
+                <Box sx={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
                     <h3>Relatório Operacional</h3>
 
                     <Group gap={0} justify="flex-end">
@@ -278,7 +280,7 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                     <hr />
                 </Box>
 
-                <Box sx={{ gap: "0vw", justifyContent: "space-between", height: "52%" }}>
+                <Box sx={{ gap: "0vw" }}>
                     <Box sx={{ gap: "3vw", height: "100%" }}>
                         {tab === "operation" && (
                             <>

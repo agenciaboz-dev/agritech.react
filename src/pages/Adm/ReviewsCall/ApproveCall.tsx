@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { Accordion, Autocomplete, Badge, Box, Button, Radio, TextField } from "@mui/material"
-import { Avatar } from "@files-ui/react"
+import { Accordion, Autocomplete, Avatar, Badge, Box, Button, Radio, Skeleton, TextField } from "@mui/material"
 import GeoImage from "../../../assets/geo.svg"
 import { Header } from "../../../components/Header"
 import { colors } from "../../../style/colors"
@@ -71,6 +70,8 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
     const [hectare, setHectare] = useState("")
     const [pickDate, setPickDate] = useState<Dayjs | null>(null)
     const [kitId, setKitId] = useState<number>(0)
+
+    const [cover, setCover] = useState("")
 
     useEffect(() => {
         setHectare(findCall?.tillage?.hectarePrice || "")
@@ -169,6 +170,16 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
         )
     }
 
+    useEffect(() => {
+        if (listKits.length === 0) io.emit("")
+        if (findCall?.talhao) io.emit("tillage:cover", findCall?.talhao.tillageId)
+
+        io.on("tillage:cover:success", (data: any) => {
+            setCover(data.cover)
+            console.log(data.cover)
+        })
+    }, [])
+
     return (
         <Box
             sx={{
@@ -199,7 +210,7 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
                     borderTopRightRadius: "5vw",
                 }}
             >
-                <Box sx={{ width: "100%", height: "90%", gap: "7vw", flexDirection: "column", p: "4vw" }}>
+                <Box sx={{ width: "100%", height: "90%", gap: "9vw", flexDirection: "column", p: "4vw" }}>
                     <p style={{ fontSize: "4.5vw" }}>Abertura do Chamado</p>
 
                     <Box
@@ -211,23 +222,34 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
                             alignItems: "center",
                         }}
                     >
-                        <Avatar
-                            src={GeoImage}
-                            // onChange={(file) => setImage(file)}
-                            changeLabel="Trocar foto"
-                            emptyLabel="Adicionar foto"
-                            variant="square"
-                            style={{
-                                width: "40vw",
-                                height: "40vw",
-                                fontSize: "4vw",
-                                fontFamily: "MalgunGothic2",
-                            }}
-                        />
-                        <Box sx={{ flexDirection: "column", gap: "2vw", width: "65%" }}>
-                            <Box>
-                                <p style={p_style}>Nome da Fazenda</p>
-                                <p>
+                        {cover ? (
+                            <Avatar
+                                src={cover ? cover : ""}
+                                // onChange={(file) => setImage(file)}
+
+                                variant="rounded"
+                                style={{
+                                    flex: 1,
+                                    height: "38vw",
+                                    fontSize: "4vw",
+                                    fontFamily: "MalgunGothic2",
+                                }}
+                            />
+                        ) : (
+                            <Skeleton animation="wave" variant="rounded" sx={{ flex: 1, height: "38vw" }} />
+                        )}
+                        <Box sx={{ flexDirection: "column", gap: "2vw", flex: 1 }}>
+                            <Box sx={{ width: 1 }}>
+                                <p style={{ ...p_style }}>Nome da Fazenda</p>
+                                <p
+                                    style={{
+                                        width: "40vw",
+                                        // maxWidth: "90%", // Defina a largura máxima em vez de largura
+                                        textOverflow: "ellipsis", // Adicione reticências ao texto que ultrapassa o limite de largura
+                                        whiteSpace: "nowrap",
+                                        overflow: "hidden",
+                                    }}
+                                >
                                     {findCall?.talhao?.tillage?.name} - {findCall?.talhao?.name}
                                 </p>
                             </Box>
