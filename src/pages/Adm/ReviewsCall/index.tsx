@@ -1,4 +1,4 @@
-import { Box, Tab, Tabs, Avatar, Button } from "@mui/material"
+import { Box, Tab, Tabs, Avatar, Button, Skeleton } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { colors } from "../../../style/colors"
 import { Header } from "../../../components/Header"
@@ -7,6 +7,8 @@ import { tabStyle } from "../../../style/tabStyle"
 import { LogsCard } from "../../Calls/LogsCard"
 import { useCall } from "../../../hooks/useCall"
 import { useIo } from "../../../hooks/useIo"
+import { useArray } from "burgos-array"
+import { useKits } from "../../../hooks/useKits"
 
 interface ReviewsCallProps {
     user: User
@@ -15,7 +17,9 @@ interface ReviewsCallProps {
 export const ReviewsCall: React.FC<ReviewsCallProps> = ({ user }) => {
     const io = useIo()
     const header = useHeader()
+    const skeletons = useArray().newArray(3)
     const { listCalls, listCallsPending } = useCall()
+    const { listKits } = useKits()
 
     const [tab, setTab] = useState("pending")
     const sortedPendingCalls = listCallsPending
@@ -29,14 +33,18 @@ export const ReviewsCall: React.FC<ReviewsCallProps> = ({ user }) => {
     }
 
     useEffect(() => {
-        console.log(sortedPendingCalls)
+        console.log({ PENDING: sortedPendingCalls })
     }, [sortedPendingCalls])
+    useEffect(() => {
+        console.log({ APPROVED: sortedApprovedCalls })
+    }, [sortedApprovedCalls])
 
     useEffect(() => {
         header.setTitle("Chamados")
 
         if (listCalls.length == 0) io.emit("call:listApproved")
         if (listCallsPending.length == 0) io.emit("call:listPending")
+        // if (listKits.length == 0) io.emit("kit:list")
     }, [])
 
     return (
@@ -112,13 +120,31 @@ export const ReviewsCall: React.FC<ReviewsCallProps> = ({ user }) => {
                         <Tab sx={tabStyle} value="pending" label="Pendentes" />
                         <Tab sx={tabStyle} value="calls" label="Em andamento" />
                     </Tabs>
-                    <Box sx={{ width: "100%", height: "100%", overflow: "auto", gap: "1vw" }}>
+                    <Box sx={{ width: "100%", height: "100%", overflow: "auto", gap: "1vw", pb: "4vh" }}>
                         {tab === "pending" && sortedPendingCalls.length !== 0
-                            ? sortedPendingCalls?.map((call, index) => <LogsCard key={index} call={call} review />)
-                            : tab === "pending" && "Nenhum chamado pendente"}
+                            ? sortedPendingCalls.map((call, index) => <LogsCard key={index} call={call} review />)
+                            : tab === "pending" &&
+                              sortedPendingCalls.length === 0 &&
+                              skeletons.map((_, index) => (
+                                  <Skeleton
+                                      key={index}
+                                      animation="wave"
+                                      variant="rounded"
+                                      sx={{ width: 1, height: "15vw" }}
+                                  />
+                              ))}
                         {tab === "calls" && listCalls.length !== 0
                             ? sortedApprovedCalls?.map((call, index) => <LogsCard key={index} call={call} />)
-                            : tab === "calls" && "Nenhum chamado aberto"}
+                            : tab === "calls" &&
+                              sortedApprovedCalls.length === 0 &&
+                              skeletons.map((_, index) => (
+                                  <Skeleton
+                                      key={index}
+                                      animation="wave"
+                                      variant="rounded"
+                                      sx={{ width: 1, height: "15vw" }}
+                                  />
+                              ))}
                     </Box>
                 </Box>
             </Box>
