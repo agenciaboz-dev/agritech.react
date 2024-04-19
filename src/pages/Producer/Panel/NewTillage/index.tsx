@@ -169,6 +169,7 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
                 height: "100%",
                 backgroundColor: colors.button,
                 flexDirection: "column",
+                overflow: "hidden",
             }}
         >
             <Box
@@ -187,11 +188,12 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
             <Box
                 style={{
                     justifyContent: "center",
-                    height: "92%",
+                    height: "100vh",
                     backgroundColor: colors.secondary,
                     borderTopLeftRadius: "5vw",
                     borderTopRightRadius: "5vw",
                     paddingTop: 10,
+                    marginTop: "5vh",
                 }}
             >
                 {currentStep === 1 && (
@@ -204,14 +206,14 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
                         padding: "0vw",
                         width: "100%",
                         flex: 1,
-                        height: "100%",
+                        height: "100vh",
                         backgroundColor: "#fff",
                         borderTopLeftRadius: "7vw",
                         borderTopRightRadius: "7vw",
-                        overflow: "hidden",
+                        overflowY: "auto",
                     }}
                 >
-                    <Box sx={{ width: "100%", height: "90%", gap: "4vw", flexDirection: "column" }}>
+                    <Box sx={{ width: "100%", height: "80%", gap: "4vw", flexDirection: "column" }}>
                         <ModalGallery images={images} close={close} opened={opened} setImages={setImages} />
 
                         <Formik initialValues={initialValues} onSubmit={handleSubmit}>
@@ -262,7 +264,15 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
                                         </>
                                     )}
                                     {currentStep === 2 && (
-                                        <Box sx={{ height: "100%", justifyContent: "space-between" }}>
+                                        <Box
+                                            sx={{
+                                                height: "100vh",
+                                                maxHeight: "120vh",
+                                                justifyContent: "space-between",
+                                                overflowY: "auto",
+                                                flexDirection: "column",
+                                            }}
+                                        >
                                             <FormTillage
                                                 data={values}
                                                 addressApi={infoCep}
@@ -273,7 +283,15 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
                                                 opened={opened}
                                                 images={images}
                                             />
-                                            <Box sx={{ flexDirection: "column", gap: "2vw", p: "0 4vw" }}>
+                                            <Box
+                                                sx={{
+                                                    flexDirection: "row",
+                                                    gap: "2vw",
+                                                    p: "0 4vw",
+                                                    width: 1,
+                                                    pb: "3vh",
+                                                }}
+                                            >
                                                 <Button
                                                     variant="outlined"
                                                     sx={{

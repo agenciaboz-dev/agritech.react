@@ -85,25 +85,35 @@ export const GeolocalTalhao: React.FC<GeolocalTalhaoProps> = ({ setCurrentStep, 
 
     return (
         <Box sx={{ width: "100%", height: "100%", zIndex: 0 }}>
-            <MapContainer center={origin} zoom={16} scrollWheelZoom={true} style={{ height: "100%" }} ref={mapRef}>
-                <TileLayer url={`https://api.mapbox.com/styles/v1/${mapboxStyleId}/tiles/{z}/{x}/{y}?access_token=${mapboxToken}`} />
+            <MapContainer
+                center={origin}
+                zoom={16}
+                scrollWheelZoom={true}
+                style={{ height: "100%", zIndex: 1 }}
+                ref={mapRef}
+            >
+                <TileLayer
+                    url={`https://api.mapbox.com/styles/v1/${mapboxStyleId}/tiles/{z}/{x}/{y}?access_token=${mapboxToken}`}
+                />
                 {coordinates.map((coord, index) => (
                     <Marker key={index} position={coord} />
                 ))}
-                {coordinates.length > 0 && <Polygon positions={coordinates} color="blue" fillColor="lightblue" fillOpacity={0.5} />}
+                {coordinates.length > 0 && (
+                    <Polygon positions={coordinates} color="blue" fillColor="lightblue" fillOpacity={0.5} />
+                )}
 
                 <MapClickHandler />
             </MapContainer>
 
-            <Box sx={{ padding: "2vw" }}>
+            <Box sx={{ padding: "2vw", position: "fixed", bottom: "12vh", alignItems: "center", zIndex: 2, width: 1 }}>
                 <ButtonAgritech
                     variant="contained"
                     sx={{
                         padding: "1vw",
-                        width: "100%",
+                        width: "90%",
                         fontSize: 17,
                         color: colors.text.white,
-                        backgroundColor: colors.button,
+                        backgroundColor: colors.secondary,
                         borderRadius: "5vw",
                         textTransform: "none",
                     }}

@@ -1,23 +1,15 @@
-import { Avatar, Box, Button, Tab, Tabs, TextField } from "@mui/material"
+import { Avatar, Box, Tab, Tabs, TextField } from "@mui/material"
 import React, { ChangeEventHandler, useEffect, useState } from "react"
 import { useHeader } from "../../../../hooks/useHeader"
 import { textField } from "../../../../style/input"
-import { colors } from "../../../../style/colors"
 import { useNavigate } from "react-router-dom"
 import { tabStyle } from "../../../../style/tabStyle"
-import GeoImage from "../../../../assets/geo.svg"
-import { Form, Formik } from "formik"
-import { Team } from "../../../../components/NewProducer/NewTillage/Team"
-import { Additional } from "../../../../components/NewProducer/NewTillage/Additional"
 import { Gallery } from "../../../../components/NewProducer/NewTillage/Gallery"
-import { useArray } from "burgos-array"
-import { LatLngExpression, LatLngTuple } from "leaflet"
+import { LatLngTuple } from "leaflet"
 import { useUser } from "../../../../hooks/useUser"
-import { CepAbertoApi } from "../../../../definitions/cepabertoApi"
 import { NewLavoura } from "../../../../definitions/newTillage"
 import MaskedInputNando from "../../../../components/MaskedNando"
 import { useNumberMask } from "burgos-masks"
-import { ButtonAgritech } from "../../../../components/ButtonAgritech"
 import { TitleComponents } from "../../../../components/TitleComponents"
 
 interface FormTalhaoProps {
@@ -31,16 +23,7 @@ interface FormTalhaoProps {
     images: { id: number; file: File; name: string; url: string }[]
 }
 
-export const FormTalhao: React.FC<FormTalhaoProps> = ({
-    data,
-    change,
-    setCurrentStep,
-    setCoordinates,
-    open,
-    images,
-    opened,
-}) => {
-    const header = useHeader()
+export const FormTalhao: React.FC<FormTalhaoProps> = ({ data, change, open, images, opened }) => {
     const { user } = useUser()
     const [image, setImage] = useState<File>()
     const navigate = useNavigate()
@@ -60,7 +43,7 @@ export const FormTalhao: React.FC<FormTalhaoProps> = ({
         console.log(data.cover)
     }, [])
     return (
-        <Box sx={{ width: "100%", height: "90%", gap: "3vw", flexDirection: "column", p: "4vw" }}>
+        <Box sx={{ width: "100%", height: "90%", gap: "5vw", flexDirection: "column", p: "4vw" }}>
             <p>Informações do Talhão</p>
 
             <Box
@@ -76,13 +59,13 @@ export const FormTalhao: React.FC<FormTalhaoProps> = ({
                     src={data.cover}
                     variant="rounded"
                     style={{
-                        width: "34vw",
-                        height: "34vw",
+                        width: "25vw",
+                        height: "25vw",
                         fontSize: "4vw",
                         fontFamily: "MalgunGothic2",
                     }}
                 />
-                <Box sx={{ flexDirection: "column", gap: "2vw", width: "65%" }}>
+                <Box sx={{ flexDirection: "column", gap: "2vw", width: "70%" }}>
                     <TextField
                         label={"Nome do Talhão"}
                         name="name"
@@ -121,7 +104,7 @@ export const FormTalhao: React.FC<FormTalhaoProps> = ({
                 <Tab sx={tabStyle} value="gallery" label="Imagens" />
             </Tabs>
 
-            <Box sx={{ width: "100%", height: "60%", gap: "1vw", pt: "2vw" }}>
+            <Box sx={{ width: "100%", height: "60%", pt: "2vw" }}>
                 {images.length === 0 && (
                     <TitleComponents title="Adicionar Galeria" button textButton="Adicionar" click={open} />
                 )}

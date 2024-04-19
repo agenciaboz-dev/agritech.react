@@ -43,7 +43,7 @@ export const PanelUser: React.FC<PanelUserProps> = ({ user }) => {
     }, [])
 
     return (
-        <Box style={{ flex: 1, backgroundColor: colors.button, paddingTop: "4vw" }}>
+        <Box style={{ height: "100%", backgroundColor: colors.button, paddingTop: "4vw", overflowY: "hidden" }}>
             <Box style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", padding: "0 4vw" }}>
                 <Box
                     sx={{
@@ -116,6 +116,7 @@ export const PanelUser: React.FC<PanelUserProps> = ({ user }) => {
                         borderTopLeftRadius: "7vw",
                         borderTopRightRadius: "7vw",
                         gap: "10vw",
+                        overflowY: "auto",
                     }}
                 >
                     <Box sx={{ gap: "2vw" }}>

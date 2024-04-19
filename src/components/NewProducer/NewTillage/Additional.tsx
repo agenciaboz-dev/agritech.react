@@ -11,7 +11,7 @@ interface AdditionalProps {
 
 export const Additional: React.FC<AdditionalProps> = ({ data, handleChange }) => {
     return (
-        <Box sx={{ width: "100%", flexDirection: "column", gap: "3vw" }}>
+        <Box sx={{ width: "100%", flexDirection: "column", gap: "3vw", pt: "4vw" }}>
             <TextField
                 label={"Observações Adicionais"}
                 name="comments"

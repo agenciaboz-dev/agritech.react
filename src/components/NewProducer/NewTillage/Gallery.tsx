@@ -11,7 +11,7 @@ interface GalleryProps {
 
 export const Gallery: React.FC<GalleryProps> = ({ id, images, open }) => {
     return (
-        <Box sx={{ width: "100%", flexDirection: "column", gap: "3vw", height: "100%" }}>
+        <Box sx={{ width: "100%", flexDirection: "column", gap: "3vw", height: "100%", pt: "5vw" }}>
             <Box sx={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", pt: "2vw" }}>
                 <p>Galeria</p>
 

@@ -1,4 +1,4 @@
-import { Avatar, Box, IconButton, Tab, Tabs } from "@mui/material"
+import { Avatar, Box, IconButton, Skeleton, Tab, Tabs } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { colors } from "../../../style/colors"
 import { Header } from "../../../components/Header"
@@ -16,6 +16,9 @@ import { OpenCallBox, ProgressCall } from "../../../components/OpenCallBox"
 import { LogsCard } from "../../TillageDetails/LogsCard"
 import { content, progress } from "../../../tools/contenModals"
 import { useProducer } from "../../../hooks/useProducer"
+import { useArray } from "burgos-array"
+import { VscAdd } from "react-icons/vsc"
+import { ButtonAgritech } from "../../../components/ButtonAgritech"
 
 interface TillageProps {}
 
@@ -29,7 +32,7 @@ export const Tillage: React.FC<TillageProps> = ({}) => {
     const { tillageid } = useParams()
     const [selectedTalhao, setSelectedTalhao] = useState<Talhao>()
 
-    const findTillage = listTillages.find((item) => item.id === Number(tillageid))
+    const findTillage = user?.producer?.tillage?.find((item) => item.id === Number(tillageid))
     const [tillageSelect, setTillageSelect] = useState<Tillage>()
 
     const [weatherData, setWeatherData] = useState<CurrentConditions>()
@@ -43,6 +46,7 @@ export const Tillage: React.FC<TillageProps> = ({}) => {
     const [selectedAvatar, setSelectedAvatar] = useState(0)
     const [selectedCall, setSelectedCall] = useState<Call | null>(null)
     const [callStatus, setCallStatus] = useState(false)
+    const skeletons = useArray().newArray(3)
 
     const toggleSelection = (talhao: Talhao) => {
         if (selectedAvatar === talhao.id) {
@@ -53,6 +57,10 @@ export const Tillage: React.FC<TillageProps> = ({}) => {
             setSelectedCall(null)
         }
     }
+
+    useEffect(() => {
+        console.log({ OIAAAA: user?.producer?.tillage })
+    }, [user])
 
     useEffect(() => {
         header.setTitle(findTillage ? findTillage?.name : "")
@@ -94,6 +102,7 @@ export const Tillage: React.FC<TillageProps> = ({}) => {
                 height: "100%",
                 backgroundColor: colors.button,
                 flexDirection: "column",
+                overflow: "hidden",
             }}
         >
             <Box
@@ -105,6 +114,7 @@ export const Tillage: React.FC<TillageProps> = ({}) => {
                     gap: "1vw",
                     padding: "4vw",
                     flexDirection: "row",
+                    overflow: "hidden",
                 }}
             >
                 <Header back location={user?.producer !== null ? "/producer/tillages" : "/producer"} />
@@ -116,51 +126,101 @@ export const Tillage: React.FC<TillageProps> = ({}) => {
                     backgroundColor: "#353535",
                     borderTopLeftRadius: "5vw",
                     borderTopRightRadius: "5vw",
-                    gap: "1vw",
+                    gap: "0vw",
+                    marginTop: "2vw",
+                    overflow: "hidden",
                 }}
             >
                 <Box
                     sx={{
-                        p: "4vw",
                         flexDirection: "row",
                         width: "100%",
                         justifyContent: "space-between",
                         alignItems: "center",
                     }}
                 >
-                    <p
-                        style={{
-                            fontSize: "5.5vw",
-                            color: colors.text.white,
-                            fontFamily: "MalgunGothic2",
-                            fontWeight: "bold",
-                        }}
-                    >
-                        {/* {!user?.producer ? tillageSelect?.name : tillageSelectProd?.name} */}
-                        {!user?.producer ? selectedTalhao?.name : ""}
-                    </p>
+                    {!selectedTalhao ? (
+                        <Box
+                            sx={{
+                                p: "2vw 4vw",
+                                flexDirection: "row",
+                                width: "90%",
+                                justifyContent: "space-between",
+                                alignItems: "center",
+                            }}
+                        >
+                            <Skeleton sx={{ width: 0.5, height: "8vw", marginLeft: "0vw" }} />
+                        </Box>
+                    ) : (
+                        <Box
+                            sx={{
+                                p: "2vw 4vw",
+                                flexDirection: "row",
+                                width: "100%",
+                                justifyContent: "space-between",
+                                alignItems: "center",
+                            }}
+                        >
+                            <p
+                                style={{
+                                    fontSize: "1.2rem",
+                                    color: colors.text.white,
+                                    fontFamily: "MalgunGothic2",
+                                    fontWeight: "bold",
+                                }}
+                            >
+                                {user?.producer ? selectedTalhao?.name : ""}
+                            </p>
+                            <ButtonAgritech
+                                sx={{
+                                    width: "20%",
+                                    color: colors.text.white,
+                                    height: "12vw",
+                                    fontSize: "0.7rem",
+                                    gap: "1vw",
+                                    bgcolor: "gray",
+                                    p: 0,
+                                    textDecoration: "underline",
+                                }}
+                                onClick={() => navigate(`/producer/${tillageSelect?.id}/new_talhao`)}
+                            >
+                                <VscAdd color={"#fff"} style={{ width: "4vw", height: "4vw" }} />
+                                Talhão
+                            </ButtonAgritech>
+                        </Box>
+                    )}
                 </Box>
                 {findTillage?.talhao?.length !== 0 ? (
-                    <Box sx={{ flexDirection: "row", gap: "2vw", width: "100%", overflow: "auto", p: "0vw 4vw 8vw" }}>
-                        {tillageSelect?.talhao &&
-                            tillageSelect.talhao.map((item, index) => (
-                                <Box sx={{ alignItems: "center" }} key={index}>
-                                    <Avatar
-                                        src={item.cover || GeoImage}
-                                        style={{
-                                            width: "28vw",
-                                            height: "38vw",
-                                            fontSize: "4vw",
-                                            fontFamily: "MalgunGothic2",
-                                            marginLeft: "0vw",
-                                            borderRadius: "8vw",
-                                            border: selectedAvatar === item.id ? `5px solid ${colors.secondary}` : "",
-                                        }}
-                                        onClick={() => (selectedTalhao?.id !== item.id ? toggleSelection(item) : () => {})}
-                                    />
-                                    <p style={{ fontSize: "3.5vw", color: colors.text.white }}>{item.name}</p>
-                                </Box>
-                            ))}
+                    <Box sx={{ flexDirection: "row", gap: "2vw", width: "100%", overflow: "auto", p: "0vw 4vw 3vw" }}>
+                        {tillageSelect?.talhao
+                            ? tillageSelect.talhao.map((item, index) => (
+                                  <Box sx={{ alignItems: "center" }} key={index}>
+                                      <Avatar
+                                          src={item.cover || GeoImage}
+                                          style={{
+                                              width: "28vw",
+                                              height: "38vw",
+                                              fontSize: "4vw",
+                                              fontFamily: "MalgunGothic2",
+                                              marginLeft: "0vw",
+                                              borderRadius: "8vw",
+                                              border: selectedAvatar === item.id ? `5px solid ${colors.secondary}` : "",
+                                          }}
+                                          onClick={() => (selectedTalhao?.id !== item.id ? toggleSelection(item) : () => {})}
+                                      />
+                                      <p style={{ fontSize: "3.5vw", color: colors.text.white }}>{item.name}</p>
+                                  </Box>
+                              ))
+                            : skeletons.map(() => (
+                                  <Box sx={{ alignItems: "center", gap: "2vw" }}>
+                                      <Skeleton
+                                          animation="wave"
+                                          variant="rounded"
+                                          sx={{ width: "24vw", height: "34vw", borderRadius: "8vw" }}
+                                      />
+                                      <Skeleton animation="wave" variant="rounded" sx={{ width: "23vw", height: "3vw" }} />
+                                  </Box>
+                              ))}
                     </Box>
                 ) : (
                     <Box sx={{ p: "2vw 4vw 8vw" }}>
@@ -176,7 +236,7 @@ export const Tillage: React.FC<TillageProps> = ({}) => {
                         borderTopLeftRadius: "7vw",
                         borderTopRightRadius: "7vw",
                         overflow: "hidden",
-                        gap: "4vw",
+                        gap: "0vw",
                         height: "100%",
                     }}
                 >
@@ -197,7 +257,7 @@ export const Tillage: React.FC<TillageProps> = ({}) => {
                                 allowScrollButtonsMobile
                             >
                                 {/* <Tab sx={{ ...tabStyle, width: "50%" }} value="history" label="Histórico" /> */}
-                                <Tab sx={{ ...tabStyle, width: "100%" }} value="calls" label="Chamados" />
+                                <Tab sx={{ ...tabStyle, width: "50%" }} value="calls" label="Chamados" />
                             </Tabs>
                             {findTillage?.talhao?.length === 0 && tab === "calls" && (
                                 <p>É necessário ter talhões cadastrados para abrir chamados.</p>
@@ -255,20 +315,22 @@ export const Tillage: React.FC<TillageProps> = ({}) => {
                             {/* {tab === "history" && <p>Nenhum Registro</p>} */}
                         </>
                     )}
-                    <IconButton
-                        sx={{
-                            bgcolor: colors.button,
-                            width: "12vw",
-                            height: "12vw",
-                            borderRadius: "10vw",
-                            position: "absolute",
-                            bottom: "22vw",
-                            right: "5vw",
-                        }}
-                        onClick={() => navigate(`/producer/${findTillage?.id}/new_talhao`)}
-                    >
-                        <PiPlant color={"#fff"} style={{ width: "6vw", height: "6vw" }} />
-                    </IconButton>
+                    {tillageSelect?.talhao?.length == 0 && (
+                        <IconButton
+                            sx={{
+                                bgcolor: colors.button,
+                                width: "12vw",
+                                height: "12vw",
+                                borderRadius: "10vw",
+                                position: "absolute",
+                                bottom: "22vw",
+                                right: "5vw",
+                            }}
+                            onClick={() => navigate(`/producer/${findTillage?.id}/new_talhao`)}
+                        >
+                            <PiPlant color={"#fff"} style={{ width: "6vw", height: "6vw" }} />
+                        </IconButton>
+                    )}
                 </Box>
             </Box>
         </Box>

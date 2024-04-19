@@ -156,7 +156,7 @@ export const ModalGallery: React.FC<ModalGalleryProps> = ({ opened, close, image
                         padding: "3vw",
                         color: colors.text.white,
                         fontWeight: "600",
-                        fontSize: "4vw",
+                        fontSize: "0.9rem",
                         textTransform: "none",
                         borderRadius: "10vw",
                         height: "10vw",

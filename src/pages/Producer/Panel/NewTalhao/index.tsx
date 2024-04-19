@@ -113,9 +113,10 @@ export const NewTalhao: React.FC<NewTalhaoProps> = ({}) => {
         <Box
             sx={{
                 width: "100%",
-                height: "100%",
+                height: "240vw",
                 backgroundColor: colors.button,
                 flexDirection: "column",
+                overflow: "hidden",
             }}
         >
             <Box
@@ -132,13 +133,13 @@ export const NewTalhao: React.FC<NewTalhaoProps> = ({}) => {
                 <Header back location="../" />
             </Box>
             <Box
-                style={{
+                sx={{
                     justifyContent: "center",
-                    height: "92%",
+                    height: "100%",
                     backgroundColor: colors.secondary,
                     borderTopLeftRadius: "5vw",
                     borderTopRightRadius: "5vw",
-                    paddingTop: 10,
+                    mt: "-4vw",
                 }}
             >
                 {currentStep === 1 && (
@@ -151,11 +152,11 @@ export const NewTalhao: React.FC<NewTalhaoProps> = ({}) => {
                         padding: "0vw",
                         width: "100%",
                         flex: 1,
-                        height: "100%",
+                        height: "100vh",
                         backgroundColor: "#fff",
                         borderTopLeftRadius: "7vw",
                         borderTopRightRadius: "7vw",
-                        overflow: "hidden",
+                        overflowY: "auto",
                     }}
                 >
                     <Box sx={{ width: "100%", height: "90%", gap: "4vw", flexDirection: "column" }}>
@@ -182,7 +183,15 @@ export const NewTalhao: React.FC<NewTalhaoProps> = ({}) => {
                                             </>
                                         ))}
                                     {currentStep === 2 && (
-                                        <Box sx={{ height: "100%", justifyContent: "space-between" }}>
+                                        <Box
+                                            sx={{
+                                                height: "100%",
+                                                maxHeight: "100%",
+                                                // justifyContent: "space-between",
+                                                overflowY: "auto",
+                                                flexDirection: "column",
+                                            }}
+                                        >
                                             <FormTalhao
                                                 data={values}
                                                 change={handleChange}
@@ -192,7 +201,9 @@ export const NewTalhao: React.FC<NewTalhaoProps> = ({}) => {
                                                 images={images}
                                                 opened={opened}
                                             />
-                                            <Box sx={{ flexDirection: "column", gap: "2vw", p: "0 4vw" }}>
+                                            <Box
+                                                sx={{ flexDirection: "column", gap: "2vw", p: "0 4vw", width: 1, pb: "3vh" }}
+                                            >
                                                 <Button
                                                     variant="outlined"
                                                     sx={{

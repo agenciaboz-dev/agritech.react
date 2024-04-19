@@ -11,7 +11,7 @@ interface TeamProps {
 
 export const Team: React.FC<TeamProps> = ({ data, handleChange, producerName }) => {
     return (
-        <Box sx={{ width: "100%", flexDirection: "column", gap: "2vw" }}>
+        <Box sx={{ width: "100%", flexDirection: "column", gap: "2vw", pt: "4vw" }}>
             <TextField
                 label={"Proprietário"}
                 name="owner"

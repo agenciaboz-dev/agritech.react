@@ -62,42 +62,68 @@ export const FormTillage: React.FC<FormTillageProps> = ({
         header.setTitle(producerUser ? producerUser.name : "Nova Fazenda")
     }, [])
     return (
-        <Box sx={{ width: "100%", height: "74%", gap: "6vw", flexDirection: "column", p: "4vw" }}>
+        <Box sx={{ width: "100%", maxHeight: "96vh", height: "100vh", gap: "0vw", flexDirection: "column", p: "4vw" }}>
             <p>Informações da Fazenda</p>
 
             <Box
                 sx={{
-                    flexDirection: "row",
-                    gap: "5vw",
+                    flexDirection: "column",
                     width: "100%",
-                    height: "23%",
+                    gap: 0,
                     alignItems: "center",
+                    // overflowY: "auto",
                 }}
             >
-                <Avatar
-                    src={data.cover}
-                    // onChange={(file) => setImage(file)}
-                    onClick={() => {
-                        setCurrentStep(1)
-                        setCoordinates([])
+                <Box
+                    sx={{
+                        flexDirection: "row",
+                        gap: "5vw",
+                        width: "100%",
+                        height: "20vh",
+                        alignItems: "center",
                     }}
-                    variant="rounded"
-                    style={{
-                        width: "38vw",
-                        height: "38vw",
-                        fontSize: "4vw",
-                        fontFamily: "MalgunGothic2",
-                    }}
-                />
-                <Box sx={{ flexDirection: "column", gap: "2vw", width: "65%" }}>
-                    <TextField
-                        label={"Nome da fazenda"}
-                        name="name"
-                        value={data.name}
-                        sx={textField}
-                        onChange={change}
-                        required
+                >
+                    <Avatar
+                        src={data.cover}
+                        // onChange={(file) => setImage(file)}
+                        onClick={() => {
+                            setCurrentStep(1)
+                            setCoordinates([])
+                        }}
+                        variant="rounded"
+                        style={{
+                            width: "25vw",
+                            height: "25vw",
+                            fontSize: "4vw",
+                            fontFamily: "MalgunGothic2",
+                        }}
                     />
+                    <Box sx={{ flexDirection: "column", gap: "2vw", width: "65%" }}>
+                        <TextField
+                            label={"Nome da fazenda"}
+                            name="name"
+                            value={data.name}
+                            sx={textField}
+                            onChange={change}
+                            required
+                        />
+
+                        <TextField
+                            label={"Área"}
+                            name="area"
+                            value={data.area}
+                            sx={textField}
+                            onChange={change}
+                            InputProps={{
+                                inputComponent: MaskedInputNando,
+                                inputProps: { mask: floatMask, inputMode: "numeric" },
+                                endAdornment: "ha",
+                            }}
+                            required
+                        />
+                    </Box>
+                </Box>
+                <Box sx={{ width: 1, gap: "2vw" }}>
                     <p>
                         {addressApi?.cidade.nome}, {addressApi?.estado.sigla} - {addressApi?.cep}
                     </p>
@@ -107,19 +133,6 @@ export const FormTillage: React.FC<FormTillageProps> = ({
                         value={data.address.adjunct}
                         sx={textField}
                         onChange={change}
-                        required
-                    />
-                    <TextField
-                        label={"Área"}
-                        name="area"
-                        value={data.area}
-                        sx={textField}
-                        onChange={change}
-                        InputProps={{
-                            inputComponent: MaskedInputNando,
-                            inputProps: { mask: floatMask, inputMode: "numeric" },
-                            endAdornment: "ha",
-                        }}
                         required
                     />
                 </Box>
@@ -146,7 +159,9 @@ export const FormTillage: React.FC<FormTillageProps> = ({
                 <Box sx={{ width: "100%", height: "52%", gap: "3vw" }}>
                     <Box sx={{ width: "100%", height: "66%", overflowY: "auto", gap: "2vw" }}>
                         {images.length === 0 ? (
-                            <TitleComponents title="Adicionar Galeria" button textButton="Adicionar" click={open} />
+                            <Box sx={{ pt: "4vw" }}>
+                                <TitleComponents title="Adicionar Galeria" button textButton="Adicionar" click={open} />
+                            </Box>
                         ) : (
                             <Gallery key={1} id={0} images={images} open={open} />
                         )}
