@@ -28,7 +28,7 @@ export const PanelUser: React.FC<PanelUserProps> = ({ user }) => {
     const { snackbar } = useSnackbar()
     const navigate = useNavigate()
     const menu = useMenuDrawer()
-    const notificationDrawer = useNotificationDrawer()
+    const { open, setOpen, toggle } = useNotificationDrawer()
     const { recents } = useNotification()
     const { listUsers } = useUsers()
 
@@ -84,7 +84,7 @@ export const PanelUser: React.FC<PanelUserProps> = ({ user }) => {
                         <NotificationsNoneIcon
                             sx={{ color: "#fff" }}
                             onClick={() => {
-                                notificationDrawer.toggle()
+                                toggle()
                             }}
                         />
                     </Badge>

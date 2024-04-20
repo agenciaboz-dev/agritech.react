@@ -64,7 +64,7 @@ const UserRoutes: React.FC<{ user: User }> = ({ user }) => {
                 <Route path="/profile" element={<Profile user={user} />} />
                 <Route path="/profile/:userId" element={<Userprofile view />} />
                 <Route path="/call/*" element={<Calls user={user} />} />
-                <Route path="/notifications" element={<NotificationsList user={user} />} />
+                <Route path="/notifications/*" element={<NotificationsList user={user} />} />
             </ReactRoutes>
         </>
     )

@@ -19,6 +19,7 @@ import { CalendarKit } from "../../components/Kit/CalendarKit"
 import { ReportDetails } from "../Calls/LaudoCall/ViewReport/ReportDetails"
 import { Calls } from "../Calls"
 import { Calendar } from "../Adm/Panel/Calendar"
+import { NotificationsList } from "../Notifications/NotificationsList"
 
 interface EmployeeProps {
     user: User
@@ -45,6 +46,7 @@ export const Employee: React.FC<EmployeeProps> = ({ user }) => {
                 <Route path="/call/:callid/report/:reportid" element={<ReportDetails />} />
                 <Route path="/kit/calendar/:kitid" element={<Calendar />} />
                 <Route path="/call/*" element={<Calls user={user} />} />
+                <Route path="/notification/list" element={<NotificationsList user={user} />} />
             </ReactRoutes>
         </>
     )

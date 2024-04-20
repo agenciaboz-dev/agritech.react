@@ -40,22 +40,24 @@ export const NotificationsList: React.FC<NotificationsListProps> = ({ user }) =>
                     padding: isMobile ? "4vw" : "1vw",
                     flexDirection: "row",
                     paddingBottom: isMobile ? "13vw" : "5vw",
+                    flex: 1,
                 }}
             >
                 <Header back location={user.isAdmin ? "/adm" : user.producer !== null ? "/producer" : "/employee"} />
             </Box>
             <Box
-                style={{
+                sx={{
                     justifyContent: "center",
                     flex: 1,
+                    height: "100%",
                     backgroundColor: colors.secondary,
                     borderTopLeftRadius: isMobile ? "5vw" : "2vw",
                     borderTopRightRadius: isMobile ? "5vw" : "2vw",
-                    paddingTop: isMobile ? 10 : 0,
+                    padding: isMobile ? "1vw 0" : 0,
                 }}
             >
                 <Box
-                    style={{
+                    sx={{
                         flexDirection: "row",
                         alignItems: "center",
                         paddingBottom: isMobile ? "5vw" : "1vw",
@@ -75,18 +77,25 @@ export const NotificationsList: React.FC<NotificationsListProps> = ({ user }) =>
                     </p>
                 </Box>
                 <Box
-                    style={{
+                    sx={{
                         padding: isMobile ? "3vw" : "1vw",
                         width: "100%",
+
                         backgroundColor: "#fff",
                         borderTopLeftRadius: isMobile ? "7vw" : "2vw",
                         borderTopRightRadius: isMobile ? "7vw" : "2vw",
                         height: "100%",
+                        mt: "1vw",
+                        overflowY: "auto",
+                        pb: "10vh",
                     }}
                 >
-                    <Box sx={{ overflowY: "auto", height: "70%", gap: isMobile ? "2vw" : "1vw" }}>
+                    <Box sx={{ height: "90%", width: 1, gap: isMobile ? "3vw" : "1vw" }}>
                         {sortedList?.map((item) => (
-                            <LogNotification drawer={false} notification={item} />
+                            <Box key={item.id}>
+                                <LogNotification drawer={false} notification={item} key={item.id} />
+                                {/* <hr /> */}
+                            </Box>
                         ))}
                     </Box>
                 </Box>

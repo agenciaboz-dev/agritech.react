@@ -49,11 +49,36 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
 
     useEffect(() => {
         setEmployee(listUsers.concat(pendingUsers).find((item) => item.id === notification.target_id))
-        setCall(listCalls.find((item) => item.id === notification.target_id))
+
         setReport(listReports?.find((item) => item.id === notification.target_id))
         setTalhao(listTalhao?.find((item) => item.id === notification.target_id))
         setKit(listKits?.find((item) => item.id === notification.target_id))
     }, [notification])
+
+    useEffect(() => {
+        if (listUsers.length == 0) io.emit("users:list")
+        if (listKits.length == 0) {
+            io.emit("kit:list")
+        }
+        if (listCalls.length == 0) {
+            io.emit("call:listApproved", user)
+            setCall(listCalls.find((item) => item.id === notification.target_id))
+        }
+        if (listReports.length == 0) io.emit("report:list")
+        if (listTalhao?.length == 0) io.emit("talhao:list", user)
+    }, [listUsers, listKits, listCalls, listReports, listTalhao])
+    useEffect(() => {
+        console.log({ CALLLLLLLL: listCalls })
+        console.log({ CALLLLLLLL: notification.target_id })
+    }, [listCalls])
+
+    // useEffect(() => {
+    //     console.log({ USERS: listUsers })
+    //     console.log({ KITS: listKits })
+    //     console.log({ CALLS: listCalls })
+    //     console.log({ TALHAO: listTalhao })
+    //     console.log({ REPORTS: listReports })
+    // }, [listUsers, listKits, listCalls, listReports, listTalhao])
 
     const messageTemplates: any = {
         new: {
@@ -62,7 +87,11 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                     user && io.emit("notification:viewed", notification.id, user.id)
                     removeNotification(notification.id)
                     removeNotification(notification.id)
-                    navigate(!employee?.approved ? `/adm/review/profile/${notification.target_id}` : `/adm/profile/${notification.target_id}`)
+                    navigate(
+                        !employee?.approved
+                            ? `/adm/review/profile/${notification.target_id}`
+                            : `/adm/profile/${notification.target_id}`
+                    )
                 },
             },
             talhao: {
@@ -77,7 +106,6 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                 onClick: () => {
                     drawer && open && setOpen(false)
                     navigate(`/adm/settings-kit/${notification.target_id}`)
-
                     user && io.emit("notification:viewed", notification.id, user.id)
                     removeNotification(notification.id)
                 },
@@ -209,7 +237,12 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
             sx={{
                 width: "100%",
                 height: isMobile ? "13vw" : "4vw",
-                bgcolor: !drawer && findBy ? "transparent" : !drawer && findBy === undefined ? "#F0F9F2" : drawer && "transparent",
+                bgcolor:
+                    !drawer && findBy
+                        ? "transparent"
+                        : !drawer && findBy === undefined
+                        ? "#F0F9F2"
+                        : drawer && "transparent",
                 padding: isMobile ? "3vw" : "1vw",
                 borderRadius: isMobile ? "4vw" : "2vw",
                 flexDirection: "row",
@@ -222,9 +255,10 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
             <Box
                 sx={{
                     flexDirection: "row",
-                    gap: drawer ? (isMobile ? "3vw" : "1vw") : "1.5vw",
-                    width: isMobile ? "90%" : "100%",
+                    gap: drawer ? (isMobile ? "8vw" : "2vw") : "0vw",
+                    width: isMobile ? 1 : "100%",
                     alignItems: "center",
+                    justifyContent: "space-between",
                 }}
             >
                 <Box
@@ -233,7 +267,10 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                     }}
                 >
                     {notification.target_key === "employee" ? (
-                        <Avatar src={employee?.image} sx={{ width: isMobile ? "8vw" : "2vw", height: isMobile ? "8vw" : "2vw" }} />
+                        <Avatar
+                            src={employee?.image}
+                            sx={{ width: isMobile ? "8vw" : "2vw", height: isMobile ? "8vw" : "2vw" }}
+                        />
                     ) : notification.target_key === "report" && notification.action === "close" ? (
                         <HiOutlineClipboardDocument
                             style={{
@@ -359,74 +396,88 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                         )
                     )}
                 </Box>
-                <Box sx={{ flexDirection: "column", width: "75%", flexWrap: "nowrap" }}>
-                    <Box sx={{ flexDirection: "row", gap: "1vw" }}>
-                        <p
-                            style={{
-                                // display: "flex",
-                                fontSize: isMobile ? "2.5vw" : "1.2rem",
-                                textOverflow: "ellipsis",
-                                overflowX: "hidden",
-                                whiteSpace: "nowrap",
-                                color: drawer ? colors.text.white : colors.text.black,
-                            }}
-                        >
-                            {" "}
-                            {new Date(Number(notification.datetime)).toLocaleDateString("pt-br")} -
-                        </p>
-                        <p
-                            style={{
-                                // display: "flex",
-                                fontSize: isMobile ? "2.5vw" : "1.2rem",
-                                textOverflow: "ellipsis",
-                                overflowX: "hidden",
-                                whiteSpace: "nowrap",
-                                color: drawer ? colors.text.white : colors.text.black,
-                            }}
-                        >
-                            {" "}
-                            {new Date(Number(notification.datetime)).toLocaleTimeString("pt-br")}
-                        </p>
-                    </Box>
+                <Box sx={{ flexDirection: "row", width: "67%", flexWrap: "nowrap" }}>
                     {notification.target_key === "employee" ? (
-                        <p
-                            style={{
-                                fontSize: "0.9rem",
-                                color: drawer ? colors.text.white : colors.text.black,
-                                textOverflow: "ellipsis",
-                                whiteSpace: "nowrap",
-                                overflowX: "hidden",
-                                fontWeight: findBy === undefined ? "800" : "0",
-                            }}
-                        >
-                            {employee?.name} foi cadastrado
-                        </p>
+                        <Box>
+                            <p
+                                style={{
+                                    color: drawer ? colors.text.white : colors.text.black,
+                                    fontSize: "0.9rem",
+                                    textOverflow: "ellipsis",
+                                    whiteSpace: "nowrap",
+                                    overflowX: "hidden",
+                                    fontWeight: findBy === undefined ? "800" : "0",
+                                }}
+                            >
+                                Novo Cadastro
+                            </p>
+                            <p
+                                style={{
+                                    fontSize: "0.7rem",
+                                    color: drawer ? colors.text.white : colors.text.black,
+                                    textOverflow: "ellipsis",
+                                    whiteSpace: "nowrap",
+                                    overflowX: "hidden",
+                                    fontWeight: findBy === undefined ? "800" : "0",
+                                }}
+                            >
+                                {employee?.name} acabou de ser cadastrado
+                            </p>
+                        </Box>
                     ) : notification.action === "close" && notification.target_key === "report" ? (
-                        <p
-                            style={{
-                                color: drawer ? colors.text.white : colors.text.black,
-                                fontSize: "0.9rem",
-                                textOverflow: "ellipsis",
-                                whiteSpace: "nowrap",
-                                overflowX: "hidden",
-                                fontWeight: findBy === undefined ? "800" : "0",
-                            }}
-                        >
-                            Relatório fechado para {report?.call?.talhao?.tillage?.owner} - {report?.call?.talhao?.tillage?.name}
-                        </p>
+                        <Box>
+                            <p
+                                style={{
+                                    color: drawer ? colors.text.white : colors.text.black,
+                                    fontSize: "0.9rem",
+                                    textOverflow: "ellipsis",
+                                    whiteSpace: "nowrap",
+                                    overflowX: "hidden",
+                                    fontWeight: "800",
+                                }}
+                            >
+                                {report?.call?.talhao?.tillage?.owner}
+                            </p>
+                            <p
+                                style={{
+                                    color: drawer ? colors.text.white : colors.text.black,
+                                    fontSize: "0.7rem",
+                                    textOverflow: "ellipsis",
+                                    whiteSpace: "nowrap",
+                                    overflowX: "hidden",
+                                    fontWeight: findBy === undefined ? "800" : "0",
+                                }}
+                            >
+                                Relatório fechado para {report?.call?.talhao?.tillage?.name}
+                            </p>
+                        </Box>
                     ) : notification.action === "active" && notification.target_key === "admin" ? (
-                        <p
-                            style={{
-                                color: drawer ? colors.text.white : colors.text.black,
-                                fontSize: "0.9rem",
-                                textOverflow: "ellipsis",
-                                whiteSpace: "nowrap",
-                                overflowX: "hidden",
-                                fontWeight: findBy === undefined ? "800" : "0",
-                            }}
-                        >
-                            Você se tornou administrador
-                        </p>
+                        <Box>
+                            <p
+                                style={{
+                                    color: drawer ? colors.text.white : colors.text.black,
+                                    fontSize: "0.9rem",
+                                    textOverflow: "ellipsis",
+                                    whiteSpace: "nowrap",
+                                    overflowX: "hidden",
+                                    fontWeight: findBy === undefined ? "800" : "0",
+                                }}
+                            >
+                                Atualização
+                            </p>
+                            <p
+                                style={{
+                                    color: drawer ? colors.text.white : colors.text.black,
+                                    fontSize: "0.7rem",
+                                    textOverflow: "ellipsis",
+                                    whiteSpace: "nowrap",
+                                    overflowX: "hidden",
+                                    fontWeight: findBy === undefined ? "800" : "0",
+                                }}
+                            >
+                                Você se tornou administrador
+                            </p>
+                        </Box>
                     ) : notification.action === "disabled" && notification.target_key === "admin" ? (
                         <p
                             style={{
@@ -441,31 +492,59 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                             Você não é mais administrador
                         </p>
                     ) : notification.action === "active" && notification.target_key === "manager" ? (
-                        <p
-                            style={{
-                                color: drawer ? colors.text.white : colors.text.black,
-                                fontSize: "0.9rem",
-                                textOverflow: "ellipsis",
-                                whiteSpace: "nowrap",
-                                overflowX: "hidden",
-                                fontWeight: findBy === undefined ? "800" : "0",
-                            }}
-                        >
-                            Você se tornou gerente
-                        </p>
+                        <Box>
+                            <p
+                                style={{
+                                    color: drawer ? colors.text.white : colors.text.black,
+                                    fontSize: "0.9rem",
+                                    textOverflow: "ellipsis",
+                                    whiteSpace: "nowrap",
+                                    overflowX: "hidden",
+                                    fontWeight: findBy === undefined ? "800" : "0",
+                                }}
+                            >
+                                Atualização
+                            </p>
+                            <p
+                                style={{
+                                    color: drawer ? colors.text.white : colors.text.black,
+                                    fontSize: "0.7rem",
+                                    textOverflow: "ellipsis",
+                                    whiteSpace: "nowrap",
+                                    overflowX: "hidden",
+                                    fontWeight: findBy === undefined ? "800" : "0",
+                                }}
+                            >
+                                Você se tornou gerente
+                            </p>
+                        </Box>
                     ) : notification.action === "disabled" && notification.target_key === "manager" ? (
-                        <p
-                            style={{
-                                color: drawer ? colors.text.white : colors.text.black,
-                                fontSize: "0.9rem",
-                                textOverflow: "ellipsis",
-                                whiteSpace: "nowrap",
-                                overflowX: "hidden",
-                                fontWeight: findBy === undefined ? "800" : "0",
-                            }}
-                        >
-                            Você não é mais gerente
-                        </p>
+                        <Box>
+                            <p
+                                style={{
+                                    color: drawer ? colors.text.white : colors.text.black,
+                                    fontSize: "0.9rem",
+                                    textOverflow: "ellipsis",
+                                    whiteSpace: "nowrap",
+                                    overflowX: "hidden",
+                                    fontWeight: findBy === undefined ? "800" : "0",
+                                }}
+                            >
+                                Atualização
+                            </p>
+                            <p
+                                style={{
+                                    color: drawer ? colors.text.white : colors.text.black,
+                                    fontSize: "0.7rem",
+                                    textOverflow: "ellipsis",
+                                    whiteSpace: "nowrap",
+                                    overflowX: "hidden",
+                                    fontWeight: findBy === undefined ? "800" : "0",
+                                }}
+                            >
+                                Você não é mais gerente
+                            </p>
+                        </Box>
                     ) : notification.action === "new" && notification.target_key === "kit" ? (
                         <p
                             style={{
@@ -514,21 +593,61 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                     ) : (
                         notification.action === "new" &&
                         notification.target_key === "call" && (
-                            <p
-                                style={{
-                                    fontSize: "0.9rem",
-                                    color: drawer ? colors.text.white : colors.text.black,
-                                    textOverflow: "ellipsis",
-                                    whiteSpace: "nowrap",
-                                    fontWeight: findBy === undefined ? "800" : "0",
-
-                                    overflowX: "hidden",
-                                }}
-                            >
-                                Chamado aberto para {call?.producer?.user?.name}
-                            </p>
+                            <Box>
+                                <p
+                                    style={{
+                                        color: drawer ? colors.text.white : colors.text.black,
+                                        fontSize: "0.9rem",
+                                        textOverflow: "ellipsis",
+                                        whiteSpace: "nowrap",
+                                        overflowX: "hidden",
+                                        fontWeight: "800",
+                                    }}
+                                >
+                                    {call?.producer?.user?.name}
+                                </p>
+                                <p
+                                    style={{
+                                        fontSize: "0.7rem",
+                                        color: drawer ? colors.text.white : colors.text.black,
+                                        textOverflow: "ellipsis",
+                                        whiteSpace: "nowrap",
+                                        fontWeight: findBy === undefined ? "800" : "0",
+                                        overflowX: "hidden",
+                                    }}
+                                >
+                                    Chamado aberto para o talhão {call?.talhao?.name}
+                                </p>
+                            </Box>
                         )
                     )}
+                </Box>
+                <Box sx={{ flexDirection: "column", gap: "1vw", alignItems: "end", width: 0.2 }}>
+                    <p
+                        style={{
+                            // display: "flex",
+                            fontSize: isMobile ? "0.7rem" : "1.2rem",
+                            textOverflow: "ellipsis",
+                            overflowX: "hidden",
+                            whiteSpace: "nowrap",
+                            color: drawer ? colors.text.white : colors.text.black,
+                        }}
+                    >
+                        {new Date(Number(notification.datetime)).toLocaleDateString("pt-br")}
+                    </p>
+                    <p
+                        style={{
+                            // display: "flex",
+                            fontSize: isMobile ? "2.5vw" : "1.2rem",
+                            textOverflow: "ellipsis",
+                            overflowX: "hidden",
+                            whiteSpace: "nowrap",
+                            color: drawer ? colors.text.white : colors.text.black,
+                        }}
+                    >
+                        {" "}
+                        {new Date(Number(notification.datetime)).toLocaleTimeString("pt-br")}
+                    </p>
                 </Box>
             </Box>
             <Box sx={{ width: isMobile ? "10%" : "fit-content" }}>

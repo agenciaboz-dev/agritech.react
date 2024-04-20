@@ -55,9 +55,9 @@ export const NotificationDrawerProvider: React.FC<NotificationDrawerProviderProp
 
     useEffect(() => {
         io.on("notification:new", (notification: NotificationClass) => {
-            // if (notification.users.find((user_id) => user_id == user?.id)) {
-            setListNotifications((prevNotifications) => [...prevNotifications, notification])
-            // }
+            if (notification.users.find((user_id) => user_id == user?.id)) {
+                setListNotifications((prevNotifications) => [...prevNotifications, notification])
+            }
         })
 
         return () => {
