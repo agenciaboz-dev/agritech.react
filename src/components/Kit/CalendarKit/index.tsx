@@ -94,8 +94,13 @@ export const CalendarKit: React.FC<CalendarKitProps> = ({}) => {
 
     useEffect(() => {
         if (listKits.length === 0) io.emit("kit:list")
-        setKits(listKits?.filter((item) => !!item && item.active) as Kit[])
+        console.log(listKits)
+        setKits(listKits?.filter((item) => item.active))
     }, [listKits])
+
+    useEffect(() => {
+        console.log(kits)
+    }, [kits])
     useEffect(() => {
         handleFindCalls(value)
     }, [value])
@@ -149,10 +154,10 @@ export const CalendarKit: React.FC<CalendarKitProps> = ({}) => {
                 }}
             >
                 <Box sx={{ width: "99%", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-                    {kits.length !== 0 ? (
+                    {listKits.length !== 0 ? (
                         <Autocomplete
                             value={selectedKit}
-                            options={kits || []}
+                            options={listKits || []}
                             getOptionLabel={(option) => option.name || ""}
                             onChange={(event, selected) => setSelectedKit(selected)}
                             isOptionEqualToValue={(option, value) => option.id == value.id}

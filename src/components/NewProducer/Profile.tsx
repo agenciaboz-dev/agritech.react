@@ -16,7 +16,7 @@ interface ProfileProps {
 
 export const Profile: React.FC<ProfileProps> = ({ values, handleChange, image, setImage }) => {
     return (
-        <Box sx={{ p: "4vw", gap: "4vw", height: "80%" }}>
+        <Box sx={{ p: "4vw", gap: "4vw", height: "100%", overflowY: "auto" }}>
             <p
                 style={{
                     fontSize: "4.5vw",
@@ -30,7 +30,7 @@ export const Profile: React.FC<ProfileProps> = ({ values, handleChange, image, s
             <Box
                 sx={{
                     flexDirection: "row",
-                    gap: "5vw",
+                    gap: "3vw",
                     width: "100%",
                     height: "23%",
                     alignItems: "center",
@@ -120,8 +120,7 @@ export const Profile: React.FC<ProfileProps> = ({ values, handleChange, image, s
                     name="producer.inscricaoEstadual"
                     value={values.producer?.inscricaoEstadual}
                     sx={{ ...textField, width: "100%" }}
-                    inputMode="numeric"
-                    InputProps={{ inputComponent: MaskedInput, inputProps: { mask: "00000000000" } }}
+                    InputProps={{ inputComponent: MaskedInput, inputProps: { mask: "00000000000" }, inputMode: "numeric" }}
                     onChange={handleChange}
                     required
                 />

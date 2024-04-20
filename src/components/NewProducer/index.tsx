@@ -281,9 +281,10 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
         <Box
             sx={{
                 width: "100%",
-                height: "100%",
+                height: "100vh",
                 backgroundColor: colors.button,
                 flexDirection: "column",
+                overflow: "hidden",
             }}
         >
             <Box
@@ -300,13 +301,14 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
                 <Header back location="../" />
             </Box>
             <Box
-                style={{
+                sx={{
                     justifyContent: "center",
                     height: "92%",
                     backgroundColor: colors.secondary,
                     borderTopLeftRadius: "5vw",
                     borderTopRightRadius: "5vw",
-                    paddingTop: 10,
+                    paddingTop: "2vw",
+                    mt: currentStep === 3 ? "5vh" : "vh",
                 }}
             >
                 {currentStep === 1 && (
@@ -318,12 +320,12 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
                     sx={{
                         padding: "0vw",
                         width: "100%",
-                        height: "100%",
                         flex: 1,
+                        height: "100%",
                         backgroundColor: "#fff",
                         borderTopLeftRadius: "7vw",
                         borderTopRightRadius: "7vw",
-                        overflow: "hidden",
+                        overflowY: "hidden",
                     }}
                 >
                     <Box sx={{ width: "100%", height: "100%", gap: "4vw", flexDirection: "column" }}>
@@ -333,9 +335,7 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
                             {({ values, handleChange }) => (
                                 <Form>
                                     {currentStep === 0 && (
-                                        <Box
-                                            sx={{ justifyContent: "space-between", flexDirection: "column", height: "90%" }}
-                                        >
+                                        <Box sx={{ flexDirection: "column", height: "90%" }}>
                                             <Profile
                                                 values={values}
                                                 handleChange={handleChange}
@@ -434,7 +434,7 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
                                         </>
                                     )}
                                     {currentStep === 3 && (
-                                        <Box sx={{ height: "89%", justifyContent: "space-between" }}>
+                                        <Box sx={{ height: "95%", overflowY: "auto", pb: "10vh" }}>
                                             <FormTillage
                                                 data={values}
                                                 change={handleChange}
