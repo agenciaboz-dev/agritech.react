@@ -189,7 +189,7 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                     gap: "1vw",
                     padding: "4vw",
                     flexDirection: "row",
-                    overflow: "auto",
+                    overflow: "hidden",
                 }}
             >
                 <Header
@@ -212,7 +212,7 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                     borderTopRightRadius: "7vw",
                     overflow: "auto",
                     gap: "3vw",
-                    height: "80%",
+                    height: "100%",
                 }}
             >
                 <Box sx={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
@@ -275,8 +275,8 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                                     <span style={{ fontWeight: "bold" }}>Talhão:</span> {call?.talhao && call.talhao.name}
                                 </p>
                             </Box>
-
-                            {tab === "operation" && <hr />}
+                            <hr />
+                            {/* {tab === "operation" && <hr />} */}
                         </Box>
                         <Box sx={{ gap: "2vw" }}>
                             <Box sx={{ justifyContent: "space-between", width: "100%", flexDirection: "row" }}>
