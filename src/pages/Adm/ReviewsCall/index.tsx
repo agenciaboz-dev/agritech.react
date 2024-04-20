@@ -23,10 +23,11 @@ export const ReviewsCall: React.FC<ReviewsCallProps> = ({ user }) => {
     const [tab, setTab] = useState("pending")
     const sortedPendingCalls = listCallsPending
         .filter((item) => !item.approved)
-        .sort((a, b) => Number(a.open) - Number(b.open))
+        .sort((a, b) => Number(a.forecast) - Number(b.forecast))
     const sortedApprovedCalls = listCalls
         .filter((item) => item.status !== "CANCELED")
-        .sort((a, b) => Number(a.open) - Number(b.open))
+        .sort((a, b) => Number(a.forecast) - Number(b.forecast))
+
     const changeTab = (event: React.SyntheticEvent, newValue: string) => {
         setTab(newValue)
     }

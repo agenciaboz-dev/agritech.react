@@ -211,8 +211,8 @@ export const Tillage: React.FC<TillageProps> = ({}) => {
                                       <p style={{ fontSize: "3.5vw", color: colors.text.white }}>{item.name}</p>
                                   </Box>
                               ))
-                            : skeletons.map(() => (
-                                  <Box sx={{ alignItems: "center", gap: "2vw" }}>
+                            : skeletons.map((_, index) => (
+                                  <Box sx={{ alignItems: "center", gap: "2vw" }} key={index}>
                                       <Skeleton
                                           animation="wave"
                                           variant="rounded"

@@ -27,10 +27,12 @@ export const Requests: React.FC<RequestsProps> = ({}) => {
         setTab(newValue)
     }
     const sortedPendingCalls = listCallsPending
-        .filter((item) => !item.approved)
+        .filter((item) => !item.approved && item.producerId === user?.producer?.id)
         .sort((a, b) => Number(a.open) - Number(b.open))
 
-    const sortedApprovedCalls = listCalls.sort((a, b) => Number(a.open) - Number(b.open))
+    const sortedApprovedCalls = listCalls
+        .filter((item) => item.producerId === user?.producer?.id)
+        .sort((a, b) => Number(a.open) - Number(b.open))
 
     useEffect(() => {
         console.log(sortedPendingCalls)
