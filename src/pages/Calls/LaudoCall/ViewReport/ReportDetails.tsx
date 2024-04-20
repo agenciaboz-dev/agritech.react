@@ -1,4 +1,4 @@
-import { Accordion, AccordionSummary, Box, CircularProgress, Tab, Tabs, Typography, styled } from "@mui/material"
+import { Accordion, AccordionSummary, Box, CircularProgress, Skeleton, Tab, Tabs, Typography, styled } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { colors } from "../../../../style/colors"
 import { Header } from "../../../../components/Header"
@@ -237,158 +237,171 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                         </Menu>
                     </Group>
                 </Box>
-                <Box sx={{ gap: "4vw" }}>
-                    <Box>
-                        <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
-                            <p>
-                                <span style={{ fontWeight: "bold" }}>Data:</span>{" "}
-                                {selectedReport && new Date(Number(selectedReport["date"])).toLocaleDateString("pt-br")}{" "}
-                            </p>
-                            <p>
-                                <span style={{ fontWeight: "bold" }}>Hora:</span>{" "}
-                                {selectedReport && new Date(Number(selectedReport["date"])).toLocaleTimeString("pt-br")}{" "}
-                            </p>
-                        </Box>
-                        <p>
-                            <span style={{ fontWeight: "bold" }}>Contratante:</span>{" "}
-                            {call?.producer?.user && call.producer?.user.name}
-                        </p>
-                        <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
-                            <p>
-                                <span style={{ fontWeight: "bold" }}>CPF:</span>{" "}
-                                {call?.producer?.user && formatCPF(call.producer.user.cpf || "")}{" "}
-                            </p>
-                            <p>
-                                <span style={{ fontWeight: "bold" }}>CNPJ:</span>{" "}
-                                {call?.producer?.user && formatCNPJ(call.producer.cnpj || "")}{" "}
-                            </p>
-                        </Box>
-                        <p>
-                            <span style={{ fontWeight: "bold" }}>Propriedade:</span>{" "}
-                            {call?.talhao?.tillage && call.talhao.tillage.name}{" "}
-                        </p>
-                        <p>
-                            <span style={{ fontWeight: "bold" }}>Talhão:</span> {call?.talhao && call.talhao.name}
-                        </p>
-                    </Box>
-
-                    {tab === "operation" && <hr />}
-                </Box>
-                <Box sx={{ gap: "2vw" }}>
-                    <Box sx={{ justifyContent: "space-between", width: "100%", flexDirection: "row" }}>
-                        <p style={{ fontWeight: "bold" }}>Custo por hectare: </p>
-                        {call?.talhao?.tillage && <CurrencyText value={Number(call?.talhao.tillage.hectarePrice)} />}
-                    </Box>
-                    <Box sx={{ justifyContent: "space-between", width: "100%", flexDirection: "row" }}>
-                        <p style={{ fontWeight: "bold" }}>Área Trabalhada no dia:</p> {selectedReport?.areaTrabalhada} ha{" "}
-                    </Box>
-                    <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
-                        <p style={{ fontWeight: "bold" }}>Custo total: </p>
-                        <p style={{ justifyContent: "space-between" }}>
-                            <CurrencyText value={Number(selectedReport?.totalPrice)} />
-                        </p>
-                    </Box>
-                    <hr />
-                </Box>
-
-                <Box sx={{ gap: "0vw" }}>
-                    <Box sx={{ gap: "3vw", height: "100%" }}>
-                        {tab === "operation" && (
-                            <>
-                                <Box sx={{ gap: "2vw" }}>
-                                    {selectedReport?.techReport?.flight &&
-                                        selectedReport?.techReport.flight.map((item, index) => (
-                                            <Box
-                                                key={index}
-                                                sx={{
-                                                    width: "100%",
-                                                    flexDirection: "row",
-                                                    justifyContent: "space-between",
-                                                    gap: "3vw",
-                                                }}
-                                            >
-                                                Voo {index + 1} <p>{item.performance} ha</p>
-                                            </Box>
-                                        ))}
+                {selectedReport ? (
+                    <>
+                        <Box sx={{ gap: "4vw" }}>
+                            <Box>
+                                <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
+                                    <p>
+                                        <span style={{ fontWeight: "bold" }}>Data:</span>{" "}
+                                        {selectedReport &&
+                                            new Date(Number(selectedReport["date"])).toLocaleDateString("pt-br")}{" "}
+                                    </p>
+                                    <p>
+                                        <span style={{ fontWeight: "bold" }}>Hora:</span>{" "}
+                                        {selectedReport &&
+                                            new Date(Number(selectedReport["date"])).toLocaleTimeString("pt-br")}{" "}
+                                    </p>
                                 </Box>
-                                <hr />
-                            </>
-                        )}
-                        <Box sx={{ gap: "1vw", height: "90%" }}>
-                            <Tabs
-                                value={tab}
-                                onChange={changeTab}
-                                textColor="primary"
-                                indicatorColor="primary"
-                                aria-label="tabs"
-                                variant="scrollable"
-                                scrollButtons="auto"
-                                allowScrollButtonsMobile
-                            >
-                                <Tab sx={{ ...tabStyle, width: "40%" }} value="operation" label="Dados de Operação" />
-                                <Tab sx={{ ...tabStyle, width: "38%" }} value="treatment" label="Tratamento" />
-                                <Tab sx={{ ...tabStyle, width: "30%" }} value="techReport" label="Laudo Técnico" />
-                                <Tab sx={{ ...tabStyle, width: "35%" }} value="material" label="Insumos" />
-                            </Tabs>
-                            <Box sx={{ height: "max-content", maxHeight: "100%", overflowY: "auto" }}>
-                                {tab === "operation" && selectedReport?.operation && call && (
-                                    <Box sx={{ gap: "4vw" }}>
+                                <p>
+                                    <span style={{ fontWeight: "bold" }}>Contratante:</span>{" "}
+                                    {call?.producer?.user && call.producer?.user.name}
+                                </p>
+                                <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
+                                    <p>
+                                        <span style={{ fontWeight: "bold" }}>CPF:</span>{" "}
+                                        {call?.producer?.user && formatCPF(call.producer.user.cpf || "")}{" "}
+                                    </p>
+                                    <p>
+                                        <span style={{ fontWeight: "bold" }}>CNPJ:</span>{" "}
+                                        {call?.producer?.user && formatCNPJ(call.producer.cnpj || "")}{" "}
+                                    </p>
+                                </Box>
+                                <p>
+                                    <span style={{ fontWeight: "bold" }}>Propriedade:</span>{" "}
+                                    {call?.talhao?.tillage && call.talhao.tillage.name}{" "}
+                                </p>
+                                <p>
+                                    <span style={{ fontWeight: "bold" }}>Talhão:</span> {call?.talhao && call.talhao.name}
+                                </p>
+                            </Box>
+
+                            {tab === "operation" && <hr />}
+                        </Box>
+                        <Box sx={{ gap: "2vw" }}>
+                            <Box sx={{ justifyContent: "space-between", width: "100%", flexDirection: "row" }}>
+                                <p style={{ fontWeight: "bold" }}>Custo por hectare: </p>
+                                {call?.talhao?.tillage && <CurrencyText value={Number(call?.talhao.tillage.hectarePrice)} />}
+                            </Box>
+                            <Box sx={{ justifyContent: "space-between", width: "100%", flexDirection: "row" }}>
+                                <p style={{ fontWeight: "bold" }}>Área Trabalhada no dia:</p>{" "}
+                                {selectedReport?.areaTrabalhada} ha{" "}
+                            </Box>
+                            <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
+                                <p style={{ fontWeight: "bold" }}>Custo total: </p>
+                                <p style={{ justifyContent: "space-between" }}>
+                                    <CurrencyText value={Number(selectedReport?.totalPrice)} />
+                                </p>
+                            </Box>
+                            <hr />
+                        </Box>
+
+                        <Box sx={{ gap: "0vw" }}>
+                            <Box sx={{ gap: "3vw", height: "100%" }}>
+                                {tab === "operation" && (
+                                    <>
                                         <Box sx={{ gap: "2vw" }}>
-                                            <OperationComponent call={call} operation={selectedReport.operation} />
-                                            <hr />
+                                            {selectedReport?.techReport?.flight &&
+                                                selectedReport?.techReport.flight.map((item, index) => (
+                                                    <Box
+                                                        key={index}
+                                                        sx={{
+                                                            width: "100%",
+                                                            flexDirection: "row",
+                                                            justifyContent: "space-between",
+                                                            gap: "3vw",
+                                                        }}
+                                                    >
+                                                        Voo {index + 1} <p>{item.performance} ha</p>
+                                                    </Box>
+                                                ))}
                                         </Box>
+                                        <hr />
+                                    </>
+                                )}
+                                <Box sx={{ gap: "1vw", height: "90%" }}>
+                                    <Tabs
+                                        value={tab}
+                                        onChange={changeTab}
+                                        textColor="primary"
+                                        indicatorColor="primary"
+                                        aria-label="tabs"
+                                        variant="scrollable"
+                                        scrollButtons="auto"
+                                        allowScrollButtonsMobile
+                                    >
+                                        <Tab
+                                            sx={{ ...tabStyle, width: "40%" }}
+                                            value="operation"
+                                            label="Dados de Operação"
+                                        />
+                                        <Tab sx={{ ...tabStyle, width: "38%" }} value="treatment" label="Tratamento" />
+                                        <Tab sx={{ ...tabStyle, width: "30%" }} value="techReport" label="Laudo Técnico" />
+                                        <Tab sx={{ ...tabStyle, width: "35%" }} value="material" label="Insumos" />
+                                    </Tabs>
+                                    <Box sx={{ height: "max-content", maxHeight: "100%", overflowY: "auto" }}>
+                                        {tab === "operation" && selectedReport?.operation && call && (
+                                            <Box sx={{ gap: "4vw" }}>
+                                                <Box sx={{ gap: "2vw" }}>
+                                                    <OperationComponent call={call} operation={selectedReport.operation} />
+                                                    <hr />
+                                                </Box>
+                                            </Box>
+                                        )}
+                                        {tab === "treatment" && selectedReport?.treatment && (
+                                            <TreatmentComponent treatment={selectedReport.treatment} />
+                                        )}
+                                        {tab === "techReport" && selectedReport?.techReport && (
+                                            <TechReportComponent tech={selectedReport?.techReport} />
+                                        )}
+                                        {tab === "material" && selectedReport?.material && (
+                                            <MaterialComponent material={selectedReport?.material} />
+                                        )}
                                     </Box>
-                                )}
-                                {tab === "treatment" && selectedReport?.treatment && (
-                                    <TreatmentComponent treatment={selectedReport.treatment} />
-                                )}
-                                {tab === "techReport" && selectedReport?.techReport && (
-                                    <TechReportComponent tech={selectedReport?.techReport} />
-                                )}
-                                {tab === "material" && selectedReport?.material && (
-                                    <MaterialComponent material={selectedReport?.material} />
+                                </Box>
+                            </Box>
+                            <Box sx={{ gap: "3vw" }}>
+                                {tab !== "material" && !user?.isAdmin && (
+                                    <ButtonAgritech
+                                        variant="contained"
+                                        sx={{ bgcolor: colors.button }}
+                                        onClick={() => {
+                                            tab === "operation" && setTab("treatment")
+                                            tab === "treatment" && setTab("techReport")
+                                            tab === "techReport" && setTab("material")
+                                            tab === "material" && setTab("techReport")
+                                        }}
+                                    >
+                                        {tab === "operation"
+                                            ? "Dados de Tratamento >"
+                                            : tab === "treatment"
+                                            ? "Laudo Técnico >"
+                                            : tab === "techReport"
+                                            ? "Insumos >"
+                                            : tab === "material" && "< Laudo Técnico"}
+                                    </ButtonAgritech>
                                 )}
                             </Box>
+                            {user?.isAdmin && !selectedReport?.approved && (
+                                <ButtonAgritech
+                                    size="small"
+                                    variant="contained"
+                                    sx={{
+                                        bgcolor: colors.secondary,
+                                        textTransform: "none",
+                                        borderRadius: "5vw",
+                                        padding: "0.5vw",
+                                    }}
+                                    onClick={handleApprove}
+                                >
+                                    Aprovar Relatório
+                                </ButtonAgritech>
+                            )}
                         </Box>
-                    </Box>
-                    <Box sx={{ gap: "3vw" }}>
-                        {tab !== "material" && !user?.isAdmin && (
-                            <ButtonAgritech
-                                variant="contained"
-                                sx={{ bgcolor: colors.button }}
-                                onClick={() => {
-                                    tab === "operation" && setTab("treatment")
-                                    tab === "treatment" && setTab("techReport")
-                                    tab === "techReport" && setTab("material")
-                                    tab === "material" && setTab("techReport")
-                                }}
-                            >
-                                {tab === "operation"
-                                    ? "Dados de Tratamento >"
-                                    : tab === "treatment"
-                                    ? "Laudo Técnico >"
-                                    : tab === "techReport"
-                                    ? "Insumos >"
-                                    : tab === "material" && "< Laudo Técnico"}
-                            </ButtonAgritech>
-                        )}
-                    </Box>
-                    {user?.isAdmin && !selectedReport?.approved && (
-                        <ButtonAgritech
-                            size="small"
-                            variant="contained"
-                            sx={{
-                                bgcolor: colors.secondary,
-                                textTransform: "none",
-                                borderRadius: "5vw",
-                                padding: "0.5vw",
-                            }}
-                            onClick={handleApprove}
-                        >
-                            Aprovar Relatório
-                        </ButtonAgritech>
-                    )}
-                </Box>
+                    </>
+                ) : (
+                    <Skeleton animation="wave" variant="rounded" sx={{ width: 1, height: 1 }} />
+                )}
             </Box>
         </Box>
     )

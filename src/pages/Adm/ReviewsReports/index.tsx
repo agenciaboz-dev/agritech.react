@@ -1,4 +1,4 @@
-import { Box, Tab, Tabs, Avatar, Button } from "@mui/material"
+import { Box, Tab, Tabs, Avatar, Button, Skeleton } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { colors } from "../../../style/colors"
 import { Header } from "../../../components/Header"
@@ -11,6 +11,7 @@ import { NewReport, Report } from "../../../definitions/report"
 import { LogsReport } from "./LogsReport"
 import { SearchField } from "../../../components/SearchField"
 import { useReports } from "../../../hooks/useReports"
+import { useArray } from "burgos-array"
 
 interface ReviewsReportsProps {
     user: User
@@ -24,6 +25,7 @@ export const ReviewsReports: React.FC<ReviewsReportsProps> = ({ user }) => {
     const changeTab = (event: React.SyntheticEvent, newValue: string) => {
         setTab(newValue)
     }
+    const skeletons = useArray().newArray(3)
 
     const { listReports } = useReports()
     const [reports, setReports] = useState<Report[]>([])
@@ -121,12 +123,34 @@ export const ReviewsReports: React.FC<ReviewsReportsProps> = ({ user }) => {
                         <Tab sx={tabStyle} value="reports" label="Aprovados" />
                     </Tabs>
                     <Box sx={{ width: "100%", height: "100%", overflow: "auto", gap: "1vw" }}>
-                        {tab === "pending" && reportsPending.length !== 0
-                            ? reportsPending?.map((item, index) => <LogsReport key={index} report={item} review />)
-                            : tab === "pending" && "Nenhum relatório pendente"}
-                        {tab === "reports" && reports.length !== 0
-                            ? reports?.map((item, index) => <LogsReport key={index} report={item} />)
-                            : tab === "reports" && "Nenhum relatório encontrado."}
+                        {
+                            tab === "pending" && reportsPending.length !== 0
+                                ? reportsPending?.map((item, index) => <LogsReport key={index} report={item} review />)
+                                : tab === "pending" &&
+                                  skeletons.map((_, index) => (
+                                      <Skeleton
+                                          key={index}
+                                          animation="wave"
+                                          variant="rounded"
+                                          sx={{ width: 1, height: "15vw" }}
+                                      />
+                                  ))
+                            // "Nenhum relatório pendente"
+                        }
+                        {
+                            tab === "reports" && reports.length !== 0
+                                ? reports?.map((item, index) => <LogsReport key={index} report={item} />)
+                                : tab === "reports" &&
+                                  skeletons.map((_, index) => (
+                                      <Skeleton
+                                          key={index}
+                                          animation="wave"
+                                          variant="rounded"
+                                          sx={{ width: 1, height: "15vw" }}
+                                      />
+                                  ))
+                            // "Nenhum relatório encontrado."
+                        }
                     </Box>
                 </Box>
             </Box>

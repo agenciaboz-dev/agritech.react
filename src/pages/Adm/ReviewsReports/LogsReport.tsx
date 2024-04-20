@@ -47,14 +47,26 @@ export const LogsReport: React.FC<LogsReportProps> = ({ review, report, variant 
                     <Menu transitionProps={{ transition: "pop" }} withArrow position="bottom-end" withinPortal>
                         <Menu.Target>
                             <ActionIcon variant="subtle" color="gray">
-                                <IconDots style={{ width: "7vw", height: "7vw" }} stroke={2} />
+                                <IconDots style={{ width: "8vw", height: "8vw" }} stroke={2} />
                             </ActionIcon>
                         </Menu.Target>
                         <Menu.Dropdown>
-                            <Menu.Item>Ver responsável</Menu.Item>
-                            <Menu.Item>Ver Cliente</Menu.Item>
-                            <Menu.Item>Editar</Menu.Item>
-                            <Menu.Item color="red">Excluir</Menu.Item>
+                            <Menu.Item
+                                onClick={() => {
+                                    navigate(`/adm/call/${report?.callId}/report/${report?.id}`)
+                                }}
+                            >
+                                Ver Relatório
+                            </Menu.Item>
+                            <Menu.Item
+                                onClick={() => {
+                                    navigate(`/adm/profile/${report?.call?.producer?.user?.id}`)
+                                }}
+                            >
+                                Ver Cliente
+                            </Menu.Item>
+                            {/* <Menu.Item>Editar</Menu.Item> */}
+                            {/* <Menu.Item color="red">Excluir</Menu.Item> */}
                         </Menu.Dropdown>
                     </Menu>
                 </Group>
