@@ -141,11 +141,11 @@ export const PanelUser: React.FC<PanelUserProps> = ({ user }) => {
                                 textAlign: "left",
                             }}
                         >
-                            Clientes Fixados
+                            Meus Clientes
                         </p>
                         <Box style={{ width: "100%" }}>
                             {team?.length !== 0 ? (
-                                team?.slice(0, 3).map(
+                                team?.slice(0, 4).map(
                                     (producer) =>
                                         producer.user && (
                                             <CardUser
@@ -167,7 +167,6 @@ export const PanelUser: React.FC<PanelUserProps> = ({ user }) => {
                                 flexDirection: "row",
                                 alignItems: "center",
                                 justifyContent: "space-between",
-                                gap: 20,
                             }}
                         >
                             <Box
@@ -177,6 +176,7 @@ export const PanelUser: React.FC<PanelUserProps> = ({ user }) => {
                                     alignItems: "center",
                                     justifyContent: "space-between",
                                     paddingTop: "2vw",
+                                    gap: "1vw",
                                 }}
                             >
                                 <Button
@@ -262,7 +262,7 @@ export const PanelUser: React.FC<PanelUserProps> = ({ user }) => {
                                         navigate("/employee/settings-kit")
                                     }}
                                 >
-                                    Ver todas
+                                    Ver mais
                                 </p>
                                 <ArrowForwardIosIcon color="primary" sx={{ width: "2vw" }} />
                             </Box>

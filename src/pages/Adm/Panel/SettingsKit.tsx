@@ -22,7 +22,7 @@ export const SettingsKit: React.FC<SettingsKitProps> = ({}) => {
     const { listKits, updateKit } = useKits()
     const { user } = useUser()
 
-    const skeletons = useArray().newArray(8)
+    const skeletons = useArray().newArray(3)
 
     const kitsEmployee = listKits.filter((kit) => kit.employees?.some((employee) => employee.id === user?.employee?.id))
     const [kits, setKits] = useState<Kit[]>(listKits)
@@ -141,17 +141,31 @@ export const SettingsKit: React.FC<SettingsKitProps> = ({}) => {
                             />
                         )}
                         <Box sx={{ height: "80%", overflowY: "auto", pb: isMobile ? "10vh" : "15vh" }}>
-                            {user?.isAdmin
-                                ? kits.length !== 0
-                                    ? kits.map((kit, index) => <CardKit key={index} kit={kit} />)
-                                    : kits === undefined
-                                    ? skeletons.map((_, index) => (
-                                          <Skeleton variant="rounded" key={index} animation="wave" />
-                                      ))
-                                    : "Nenhum kit encontrado"
-                                : kitsEmployee.length !== 0
-                                ? kitsEmployee.map((kit, index) => <CardKit key={index} kit={kit} />)
-                                : "Nenhum kit encontrado."}
+                            {
+                                user?.isAdmin
+                                    ? kits.length !== 0
+                                        ? kits.map((kit, index) => <CardKit key={index} kit={kit} />)
+                                        : kits === undefined
+                                        ? skeletons.map((_, index) => (
+                                              <Skeleton variant="rounded" key={index} animation="wave" />
+                                          ))
+                                        : "Nenhum kit encontrado"
+                                    : kitsEmployee.length !== 0
+                                    ? kitsEmployee.map((kit, index) => <CardKit key={index} kit={kit} />)
+                                    : kitsEmployee.length === 0 && (
+                                          <Box sx={{ gap: "2vw", width: 1 }}>
+                                              {skeletons.map((_, index) => (
+                                                  <Skeleton
+                                                      variant="rounded"
+                                                      key={index}
+                                                      animation="wave"
+                                                      sx={{ width: 1, height: "10vh" }}
+                                                  />
+                                              ))}
+                                          </Box>
+                                      )
+                                // : "Nenhum kit encontrado."
+                            }
                         </Box>
                     </Box>
                 </Box>

@@ -16,12 +16,14 @@ import { BsFillInfoCircleFill } from "react-icons/bs"
 import { useDisclosure } from "@mantine/hooks"
 import { ModalLegend } from "../../Calendar/ModalLegend"
 import { ModalCalls } from "./ModalCalls"
+import { useUser } from "../../../hooks/useUser"
 
 interface CalendarKitProps {}
 
 export const CalendarKit: React.FC<CalendarKitProps> = ({}) => {
     const io = useIo()
     const header = useHeader()
+    const { user } = useUser()
 
     //kits
     const { listKits } = useKits()
@@ -155,15 +157,19 @@ export const CalendarKit: React.FC<CalendarKitProps> = ({}) => {
             >
                 <Box sx={{ width: "99%", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
                     {listKits.length !== 0 ? (
-                        <Autocomplete
-                            value={selectedKit}
-                            options={listKits || []}
-                            getOptionLabel={(option) => option.name || ""}
-                            onChange={(event, selected) => setSelectedKit(selected)}
-                            isOptionEqualToValue={(option, value) => option.id == value.id}
-                            renderInput={(params) => <TextField {...params} sx={{ ...textField }} label="kit" required />}
-                            sx={{ width: "85%" }}
-                        />
+                        user?.isAdmin && (
+                            <Autocomplete
+                                value={selectedKit}
+                                options={listKits || []}
+                                getOptionLabel={(option) => option.name || ""}
+                                onChange={(event, selected) => setSelectedKit(selected)}
+                                isOptionEqualToValue={(option, value) => option.id == value.id}
+                                renderInput={(params) => (
+                                    <TextField {...params} sx={{ ...textField }} label="kit" required />
+                                )}
+                                sx={{ width: "85%" }}
+                            />
+                        )
                     ) : (
                         <Skeleton animation="wave" variant="rounded" sx={{ width: 0.85, height: "6vh" }} />
                     )}

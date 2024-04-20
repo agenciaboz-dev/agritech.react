@@ -14,6 +14,7 @@ import { useNumberMask } from "burgos-masks"
 import MaskedInputNando from "../../../components/MaskedNando"
 import { ModalEmployeeUpdate } from "../../../components/Kit/ModalEmployeeU"
 import { useNavigate } from "react-router-dom"
+import { useUser } from "../../../hooks/useUser"
 
 interface UpdateContentKitProps {
     edit?: boolean
@@ -40,6 +41,7 @@ const style_p = {
 
 export const UpdateContentKit: React.FC<UpdateContentKitProps> = ({ edit, values, handleChange, data, kit }) => {
     const navigate = useNavigate()
+    const { user } = useUser()
     const floatMask = useNumberMask({ allowDecimal: true, allowLeadingZeroes: true })
     const [openedModalObjects, { open, close }] = useDisclosure(false)
     const [openedModalEmployees, { open: openEmployees, close: closeEmployees }] = useDisclosure(false)
@@ -67,7 +69,7 @@ export const UpdateContentKit: React.FC<UpdateContentKitProps> = ({ edit, values
 
             <TitleComponents
                 title="Informações Básicas"
-                button
+                button={user?.isAdmin}
                 textButton="Acessar Calendário"
                 styleButton={true}
                 click={() => {

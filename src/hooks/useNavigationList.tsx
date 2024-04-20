@@ -10,10 +10,12 @@ import { CiCalendarDate, CiCircleAlert, CiGrid41, CiViewTable } from "react-icon
 import { SlDocs } from "react-icons/sl"
 
 import { SxProps, useMediaQuery } from "@mui/material"
+import { useUser } from "./useUser"
 
 export const useNavigationList = () => {
     const isMobile = useMediaQuery("(orientation: portrait)")
     const iconStyle: SxProps = { color: "#232323" }
+    const { user } = useUser()
 
     const admin: NavigationMenu = {
         id: 1,
@@ -29,7 +31,11 @@ export const useNavigationList = () => {
                 icon: (
                     <img
                         src={User}
-                        style={{ padding: isMobile ? "0 1.5vw" : 0, width: isMobile ? "7vw" : "2vw", height: isMobile ? "auto" : "2vw" }}
+                        style={{
+                            padding: isMobile ? "0 1.5vw" : 0,
+                            width: isMobile ? "7vw" : "2vw",
+                            height: isMobile ? "auto" : "2vw",
+                        }}
                     />
                 ),
             },
@@ -50,7 +56,16 @@ export const useNavigationList = () => {
                 id: 5,
                 title: "Relatórios",
                 location: "/adm/reports",
-                icon: <CiViewTable style={{ width: isMobile ? "7vw" : "2vw", height: isMobile ? "6vw" : "auto", paddingLeft: 0, paddingRight: 0 }} />,
+                icon: (
+                    <CiViewTable
+                        style={{
+                            width: isMobile ? "7vw" : "2vw",
+                            height: isMobile ? "6vw" : "auto",
+                            paddingLeft: 0,
+                            paddingRight: 0,
+                        }}
+                    />
+                ),
             },
         ],
         bottom: [
@@ -114,7 +129,7 @@ export const useNavigationList = () => {
                 id: 1,
                 title: "Painel",
                 location: "/",
-                icon: <CiGrid41 alt="Logotipo do App" style={{ width: "6vw", height: "6vw" }} />,
+                icon: <CiGrid41 style={{ width: "6vw", height: "6vw" }} />,
             },
             {
                 id: 2,
@@ -156,9 +171,15 @@ export const useNavigationList = () => {
                 id: 1,
                 title: "Painel ",
                 location: "/panel",
-                icon: <CiGrid41 alt="Logotipo do App" style={{ width: "6vw", height: "6vw" }} />,
+                icon: <CiGrid41 style={{ width: "6vw", height: "6vw" }} />,
             },
 
+            // {
+            //     id: 3,
+            //     title: "Meu Calendário",
+            //     location: user?.employee?.kits ? `/calendar/kit/${user?.employee?.kits[0].id}` : "/calendar",
+            //     icon: <CiCalendarDate style={{ width: isMobile ? "6vw" : "2vw", height: isMobile ? "6vw" : "2vw" }} />,
+            // },
             {
                 id: 2,
                 title: "Chamados",
