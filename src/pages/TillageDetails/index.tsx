@@ -216,7 +216,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                     marginTop: "1.5vw",
                 }}
             >
-                {!selectedTalhao ? (
+                {!selectedTalhao && tillageSelect?.talhao?.length !== 0 ? (
                     <Box
                         sx={{
                             p: "2vw 4vw",
@@ -229,48 +229,50 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                         <Skeleton sx={{ width: 0.5, height: "8vw", marginLeft: "1vw" }} />
                     </Box>
                 ) : (
-                    <Box
-                        sx={{
-                            p: "2vw 4vw",
-                            flexDirection: "row",
-                            width: "100%",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                        }}
-                    >
-                        <p
-                            style={{
-                                fontSize: "1.2rem",
-                                color: colors.text.white,
-                                fontFamily: "MalgunGothic2",
-                                fontWeight: "bold",
-                            }}
-                        >
-                            {!user?.producer ? selectedTalhao?.name : ""}
-                        </p>
-                        <ButtonAgritech
+                    tillageSelect?.talhao?.length !== 0 && (
+                        <Box
                             sx={{
-                                width: "20%",
-                                color: colors.text.white,
-                                height: "12vw",
-                                fontSize: "0.7rem",
-                                gap: "1vw",
-                                bgcolor: "gray",
-                                p: 0,
-                                textDecoration: "underline",
+                                p: "2vw 4vw",
+                                flexDirection: "row",
+                                width: "100%",
+                                justifyContent: "space-between",
+                                alignItems: "center",
                             }}
-                            onClick={() =>
-                                navigate(
-                                    user?.isAdmin
-                                        ? `/adm/producer/${tillageSelect?.producerId}/${tillageSelect?.id}/new_talhao`
-                                        : `/employee/producer/${tillageSelect?.producerId}/${tillageSelect?.id}/new_talhao`
-                                )
-                            }
                         >
-                            <VscAdd color={"#fff"} style={{ width: "4vw", height: "4vw" }} />
-                            Talhão
-                        </ButtonAgritech>
-                    </Box>
+                            <p
+                                style={{
+                                    fontSize: "1.2rem",
+                                    color: colors.text.white,
+                                    fontFamily: "MalgunGothic2",
+                                    fontWeight: "bold",
+                                }}
+                            >
+                                {!user?.producer ? selectedTalhao?.name : ""}
+                            </p>
+                            <ButtonAgritech
+                                sx={{
+                                    width: "20%",
+                                    color: colors.text.white,
+                                    height: "12vw",
+                                    fontSize: "0.7rem",
+                                    gap: "1vw",
+                                    bgcolor: "gray",
+                                    p: 0,
+                                    textDecoration: "underline",
+                                }}
+                                onClick={() =>
+                                    navigate(
+                                        user?.isAdmin
+                                            ? `/adm/producer/${tillageSelect?.producerId}/${tillageSelect?.id}/new_talhao`
+                                            : `/employee/producer/${tillageSelect?.producerId}/${tillageSelect?.id}/new_talhao`
+                                    )
+                                }
+                            >
+                                <VscAdd color={"#fff"} style={{ width: "4vw", height: "4vw" }} />
+                                Talhão
+                            </ButtonAgritech>
+                        </Box>
+                    )
                 )}
                 {tillageSelect?.talhao?.length !== 0 ? (
                     <Box sx={{ flexDirection: "row", gap: "2vw", width: "100%", overflow: "auto", p: "0vw 3vw 3vw" }}>
@@ -307,7 +309,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                               ))}
                     </Box>
                 ) : (
-                    <Box sx={{ p: "2vw 4vw 8vw" }}>
+                    <Box sx={{ p: "8vw 4vw " }}>
                         <p style={{ fontSize: "4vw", color: colors.text.white }}>Nenhum talhão cadastrado.</p>
                     </Box>
                 )}
@@ -344,6 +346,9 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                                 {/* <Tab sx={{ ...tabStyle, width: "50%" }} value="history" label="Histórico" /> */}
                                 <Tab sx={{ ...tabStyle, width: "50%" }} value="calls" label="Chamados" />
                             </Tabs>
+                            {tillageSelect?.talhao?.length === 0 && tab === "calls" && (
+                                <p style={{ marginTop: "4vw" }}>É necessário ter talhões cadastrados para abrir chamados.</p>
+                            )}
                             {tab === "calls" && selectedTalhao?.calls.length === 0 ? (
                                 <OpenCallBox
                                     click={() => navigate("/adm/call/new")}
@@ -397,9 +402,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                                     </Box>
                                 )
                             )}
-                            {tillageSelect?.talhao?.length === 0 && tab === "calls" && (
-                                <p>É necessário ter talhões cadastrados para abrir chamados.</p>
-                            )}
+
                             {/* {tab === "history" && <p>Nenhum Registro</p>} */}
                         </>
                     )}
@@ -415,7 +418,11 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                                 right: "5vw",
                             }}
                             onClick={() =>
-                                navigate(`/adm/producer/${tillageSelect?.producerId}/${tillageSelect?.id}/new_talhao`)
+                                navigate(
+                                    user?.isAdmin
+                                        ? `/adm/producer/${tillageSelect?.producerId}/${tillageSelect?.id}/new_talhao`
+                                        : `/employee/producer/${producerid}/${tillageid}/new_talhao`
+                                )
                             }
                         >
                             <PiPlant color={"#fff"} style={{ width: "6vw", height: "6vw" }} />
