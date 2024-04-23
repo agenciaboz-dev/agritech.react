@@ -203,16 +203,16 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
             </Box>
 
             <Box
-                style={{
+                sx={{
                     padding: "5vw",
                     width: "100%",
-
                     backgroundColor: "#fff",
                     borderTopLeftRadius: "7vw",
                     borderTopRightRadius: "7vw",
                     overflow: "auto",
-                    gap: "3vw",
+                    gap: "4vw",
                     height: "100%",
+                    pb: "15vh",
                 }}
             >
                 <Box sx={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
@@ -319,7 +319,7 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                                         <hr />
                                     </>
                                 )}
-                                <Box sx={{ gap: "1vw", height: "90%" }}>
+                                <Box sx={{ gap: "4vw", height: "90%" }}>
                                     <Tabs
                                         value={tab}
                                         onChange={changeTab}
@@ -344,7 +344,7 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                                             <Box sx={{ gap: "4vw" }}>
                                                 <Box sx={{ gap: "2vw" }}>
                                                     <OperationComponent call={call} operation={selectedReport.operation} />
-                                                    <hr />
+                                                    {/* <hr /> */}
                                                 </Box>
                                             </Box>
                                         )}
@@ -360,7 +360,7 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                                     </Box>
                                 </Box>
                             </Box>
-                            <Box sx={{ gap: "3vw" }}>
+                            <Box sx={{ gap: "3vw", pt: "4vh" }}>
                                 {tab !== "material" && !user?.isAdmin && (
                                     <ButtonAgritech
                                         variant="contained"

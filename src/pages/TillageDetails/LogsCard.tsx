@@ -44,7 +44,7 @@ export const LogsCard: React.FC<LogsCardProps> = ({ review, call, variant, talha
             onClick={() => {
                 if (user?.isAdmin) {
                     if (!call?.approved) {
-                        navigate(`/adm/calls/talhao/${talhao.id}/${call?.id}`)
+                        navigate(`/adm/calls/${call?.id}`)
                         call && setSelectedCall(call)
                     } else {
                         navigate(`/adm/call/${call?.id}/laudos`)
@@ -77,7 +77,7 @@ export const LogsCard: React.FC<LogsCardProps> = ({ review, call, variant, talha
                 </p>
                 {user?.employee ? (
                     <p style={{ fontSize: "3vw", color: "gray", flexDirection: "column" }}>
-                        {talhao.name}
+                        {talhao.name}{" "}
                         {call?.approved && Number(call.talhao?.area) !== sumTotal
                             ? kitSelected
                                 ? `- Utilizando #Kit ${kitSelected && kitSelected?.name}`
@@ -87,7 +87,7 @@ export const LogsCard: React.FC<LogsCardProps> = ({ review, call, variant, talha
                                 ? `- Utilizado #Kit ${kitSelected && kitSelected?.name}`
                                 : ""
                             : user?.isAdmin
-                            ? "Selecione um kit"
+                            ? "- Selecione um kit"
                             : "Aguarde a seleção do kit"}
                     </p>
                 ) : (
@@ -108,7 +108,7 @@ export const LogsCard: React.FC<LogsCardProps> = ({ review, call, variant, talha
                     onClick={() => {
                         if (user?.isAdmin) {
                             if (!call?.approved) {
-                                navigate(`/adm/calls/talhao/${talhao.id}/${call?.id}`)
+                                navigate(`/adm/calls/${call?.id}`)
                                 call && setSelectedCall(call)
                             } else {
                                 navigate(`/adm/call/${call?.id}/laudos`)

@@ -59,6 +59,7 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
     }
 
     const findCall = listCallsPending?.find((call) => String(call.id) === callid)
+    console.log(findCall)
 
     const producerSelected = listUsers?.find((item) => item.producer?.id === findCall?.producerId)
     const tillageSelected = producerSelected?.producer?.tillage?.find((item) => item.id === findCall?.talhaoId)
@@ -263,8 +264,7 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
                                 </p>
                             </Box>
                             <Box>
-                                <p style={p_style}>Área</p>
-                                <p>{findCall?.talhao?.area} ha</p>
+                                <p style={p_style}>Área: {findCall?.talhao?.area} ha</p>
                             </Box>
                         </Box>
                     </Box>
