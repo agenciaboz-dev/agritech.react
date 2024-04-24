@@ -60,7 +60,7 @@ export const MenuDrawer: React.FC<MenuDrawerProps> = ({}) => {
             PaperProps={{
                 sx: {
                     padding: isMobile ? "6vw 3vw" : "1vw",
-                    width: isMobile ? "75vw" : "25vw",
+                    width: isMobile ? "75vw" : "30vw",
                     height: "100%",
                     borderTopLeftRadius: isMobile ? "10vw" : "2vw",
                     borderBottomLeftRadius: isMobile ? "10vw" : "2vw",
