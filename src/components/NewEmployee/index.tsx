@@ -22,12 +22,12 @@ import { useUsers } from "../../hooks/useUsers"
 import { Avatar } from "@files-ui/react"
 import dayjs, { Dayjs } from "dayjs"
 import { useGender } from "../../hooks/useGender"
-import { textField } from "../../style/input"
 
 interface NewEmployeeProps {}
 
 export const NewEmployee: React.FC<NewEmployeeProps> = ({}) => {
     const isMobile = useMediaQuery("(orientation: portrait)")
+    const textField = useResponsiveStyles()
 
     const navigate = useNavigate()
     const header = useHeader()
@@ -121,8 +121,7 @@ export const NewEmployee: React.FC<NewEmployeeProps> = ({}) => {
             employee: {
                 rg: values.employee?.rg,
                 gender: gender.find((gender) => gender.id == String(values.employee?.gender))?.value || "",
-                relationship:
-                    typeRelationship.find((relationship) => relationship.id == values.employee?.relationship)?.value || "",
+                relationship: typeRelationship.find((relationship) => relationship.id == values.employee?.relationship)?.value || "",
                 nationality: values.employee?.nationality,
                 voter_card: values.employee?.voter_card,
                 work_card: values.employee?.work_card,
@@ -176,11 +175,11 @@ export const NewEmployee: React.FC<NewEmployeeProps> = ({}) => {
             <Box
                 sx={{
                     width: "100%",
-                    height: "10%",
+                    height: isMobile ? "10%" : "fit-content",
                     justifyContent: "center",
                     alignItems: "center",
                     gap: "1vw",
-                    padding: isMobile ? "4vw" : "3vw",
+                    padding: isMobile ? "4vw" : "2.5vw",
                     flexDirection: "row",
                 }}
             >
@@ -193,7 +192,7 @@ export const NewEmployee: React.FC<NewEmployeeProps> = ({}) => {
                     backgroundColor: colors.secondary,
                     borderTopLeftRadius: isMobile ? "5vw" : "2vw",
                     borderTopRightRadius: isMobile ? "5vw" : "2vw",
-                    paddingTop: isMobile ? 10 : "2vw",
+                    paddingTop: isMobile ? 10 : "1vw",
                 }}
             >
                 <Box
@@ -314,7 +313,7 @@ export const NewEmployee: React.FC<NewEmployeeProps> = ({}) => {
                                     <Stepper.Step label="" />
                                     <Stepper.Step label="" />
                                 </Stepper>
-                                <Box sx={{ width: "100%", height: "50%" }}>
+                                <Box sx={{ width: "100%", height: isMobile ? "50%" : "100%", overflowY: isMobile ? "" : "auto" }}>
                                     {currentStep === 0 && (
                                         <StepOne
                                             data={formik.values}
@@ -323,15 +322,9 @@ export const NewEmployee: React.FC<NewEmployeeProps> = ({}) => {
                                             setBirthPick={setBirthPick}
                                         />
                                     )}
-                                    {currentStep === 1 && (
-                                        <StepTwo data={formik.values} handleChange={formik.handleChange} />
-                                    )}
-                                    {currentStep === 2 && (
-                                        <StepThree data={formik.values} handleChange={formik.handleChange} />
-                                    )}
-                                    {currentStep === 3 && (
-                                        <StepFour data={formik.values} handleChange={formik.handleChange} />
-                                    )}
+                                    {currentStep === 1 && <StepTwo data={formik.values} handleChange={formik.handleChange} />}
+                                    {currentStep === 2 && <StepThree data={formik.values} handleChange={formik.handleChange} />}
+                                    {currentStep === 3 && <StepFour data={formik.values} handleChange={formik.handleChange} />}
                                     {currentStep === 4 && (
                                         <StepFive
                                             data={formik.values}
@@ -359,7 +352,7 @@ export const NewEmployee: React.FC<NewEmployeeProps> = ({}) => {
                                         padding: isMobile ? "3vw" : "0 1vw",
                                         color: colors.text.black,
                                         fontWeight: "600",
-                                        fontSize: isMobile ? "4vw" : "1.5rem",
+                                        fontSize: isMobile ? "4vw" : "1.2rem",
                                         textTransform: "none",
                                         borderRadius: "10vw",
                                         height: isMobile ? "10vw" : "fit-content",
@@ -376,7 +369,7 @@ export const NewEmployee: React.FC<NewEmployeeProps> = ({}) => {
                                     type={"submit"}
                                     sx={{
                                         padding: isMobile ? "3vw" : "0 1vw",
-                                        fontSize: isMobile ? "4vw" : "1.5rem",
+                                        fontSize: isMobile ? "4vw" : "1.2rem",
                                         color: colors.text.white,
                                         height: isMobile ? "10vw" : "fit-content",
                                         width: isMobile ? "100%" : "fit-content",
@@ -388,13 +381,7 @@ export const NewEmployee: React.FC<NewEmployeeProps> = ({}) => {
                                         currentStep !== 4 && setCurrentStep(currentStep + 1)
                                     }}
                                 >
-                                    {loading ? (
-                                        <CircularProgress sx={{ color: "#fff" }} />
-                                    ) : currentStep !== 4 ? (
-                                        "Próximo"
-                                    ) : (
-                                        "Salvar"
-                                    )}
+                                    {loading ? <CircularProgress sx={{ color: "#fff" }} /> : currentStep !== 4 ? "Próximo" : "Salvar"}
                                 </Button>
                             </Box>
                         </form>
