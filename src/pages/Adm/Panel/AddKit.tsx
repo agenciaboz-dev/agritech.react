@@ -183,7 +183,7 @@ export const AddKit: React.FC<AddKitProps> = ({}) => {
                                     padding: isMobile ? "2vw 3vw" : "1.5vw 1vw",
                                 }}
                             >
-                                <p style={{ color: colors.text.white, fontSize: isMobile ? "4vw" : "1.2rem", fontFamily: "MalgunGothic2" }}>
+                                <p style={{ color: colors.text.white, fontSize: isMobile ? "4vw" : "1.5rem", fontFamily: "MalgunGothic2" }}>
                                     Adicionar novo kit
                                 </p>
                                 <Box sx={{ width: "60%", gap: "1.5vw", flexDirection: "row" }}>

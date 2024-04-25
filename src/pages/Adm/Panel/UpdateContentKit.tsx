@@ -1,8 +1,7 @@
-import { Box, TextField, Avatar as KitImage } from "@mui/material"
+import { Box, TextField, Avatar as KitImage, useMediaQuery } from "@mui/material"
 import React, { ChangeEvent, ChangeEventHandler, useEffect, useState } from "react"
 import { Avatar } from "@files-ui/react"
 import { TitleComponents } from "../../../components/TitleComponents"
-import { textField } from "../../../style/input"
 import { useDisclosure } from "@mantine/hooks"
 import { ModalObject } from "../../../components/Kit/ModalObject"
 import { useIo } from "../../../hooks/useIo"
@@ -15,6 +14,7 @@ import MaskedInputNando from "../../../components/MaskedNando"
 import { ModalEmployeeUpdate } from "../../../components/Kit/ModalEmployeeU"
 import { useNavigate } from "react-router-dom"
 import { useUser } from "../../../hooks/useUser"
+import { useResponsiveStyles } from "../../../hooks/useResponsiveStyles"
 
 interface UpdateContentKitProps {
     edit?: boolean
@@ -40,6 +40,8 @@ const style_p = {
 }
 
 export const UpdateContentKit: React.FC<UpdateContentKitProps> = ({ edit, values, handleChange, data, kit }) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
+    const textField = useResponsiveStyles()
     const navigate = useNavigate()
     const { user } = useUser()
     const floatMask = useNumberMask({ allowDecimal: true, allowLeadingZeroes: true })
@@ -51,13 +53,8 @@ export const UpdateContentKit: React.FC<UpdateContentKitProps> = ({ edit, values
     }, [data.listObjects])
 
     return (
-        <Box sx={{ flexDirection: "column", gap: "4vw", width: "100%", height: "98%", overflow: "hidden" }}>
-            <ModalObjectUpdate
-                opened={openedModalObjects}
-                close={close}
-                object={data.listObjects}
-                setObject={data.setListObjects}
-            />
+        <Box sx={{ flexDirection: "column", gap: isMobile ? "4vw" : "1vw", width: "100%", height: "98%", overflow: "hidden" }}>
+            <ModalObjectUpdate opened={openedModalObjects} close={close} object={data.listObjects} setObject={data.setListObjects} />
             <ModalEmployeeUpdate
                 opened={openedModalEmployees}
                 close={closeEmployees}
@@ -76,8 +73,8 @@ export const UpdateContentKit: React.FC<UpdateContentKitProps> = ({ edit, values
                     navigate(`/adm/kit/calendar/${kit.id}`)
                 }}
             />
-            <Box sx={{ width: 1, height: 1, overflow: "auto", gap: "2vw" }}>
-                <Box sx={{ flexDirection: "row", gap: "2vw", width: "100%" }}>
+            <Box sx={{ width: 1, height: "100%", overflow: "auto", gap: isMobile ? "2vw" : "1vw", paddingBottom: isMobile ? "" : "400vh" }}>
+                <Box sx={{ flexDirection: "row", gap: "2vw", width: "100%", alignItems: "center" }}>
                     {edit ? (
                         <Avatar
                             src={data.image || values.image || null}
@@ -86,9 +83,9 @@ export const UpdateContentKit: React.FC<UpdateContentKitProps> = ({ edit, values
                             emptyLabel="Adicionar foto"
                             variant="square"
                             style={{
-                                width: "26vw",
-                                height: "26vw",
-                                fontSize: "4vw",
+                                width: isMobile ? "26vw" : "10vw",
+                                height: isMobile ? "26vw" : "10vw",
+                                fontSize: isMobile ? "4vw" : "1rem",
                                 fontFamily: "MalgunGothic2",
                             }}
                         />
@@ -99,14 +96,14 @@ export const UpdateContentKit: React.FC<UpdateContentKitProps> = ({ edit, values
                             changeLabel="Trocar foto"
                             variant="square"
                             style={{
-                                width: "26vw",
-                                height: "26vw",
-                                fontSize: "4vw",
+                                width: isMobile ? "26vw" : "10vw",
+                                height: isMobile ? "26vw" : "10vw",
+                                fontSize: isMobile ? "4vw" : "1rem",
                                 fontFamily: "MalgunGothic2",
                             }}
                         />
                     )}
-                    <Box sx={{ flexDirection: "column", gap: "2vw", width: "70%", pt: "2vw" }}>
+                    <Box sx={{ flexDirection: "column", gap: isMobile ? "2vw" : "1vw", width: isMobile ? "70%" : "100%", pt: isMobile ? "2vw" : 0 }}>
                         {edit ? (
                             <>
                                 <TextField
@@ -143,7 +140,7 @@ export const UpdateContentKit: React.FC<UpdateContentKitProps> = ({ edit, values
                 </Box>
 
                 {edit ? (
-                    <Box sx={{ gap: "2vw", pt: "2vw" }}>
+                    <Box sx={{ gap: isMobile ? "2vw" : "1vw", pt: isMobile ? "2vw" : "1vw" }}>
                         <TextField
                             multiline
                             maxRows={3}
@@ -175,8 +172,10 @@ export const UpdateContentKit: React.FC<UpdateContentKitProps> = ({ edit, values
                     </Box>
                 ) : (
                     <Box sx={{ width: 1, gap: "1vw" }}>
-                        <p style={{ ...style_p }}>Descrição</p>
-                        <p style={{}}>{values.description}</p>
+                        <Box>
+                            <p style={{ ...style_p }}>Descrição</p>
+                            <p style={{}}>{values.description}</p>
+                        </Box>
                         <Box>
                             <p style={{ ...style_p }}>Equipamento</p>
                             <p style={{}}>{values.equipment} </p>
@@ -193,7 +192,7 @@ export const UpdateContentKit: React.FC<UpdateContentKitProps> = ({ edit, values
                         <CardObject key={index} object={item} />
                     ))}
                 </Box>
-                <Box sx={{ gap: "3vw" }}>
+                <Box sx={{ gap: isMobile ? "3vw" : "1vw" }}>
                     <TitleComponents title="Responsáveis" button={edit} click={openEmployees} />
                     {data?.team?.map((item, index) => (
                         <CardTeam key={index} employee={item} />
