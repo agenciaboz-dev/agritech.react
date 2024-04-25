@@ -241,10 +241,8 @@ export const AddKit: React.FC<AddKitProps> = ({}) => {
                                 <Box
                                     sx={{
                                         overflowX: "hidden",
-                                        overflowY: "auto",
                                         height: isMobile ? "95%" : "100%",
                                         p: isMobile ? "0 2vw" : "0",
-                                        paddingBottom: isMobile ? "" : "80vh",
                                     }}
                                 >
                                     <ContentKit edit values={values} handleChange={handleChange} data={data} />

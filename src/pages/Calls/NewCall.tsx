@@ -281,14 +281,12 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
             <Box
                 style={{
                     padding: isMobile ? "5vw" : "1vw",
-                    paddingBottom: isMobile ? "" : "400vh",
                     width: "100%",
                     height: "100%",
                     backgroundColor: "#fff",
                     borderTopLeftRadius: isMobile ? "7vw" : "2vw",
                     borderTopRightRadius: isMobile ? "7vw" : "2vw",
                     gap: isMobile ? "5vw" : "1vw",
-                    overflow: "auto",
                     flexDirection: "column",
                 }}
             >
@@ -304,7 +302,14 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                     variant
                 />
                 <form onSubmit={formik.handleSubmit}>
-                    <Box sx={{ gap: isMobile ? "2vw" : "1vw" }}>
+                    <Box
+                        sx={{
+                            gap: isMobile ? "2vw" : "1vw",
+                            overflowY: "auto",
+                            // paddingBottom: isMobile ? "" : "400vh",
+                            paddingBottom: isMobile ? "" : "40vh",
+                        }}
+                    >
                         {!user.isAdmin && (
                             <DemoItem label={"Previsão da visita (Obrigatório)"}>
                                 <MobileDatePicker
