@@ -77,7 +77,7 @@ export const SettingsKit: React.FC<SettingsKitProps> = ({}) => {
                     borderTopLeftRadius: isMobile ? "5vw" : "2vw",
                     borderTopRightRadius: isMobile ? "5vw" : "2vw",
                     height: "100%",
-                    paddingTop: isMobile ? "3vh" : "5vh",
+                    paddingTop: isMobile ? "3vh" : 0,
                 }}
             >
                 <Box
@@ -86,8 +86,8 @@ export const SettingsKit: React.FC<SettingsKitProps> = ({}) => {
                         alignItems: "center",
                         justifyContent: "space-between",
                         // height: "100%",
-                        padding: isMobile ? "0vw 4vw" : "2vw 1vw 2.5vw",
-                        paddingBottom: isMobile ? "4vw" : "1vw",
+                        padding: isMobile ? "0vw 4vw" : "1.5vw 1vw",
+                        paddingBottom: isMobile ? "4vw" : "1.5vw",
                         overflowY: "hidden",
                     }}
                 >
@@ -146,21 +146,14 @@ export const SettingsKit: React.FC<SettingsKitProps> = ({}) => {
                                     ? kits.length !== 0
                                         ? kits.map((kit, index) => <CardKit key={index} kit={kit} />)
                                         : kits === undefined
-                                        ? skeletons.map((_, index) => (
-                                              <Skeleton variant="rounded" key={index} animation="wave" />
-                                          ))
+                                        ? skeletons.map((_, index) => <Skeleton variant="rounded" key={index} animation="wave" />)
                                         : "Nenhum kit encontrado"
                                     : kitsEmployee.length !== 0
                                     ? kitsEmployee.map((kit, index) => <CardKit key={index} kit={kit} />)
                                     : kitsEmployee.length === 0 && (
                                           <Box sx={{ gap: "2vw", width: 1 }}>
                                               {skeletons.map((_, index) => (
-                                                  <Skeleton
-                                                      variant="rounded"
-                                                      key={index}
-                                                      animation="wave"
-                                                      sx={{ width: 1, height: "10vh" }}
-                                                  />
+                                                  <Skeleton variant="rounded" key={index} animation="wave" sx={{ width: 1, height: "10vh" }} />
                                               ))}
                                           </Box>
                                       )

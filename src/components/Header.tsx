@@ -79,7 +79,7 @@ export const Header: React.FC<HeaderProps> = ({ back, location, style }) => {
                 </Badge>
                 <Avatar
                     src={user?.image}
-                    style={{ color: "#fff", width: isMobile ? "8vw" : "2vw", height: isMobile ? "8vw" : "2vw" }}
+                    style={{ color: "#fff", width: isMobile ? "8vw" : "2vw", height: isMobile ? "8vw" : "2vw", cursor: "pointer" }}
                     onClick={() => {
                         menuDrawer.toggle()
                         console.log("abriu")
