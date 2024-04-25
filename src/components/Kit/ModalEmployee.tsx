@@ -4,6 +4,7 @@ import { ButtonAgritech } from "../ButtonAgritech"
 import { colors } from "../../style/colors"
 import { useUser } from "../../hooks/useUser"
 import { TfiCrown } from "react-icons/tfi"
+import { useMediaQuery } from "@mui/material"
 
 interface ModalEmployeeProps {
     employees: User[]
@@ -14,6 +15,8 @@ interface ModalEmployeeProps {
 }
 
 export const ModalEmployee: React.FC<ModalEmployeeProps> = ({ opened, close, employees, setEmployees, allEmployees }) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
+
     const filteredEmployeeIds = employees
         .filter((employee) => employee.employee?.id !== undefined) // Filtra os funcionários cujo id não é undefined
         .map((employee) => employee.employee!.id)
@@ -28,9 +31,7 @@ export const ModalEmployee: React.FC<ModalEmployeeProps> = ({ opened, close, emp
     }, [employees])
 
     // console.log(filteredEmployeeIds)
-    const freeEmployees = allEmployees?.filter(
-        (item) => item.employee?.kits?.length === 0 && (item.office === "copilot" || item.office === "pilot")
-    )
+    const freeEmployees = allEmployees?.filter((item) => item.employee?.kits?.length === 0 && (item.office === "copilot" || item.office === "pilot"))
 
     const handleCheckboxChange = (id: number) => {
         if (selectedRows.includes(id)) {
@@ -42,10 +43,7 @@ export const ModalEmployee: React.FC<ModalEmployeeProps> = ({ opened, close, emp
     }
 
     const rows = freeEmployees?.map((element) => (
-        <Table.Tr
-            key={element.name}
-            bg={selectedRows?.includes(element.employee?.id || 0) ? "var(--mantine-color-blue-light)" : undefined}
-        >
+        <Table.Tr key={element.name} bg={selectedRows?.includes(element.employee?.id || 0) ? "var(--mantine-color-blue-light)" : undefined}>
             <Table.Td>
                 <Checkbox
                     aria-label="Select row"
@@ -77,11 +75,7 @@ export const ModalEmployee: React.FC<ModalEmployeeProps> = ({ opened, close, emp
                     <>
                         <span style={{ color: colors.primary }}>
                             {" "}
-                            {element.office === "agronomist"
-                                ? "Agronômo"
-                                : element.office === "technician"
-                                ? "Técnico"
-                                : "Piloto"}
+                            {element.office === "agronomist" ? "Agronômo" : element.office === "technician" ? "Técnico" : "Piloto"}
                         </span>
                     </>
                 ) : element.office === "agronomist" ? (
@@ -119,7 +113,7 @@ export const ModalEmployee: React.FC<ModalEmployeeProps> = ({ opened, close, emp
             styles={{
                 body: { display: "flex", flexDirection: "column", gap: "6vw" },
                 root: { maxHeight: "75%", minHeight: "fit-content" },
-                content: { borderRadius: "6vw" },
+                content: { borderRadius: isMobile ? "6vw" : "2vw" },
             }}
         >
             <Table>
@@ -138,7 +132,7 @@ export const ModalEmployee: React.FC<ModalEmployeeProps> = ({ opened, close, emp
                 sx={{
                     width: "50%",
                     alignSelf: "end",
-                    fontSize: "3.6vw",
+                    fontSize: isMobile ? "3.6vw" : "1rem",
                     p: "2vw",
                     bgcolor: colors.button,
                     color: colors.text.white,
