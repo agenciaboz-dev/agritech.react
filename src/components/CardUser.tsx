@@ -46,13 +46,13 @@ export const CardUser: React.FC<CardUserProps> = ({ review, user, location }) =>
                     </p>
                 </Box>
             </Box>
-            <Box sx={{ alignItems: "center", flexDirection: "row", cursor: "pointer" }}>
-                <p
-                    style={{ fontSize: isMobile ? "2.5vw" : "1rem" }}
-                    onClick={() => {
-                        navigate(location)
-                    }}
-                >
+            <Box
+                sx={{ alignItems: "center", flexDirection: "row", cursor: "pointer" }}
+                onClick={() => {
+                    navigate(location)
+                }}
+            >
+                <p style={{ fontSize: isMobile ? "3vw" : "1rem" }}>
                     {user.producer ? "Revisar Informações" : review ? "Revisar" : "Verificar calendário"}
                 </p>
                 <ArrowForwardIosIcon sx={{ width: "3vw", padding: 0 }} />
