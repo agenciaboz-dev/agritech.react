@@ -64,7 +64,7 @@ export const SettingsKit: React.FC<SettingsKitProps> = ({}) => {
                     gap: isMobile ? "1vw" : "0.5vw",
                     padding: isMobile ? "4vw" : "1vw",
                     flexDirection: "row",
-                    paddingBottom: isMobile ? "13vw" : "4vw",
+                    paddingBottom: isMobile ? "13vw" : "",
                 }}
             >
                 <Header back location="../panel" />

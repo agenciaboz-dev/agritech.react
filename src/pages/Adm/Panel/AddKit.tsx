@@ -154,11 +154,11 @@ export const AddKit: React.FC<AddKitProps> = ({}) => {
                         <Box
                             sx={{
                                 width: "100%",
-                                height: "10%",
+                                height: isMobile ? "10%" : "fit-content",
                                 justifyContent: "center",
                                 alignItems: "center",
                                 gap: "1vw",
-                                padding: isMobile ? "4vw" : "3vw",
+                                padding: isMobile ? "4vw" : "2.5vw",
                                 flexDirection: "row",
                             }}
                         >
@@ -180,7 +180,7 @@ export const AddKit: React.FC<AddKitProps> = ({}) => {
                                     alignItems: "center",
                                     paddingBottom: "5vw",
                                     justifyContent: "space-between",
-                                    padding: isMobile ? "2vw 3vw" : "1vw",
+                                    padding: isMobile ? "2vw 3vw" : "1.5vw 1vw",
                                 }}
                             >
                                 <p style={{ color: colors.text.white, fontSize: isMobile ? "4vw" : "1.2rem", fontFamily: "MalgunGothic2" }}>
@@ -238,7 +238,15 @@ export const AddKit: React.FC<AddKitProps> = ({}) => {
                                     overflowY: "hidden",
                                 }}
                             >
-                                <Box sx={{ overflowX: "hidden", overflowY: "auto", height: "95%", p: isMobile ? "0 2vw" : "0" }}>
+                                <Box
+                                    sx={{
+                                        overflowX: "hidden",
+                                        overflowY: "auto",
+                                        height: isMobile ? "95%" : "100%",
+                                        p: isMobile ? "0 2vw" : "0",
+                                        paddingBottom: isMobile ? "" : "80vh",
+                                    }}
+                                >
                                     <ContentKit edit values={values} handleChange={handleChange} data={data} />
                                 </Box>
                             </Box>

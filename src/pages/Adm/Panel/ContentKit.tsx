@@ -73,7 +73,7 @@ export const ContentKit: React.FC<ContentKitProps> = ({ edit, values, handleChan
                             fontFamily: "MalgunGothic2",
                         }}
                     />
-                    <Box sx={{ flexDirection: "column", gap: isMobile ? "2vw" : "1vw", width: "70%" }}>
+                    <Box sx={{ flexDirection: "column", gap: isMobile ? "2vw" : "1vw", width: isMobile ? "70%" : "100%" }}>
                         <TextField
                             label={"Nome do Kit"}
                             name="name"
