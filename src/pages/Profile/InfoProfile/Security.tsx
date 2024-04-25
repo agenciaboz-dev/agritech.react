@@ -1,6 +1,5 @@
-import { Box, IconButton, TextField } from "@mui/material"
+import { Box, IconButton, TextField, useMediaQuery } from "@mui/material"
 import React, { ChangeEventHandler, useEffect, useState } from "react"
-import { textField } from "../../../style/input"
 import MaskedInputNando from "../../../components/MaskedNando"
 import { useCurrencyMask } from "burgos-masks"
 import DeleteOutlineOutlined from "@mui/icons-material/DeleteOutlineOutlined"
@@ -11,12 +10,15 @@ import { useUser } from "../../../hooks/useUser"
 import { useSnackbar } from "burgos-snackbar"
 import { useUsers } from "../../../hooks/useUsers"
 import { useNavigate } from "react-router-dom"
+import { useResponsiveStyles } from "../../../hooks/useResponsiveStyles"
 
 interface SecurityProps {
     values: Partial<Omit<User, "producer"> & { producer: Partial<Producer> }>
 }
 
 export const Security: React.FC<SecurityProps> = ({ values }) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
+    const textField = useResponsiveStyles()
     const [open, setOpen] = useState(false)
     const [loading, setLoading] = useState(false)
     const { user, setUser } = useUser()
@@ -43,7 +45,15 @@ export const Security: React.FC<SecurityProps> = ({ values }) => {
         })
     }, [])
     return (
-        <Box sx={{ flexDirection: "column", gap: "1vw" }}>
+        <Box
+            sx={{
+                flexDirection: "column",
+                gap: "1vw",
+                overflowY: "auto",
+                // paddingBottom: "400vh",
+                paddingBottom: "40vh",
+            }}
+        >
             {user?.cpf === values.cpf && (
                 <Box sx={{ flexDirection: "row", alignItems: "center", width: "100%", justifyContent: "space-between" }}>
                     <p style={{ fontSize: "1rem" }}>Atualizar Senha</p>

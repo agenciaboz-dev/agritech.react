@@ -47,11 +47,11 @@ export const ListEmployee: React.FC<ListEmployeeProps> = ({}) => {
             <Box
                 sx={{
                     width: "100%",
-                    height: "6vw",
+                    height: isMobile ? "6vw" : "fit-content",
                     justifyContent: "center",
                     alignItems: "center",
                     gap: "1vw",
-                    padding: isMobile ? "4vw" : "3vw",
+                    padding: isMobile ? "4vw" : "2.5vw",
                     flexDirection: "row",
                 }}
             >
@@ -64,8 +64,8 @@ export const ListEmployee: React.FC<ListEmployeeProps> = ({}) => {
                     backgroundColor: colors.secondary,
                     borderTopLeftRadius: isMobile ? "5vw" : "2vw",
                     borderTopRightRadius: isMobile ? "5vw" : "2vw",
-                    paddingTop: isMobile ? 10 : "2vw",
-                    marginTop: "5vh",
+                    paddingTop: isMobile ? 10 : "1vw",
+                    marginTop: isMobile ? "5vh" : 0,
                 }}
             >
                 <Box

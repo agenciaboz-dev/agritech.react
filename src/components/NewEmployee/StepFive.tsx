@@ -181,7 +181,7 @@ export const StepFive: React.FC<StepFiveProps> = ({
             >
                 Permissões
             </p>
-            <Box sx={{ flexDirection: "column", gap:"2vw",justifyContent: "space-between" }}>
+            <Box sx={{ flexDirection: "column", gap: isMobile ? "2vw" : "1vw", justifyContent: "space-between", marginLeft: "2vw" }}>
                 <FormGroup sx={{ width: "90%" }}>
                     <FormControlLabel
                         checked={adminStatus}

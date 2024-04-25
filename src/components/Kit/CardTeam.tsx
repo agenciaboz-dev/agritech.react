@@ -1,4 +1,4 @@
-import { Avatar, Box } from "@mui/material"
+import { Avatar, Box, useMediaQuery } from "@mui/material"
 import React from "react"
 import { OfficeDot } from "../OfficeDot"
 import { TfiCrown } from "react-icons/tfi"
@@ -9,8 +9,9 @@ interface CardTeamProps {
 }
 
 export const CardTeam: React.FC<CardTeamProps> = ({ employee }) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
     return (
-        <Box sx={{ p: "1vw", pt: 0, pb: 0, pl: "2vw", flexDirection: "row", gap: "3vw" }}>
+        <Box sx={{ p: "1vw", pt: 0, pb: 0, pl: isMobile ? "2vw" : 0, flexDirection: "row", gap: "3vw", alignItems: "center" }}>
             <Avatar src={employee.image} sx={{ width: "10vw", height: "10vw" }} />
             <Box sx={{ flexDirection: "column" }}>
                 {employee?.isAdmin ? (

@@ -5,7 +5,7 @@ import { ButtonAgritech } from "../ButtonAgritech"
 import { LiaObjectGroupSolid } from "react-icons/lia"
 import { MdNumbers, MdOutlineAdd } from "react-icons/md"
 import { TbFileDescription } from "react-icons/tb"
-import { Box, CircularProgress, IconButton } from "@mui/material"
+import { Box, CircularProgress, IconButton, useMediaQuery } from "@mui/material"
 import { colors } from "../../style/colors"
 import { AiOutlineDelete } from "react-icons/ai"
 import { NewObject } from "../../definitions/object"
@@ -18,6 +18,7 @@ interface ModalObjectProps {
 }
 
 export const ModalObject: React.FC<ModalObjectProps> = ({ opened, close, object, setObject }) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
     const addObject = () => {
         setObject([...object, { name: "", quantity: 1, description: "" }])
     }
@@ -48,7 +49,7 @@ export const ModalObject: React.FC<ModalObjectProps> = ({ opened, close, object,
             styles={{
                 body: { display: "flex", flexDirection: "column", gap: "6vw", borderRadius: "10vw" },
                 root: { maxHeight: "75%", minHeight: "fit-content" },
-                content: { borderRadius: "6vw" },
+                content: { borderRadius: isMobile ? "6vw" : "2vw" },
             }}
         >
             {object.map((objeto, index) => (

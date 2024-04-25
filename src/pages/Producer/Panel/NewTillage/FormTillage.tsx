@@ -1,10 +1,8 @@
-import { Avatar, Box, Button, Tab, Tabs, TextField } from "@mui/material"
+import { Avatar, Box, Button, Tab, Tabs, TextField, useMediaQuery } from "@mui/material"
 import React, { ChangeEventHandler, useEffect, useState } from "react"
 import { useHeader } from "../../../../hooks/useHeader"
-import { textField } from "../../../../style/input"
 import { colors } from "../../../../style/colors"
 import { useNavigate } from "react-router-dom"
-import { tabStyle } from "../../../../style/tabStyle"
 import GeoImage from "../../../../assets/geo.svg"
 import { Form, Formik } from "formik"
 import { Team } from "../../../../components/NewProducer/NewTillage/Team"
@@ -18,6 +16,7 @@ import { NewLavoura } from "../../../../definitions/newTillage"
 import { useNumberMask } from "burgos-masks"
 import MaskedInputNando from "../../../../components/MaskedNando"
 import { TitleComponents } from "../../../../components/TitleComponents"
+import { useResponsiveStyles } from "../../../../hooks/useResponsiveStyles"
 
 interface FormTillageProps {
     data: NewLavoura
@@ -42,6 +41,9 @@ export const FormTillage: React.FC<FormTillageProps> = ({
     opened,
     images,
 }) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
+    const textField = useResponsiveStyles()
+    const tabStyle = useResponsiveStyles()
     const header = useHeader()
     const { user } = useUser()
     const [image, setImage] = useState<File>()
@@ -62,7 +64,16 @@ export const FormTillage: React.FC<FormTillageProps> = ({
         header.setTitle(producerUser ? producerUser.name : "Nova Fazenda")
     }, [])
     return (
-        <Box sx={{ width: "100%", maxHeight: "96vh", height: "100vh", gap: "0vw", flexDirection: "column", p: "4vw" }}>
+        <Box
+            sx={{
+                width: "100%",
+                maxHeight: isMobile ? "96vh" : "fit-content",
+                height: isMobile ? "100vh" : "fit-content",
+                gap: "0vw",
+                flexDirection: "column",
+                padding: isMobile ? "4vw" : "1vw",
+            }}
+        >
             <p>Informações da Fazenda</p>
 
             <Box
@@ -77,9 +88,9 @@ export const FormTillage: React.FC<FormTillageProps> = ({
                 <Box
                     sx={{
                         flexDirection: "row",
-                        gap: "5vw",
+                        gap: isMobile ? "5vw" : "2vw",
                         width: "100%",
-                        height: "20vh",
+                        height: isMobile ? "20vh" : "fit-content",
                         alignItems: "center",
                     }}
                 >
@@ -94,19 +105,12 @@ export const FormTillage: React.FC<FormTillageProps> = ({
                         style={{
                             width: "25vw",
                             height: "25vw",
-                            fontSize: "4vw",
+                            fontSize: isMobile ? "4vw" : "1.2rem",
                             fontFamily: "MalgunGothic2",
                         }}
                     />
-                    <Box sx={{ flexDirection: "column", gap: "2vw", width: "65%" }}>
-                        <TextField
-                            label={"Nome da fazenda"}
-                            name="name"
-                            value={data.name}
-                            sx={textField}
-                            onChange={change}
-                            required
-                        />
+                    <Box sx={{ flexDirection: "column", gap: isMobile ? "2vw" : "1vw", width: isMobile ? "65%" : "100%" }}>
+                        <TextField label={"Nome da fazenda"} name="name" value={data.name} sx={textField} onChange={change} required />
 
                         <TextField
                             label={"Área"}
@@ -123,18 +127,11 @@ export const FormTillage: React.FC<FormTillageProps> = ({
                         />
                     </Box>
                 </Box>
-                <Box sx={{ width: 1, gap: "2vw" }}>
+                <Box sx={{ width: 1, gap: isMobile ? "2vw" : "1vw" }}>
                     <p>
                         {addressApi?.cidade.nome}, {addressApi?.estado.sigla} - {addressApi?.cep}
                     </p>
-                    <TextField
-                        label={"Complemento"}
-                        name="address.adjunct"
-                        value={data.address.adjunct}
-                        sx={textField}
-                        onChange={change}
-                        required
-                    />
+                    <TextField label={"Complemento"} name="address.adjunct" value={data.address.adjunct} sx={textField} onChange={change} required />
                 </Box>
             </Box>
             <Tabs
@@ -151,15 +148,13 @@ export const FormTillage: React.FC<FormTillageProps> = ({
                 <Tab sx={tabStyle} value="additional" label="Adicionais" />
                 <Tab sx={tabStyle} value="gallery" label="Imagens" />
             </Tabs>
-            {tab === "team" && (
-                <Team data={data} handleChange={change} producerName={user?.producer ? user.name : producerUser?.name} />
-            )}
+            {tab === "team" && <Team data={data} handleChange={change} producerName={user?.producer ? user.name : producerUser?.name} />}
             {tab === "additional" && <Additional data={data} handleChange={change} />}
             {tab === "gallery" && (
                 <Box sx={{ width: "100%", height: "52%", gap: "3vw" }}>
-                    <Box sx={{ width: "100%", height: "66%", overflowY: "auto", gap: "2vw" }}>
+                    <Box sx={{ width: "100%", height: isMobile ? "66%" : "100%", overflowY: "auto", gap: isMobile ? "2vw" : "1vw" }}>
                         {images.length === 0 ? (
-                            <Box sx={{ pt: "4vw" }}>
+                            <Box sx={{ pt: isMobile ? "4vw" : "1vw" }}>
                                 <TitleComponents title="Adicionar Galeria" button textButton="Adicionar" click={open} />
                             </Box>
                         ) : (

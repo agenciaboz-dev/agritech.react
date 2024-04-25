@@ -1,4 +1,4 @@
-import { Box, Button, SxProps } from "@mui/material"
+import { Box, Button, SxProps, useMediaQuery } from "@mui/material"
 import React from "react"
 import { colors } from "../style/colors"
 
@@ -26,8 +26,9 @@ export const TitleComponents: React.FC<TitleComponentsProps> = ({
     disabled,
     styleButton,
 }) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
     return (
-        <Box sx={{ gap: "2vw" }}>
+        <Box sx={{ gap: isMobile ? "2vw" : "1vw" }}>
             <Box sx={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
                 <p style={{ ...style, fontWeight: title === "Responsáveis" ? "bold" : "normal" }}>{title}</p>
                 {button && (

@@ -237,13 +237,8 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
             sx={{
                 width: "100%",
                 height: isMobile ? "13vw" : "4vw",
-                bgcolor:
-                    !drawer && findBy
-                        ? "transparent"
-                        : !drawer && findBy === undefined
-                        ? "#F0F9F2"
-                        : drawer && "transparent",
-                padding: isMobile ? "3vw" : "1vw",
+                bgcolor: !drawer && findBy ? "transparent" : !drawer && findBy === undefined ? "#F0F9F2" : drawer && "transparent",
+                padding: "1vw",
                 borderRadius: isMobile ? "4vw" : "2vw",
                 flexDirection: "row",
                 alignItems: "center",
@@ -255,8 +250,8 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
             <Box
                 sx={{
                     flexDirection: "row",
-                    gap: drawer ? (isMobile ? "8vw" : "2vw") : "0vw",
-                    width: isMobile ? 1 : "100%",
+                    gap: drawer ? "2vw" : "0vw",
+                    width: "90%",
                     alignItems: "center",
                     justifyContent: "space-between",
                 }}
@@ -267,10 +262,7 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                     }}
                 >
                     {notification.target_key === "employee" ? (
-                        <Avatar
-                            src={employee?.image}
-                            sx={{ width: isMobile ? "8vw" : "2vw", height: isMobile ? "8vw" : "2vw" }}
-                        />
+                        <Avatar src={employee?.image} sx={{ width: isMobile ? "8vw" : "2vw", height: isMobile ? "8vw" : "2vw" }} />
                     ) : notification.target_key === "report" && notification.action === "close" ? (
                         <HiOutlineClipboardDocument
                             style={{
@@ -396,9 +388,22 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                         )
                     )}
                 </Box>
-                <Box sx={{ flexDirection: "row", width: "67%", flexWrap: "nowrap" }}>
+                <Box
+                    sx={{
+                        flexDirection: "row",
+                        width: "67%",
+                        flexWrap: "nowrap",
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                    }}
+                >
                     {notification.target_key === "employee" ? (
-                        <Box>
+                        <Box
+                            sx={{
+                                width: "100%",
+                            }}
+                        >
                             <p
                                 style={{
                                     color: drawer ? colors.text.white : colors.text.black,
@@ -425,7 +430,11 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                             </p>
                         </Box>
                     ) : notification.action === "close" && notification.target_key === "report" ? (
-                        <Box>
+                        <Box
+                            sx={{
+                                width: "100%",
+                            }}
+                        >
                             <p
                                 style={{
                                     color: drawer ? colors.text.white : colors.text.black,
@@ -452,7 +461,11 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                             </p>
                         </Box>
                     ) : notification.action === "active" && notification.target_key === "admin" ? (
-                        <Box>
+                        <Box
+                            sx={{
+                                width: "100%",
+                            }}
+                        >
                             <p
                                 style={{
                                     color: drawer ? colors.text.white : colors.text.black,
@@ -479,20 +492,30 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                             </p>
                         </Box>
                     ) : notification.action === "disabled" && notification.target_key === "admin" ? (
-                        <p
-                            style={{
-                                color: drawer ? colors.text.white : colors.text.black,
-                                fontSize: "0.9rem",
-                                textOverflow: "ellipsis",
-                                whiteSpace: "nowrap",
-                                overflowX: "hidden",
-                                fontWeight: findBy === undefined ? "800" : "0",
+                        <Box
+                            sx={{
+                                width: "100%",
                             }}
                         >
-                            Você não é mais administrador
-                        </p>
+                            <p
+                                style={{
+                                    color: drawer ? colors.text.white : colors.text.black,
+                                    fontSize: "0.9rem",
+                                    textOverflow: "ellipsis",
+                                    whiteSpace: "nowrap",
+                                    overflowX: "hidden",
+                                    fontWeight: findBy === undefined ? "800" : "0",
+                                }}
+                            >
+                                Você não é mais administrador
+                            </p>
+                        </Box>
                     ) : notification.action === "active" && notification.target_key === "manager" ? (
-                        <Box>
+                        <Box
+                            sx={{
+                                width: "100%",
+                            }}
+                        >
                             <p
                                 style={{
                                     color: drawer ? colors.text.white : colors.text.black,
@@ -519,7 +542,11 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                             </p>
                         </Box>
                     ) : notification.action === "disabled" && notification.target_key === "manager" ? (
-                        <Box>
+                        <Box
+                            sx={{
+                                width: "100%",
+                            }}
+                        >
                             <p
                                 style={{
                                     color: drawer ? colors.text.white : colors.text.black,
@@ -546,54 +573,80 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                             </p>
                         </Box>
                     ) : notification.action === "new" && notification.target_key === "kit" ? (
-                        <p
-                            style={{
-                                color: drawer ? colors.text.white : colors.text.black,
-                                fontSize: "0.9rem",
-                                fontWeight: findBy === undefined ? "800" : "0",
-                                textOverflow: "ellipsis",
-                                whiteSpace: "nowrap",
-                                overflowX: "hidden",
+                        <Box
+                            sx={{
+                                width: "100%",
                             }}
                         >
-                            Novo kit {kit?.name} disponível
-                        </p>
+                            <p
+                                style={{
+                                    color: drawer ? colors.text.white : colors.text.black,
+                                    fontSize: "0.9rem",
+                                    fontWeight: findBy === undefined ? "800" : "0",
+                                    textOverflow: "ellipsis",
+                                    whiteSpace: "nowrap",
+                                    overflowX: "hidden",
+                                }}
+                            >
+                                Novo kit {kit?.name} disponível
+                            </p>
+                        </Box>
                     ) : notification.action === "active" && notification.target_key === "kit" ? (
-                        <p
-                            style={{
-                                fontSize: "0.9rem",
-                                color: drawer ? colors.text.white : colors.text.black,
-                                fontWeight: findBy === undefined ? "800" : "0",
+                        <Box
+                            sx={{
+                                width: "100%",
                             }}
                         >
-                            Seu Kit foi ativado
-                        </p>
+                            <p
+                                style={{
+                                    fontSize: "0.9rem",
+                                    color: drawer ? colors.text.white : colors.text.black,
+                                    fontWeight: findBy === undefined ? "800" : "0",
+                                }}
+                            >
+                                Seu Kit foi ativado
+                            </p>
+                        </Box>
                     ) : notification.action === "disabled" && notification.target_key === "kit" ? (
-                        <p
-                            style={{
-                                fontSize: "0.9rem",
-                                fontWeight: findBy === undefined ? "800" : "0",
-
-                                color: drawer ? colors.text.white : colors.text.black,
+                        <Box
+                            sx={{
+                                width: "100%",
                             }}
                         >
-                            Seu Kit foi desativado
-                        </p>
+                            <p
+                                style={{
+                                    fontSize: "0.9rem",
+                                    fontWeight: findBy === undefined ? "800" : "0",
+                                    color: drawer ? colors.text.white : colors.text.black,
+                                }}
+                            >
+                                Seu Kit foi desativado
+                            </p>
+                        </Box>
                     ) : notification.action === "update" && notification.target_key === "kit" ? (
-                        <p
-                            style={{
-                                fontSize: "0.9rem",
-                                fontWeight: findBy === undefined ? "800" : "0",
-
-                                color: drawer ? colors.text.white : colors.text.black,
+                        <Box
+                            sx={{
+                                width: "100%",
                             }}
                         >
-                            Kit {kit?.name} foi atualizado
-                        </p>
+                            <p
+                                style={{
+                                    fontSize: "0.9rem",
+                                    fontWeight: findBy === undefined ? "800" : "0",
+                                    color: drawer ? colors.text.white : colors.text.black,
+                                }}
+                            >
+                                Kit {kit?.name} foi atualizado
+                            </p>
+                        </Box>
                     ) : (
                         notification.action === "new" &&
                         notification.target_key === "call" && (
-                            <Box>
+                            <Box
+                                sx={{
+                                    width: "100%",
+                                }}
+                            >
                                 <p
                                     style={{
                                         color: drawer ? colors.text.white : colors.text.black,
@@ -622,11 +675,11 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                         )
                     )}
                 </Box>
-                <Box sx={{ flexDirection: "column", gap: "1vw", alignItems: "end", width: 0.2 }}>
+                <Box sx={{ flexDirection: "column", gap: isMobile ? "1vw" : 0, alignItems: "end", width: "20%" }}>
                     <p
                         style={{
                             // display: "flex",
-                            fontSize: isMobile ? "0.7rem" : "1.2rem",
+                            fontSize: isMobile ? "3vw" : "1rem",
                             textOverflow: "ellipsis",
                             overflowX: "hidden",
                             whiteSpace: "nowrap",
@@ -638,7 +691,7 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                     <p
                         style={{
                             // display: "flex",
-                            fontSize: isMobile ? "2.5vw" : "1.2rem",
+                            fontSize: isMobile ? "2.5vw" : "1rem",
                             textOverflow: "ellipsis",
                             overflowX: "hidden",
                             whiteSpace: "nowrap",
@@ -652,12 +705,12 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
             </Box>
             <Box sx={{ width: isMobile ? "10%" : "fit-content" }}>
                 {drawer && findBy === undefined && (
-                    <IconButton onClick={onClick}>
+                    <IconButton onClick={onClick} sx={{ padding: 0 }}>
                         <ArrowForwardIos fontSize="small" sx={{ color: drawer ? colors.text.white : colors.text.black }} />
                     </IconButton>
                 )}
                 {!drawer && findBy === undefined && (
-                    <IconButton onClick={onClick}>
+                    <IconButton onClick={onClick} sx={{ padding: 0 }}>
                         <ArrowForwardIos fontSize="small" sx={{ color: drawer ? colors.text.white : colors.text.black }} />
                     </IconButton>
                 )}

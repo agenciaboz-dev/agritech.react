@@ -1,6 +1,5 @@
-import { Box,  MenuItem, TextField} from "@mui/material"
+import { Box, MenuItem, TextField, useMediaQuery } from "@mui/material"
 import React, { ChangeEventHandler } from "react"
-import { textField } from "../../../style/input"
 import { useGender } from "../../../hooks/useGender"
 import { useRelationship } from "../../../hooks/useRelationship"
 import MaskedInput from "../../../components/MaskedInput"
@@ -8,8 +7,9 @@ import { useUser } from "../../../hooks/useUser"
 import MaskedInputNando from "../../../components/MaskedNando"
 import { useCnpjMask } from "burgos-masks"
 import { Dayjs } from "dayjs"
-import {  MobileDatePicker } from "@mui/x-date-pickers"
+import { MobileDatePicker } from "@mui/x-date-pickers"
 import { DemoItem } from "@mui/x-date-pickers/internals/demo"
+import { useResponsiveStyles } from "../../../hooks/useResponsiveStyles"
 
 interface PersonalProps {
     values: Partial<Omit<User, "producer"> & { producer: Partial<Producer> }>
@@ -18,14 +18,23 @@ interface PersonalProps {
     setBirthPick?: React.Dispatch<React.SetStateAction<Dayjs | null>>
 }
 
-
 export const Personal: React.FC<PersonalProps> = ({ values, handleChange, birthPick, setBirthPick }) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
+    const textField = useResponsiveStyles()
     const gender = useGender()
     const typeRelationship = useRelationship()
     const { user } = useUser()
 
     return (
-        <Box sx={{ flexDirection: "column", gap: "2.5vw" }}>
+        <Box
+            sx={{
+                flexDirection: "column",
+                gap: isMobile ? "2.5vw" : "1vw",
+                overflowY: "auto",
+                // paddingBottom: "400vh",
+                paddingBottom: "40vh",
+            }}
+        >
             <DemoItem label="Data de Nascimento">
                 <MobileDatePicker
                     sx={{ ...textField }}
@@ -80,7 +89,7 @@ export const Personal: React.FC<PersonalProps> = ({ values, handleChange, birthP
             )}
             {values.employee?.id !== undefined && (
                 <>
-                    <Box sx={{ flexDirection: "row", width: "100%", gap: "3vw" }}>
+                    <Box sx={{ flexDirection: "row", width: "100%", gap: isMobile ? "3vw" : "1vw" }}>
                         <TextField
                             select
                             onChange={handleChange}
@@ -88,12 +97,12 @@ export const Personal: React.FC<PersonalProps> = ({ values, handleChange, birthP
                             name="employee.gender"
                             sx={{
                                 ...textField,
-                                width: "50%",
+                                width: isMobile ? "50%" : "100%",
                             }}
                             variant="outlined"
                             value={values.employee?.gender}
                             InputProps={{
-                                sx: { ...textField, height: "12vw" },
+                                sx: { ...textField, height: isMobile ? "12vw" : "2vw" },
                             }}
                             SelectProps={{
                                 MenuProps: {
@@ -127,13 +136,13 @@ export const Personal: React.FC<PersonalProps> = ({ values, handleChange, birthP
                             name="employee.relationship"
                             sx={{
                                 ...textField,
-                                width: "50%",
+                                width: isMobile ? "50%" : "100%",
                             }}
                             required
                             variant="outlined"
                             value={values.employee?.relationship}
                             InputProps={{
-                                sx: { ...textField, height: "12vw" },
+                                sx: { ...textField, height: isMobile ? "12vw" : "2vw" },
                             }}
                             SelectProps={{
                                 MenuProps: {

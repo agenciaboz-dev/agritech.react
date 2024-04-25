@@ -155,8 +155,14 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                     >
                         Configuração de Kits
                     </p>
-                    <IconButton onClick={() => navigate("/adm/settings-kit")}>
-                        <ArrowForwardIosIcon sx={{ color: "#fff", width: "5vw" }} />
+                    <IconButton
+                        onClick={() => navigate("/adm/settings-kit")}
+                        sx={{
+                            aspectRatio: 1,
+                            marginRight: isMobile ? "" : "2vw",
+                        }}
+                    >
+                        <ArrowForwardIosIcon sx={{ color: "#fff", width: isMobile ? "5vw" : "2vw" }} />
                     </IconButton>
                 </Box>
                 <Box
@@ -170,7 +176,8 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                         maxHeight: "100vh", // Defina uma altura máxima
                         overflowY: "auto", // Habilita a rolagem vertical quando o conteúdo excede a altura máxima
                         position: "relative",
-                        paddingBottom: isMobile ? "18vh" : "20vh",
+                        // paddingBottom: isMobile ? "20vh" : "400vh",
+                        paddingBottom: isMobile ? "20vh" : "25vh",
                         gap: isMobile ? "4vw" : "2vw",
                     }}
                 >
@@ -229,6 +236,10 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                                     alignItems: "center",
                                     justifyContent: "center",
                                     gap: "1vw",
+                                    cursor: "pointer",
+                                }}
+                                onClick={() => {
+                                    navigate("/adm/employees")
                                 }}
                             >
                                 <p
@@ -237,10 +248,6 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                                         fontSize: isMobile ? "3.5vw" : "1.2rem",
                                         fontFamily: "MalgunGothic2",
                                         fontWeight: "500",
-                                        cursor: "pointer",
-                                    }}
-                                    onClick={() => {
-                                        navigate("/adm/employees")
                                     }}
                                 >
                                     Ver todos
@@ -309,6 +316,10 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                                         alignItems: "center",
                                         justifyContent: "center",
                                         gap: "1vw",
+                                        cursor: "pointer",
+                                    }}
+                                    onClick={() => {
+                                        navigate("/adm/producers")
                                     }}
                                 >
                                     <p
@@ -317,10 +328,6 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                                             fontSize: isMobile ? "3.5vw" : "1.2rem",
                                             fontFamily: "MalgunGothic2",
                                             fontWeight: "500",
-                                            cursor: "pointer",
-                                        }}
-                                        onClick={() => {
-                                            navigate("/adm/producers")
                                         }}
                                     >
                                         Ver todos

@@ -50,7 +50,7 @@ export const NotificationDrawer: React.FC<NotificationDrawerProps> = ({}) => {
             PaperProps={{
                 sx: {
                     padding: isMobile ? "6vw 3vw" : "1vw",
-                    width: isMobile ? "78vw" : "25vw",
+                    width: isMobile ? "78vw" : "30vw",
                     height: "100%",
                     borderTopLeftRadius: isMobile ? "10vw" : "2vw",
                     borderBottomLeftRadius: isMobile ? "10vw" : "2vw",
@@ -73,9 +73,13 @@ export const NotificationDrawer: React.FC<NotificationDrawerProps> = ({}) => {
                     {navigationItems.notifications.title} Recentes
                 </p>
             </Box>
-            <Box sx={{ overflowY: "auto", gap: "8vw", height: "90%" }}>
-                <Box>
-                    <Box sx={{ flexDirection: "column", paddingTop: "2vw", gap: "1vw" }}>
+            <Box sx={{ overflowY: "auto", gap: "8vw", height: "90%", width: "100%" }}>
+                <Box
+                    sx={{
+                        width: "100%",
+                    }}
+                >
+                    <Box sx={{ flexDirection: "column", paddingTop: "2vw", gap: "1vw", width: "100%" }}>
                         {sorted_list?.map((item, index) => (
                             <LogNotification notification={item} drawer key={index} />
                         ))}

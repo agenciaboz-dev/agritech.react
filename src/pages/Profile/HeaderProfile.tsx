@@ -1,12 +1,12 @@
 import { Avatar } from "@files-ui/react"
-import { Avatar as ProfileImage } from "@mui/material"
+import { Avatar as ProfileImage, useMediaQuery } from "@mui/material"
 import { Box, TextField, SxProps, FormGroup, FormControlLabel, styled, Switch } from "@mui/material"
 import React, { ChangeEventHandler, useEffect } from "react"
-import { textField } from "../../style/input"
 import MaskedInput from "../../components/MaskedInput"
 import { useIo } from "../../hooks/useIo"
 import { useUser } from "../../hooks/useUser"
 import { useSnackbar } from "burgos-snackbar"
+import { useResponsiveStyles } from "../../hooks/useResponsiveStyles"
 
 interface HeaderProfileProps {
     values: Partial<Omit<User, "producer"> & { producer: Partial<Producer> }>
@@ -64,6 +64,8 @@ export const HeaderProfile: React.FC<HeaderProfileProps> = ({
     profile,
     setProfile,
 }) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
+    const textField = useResponsiveStyles()
     const { snackbar } = useSnackbar()
     const { user } = useUser()
 
@@ -122,8 +124,8 @@ export const HeaderProfile: React.FC<HeaderProfileProps> = ({
                 <ProfileImage
                     src={values.image}
                     style={{
-                        width: values?.employee?.id !== undefined ? "40vw" : "30vw",
-                        height: values?.employee?.id !== undefined ? "40vw" : "30vw",
+                        width: values?.employee?.id !== undefined ? (isMobile ? "40vw" : "10vw") : isMobile ? "30vw" : "10vw",
+                        height: values?.employee?.id !== undefined ? (isMobile ? "40vw" : "10vw") : isMobile ? "30vw" : "10vw",
                     }}
                 />
             ) : (
@@ -131,12 +133,12 @@ export const HeaderProfile: React.FC<HeaderProfileProps> = ({
                     src={image || values.image || null}
                     onChange={(file) => setImage(file)}
                     variant="circle"
-                    style={{ width: "30vw", height: "28vw", alignSelf: "center" }}
+                    style={{ width: isMobile ? "30vw" : "10vw", height: isMobile ? "28vw" : "10vw", alignSelf: "center" }}
                     emptyLabel="enviar imagem"
                     changeLabel="trocar imagem"
                 />
             )}
-            <Box sx={{ flexDirection: "column", gap: "3vw", width: "60%" }}>
+            <Box sx={{ flexDirection: "column", gap: isMobile ? "3vw" : "1vw", width: isMobile ? "60%" : "100%" }}>
                 <TextField label={"Nome Completo"} name="name" value={values.name} onChange={handleChange} sx={textField} />
                 <TextField
                     label={"Telefone"}
@@ -159,19 +161,19 @@ export const HeaderProfile: React.FC<HeaderProfileProps> = ({
                                 onChange={handleChangeAdmin}
                                 label={
                                     <Box sx={{ width: "100%" }}>
-                                        <p style={{ fontSize: "3.5vw", width: "100%" }}>Administrador</p>
+                                        <p style={{ fontSize: isMobile ? "3.5vw" : "1rem", width: "100%" }}>Administrador</p>
                                     </Box>
                                 }
                             />
                         </FormGroup>
-                        <FormGroup sx={{ width: "90%" }}>
+                        <FormGroup sx={{ width: isMobile ? "90%" : "100%" }}>
                             <FormControlLabel
                                 checked={isManager || false}
                                 control={<Android12Switch />}
                                 onChange={handleChangeManager}
                                 label={
                                     <Box sx={{ width: "100%" }}>
-                                        <p style={{ fontSize: "3.5vw", width: "100%" }}>Gerente</p>
+                                        <p style={{ fontSize: isMobile ? "3.5vw" : "1rem", width: "100%" }}>Gerente</p>
                                     </Box>
                                 }
                             />

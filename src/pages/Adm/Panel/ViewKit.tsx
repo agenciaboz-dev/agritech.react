@@ -1,4 +1,4 @@
-import { Box, Button, CircularProgress } from "@mui/material"
+import { Box, Button, CircularProgress, useMediaQuery } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { colors } from "../../../style/colors"
 import { Header } from "../../../components/Header"
@@ -22,6 +22,7 @@ import { unmaskNumber } from "../../../hooks/unmaskNumber"
 interface ViewKitProps {}
 
 export const ViewKit: React.FC<ViewKitProps> = ({}) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
     const header = useHeader()
     const io = useIo()
     const { snackbar } = useSnackbar()
@@ -153,8 +154,8 @@ export const ViewKit: React.FC<ViewKitProps> = ({}) => {
                                     justifyContent: "center",
                                     alignItems: "center",
                                     gap: "1vw",
-                                    padding: "4vw",
-                                    paddingBottom: "13vw",
+                                    padding: isMobile ? "4vw" : "2.5vw",
+                                    paddingBottom: isMobile ? "13vw" : "",
                                     flexDirection: "row",
                                 }}
                             >
@@ -165,24 +166,24 @@ export const ViewKit: React.FC<ViewKitProps> = ({}) => {
                                     justifyContent: "center",
                                     flex: 1,
                                     backgroundColor: colors.secondary,
-                                    borderTopLeftRadius: "5vw",
-                                    borderTopRightRadius: "5vw",
-                                    paddingTop: 10,
+                                    borderTopLeftRadius: isMobile ? "5vw" : "2vw",
+                                    borderTopRightRadius: isMobile ? "5vw" : "2vw",
+                                    paddingTop: isMobile ? 10 : "",
                                 }}
                             >
                                 <Box
                                     style={{
                                         flexDirection: "row",
                                         alignItems: "center",
-                                        paddingBottom: "5vw",
+                                        paddingBottom: isMobile ? "5vw" : "1.5vw",
                                         justifyContent: "space-between",
-                                        padding: "2vw 3vw",
+                                        padding: isMobile ? "2vw 3vw" : "1.5vw 1vw",
                                     }}
                                 >
                                     <p
                                         style={{
                                             color: colors.text.white,
-                                            fontSize: "5vw",
+                                            fontSize: isMobile ? "5vw" : "1.5rem",
                                             fontFamily: "MalgunGothic2",
                                             fontWeight: "bold",
                                         }}
@@ -196,11 +197,10 @@ export const ViewKit: React.FC<ViewKitProps> = ({}) => {
                                             variant="contained"
                                             sx={{
                                                 alignItems: "center",
-                                                gap: "1vw",
                                                 backgroundColor: "#fff",
                                                 textTransform: "none",
                                                 borderRadius: "5vw",
-                                                fontSize: "3vw",
+                                                fontSize: isMobile ? "3vw" : "1.2rem",
                                                 width: "fit-content",
                                                 color: edit ? colors.text.white : colors.text.black,
                                             }}
@@ -208,8 +208,8 @@ export const ViewKit: React.FC<ViewKitProps> = ({}) => {
                                                 setEdit(true)
                                             }}
                                         >
-                                            <Box sx={{ flexDirection: "row", alignItems: "center", gap: "2vw" }}>
-                                                <FiEdit2 /> <p style={{ fontSize: "3.5vw" }}>Editar</p>
+                                            <Box sx={{ flexDirection: "row", alignItems: "center", gap: isMobile ? "2vw" : "1vw" }}>
+                                                <FiEdit2 /> <p style={{ fontSize: isMobile ? "3.5vw" : "1.2rem" }}>Editar</p>
                                             </Box>
                                         </Button>
                                     ) : (
@@ -223,14 +223,14 @@ export const ViewKit: React.FC<ViewKitProps> = ({}) => {
                                                     gap: "1vw",
                                                     backgroundColor: colors.primary,
                                                     textTransform: "none",
-                                                    borderRadius: "5vw",
-                                                    fontSize: "3vw",
+                                                    borderRadius: isMobile ? "5vw" : "2vw",
+                                                    fontSize: isMobile ? "3vw" : "1rem",
                                                     width: "fit-content",
                                                     color: edit ? colors.text.white : colors.text.black,
                                                 }}
                                                 // onClick={}
                                             >
-                                                <Box sx={{ flexDirection: "row", alignItems: "center", gap: "2vw" }}>
+                                                <Box sx={{ flexDirection: "row", alignItems: "center" }}>
                                                     <p style={{ fontSize: "3.5vw" }}>Salvar Informações</p>
                                                 </Box>
                                             </Button>
@@ -239,26 +239,18 @@ export const ViewKit: React.FC<ViewKitProps> = ({}) => {
                                 </Box>
                                 <Box
                                     style={{
-                                        padding: "6vw 4vw 0",
+                                        padding: isMobile ? "6vw 4vw 0" : "1.5vw 1vw",
                                         width: "100%",
                                         backgroundColor: "#fff",
-                                        borderTopLeftRadius: "7vw",
-                                        borderTopRightRadius: "7vw",
+                                        borderTopLeftRadius: isMobile ? "7vw" : "2vw",
+                                        borderTopRightRadius: isMobile ? "7vw" : "2vw",
                                         height: "100%",
                                         gap: "1vw",
                                         overflowY: "hidden",
                                     }}
                                 >
-                                    <Box sx={{ overflowX: "hidden", height: "88%", p: "0 2vw" }}>
-                                        {kit && (
-                                            <UpdateContentKit
-                                                data={data}
-                                                edit={edit}
-                                                values={values}
-                                                handleChange={handleChange}
-                                                kit={kit}
-                                            />
-                                        )}
+                                    <Box sx={{ overflowX: "hidden", height: "88%", p: isMobile ? "0 2vw" : "" }}>
+                                        {kit && <UpdateContentKit data={data} edit={edit} values={values} handleChange={handleChange} kit={kit} />}
                                     </Box>
                                 </Box>
                             </Box>

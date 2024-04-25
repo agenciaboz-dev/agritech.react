@@ -27,12 +27,12 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, birthPick,
             sx={{
                 width: "100%",
                 height: "100%",
-                gap: isMobile ? "30vw" : "1vw",
+                gap: isMobile ? "30vw" : "7vw",
                 flexDirection: "column",
                 justifyContent: "space-between",
             }}
         >
-            <Box sx={{ gap: isMobile ? "2vw" : "1vw", width: "100%", height: "80%" }}>
+            <Box sx={{ gap: isMobile ? "2vw" : "1vw", width: "100%", height: isMobile ? "80%" : "100%" }}>
                 <p
                     style={{
                         fontSize: isMobile ? "4.5vw" : "1.5rem",

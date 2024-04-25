@@ -78,6 +78,7 @@ export const CardKit: React.FC<CardKitProps> = ({ kit }) => {
             </FormGroup>
             <ArrowForwardIos
                 fontSize="small"
+                style={{ cursor: "pointer" }}
                 onClick={() => navigate(user?.isAdmin ? `/adm/settings-kit/${kit.id}` : `/employee/settings-kit/${kit.id}`)}
             />
         </Box>
