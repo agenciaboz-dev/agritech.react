@@ -20,7 +20,6 @@ import "../../style/styles.css"
 import GeoImage from "../../assets/default.png"
 import { useArray } from "burgos-array"
 import { ButtonAgritech } from "../../components/ButtonAgritech"
-import { FiMoreHorizontal } from "react-icons/fi"
 import { VscAdd } from "react-icons/vsc"
 
 interface TillageDetailsProps {}
@@ -278,7 +277,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                     <Box sx={{ flexDirection: "row", gap: "2vw", width: "100%", overflow: "auto", p: "0vw 3vw 3vw" }}>
                         {tillageSelect?.talhao
                             ? tillageSelect?.talhao?.map((item, index) => (
-                                  <Box sx={{ alignItems: "center" }} key={index}>
+                                  <Box sx={{width:"", alignItems: "center" }} key={index}>
                                       <Avatar
                                           src={item.cover || GeoImage}
                                           style={{
@@ -292,7 +291,13 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                                           }}
                                           onClick={() => (selectedTalhao?.id !== item.id ? toggleSelection(item) : () => {})}
                                       />
-                                      <p style={{ fontSize: "0.9rem", textAlign: "center", color: colors.text.white }}>
+                                      <p
+                                          style={{
+                                              fontSize: "0.9rem",
+                                              textAlign: "center",
+                                              color: colors.text.white,
+                                          }}
+                                      >
                                           {item.name}
                                       </p>
                                   </Box>
@@ -363,20 +368,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                             ) : tab === "calls" && selectedCall && selectedCall.reports?.length === 0 ? (
                                 <ProgressCall
                                     user={user}
-                                    click={
-                                        () => {}
-                                        // navigate(
-                                        //     user?.producer !== null
-                                        //         ? `/producer/call/${call?.id}`
-                                        //         : selectedCall?.stage === 4
-                                        //         ? user.isAdmin
-                                        //             ? `/adm/call/${selectedCall?.id}/laudo`
-                                        //             : `/employee/call/${selectedCall?.id}/laudo`
-                                        //         : user.isAdmin
-                                        //         ? `/adm/call/${selectedCall?.id}/report`
-                                        //         : `/employee/call/${call?.id}/report`
-                                        // )
-                                    }
+                                    click={() => {}}
                                     data={progress}
                                     call={selectedCall}
                                     tillage={tillageSelectProd}
