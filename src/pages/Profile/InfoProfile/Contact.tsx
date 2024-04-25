@@ -1,7 +1,7 @@
 import React, { ChangeEventHandler } from "react"
-import { Box, TextField } from "@mui/material"
-import { textField } from "../../../style/input"
+import { Box, TextField, useMediaQuery } from "@mui/material"
 import MaskedInput from "../../../components/MaskedInput"
+import { useResponsiveStyles } from "../../../hooks/useResponsiveStyles"
 
 interface ContactProps {
     values: Partial<Omit<User, "producer"> & { producer: Partial<Producer> }>
@@ -9,10 +9,21 @@ interface ContactProps {
 }
 
 export const Contact: React.FC<ContactProps> = ({ values, handleChange }) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
+    const textField = useResponsiveStyles()
     console.log({ Chegou: values })
     return (
-        <Box sx={{ flexDirection: "column", gap: "3vw" }}>
-            <Box sx={{ flexDirection: "row", gap: "3vw" }}>
+        <Box
+            sx={{
+                flexDirection: "column",
+                gap: isMobile ? "3vw" : "1vw",
+                padding: isMobile ? "2vw 0" : "1vw 0",
+                overflowY: "auto",
+                // paddingBottom: "400vh",
+                paddingBottom: "40vh",
+            }}
+        >
+            <Box sx={{ flexDirection: "row", gap: isMobile ? "3vw" : "1vw" }}>
                 <TextField
                     label={"Nome de Usuário"}
                     name={"username"}
@@ -31,14 +42,7 @@ export const Contact: React.FC<ContactProps> = ({ values, handleChange }) => {
                     InputProps={{ readOnly: true }}
                 />
             </Box>
-            <TextField
-                label={"E-mail"}
-                name={"email"}
-                sx={textField}
-                value={values.email}
-                onChange={handleChange}
-                type="email"
-            />
+            <TextField label={"E-mail"} name={"email"} sx={textField} value={values.email} onChange={handleChange} type="email" />
             <TextField
                 label={"Telefone"}
                 name={"phone"}

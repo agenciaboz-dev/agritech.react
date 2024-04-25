@@ -56,5 +56,11 @@ export const useResponsiveStyles = () => {
         },
     }
 
-    return { inputStyle, textStyle, textField, input }
+    const tabStyle = {
+        textTransform: "none",
+        fontWeight: "800",
+        fontSize: isMobile ? "3vw" : "1rem",
+    }
+
+    return { inputStyle, textStyle, textField, input, tabStyle }
 }

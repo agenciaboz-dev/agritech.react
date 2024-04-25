@@ -1,12 +1,4 @@
-import {
-    Button,
-    CircularProgress,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
-} from "@mui/material"
+import { Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, useMediaQuery } from "@mui/material"
 import React from "react"
 import { colors } from "../style/colors"
 import { useNavigate } from "react-router-dom"
@@ -29,6 +21,7 @@ interface DialogConfirmProps {
 }
 
 export const DialogConfirm: React.FC<DialogConfirmProps> = ({ user, open, setOpen, data, click, children, loading }) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
     const navigate = useNavigate()
     const handleClose = () => {
         setOpen(false)
@@ -38,7 +31,7 @@ export const DialogConfirm: React.FC<DialogConfirmProps> = ({ user, open, setOpe
             open={open}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
-            PaperProps={{ sx: { bgcolor: colors.button, borderRadius: "7vw", p: "1vw" } }}
+            PaperProps={{ sx: { bgcolor: colors.button, borderRadius: isMobile ? "7vw" : "2vw", p: "1vw" } }}
             disableEscapeKeyDown
             onClose={(event, reason) => {
                 if (reason !== "backdropClick" && reason !== "escapeKeyDown") {
@@ -46,11 +39,11 @@ export const DialogConfirm: React.FC<DialogConfirmProps> = ({ user, open, setOpe
                 }
             }}
         >
-            <DialogTitle id="alert-dialog-title" sx={{ color: colors.text.white, fontSize: "4.5vw" }}>
+            <DialogTitle id="alert-dialog-title" sx={{ color: colors.text.white, fontSize: isMobile ? "4.5vw" : "1.5vw" }}>
                 {data.title}
             </DialogTitle>
             <DialogContent sx={{ gap: "6vw", display: "flex", flexDirection: "column" }}>
-                <DialogContentText id="alert-dialog-description" sx={{ color: colors.text.white, fontSize: "3vw" }}>
+                <DialogContentText id="alert-dialog-description" sx={{ color: colors.text.white, fontSize: isMobile ? "3vw" : "1rem" }}>
                     {data.content}
                 </DialogContentText>
                 {children}

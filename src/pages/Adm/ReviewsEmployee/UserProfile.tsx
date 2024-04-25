@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { useUsers } from "../../../hooks/useUsers"
-import { Box, Button, CircularProgress } from "@mui/material"
+import { Box, Button, CircularProgress, useMediaQuery } from "@mui/material"
 import { colors } from "../../../style/colors"
 import { Header } from "../../../components/Header"
 import { useHeader } from "../../../hooks/useHeader"
@@ -17,6 +17,7 @@ interface UserprofileProps {
 }
 
 export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
     const header = useHeader()
     const navigate = useNavigate()
 
@@ -183,16 +184,17 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
                 height: "100%",
                 backgroundColor: view ? colors.button : colors.secondary,
                 flexDirection: "column",
+                overflow: "hidden",
             }}
         >
             <Box
                 sx={{
                     width: "100%",
-                    height: "10%",
+                    height: isMobile ? "10%" : "fit-content",
                     justifyContent: "center",
                     alignItems: "center",
                     gap: "1vw",
-                    padding: "4vw",
+                    padding: isMobile ? "4vw" : "2.5vw",
                     flexDirection: "row",
                 }}
             >
@@ -200,25 +202,24 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
             </Box>
             <Box
                 style={{
-                    padding: "5vw",
+                    padding: isMobile ? "5vw" : "1vw",
                     width: "100%",
                     maxHeight: "100%",
                     height: "80%",
                     backgroundColor: "#fff",
-                    borderTopLeftRadius: "7vw",
-                    borderTopRightRadius: "7vw",
-                    overflowY: "auto",
+                    borderTopLeftRadius: isMobile ? "7vw" : "2vw",
+                    borderTopRightRadius: isMobile ? "7vw" : "2vw",
                     flexDirection: "column",
-                    gap: "5vw",
+                    gap: isMobile ? "5vw" : "1vw",
                 }}
             >
                 <Box sx={{ flexDirection: "row", justifyContent: "space-between", width: "100%", alignItems: "center" }}>
-                    <p style={{ fontSize: "4.5vw", fontFamily: "MalgunGothic2", textAlign: "left" }}>Informações Pessoais</p>
+                    <p style={{ fontSize: isMobile ? "4.5vw" : "1.5rem", fontFamily: "MalgunGothic2", textAlign: "left" }}>Informações Pessoais</p>
                     {view && selectedUser?.producer && (
                         <Button
                             variant="contained"
                             size="small"
-                            sx={{ bgcolor: colors.button, borderRadius: "5vw", textTransform: "none", fontSize: "3vw" }}
+                            sx={{ bgcolor: colors.button, borderRadius: "5vw", textTransform: "none", fontSize: isMobile ? "3vw" : "1rem" }}
                             onClick={() => {
                                 if (userSelect !== null) {
                                     const path = user?.isAdmin
@@ -237,7 +238,7 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
                     values={valuesUser}
                     image={image}
                     setImage={setImage}
-                    style={{ flexDirection: "row", gap: "5vw" }}
+                    style={{ flexDirection: "row", gap: isMobile ? "5vw" : "2vw" }}
                     view
                     isAdmin={isAdmin}
                     isManager={isManager}
@@ -263,7 +264,7 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
                             variant="contained"
                             type="submit"
                             sx={{
-                                fontSize: "3.5vw",
+                                fontSize: isMobile ? "3.5vw" : "1rem",
                                 color: colors.text.white,
                                 width: "50%",
                                 backgroundColor: colors.delete,
@@ -273,7 +274,7 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
                             onClick={() => handleReject(valuesUser)}
                         >
                             {loadingReject ? (
-                                <CircularProgress size={"9vw"} sx={{ color: colors.text.white, width: "0.5vw" }} />
+                                <CircularProgress size={isMobile ? "9vw" : "3vw"} sx={{ color: colors.text.white, width: "0.5vw" }} />
                             ) : (
                                 "Não Aprovar"
                             )}
@@ -282,7 +283,7 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
                             variant="contained"
                             type="submit"
                             sx={{
-                                fontSize: "3.5vw",
+                                fontSize: isMobile ? "3.5vw" : "1rem",
                                 color: colors.text.white,
                                 width: "50%",
                                 backgroundColor: colors.button,
@@ -292,7 +293,7 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
                             onClick={() => handleApprove(valuesUser)}
                         >
                             {loadingApprove ? (
-                                <CircularProgress size={"9vw"} sx={{ color: colors.text.white, width: "0.5vw" }} />
+                                <CircularProgress size={isMobile ? "9vw" : "3vw"} sx={{ color: colors.text.white, width: "0.5vw" }} />
                             ) : (
                                 "Aprovar"
                             )}
