@@ -176,6 +176,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                         maxHeight: "100vh", // Defina uma altura máxima
                         overflowY: "auto", // Habilita a rolagem vertical quando o conteúdo excede a altura máxima
                         position: "relative",
+                        // paddingBottom: isMobile ? "20vh" : "400vh",
                         paddingBottom: isMobile ? "20vh" : "25vh",
                         gap: isMobile ? "4vw" : "2vw",
                     }}

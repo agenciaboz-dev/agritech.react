@@ -1,9 +1,9 @@
 import React, { useEffect } from "react"
 import { TextField } from "@mui/material"
-import { textField } from "../../style/input"
 import { CreateCall } from "../../definitions/call"
 import { useCurrencyMask } from "burgos-masks"
 import MaskedInputNando from "../../components/MaskedNando"
+import { useResponsiveStyles } from "../../hooks/useResponsiveStyles"
 
 interface TestProps {
     values: CreateCall
@@ -12,6 +12,8 @@ interface TestProps {
 }
 
 export const Test: React.FC<TestProps> = ({ values, handleChange, disabled }) => {
+    const textField = useResponsiveStyles()
+
     useEffect(() => {
         console.log({ price: values.hectarePrice })
     }, [values.hectarePrice])
