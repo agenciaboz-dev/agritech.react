@@ -1,4 +1,4 @@
-import { Box, Button, CircularProgress, TextField } from "@mui/material"
+import { Box, Button, CircularProgress, TextField, useMediaQuery } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { useHeader } from "../../hooks/useHeader"
 import { colors } from "../../style/colors"
@@ -12,7 +12,6 @@ import { useIo } from "../../hooks/useIo"
 import { CepAbertoApi } from "../../definitions/cepabertoApi"
 import { LatLngExpression, LatLngTuple } from "leaflet"
 import { DialogConfirm } from "../DialogConfirm"
-import { textField, input } from "../../style/input.ts"
 import { NewLavoura } from "../../definitions/newTillage"
 import { useSnackbar } from "burgos-snackbar"
 import { FormTillage } from "../../pages/Producer/Panel/NewTillage/FormTillage.tsx"
@@ -25,6 +24,7 @@ import MaskedInputNando from "../MaskedNando.tsx"
 import { unmaskNumber } from "../../hooks/unmaskNumber.ts"
 import { useDisclosure } from "@mantine/hooks"
 import { ModalGallery } from "../../pages/Producer/ModalGallery.tsx"
+import { useResponsiveStyles } from "../../hooks/useResponsiveStyles.ts"
 
 interface NewProducerProps {}
 
@@ -36,6 +36,9 @@ const openCall = {
 }
 
 export const NewProducer: React.FC<NewProducerProps> = ({}) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
+    const textField = useResponsiveStyles()
+    const input = useResponsiveStyles()
     const io = useIo()
     const header = useHeader()
     const navigate = useNavigate()
@@ -281,7 +284,7 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
         <Box
             sx={{
                 width: "100%",
-                height: "100vh",
+                height: "100%",
                 backgroundColor: colors.button,
                 flexDirection: "column",
                 overflow: "hidden",
@@ -290,11 +293,11 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
             <Box
                 sx={{
                     width: "100%",
-                    height: "10%",
+                    height: isMobile ? "10%" : "fit-content",
                     justifyContent: "center",
                     alignItems: "center",
                     gap: "1vw",
-                    padding: "4vw",
+                    padding: isMobile ? "4vw" : "2.5vw",
                     flexDirection: "row",
                 }}
             >
@@ -305,30 +308,46 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
                     justifyContent: "center",
                     height: "92%",
                     backgroundColor: colors.secondary,
-                    borderTopLeftRadius: "5vw",
-                    borderTopRightRadius: "5vw",
-                    paddingTop: "2vw",
-                    mt: currentStep === 3 ? "5vh" : "vh",
+                    borderTopLeftRadius: isMobile ? "5vw" : "2vw",
+                    borderTopRightRadius: isMobile ? "5vw" : "2vw",
+                    paddingTop: isMobile ? "2vw" : "1vw",
+                    mt: currentStep === 3 ? (isMobile ? "5vh" : 0) : "",
                 }}
             >
                 {currentStep === 1 && (
-                    <p style={{ color: colors.text.white, width: "100%", fontSize: "5vw", padding: "2vw 4vw" }}>
+                    <p
+                        style={{
+                            color: colors.text.white,
+                            width: "100%",
+                            fontSize: isMobile ? "5vw" : "1.5rem",
+                            padding: isMobile ? "2vw 4vw" : "1vw",
+                        }}
+                    >
                         Localização da Fazenda
                     </p>
                 )}
                 <Box
                     sx={{
-                        padding: "0vw",
+                        padding: isMobile ? "4vw" : "1vw",
                         width: "100%",
-                        flex: 1,
                         height: "100%",
+                        flex: 1,
                         backgroundColor: "#fff",
-                        borderTopLeftRadius: "7vw",
-                        borderTopRightRadius: "7vw",
-                        overflowY: "hidden",
+                        borderTopLeftRadius: isMobile ? "7vw" : "2vw",
+                        borderTopRightRadius: isMobile ? "7vw" : "2vw",
+                        overflow: "hidden",
                     }}
                 >
-                    <Box sx={{ width: "100%", height: "100%", gap: "4vw", flexDirection: "column" }}>
+                    <Box
+                        sx={{
+                            width: "100%",
+                            height: "100%",
+                            gap: isMobile ? "5vw" : "1vw",
+                            flexDirection: "column",
+                            padding: "1vw",
+                            overflow: "auto",
+                        }}
+                    >
                         <ModalGallery images={images} close={close} opened={opened} setImages={setImages} />
 
                         <Formik initialValues={valuesProducer} onSubmit={submitProducer}>
@@ -336,23 +355,26 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
                                 <Form>
                                     {currentStep === 0 && (
                                         <Box sx={{ flexDirection: "column", height: "90%" }}>
-                                            <Profile
-                                                values={values}
-                                                handleChange={handleChange}
-                                                image={image}
-                                                setImage={setImage}
-                                            />
-                                            <Box sx={{ flexDirection: "row", width: 1, p: "4vw", gap: "2vw" }}>
+                                            <Profile values={values} handleChange={handleChange} image={image} setImage={setImage} />
+                                            <Box
+                                                sx={{
+                                                    flexDirection: "row",
+                                                    width: 1,
+                                                    padding: isMobile ? "4vw" : 0,
+                                                    gap: isMobile ? "2vw" : "1vw",
+                                                    margin: isMobile ? "" : "2vw 0",
+                                                }}
+                                            >
                                                 <Button
                                                     variant="outlined"
                                                     sx={{
-                                                        padding: "3vw",
+                                                        padding: isMobile ? "3vw" : "0.5vw",
                                                         color: colors.text.black,
                                                         fontWeight: "600",
-                                                        fontSize: "4vw",
+                                                        fontSize: isMobile ? "4vw" : "1.2rem",
                                                         textTransform: "none",
-                                                        borderRadius: "10vw",
-                                                        height: "10vw",
+                                                        borderRadius: "5vw",
+                                                        height: isMobile ? "10vw" : "fit-content",
                                                         width: 0.5,
                                                     }}
                                                     onClick={() => {
@@ -365,20 +387,15 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
                                                     variant="contained"
                                                     type="submit"
                                                     sx={{
-                                                        fontSize: 17,
+                                                        fontSize: isMobile ? "4vw" : "1.2rem",
                                                         color: colors.text.white,
-
                                                         backgroundColor: colors.button,
                                                         borderRadius: "5vw",
                                                         width: 0.5,
                                                         textTransform: "none",
                                                     }}
                                                 >
-                                                    {loadingProducer ? (
-                                                        <CircularProgress sx={{ color: "#fff" }} />
-                                                    ) : (
-                                                        "Salvar"
-                                                    )}
+                                                    {loadingProducer ? <CircularProgress sx={{ color: "#fff" }} /> : "Salvar"}
                                                 </Button>
                                             </Box>
                                         </Box>
@@ -434,7 +451,15 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
                                         </>
                                     )}
                                     {currentStep === 3 && (
-                                        <Box sx={{ height: "95%", overflowY: "auto", pb: "10vh" }}>
+                                        <Box
+                                            sx={{
+                                                height: isMobile ? "95%" : "100%",
+                                                overflowY: "auto",
+                                                // paddingBottom: "400vh",
+                                                paddingBottom: "40vh",
+                                                gap: "1vw",
+                                            }}
+                                        >
                                             <FormTillage
                                                 data={values}
                                                 change={handleChange}
@@ -446,18 +471,24 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
                                                 open={openModal}
                                                 opened={opened}
                                             />
-                                            <Box sx={{ flexDirection: "row", gap: "2vw", p: "0 4vw" }}>
+                                            <Box
+                                                sx={{
+                                                    flexDirection: "row",
+                                                    gap: isMobile ? "2vw" : "1vw",
+                                                    padding: isMobile ? "0 4vw" : "0 1vw",
+                                                }}
+                                            >
                                                 <Button
                                                     variant="outlined"
                                                     sx={{
                                                         width: "100%",
-                                                        padding: "3vw",
+                                                        padding: isMobile ? "3vw" : "1vw",
                                                         color: colors.text.black,
                                                         fontWeight: "600",
-                                                        fontSize: "4vw",
+                                                        fontSize: isMobile ? "4vw" : "1.2rem",
                                                         textTransform: "none",
-                                                        borderRadius: "10vw",
-                                                        height: "10vw",
+                                                        borderRadius: "5vw",
+                                                        height: isMobile ? "10vw" : "fit-content",
                                                     }}
                                                     onClick={() => {
                                                         setCurrentStep(2)
@@ -471,7 +502,7 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
                                                     sx={{
                                                         padding: "1vw",
                                                         width: "100%",
-                                                        fontSize: 17,
+                                                        fontSize: isMobile ? 17 : "1.2rem",
                                                         color: colors.text.white,
                                                         backgroundColor: colors.button,
                                                         borderRadius: "5vw",

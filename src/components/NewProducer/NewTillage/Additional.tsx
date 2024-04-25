@@ -1,8 +1,8 @@
 import React, { ChangeEventHandler } from "react"
-import { textField } from "../../../style/input"
-import { Box, Button, TextField } from "@mui/material"
+import { Box, Button, TextField, useMediaQuery } from "@mui/material"
 import { colors } from "../../../style/colors"
 import { NewLavoura } from "../../../definitions/newTillage"
+import { useResponsiveStyles } from "../../../hooks/useResponsiveStyles"
 
 interface AdditionalProps {
     data: NewLavoura
@@ -10,8 +10,10 @@ interface AdditionalProps {
 }
 
 export const Additional: React.FC<AdditionalProps> = ({ data, handleChange }) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
+    const textField = useResponsiveStyles()
     return (
-        <Box sx={{ width: "100%", flexDirection: "column", gap: "3vw", pt: "4vw" }}>
+        <Box sx={{ width: "100%", flexDirection: "column", gap: isMobile ? "3vw" : "1vw", pt: isMobile ? "4vw" : "2vw" }}>
             <TextField
                 label={"Observações Adicionais"}
                 name="comments"

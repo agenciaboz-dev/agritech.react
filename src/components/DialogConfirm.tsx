@@ -42,7 +42,7 @@ export const DialogConfirm: React.FC<DialogConfirmProps> = ({ user, open, setOpe
             <DialogTitle id="alert-dialog-title" sx={{ color: colors.text.white, fontSize: isMobile ? "4.5vw" : "1.5vw" }}>
                 {data.title}
             </DialogTitle>
-            <DialogContent sx={{ gap: "6vw", display: "flex", flexDirection: "column" }}>
+            <DialogContent sx={{ gap: isMobile ? "6vw" : "2vw", display: "flex", flexDirection: "column" }}>
                 <DialogContentText id="alert-dialog-description" sx={{ color: colors.text.white, fontSize: isMobile ? "3vw" : "1rem" }}>
                     {data.content}
                 </DialogContentText>

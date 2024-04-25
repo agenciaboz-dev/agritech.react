@@ -1,4 +1,4 @@
-import { Box, Button, TextField } from "@mui/material"
+import { Box, Button, TextField, useMediaQuery } from "@mui/material"
 import React, { ChangeEventHandler, useEffect, useRef, useState } from "react"
 import { useHeader } from "../../hooks/useHeader"
 import { MapContainer, Polygon, TileLayer, useMapEvents } from "react-leaflet"
@@ -25,6 +25,7 @@ interface GeolocalProps {
 }
 
 export const Geolocal: React.FC<GeolocalProps> = ({ setCurrentStep, origin, coordinates, setCoordinates }) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
     const mapboxStyleId = leaflet.style
     const mapboxToken = leaflet.TOKEN
 
@@ -83,18 +84,14 @@ export const Geolocal: React.FC<GeolocalProps> = ({ setCurrentStep, origin, coor
                 center={origin}
                 zoom={16}
                 scrollWheelZoom={true}
-                style={{ height: "100%", zIndex: 1, borderRadius: "7vw " }}
+                style={{ height: "100%", zIndex: 1, borderRadius: isMobile ? "7vw" : "2vw" }}
                 ref={mapRef}
             >
-                <TileLayer
-                    url={`https://api.mapbox.com/styles/v1/${mapboxStyleId}/tiles/{z}/{x}/{y}?access_token=${mapboxToken}`}
-                />
+                <TileLayer url={`https://api.mapbox.com/styles/v1/${mapboxStyleId}/tiles/{z}/{x}/{y}?access_token=${mapboxToken}`} />
                 {coordinates.map((coord, index) => (
                     <Marker key={index} position={coord} />
                 ))}
-                {coordinates.length > 0 && (
-                    <Polygon positions={coordinates} color="blue" fillColor="lightblue" fillOpacity={0.5} />
-                )}
+                {coordinates.length > 0 && <Polygon positions={coordinates} color="blue" fillColor="lightblue" fillOpacity={0.5} />}
 
                 <MapClickHandler />
             </MapContainer>
@@ -104,8 +101,9 @@ export const Geolocal: React.FC<GeolocalProps> = ({ setCurrentStep, origin, coor
                     variant="contained"
                     sx={{
                         padding: "1vw",
-                        width: "100%",
-                        fontSize: 17,
+                        width: "50%",
+                        height: "fit-content",
+                        fontSize: isMobile ? 17 : "1.2rem   ",
                         color: colors.text.white,
                         backgroundColor: colors.button,
                         borderRadius: "5vw",

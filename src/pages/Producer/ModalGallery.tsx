@@ -1,6 +1,6 @@
 import { Modal } from "@mantine/core"
 import React, { useEffect, useRef, useState } from "react"
-import { Avatar, Box, Grid } from "@mui/material"
+import { Avatar, Box, Grid, useMediaQuery } from "@mui/material"
 import { colors } from "../../style/colors"
 import { AiOutlineDelete } from "react-icons/ai"
 import { ButtonAgritech } from "../../components/ButtonAgritech"
@@ -17,6 +17,7 @@ interface ModalGalleryProps {
 }
 
 export const ModalGallery: React.FC<ModalGalleryProps> = ({ opened, close, images, setImages }) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
     const openRef = useRef<() => void>(null)
 
     const handleUpload = (files: File[]) => {
@@ -64,9 +65,9 @@ export const ModalGallery: React.FC<ModalGalleryProps> = ({ opened, close, image
             style={{}}
             title={"Criar Galeria"}
             styles={{
-                body: { display: "flex", flexDirection: "column", gap: "6vw", borderRadius: "10vw" },
-                root: { maxHeight: "75%", minHeight: "fit-content" },
-                content: { borderRadius: "6vw" },
+                body: { display: "flex", flexDirection: "column", gap: isMobile ? "6vw" : "1vw", borderRadius: isMobile ? "10vw" : "2vw" },
+                root: { maxHeight: isMobile ? "75%" : "100%", minHeight: "fit-content" },
+                content: { borderRadius: isMobile ? "6vw" : "2vw" },
             }}
         >
             <Box sx={{ gap: "0.5vw", height: "100%" }}>
@@ -76,7 +77,7 @@ export const ModalGallery: React.FC<ModalGalleryProps> = ({ opened, close, image
                         <AiOutlineDelete color={colors.delete} />
                     </IconButton> */}
                 </Box>
-                <Box sx={{ flexDirection: "column", gap: "1vw", height: "50%", overflowY: "auto" }}>
+                <Box sx={{ flexDirection: "column", gap: "1vw", height: isMobile ? "50%" : "fit-content", overflowY: "auto" }}>
                     <Dropzone
                         openRef={openRef}
                         onDrop={handleUpload}
@@ -87,13 +88,13 @@ export const ModalGallery: React.FC<ModalGalleryProps> = ({ opened, close, image
                     <Box
                         sx={{
                             width: "100%",
-                            height: "50%",
-                            padding: "2vw",
+                            height: isMobile ? "50%" : "100%",
+                            padding: isMobile ? "2vw" : "1vw",
                             alignItems: "center",
                             borderStyle: "dashed",
                             borderWidth: "1px",
                             borderColor: "gray",
-                            borderRadius: "4vw",
+                            borderRadius: isMobile ? "4vw" : "2vw",
                             flexDirection: "row",
                             gap: "1.5vw",
                             overflowY: "scroll",
