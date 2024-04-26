@@ -1,4 +1,4 @@
-import { Box, IconButton } from "@mui/material"
+import { Box, IconButton, useMediaQuery } from "@mui/material"
 import React, { useEffect } from "react"
 import { ActionIcon, Group, Menu } from "@mantine/core"
 import { IconDots } from "@tabler/icons-react"
@@ -22,6 +22,7 @@ interface LogsCardProps {
 }
 
 export const LogsCard: React.FC<LogsCardProps> = ({ review, call, variant, talhao, tillage, setSelectedCall }) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
     const io = useIo()
     const navigate = useNavigate()
     const { user } = useUser()
@@ -62,10 +63,9 @@ export const LogsCard: React.FC<LogsCardProps> = ({ review, call, variant, talha
             }}
         >
             <Box sx={{ flexDirection: "column" }}>
-                <Box sx={{ flexDirection: "row", alignItems: "center", gap: "2vw" }}>
-                    <p style={{ fontSize: "3vw", color: "gray" }}>
-                        {new Date(Number(call?.open)).toLocaleDateString("pt-br")}-{" "}
-                        {new Date(Number(call?.open)).toLocaleTimeString("pt-br")}
+                <Box sx={{ flexDirection: "row", alignItems: "center", gap: isMobile ? "2vw" : "1vw" }}>
+                    <p style={{ fontSize: isMobile ? "3vw" : "1rem", color: "gray" }}>
+                        {new Date(Number(call?.open)).toLocaleDateString("pt-br")}- {new Date(Number(call?.open)).toLocaleTimeString("pt-br")}
                     </p>
                 </Box>
                 <p style={{ fontSize: "1rem", fontWeight: "600" }}>
@@ -76,7 +76,7 @@ export const LogsCard: React.FC<LogsCardProps> = ({ review, call, variant, talha
                         : "Chamado Pendente"}
                 </p>
                 {user?.employee ? (
-                    <p style={{ fontSize: "3vw", color: "gray", flexDirection: "column" }}>
+                    <p style={{ fontSize: isMobile ? "3vw" : "1rem", color: "gray", flexDirection: "column" }}>
                         {talhao.name}{" "}
                         {call?.approved && Number(call.talhao?.area) !== sumTotal
                             ? kitSelected
@@ -91,7 +91,7 @@ export const LogsCard: React.FC<LogsCardProps> = ({ review, call, variant, talha
                             : "Aguarde a seleção do kit"}
                     </p>
                 ) : (
-                    <p style={{ fontSize: "3vw", color: "gray", flexDirection: "column" }}>
+                    <p style={{ fontSize: isMobile ? "3vw" : "1rem", color: "gray", flexDirection: "column" }}>
                         {call?.approved && Number(call.talhao?.area) !== sumTotal
                             ? ` Previsão da visita: ${new Date(Number(call.forecast)).toLocaleDateString("pt-br")}`
                             : call?.approved && Number(call?.talhao?.area) >= sumTotal
@@ -127,7 +127,7 @@ export const LogsCard: React.FC<LogsCardProps> = ({ review, call, variant, talha
 
                     // onClick={() => navigate(account.user?.isAdmin ? `/adm/call/${user?.id}/report` : `/call/1/report`)}
                 >
-                    <IoIosArrowForward style={{ width: "5vw", height: "5vw" }} />
+                    <IoIosArrowForward style={{ width: isMobile ? "5vw" : "2vw", height: isMobile ? "5vw" : "2vw" }} />
                 </IconButton>
             )}
         </Box>

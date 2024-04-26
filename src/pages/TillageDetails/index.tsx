@@ -1,10 +1,9 @@
-import { Avatar, Box, IconButton, Skeleton, Tab, Tabs } from "@mui/material"
+import { Avatar, Box, IconButton, Skeleton, Tab, Tabs, useMediaQuery } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { colors } from "../../style/colors"
 import { Header } from "../../components/Header"
 import { useHeader } from "../../hooks/useHeader"
 import { useParams } from "react-router"
-import { tabStyle } from "../../style/tabStyle"
 import { WeatherComponent } from "../../components/WeatherComponent"
 import { useNavigate } from "react-router-dom"
 import { OpenCallBox, ProgressCall } from "../../components/OpenCallBox"
@@ -21,10 +20,13 @@ import GeoImage from "../../assets/default.png"
 import { useArray } from "burgos-array"
 import { ButtonAgritech } from "../../components/ButtonAgritech"
 import { VscAdd } from "react-icons/vsc"
+import { useResponsiveStyles } from "../../hooks/useResponsiveStyles"
 
 interface TillageDetailsProps {}
 
 export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
+    const tabStyle = useResponsiveStyles()
     const io = useIo()
     const header = useHeader()
     const navigate = useNavigate()
@@ -183,11 +185,11 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
             <Box
                 sx={{
                     width: "100%",
-                    height: "10%",
+                    height: isMobile ? "10%" : "fit-content",
                     justifyContent: "center",
                     alignItems: "center",
                     gap: "1vw",
-                    padding: "4vw",
+                    padding: isMobile ? "4vw" : "2.5vw",
                     flexDirection: "row",
                     overflow: "hidden",
                 }}
@@ -208,30 +210,30 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                     justifyContent: "center",
                     height: "100%",
                     backgroundColor: "#353535",
-                    borderTopLeftRadius: "5vw",
-                    borderTopRightRadius: "5vw",
+                    borderTopLeftRadius: isMobile ? "5vw" : "2vw",
+                    borderTopRightRadius: isMobile ? "5vw" : "2vw",
+                    paddingTop: isMobile ? 10 : "1vw",
                     gap: "1vw",
                     overflow: "hidden",
-                    marginTop: "1.5vw",
                 }}
             >
                 {!selectedTalhao && tillageSelect?.talhao?.length !== 0 ? (
                     <Box
                         sx={{
-                            p: "2vw 4vw",
+                            p: isMobile ? "2vw 4vw" : "1vw",
                             flexDirection: "row",
-                            width: "90%",
+                            width: isMobile ? "90%" : "100%",
                             justifyContent: "space-between",
                             alignItems: "center",
                         }}
                     >
-                        <Skeleton sx={{ width: 0.5, height: "8vw", marginLeft: "1vw" }} />
+                        <Skeleton sx={{ width: isMobile ? 0.5 : 1, height: isMobile ? "8vw" : "5vw", marginLeft: "1vw" }} />
                     </Box>
                 ) : (
                     tillageSelect?.talhao?.length !== 0 && (
                         <Box
                             sx={{
-                                p: "2vw 4vw",
+                                p: isMobile ? "2vw 4vw" : "1vw",
                                 flexDirection: "row",
                                 width: "100%",
                                 justifyContent: "space-between",
@@ -252,12 +254,12 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                                 sx={{
                                     width: "20%",
                                     color: colors.text.white,
-                                    height: "12vw",
-                                    fontSize: "0.7rem",
+                                    height: isMobile ? "12vw" : "3vw",
+                                    fontSize: isMobile ? "0.7rem" : "1rem",
                                     gap: "1vw",
                                     bgcolor: "gray",
                                     p: 0,
-                                    textDecoration: "underline",
+                                    textDecoration: isMobile ? "underline" : "unset",
                                 }}
                                 onClick={() =>
                                     navigate(
@@ -267,26 +269,34 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                                     )
                                 }
                             >
-                                <VscAdd color={"#fff"} style={{ width: "4vw", height: "4vw" }} />
+                                <VscAdd color={"#fff"} style={{ width: isMobile ? "4vw" : "2vw", height: isMobile ? "4vw" : "2vw" }} />
                                 Talhão
                             </ButtonAgritech>
                         </Box>
                     )
                 )}
                 {tillageSelect?.talhao?.length !== 0 ? (
-                    <Box sx={{ flexDirection: "row", gap: "2vw", width: "100%", overflow: "auto", p: "0vw 3vw 3vw" }}>
+                    <Box
+                        sx={{
+                            flexDirection: "row",
+                            gap: isMobile ? "2vw" : "1vw",
+                            width: "100%",
+                            overflow: "auto",
+                            p: isMobile ? "0vw 3vw 3vw" : "0 1vw 1vw",
+                        }}
+                    >
                         {tillageSelect?.talhao
                             ? tillageSelect?.talhao?.map((item, index) => (
-                                  <Box sx={{width:"", alignItems: "center" }} key={index}>
+                                  <Box sx={{ width: "fit-content", alignItems: "center" }} key={index}>
                                       <Avatar
                                           src={item.cover || GeoImage}
                                           style={{
-                                              width: "24vw",
-                                              height: "34vw",
-                                              fontSize: "4vw",
+                                              width: isMobile ? "24vw" : "5vw",
+                                              height: isMobile ? "34vw" : "5vw",
+                                              fontSize: isMobile ? "4vw" : "1.2rem",
                                               fontFamily: "MalgunGothic2",
                                               marginLeft: "0vw",
-                                              borderRadius: "8vw",
+                                              borderRadius: isMobile ? "8vw" : "2vw",
                                               border: selectedTalhao?.id === item.id ? `5px solid ${colors.secondary}` : "",
                                           }}
                                           onClick={() => (selectedTalhao?.id !== item.id ? toggleSelection(item) : () => {})}
@@ -303,30 +313,33 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                                   </Box>
                               ))
                             : skeletons.map((_, index) => (
-                                  <Box sx={{ alignItems: "center", gap: "2vw" }} key={index}>
+                                  <Box sx={{ alignItems: "center", gap: isMobile ? "2vw" : "1vw" }} key={index}>
                                       <Skeleton
                                           animation="wave"
                                           variant="rounded"
-                                          sx={{ width: "24vw", height: "34vw", borderRadius: "8vw" }}
+                                          sx={{
+                                              width: isMobile ? "24vw" : "5vw",
+                                              height: isMobile ? "34vw" : "5vw",
+                                              borderRadius: isMobile ? "8vw" : "2vw",
+                                          }}
                                       />
-                                      <Skeleton animation="wave" variant="rounded" sx={{ width: "23vw", height: "3vw" }} />
+                                      <Skeleton animation="wave" variant="rounded" sx={{ width: isMobile ? "23vw" : "10vw", height: "3vw" }} />
                                   </Box>
                               ))}
                     </Box>
                 ) : (
-                    <Box sx={{ p: "8vw 4vw " }}>
-                        <p style={{ fontSize: "4vw", color: colors.text.white }}>Nenhum talhão cadastrado.</p>
+                    <Box sx={{ p: isMobile ? "8vw 4vw" : "1vw" }}>
+                        <p style={{ fontSize: isMobile ? "4vw" : "1vw", color: colors.text.white }}>Nenhum talhão cadastrado.</p>
                     </Box>
                 )}
-
                 <Box
                     style={{
-                        padding: "4vw",
+                        padding: isMobile ? "4vw" : "1vw",
                         width: "100%",
                         flex: 1,
                         backgroundColor: "#fff",
-                        borderTopLeftRadius: "7vw",
-                        borderTopRightRadius: "7vw",
+                        borderTopLeftRadius: isMobile ? "7vw" : "2vw",
+                        borderTopRightRadius: isMobile ? "7vw" : "2vw",
                         overflow: "hidden",
                         gap: "0vw",
                         height: "100%",
@@ -335,7 +348,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                     <WeatherComponent dataWeather={weatherData} icon={icon} />
 
                     {selectedAvatar === 0 && tillageSelect?.talhao?.length !== 0 ? (
-                        <p style={{ marginTop: "4vw" }}>Selecione um talhão</p>
+                        <p style={{ marginTop: isMobile ? "4vw" : "1vw" }}>Selecione um talhão</p>
                     ) : (
                         <>
                             <Tabs
@@ -352,7 +365,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                                 <Tab sx={{ ...tabStyle, width: "50%" }} value="calls" label="Chamados" />
                             </Tabs>
                             {tillageSelect?.talhao?.length === 0 && tab === "calls" && (
-                                <p style={{ marginTop: "4vw" }}>É necessário ter talhões cadastrados para abrir chamados.</p>
+                                <p style={{ marginTop: isMobile ? "4vw" : "1vw" }}>É necessário ter talhões cadastrados para abrir chamados.</p>
                             )}
                             {tab === "calls" && selectedTalhao?.calls.length === 0 ? (
                                 <OpenCallBox
@@ -376,7 +389,16 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                                 />
                             ) : (
                                 tab === "calls" && (
-                                    <Box sx={{ overflowY: "auto", height: "60%", pb: "8vh", gap: "3vw", pt: "2.5vw" }}>
+                                    <Box
+                                        sx={{
+                                            height: "60%",
+                                            gap: isMobile ? "3vw" : "1vw",
+                                            pt: isMobile ? "2.5vw" : "1vw",
+                                            overflowY: "auto",
+                                            // paddingBottom: "400vh",
+                                            paddingBottom: "40vh",
+                                        }}
+                                    >
                                         {selectedTalhao?.calls.length !== 0
                                             ? selectedTalhao?.calls.map((item, index) => (
                                                   <LogsCard
@@ -388,9 +410,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                                                       setSelectedCall={setSelectedCall}
                                                   />
                                               ))
-                                            : skeletons.map((_, index) => (
-                                                  <Skeleton key={index} variant="rounded" animation="wave" />
-                                              ))}
+                                            : skeletons.map((_, index) => <Skeleton key={index} variant="rounded" animation="wave" />)}
                                     </Box>
                                 )
                             )}
@@ -402,12 +422,12 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                         <IconButton
                             sx={{
                                 bgcolor: colors.button,
-                                width: "12vw",
-                                height: "12vw",
-                                borderRadius: "10vw",
+                                width: isMobile ? "12vw" : "3vw",
+                                height: isMobile ? "12vw" : "3vw",
+                                borderRadius: "50%",
                                 position: "absolute",
-                                bottom: "22vw",
-                                right: "5vw",
+                                bottom: isMobile ? "22vw" : "13vh",
+                                left: isMobile ? "85vw" : "95vw",
                             }}
                             onClick={() =>
                                 navigate(
@@ -417,7 +437,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                                 )
                             }
                         >
-                            <PiPlant color={"#fff"} style={{ width: "6vw", height: "6vw" }} />
+                            <PiPlant color={"#fff"} style={{ width: isMobile ? "6vw" : "100%", height: isMobile ? "6vw" : "100%" }} />
                         </IconButton>
                     )}
                 </Box>

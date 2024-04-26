@@ -1,4 +1,4 @@
-import { Autocomplete, Box, Button, TextField } from "@mui/material"
+import { Autocomplete, Box, Button, TextField, useMediaQuery } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { colors } from "../../../style/colors"
 import { Header } from "../../../components/Header"
@@ -17,6 +17,7 @@ import { useIo } from "../../../hooks/useIo"
 interface CalendarProps {}
 
 export const Calendar: React.FC<CalendarProps> = ({}) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
     const io = useIo()
     const header = useHeader()
     const navigate = useNavigate()
@@ -38,9 +39,7 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
         console.log(selectedKit?.calls)
         if (value && selectedKit?.calls?.length !== 0) {
             const callsPerDay =
-                (selectedKit?.calls &&
-                    selectedKit?.calls.filter((item) => item.forecast === new Date(value).getTime().toString())) ||
-                []
+                (selectedKit?.calls && selectedKit?.calls.filter((item) => item.forecast === new Date(value).getTime().toString())) || []
             setCallsDay(callsPerDay)
             // console.log(callsPerDay)
             return callsPerDay
@@ -57,15 +56,10 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
                 selectedKit.calls &&
                 selectedKit.calls?.filter((call) => {
                     const callDate = new Date(Number(call.forecast))
-                    return (
-                        callDate.getDate() === day &&
-                        callDate.getMonth() === date.getMonth() &&
-                        callDate.getFullYear() === date.getFullYear()
-                    )
+                    return callDate.getDate() === day && callDate.getMonth() === date.getMonth() && callDate.getFullYear() === date.getFullYear()
                 })
 
-            const areaDayCalls =
-                callsForDay?.map((item) => Number(item.talhao?.area)).reduce((prev, current) => prev + current, 0) || 0
+            const areaDayCalls = callsForDay?.map((item) => Number(item.talhao?.area)).reduce((prev, current) => prev + current, 0) || 0
 
             const indicatorColor =
                 callsForDay &&
@@ -116,7 +110,7 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
                     justifyContent: "center",
                     alignItems: "center",
                     gap: "1vw",
-                    padding: "4vw",
+                    padding: isMobile ? "4vw" : "1vw",
                     flexDirection: "row",
                 }}
             >
@@ -125,15 +119,15 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
 
             <Box
                 style={{
-                    padding: "4vw",
+                    padding: isMobile ? "4vw" : "1vw",
                     width: "100%",
                     flex: 1,
                     backgroundColor: "#fff",
-                    borderTopLeftRadius: "7vw",
-                    borderTopRightRadius: "7vw",
+                    borderTopLeftRadius: isMobile ? "7vw" : "2vw",
+                    borderTopRightRadius: isMobile ? "7vw" : "2vw",
                     overflow: "hidden",
                     alignItems: "center",
-                    gap: "4vw",
+                    gap: isMobile ? "4vw" : "1vw",
                 }}
             >
                 <DatePicker
@@ -164,8 +158,8 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
                         width: "100%",
                         height: "38%",
                         overflowY: "auto",
-                        p: "2vw 4vw",
-                        gap: "3vw",
+                        p: isMobile ? "2vw 4vw" : "1vw",
+                        gap: isMobile ? "3vw" : "1vw",
                     }}
                 >
                     {selectedKit

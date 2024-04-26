@@ -53,7 +53,7 @@ export const CardKit: React.FC<CardKitProps> = ({ kit }) => {
 
     return (
         <Box sx={{ padding: isMobile ? "3vw 1vw" : "1vw", flexDirection: "row", alignItems: "center", borderBottom: "1px solid #88A486" }}>
-            <FormGroup sx={{ width: isMobile ? "90%" : "100%" }}>
+            <FormGroup sx={{ width: isMobile ? "90%" : "fit-content" }}>
                 <FormControlLabel
                     checked={kit.active}
                     control={<Android12Switch />}
@@ -78,7 +78,7 @@ export const CardKit: React.FC<CardKitProps> = ({ kit }) => {
             </FormGroup>
             <ArrowForwardIos
                 fontSize="small"
-                style={{ cursor: "pointer" }}
+                style={{ marginLeft: "auto", cursor: "pointer" }}
                 onClick={() => navigate(user?.isAdmin ? `/adm/settings-kit/${kit.id}` : `/employee/settings-kit/${kit.id}`)}
             />
         </Box>

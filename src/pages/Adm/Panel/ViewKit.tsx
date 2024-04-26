@@ -231,7 +231,7 @@ export const ViewKit: React.FC<ViewKitProps> = ({}) => {
                                                 // onClick={}
                                             >
                                                 <Box sx={{ flexDirection: "row", alignItems: "center" }}>
-                                                    <p style={{ fontSize: "3.5vw" }}>Salvar Informações</p>
+                                                    <p style={{ fontSize: isMobile ? "3.5vw" : "1rem" }}>Salvar Informações</p>
                                                 </Box>
                                             </Button>
                                         )

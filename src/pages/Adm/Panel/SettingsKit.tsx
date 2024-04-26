@@ -140,7 +140,14 @@ export const SettingsKit: React.FC<SettingsKitProps> = ({}) => {
                                 placeholder="kit"
                             />
                         )}
-                        <Box sx={{ height: "80%", overflowY: "auto", pb: isMobile ? "10vh" : "15vh" }}>
+                        <Box
+                            sx={{
+                                height: "80%",
+                                overflowY: "auto",
+                                // paddingBottom: "400vh",
+                                paddingBottom: "40vh",
+                            }}
+                        >
                             {
                                 user?.isAdmin
                                     ? kits.length !== 0
@@ -151,9 +158,14 @@ export const SettingsKit: React.FC<SettingsKitProps> = ({}) => {
                                     : kitsEmployee.length !== 0
                                     ? kitsEmployee.map((kit, index) => <CardKit key={index} kit={kit} />)
                                     : kitsEmployee.length === 0 && (
-                                          <Box sx={{ gap: "2vw", width: 1 }}>
+                                          <Box sx={{ gap: isMobile ? "2vw" : "1vw", width: 1 }}>
                                               {skeletons.map((_, index) => (
-                                                  <Skeleton variant="rounded" key={index} animation="wave" sx={{ width: 1, height: "10vh" }} />
+                                                  <Skeleton
+                                                      variant="rounded"
+                                                      key={index}
+                                                      animation="wave"
+                                                      sx={{ width: 1, height: isMobile ? "10vh" : "5vw" }}
+                                                  />
                                               ))}
                                           </Box>
                                       )
