@@ -220,14 +220,14 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                 {!selectedTalhao && tillageSelect?.talhao?.length !== 0 ? (
                     <Box
                         sx={{
-                            p: isMobile ? "2vw 4vw" : "1vw",
+                            p: isMobile ? "2vw 4vw" : "0 1vw",
                             flexDirection: "row",
                             width: isMobile ? "90%" : "100%",
                             justifyContent: "space-between",
                             alignItems: "center",
                         }}
                     >
-                        <Skeleton sx={{ width: isMobile ? 0.5 : 1, height: isMobile ? "8vw" : "5vw", marginLeft: "1vw" }} />
+                        <Skeleton sx={{ width: isMobile ? 0.5 : 1, height: isMobile ? "8vw" : "5vw", marginLeft: isMobile ? "1vw" : 0 }} />
                     </Box>
                 ) : (
                     tillageSelect?.talhao?.length !== 0 && (
@@ -313,7 +313,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                                   </Box>
                               ))
                             : skeletons.map((_, index) => (
-                                  <Box sx={{ alignItems: "center", gap: isMobile ? "2vw" : "1vw" }} key={index}>
+                                  <Box sx={{ alignItems: "center", gap: isMobile ? "2vw" : "2px" }} key={index}>
                                       <Skeleton
                                           animation="wave"
                                           variant="rounded"
@@ -323,7 +323,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                                               borderRadius: isMobile ? "8vw" : "2vw",
                                           }}
                                       />
-                                      <Skeleton animation="wave" variant="rounded" sx={{ width: isMobile ? "23vw" : "10vw", height: "3vw" }} />
+                                      <Skeleton animation="wave" variant="rounded" sx={{ width: isMobile ? "23vw" : "9vw", height: "2vw" }} />
                                   </Box>
                               ))}
                     </Box>

@@ -1,11 +1,9 @@
-import { Box, Button, Tab, Tabs, TextField } from "@mui/material"
+import { Box, Button, Tab, Tabs, TextField, useMediaQuery } from "@mui/material"
 import React, { ChangeEventHandler, useEffect, useState } from "react"
 import { useHeader } from "../../../hooks/useHeader"
 import { Avatar } from "@files-ui/react"
-import { textField } from "../../../style/input"
 import { colors } from "../../../style/colors"
 import { useNavigate } from "react-router-dom"
-import { tabStyle } from "../../../style/tabStyle"
 import GeoImage from "../../../assets/geo.svg"
 import { Form, Formik } from "formik"
 import { Team } from "../../../components/NewProducer/NewTillage/Team"
@@ -19,6 +17,7 @@ import { NewLavoura } from "../../../definitions/newTillage"
 import { useNumberMask } from "burgos-masks"
 import MaskedInputNando from "../../../components/MaskedNando"
 import { TitleComponents } from "../../../components/TitleComponents"
+import { useResponsiveStyles } from "../../../hooks/useResponsiveStyles"
 
 interface FormTalhaoProps {
     data: NewTalhao
@@ -30,6 +29,9 @@ interface FormTalhaoProps {
 }
 
 export const FormTalhao: React.FC<FormTalhaoProps> = ({ data, change, images, open }) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
+    const tabStyle = useResponsiveStyles()
+    const textField = useResponsiveStyles()
     const header = useHeader()
     const { user } = useUser()
     const [image, setImage] = useState<File>()
@@ -48,15 +50,23 @@ export const FormTalhao: React.FC<FormTalhaoProps> = ({ data, change, images, op
 
     useEffect(() => {}, [])
     return (
-        <Box sx={{ width: "100%", height: "90%", gap: "6vw", flexDirection: "column", p: "4vw" }}>
+        <Box
+            sx={{
+                width: "100%",
+                height: isMobile ? "90%" : "100%",
+                gap: isMobile ? "6vw" : "1vw",
+                flexDirection: "column",
+                p: isMobile ? "4vw" : "1vw",
+            }}
+        >
             <p>Informações do Talhão</p>
 
             <Box
                 sx={{
                     flexDirection: "row",
-                    gap: "3vw",
+                    gap: isMobile ? "3vw" : "2vw",
                     width: "100%",
-                    height: "23%",
+                    height: isMobile ? "23%" : "fit-content",
                     alignItems: "center",
                 }}
             >
@@ -67,21 +77,14 @@ export const FormTalhao: React.FC<FormTalhaoProps> = ({ data, change, images, op
                     emptyLabel="Adicionar foto"
                     variant="square"
                     style={{
-                        width: "30vw",
-                        height: "30vw",
-                        fontSize: "4vw",
+                        width: isMobile ? "30vw" : "10vw",
+                        height: isMobile ? "30vw" : "10vw",
+                        fontSize: isMobile ? "4vw" : "1.2rem",
                         fontFamily: "MalgunGothic2",
                     }}
                 />
-                <Box sx={{ flexDirection: "column", gap: "2vw", width: "65%" }}>
-                    <TextField
-                        label={"Nome do Talhão"}
-                        name="name"
-                        value={data.name}
-                        sx={textField}
-                        onChange={change}
-                        required
-                    />
+                <Box sx={{ flexDirection: "column", gap: isMobile ? "2vw" : "1vw", width: isMobile ? "65%" : "100%" }}>
+                    <TextField label={"Nome do Talhão"} name="name" value={data.name} sx={textField} onChange={change} required />
 
                     <TextField
                         label={"Area"}
@@ -113,7 +116,7 @@ export const FormTalhao: React.FC<FormTalhaoProps> = ({ data, change, images, op
                 </Tabs>
                 {/* {tab === "additional" && <Additional data={data} handleChange={change} />} */}
                 {tab === "gallery" && (
-                    <Box sx={{ width: "100%", height: "80%", gap: "2vw", pt: "2vw" }}>
+                    <Box sx={{ width: "100%", height: "80%", gap: isMobile ? "2vw" : "1vw", pt: isMobile ? "2vw" : 0 }}>
                         {images.length === 0 ? (
                             <TitleComponents title="Adicionar Galeria" button textButton="Adicionar" click={open} />
                         ) : (

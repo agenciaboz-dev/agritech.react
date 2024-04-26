@@ -1,4 +1,4 @@
-import { Box, Button, TextField } from "@mui/material"
+import { Box, Button, TextField, useMediaQuery } from "@mui/material"
 import React, { ChangeEventHandler, useEffect, useRef, useState } from "react"
 import { useHeader } from "../../../hooks/useHeader"
 import { MapContainer, Polygon, TileLayer, useMapEvents } from "react-leaflet"
@@ -29,6 +29,7 @@ interface MapRefType {
     }
 }
 export const GeolocalTalhao: React.FC<GeolocalTalhaoProps> = ({ setCurrentStep, origin, coordinates, setCoordinates }) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
     const mapboxStyleId = leaflet.style
     const mapboxToken = leaflet.TOKEN
     // console.log(`https://api.mapbox.com/styles/v1/${mapboxStyleId}/tiles/{z}/{x}/{y}?access_token=${mapboxToken}`)
@@ -83,34 +84,42 @@ export const GeolocalTalhao: React.FC<GeolocalTalhaoProps> = ({ setCurrentStep, 
     }, [origin])
 
     return (
-        <Box sx={{ width: "100%", height: "100%", zIndex: 0 }}>
+        <Box sx={{ padding: isMobile ? 0 : "1vw 0", width: "100%", height: "100%", zIndex: 0 }}>
             <MapContainer
                 center={origin}
                 zoom={16}
                 scrollWheelZoom={true}
-                style={{ height: "100%", zIndex: 1 }}
+                style={{ height: "100%", zIndex: 1, borderRadius: isMobile ? "7vw" : "2vw" }}
                 ref={mapRef}
             >
-                <TileLayer
-                    url={`https://api.mapbox.com/styles/v1/${mapboxStyleId}/tiles/{z}/{x}/{y}?access_token=${mapboxToken}`}
-                />
+                <TileLayer url={`https://api.mapbox.com/styles/v1/${mapboxStyleId}/tiles/{z}/{x}/{y}?access_token=${mapboxToken}`} />
                 {coordinates.map((coord, index) => (
                     <Marker key={index} position={coord} />
                 ))}
-                {coordinates.length > 0 && (
-                    <Polygon positions={coordinates} color="blue" fillColor="lightblue" fillOpacity={0.5} />
-                )}
+                {coordinates.length > 0 && <Polygon positions={coordinates} color="blue" fillColor="lightblue" fillOpacity={0.5} />}
 
                 <MapClickHandler />
             </MapContainer>
 
-            <Box sx={{ padding: "2vw", position: "fixed", bottom: "12vh", alignItems: "center", zIndex: 2, width: 1 }}>
+            <Box
+                sx={{
+                    padding: isMobile ? "2vw" : 0,
+                    margin: "0 auto",
+                    position: "fixed",
+                    bottom: isMobile ? "12vh" : "15vh",
+                    alignItems: "center",
+                    zIndex: 2,
+                    width: 1,
+                }}
+            >
                 <ButtonAgritech
                     variant="contained"
                     sx={{
                         padding: "1vw",
-                        width: "100%",
-                        fontSize: 17,
+                        margin: "0 auto",
+                        width: "50%",
+                        height: "fit-content",
+                        fontSize: isMobile ? 17 : "1.2rem   ",
                         color: colors.text.white,
                         backgroundColor: colors.button,
                         borderRadius: "5vw",

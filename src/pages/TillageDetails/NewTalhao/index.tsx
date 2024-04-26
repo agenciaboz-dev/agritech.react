@@ -1,4 +1,4 @@
-import { Box, Button, CircularProgress, SxProps, TextField } from "@mui/material"
+import { Box, Button, CircularProgress, SxProps, TextField, useMediaQuery } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { useHeader } from "../../../hooks/useHeader.ts"
 import { colors } from "../../../style/colors.ts"
@@ -12,7 +12,6 @@ import { useIo } from "../../../hooks/useIo.ts"
 import { CepAbertoApi } from "../../../definitions/cepabertoApi"
 import { LatLngExpression, LatLngTuple } from "leaflet"
 import { DialogConfirm } from "../../../components/DialogConfirm.tsx"
-import { textField, input } from "../../../style/input.ts"
 import { useNavigate, useParams } from "react-router-dom"
 import { useSnackbar } from "burgos-snackbar"
 import MaskedInput from "../../../components/MaskedInput.tsx"
@@ -25,6 +24,7 @@ import { ModalGallery } from "../../Producer/ModalGallery.tsx"
 interface NewTalhaoProps {}
 
 export const NewTalhao: React.FC<NewTalhaoProps> = ({}) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
     const io = useIo()
     const header = useHeader()
     const navigate = useNavigate()
@@ -96,9 +96,7 @@ export const NewTalhao: React.FC<NewTalhaoProps> = ({}) => {
             snackbar({ severity: "success", text: "Talhão adicionado!" })
             setLoadingTalhao(false)
             console.log({ Talhão: data.talhao })
-            navigate(
-                user?.isAdmin ? `/adm/producer/${producerid}/${tillageid}` : `/employee/producer/${producerid}/${tillageid}`
-            )
+            navigate(user?.isAdmin ? `/adm/producer/${producerid}/${tillageid}` : `/employee/producer/${producerid}/${tillageid}`)
         })
         io.on("talhao:create:failed", () => {
             snackbar({ severity: "error", text: "Algo deu errado!" })
@@ -134,11 +132,11 @@ export const NewTalhao: React.FC<NewTalhaoProps> = ({}) => {
             <Box
                 sx={{
                     width: "100%",
-                    height: "10%",
+                    height: isMobile ? "10%" : "fit-content",
                     justifyContent: "center",
                     alignItems: "center",
                     gap: "1vw",
-                    padding: "4vw",
+                    padding: isMobile ? "4vw" : "2.5vw",
                     flexDirection: "row",
                 }}
             >
@@ -158,25 +156,33 @@ export const NewTalhao: React.FC<NewTalhaoProps> = ({}) => {
                     justifyContent: "center",
                     height: "100%",
                     backgroundColor: colors.secondary,
-                    borderTopLeftRadius: "5vw",
-                    borderTopRightRadius: "5vw",
-                    mt: "10vw",
+                    borderTopLeftRadius: isMobile ? "5vw" : "2vw",
+                    borderTopRightRadius: isMobile ? "5vw" : "2vw",
+                    paddingTop: isMobile ? "2vw" : "1vw",
+                    mt: isMobile ? "10vw" : 0,
                 }}
             >
                 {currentStep === 1 && (
-                    <p style={{ color: colors.text.white, width: "100%", fontSize: "5vw", padding: "2vw 4vw" }}>
+                    <p
+                        style={{
+                            color: colors.text.white,
+                            width: "100%",
+                            fontSize: isMobile ? "5vw" : "1.5rem",
+                            padding: isMobile ? "2vw 4vw" : "1vw",
+                        }}
+                    >
                         Localização do Talhão
                     </p>
                 )}
                 <Box
                     sx={{
-                        padding: "0vw",
+                        padding: isMobile ? "0vw" : "0 1vw",
                         width: "100%",
                         // flex: 1,
                         height: "100vh",
                         backgroundColor: "#fff",
-                        borderTopLeftRadius: "7vw",
-                        borderTopRightRadius: "7vw",
+                        borderTopLeftRadius: isMobile ? "7vw" : "2vw",
+                        borderTopRightRadius: isMobile ? "7vw" : "2vw",
                         overflowY: "auto",
                     }}
                 >
@@ -213,27 +219,27 @@ export const NewTalhao: React.FC<NewTalhaoProps> = ({}) => {
                                                 flexDirection: "column",
                                             }}
                                         >
-                                            <FormTalhao
-                                                data={values}
-                                                change={handleChange}
-                                                images={images}
-                                                open={open}
-                                                opened={opened}
-                                            />
+                                            <FormTalhao data={values} change={handleChange} images={images} open={open} opened={opened} />
                                             <Box
-                                                sx={{ flexDirection: "column", gap: "2vw", p: "0 4vw", width: 1, pb: "3vh" }}
+                                                sx={{
+                                                    flexDirection: isMobile ? "column" : "row",
+                                                    gap: isMobile ? "2vw" : "1vw",
+                                                    p: isMobile ? "0 4vw" : "0 1vw 1vw",
+                                                    width: 1,
+                                                    pb: "3vh",
+                                                }}
                                             >
                                                 <Button
                                                     variant="outlined"
                                                     sx={{
-                                                        width: "100%",
-                                                        padding: "3vw",
+                                                        width: isMobile ? "100%" : "50%",
+                                                        padding: isMobile ? "3vw" : "0.5vw",
                                                         color: colors.text.black,
                                                         fontWeight: "600",
-                                                        fontSize: "4vw",
+                                                        fontSize: isMobile ? "4vw" : "1.2rem",
                                                         textTransform: "none",
                                                         borderRadius: "10vw",
-                                                        height: "10vw",
+                                                        height: isMobile ? "10vw" : "fit-content",
                                                     }}
                                                     onClick={() => {
                                                         setCurrentStep(0)
@@ -245,9 +251,9 @@ export const NewTalhao: React.FC<NewTalhaoProps> = ({}) => {
                                                     type="submit"
                                                     variant="contained"
                                                     sx={{
-                                                        padding: "1vw",
-                                                        width: "100%",
-                                                        fontSize: 17,
+                                                        padding: isMobile ? "1vw" : "0.5vw",
+                                                        width: isMobile ? "100%" : "50%",
+                                                        fontSize: isMobile ? 17 : "1.2rem",
                                                         color: colors.text.white,
                                                         backgroundColor: colors.button,
                                                         borderRadius: "5vw",
