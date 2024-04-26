@@ -1,4 +1,4 @@
-import { Box } from "@mui/material"
+import { Box, useMediaQuery } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { Header } from "../../components/Header"
 import { colors } from "../../style/colors"
@@ -14,6 +14,7 @@ import { SearchField } from "../../components/SearchField"
 interface ListTillagesProps {}
 
 export const ListTillages: React.FC<ListTillagesProps> = ({}) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
     const header = useHeader()
 
     const { user } = useUser()
@@ -33,9 +34,7 @@ export const ListTillages: React.FC<ListTillagesProps> = ({}) => {
     }, [producerEncontrado?.producer?.tillage])
 
     useEffect(() => {
-        const filteredList = tillagesProducer?.filter(
-            (item) => item !== null && item.name.toLowerCase().includes(searchText.toLowerCase())
-        )
+        const filteredList = tillagesProducer?.filter((item) => item !== null && item.name.toLowerCase().includes(searchText.toLowerCase()))
 
         setTillagesProducer(filteredList || [])
     }, [producerEncontrado?.producer?.tillage, searchText])
@@ -50,9 +49,7 @@ export const ListTillages: React.FC<ListTillagesProps> = ({}) => {
     }, [tillages, user?.producer?.tillage])
 
     useEffect(() => {
-        const filteredList = tillages?.filter(
-            (item) => item !== null && item.name.toLowerCase().includes(searchText.toLowerCase())
-        )
+        const filteredList = tillages?.filter((item) => item !== null && item.name.toLowerCase().includes(searchText.toLowerCase()))
         setTillages(filteredList || [])
     }, [user?.producer?.tillage, searchText])
 
@@ -74,22 +71,18 @@ export const ListTillages: React.FC<ListTillagesProps> = ({}) => {
             <Box
                 sx={{
                     width: "100%",
-                    height: "10%",
+                    height: isMobile ? "10%" : "fit-content",
                     justifyContent: "center",
                     alignItems: "center",
                     gap: "1vw",
-                    padding: "4vw",
+                    padding: isMobile ? "4vw" : "2.5vw",
                     flexDirection: "row",
                 }}
             >
                 <Header
                     back
                     location={
-                        user?.producer
-                            ? "/producer/"
-                            : user?.isAdmin
-                            ? `/adm/profile/${producerSelect.id}`
-                            : `/employee/profile/${producerSelect.id}`
+                        user?.producer ? "/producer/" : user?.isAdmin ? `/adm/profile/${producerSelect.id}` : `/employee/profile/${producerSelect.id}`
                     }
                 />
             </Box>
@@ -98,21 +91,22 @@ export const ListTillages: React.FC<ListTillagesProps> = ({}) => {
                     justifyContent: "center",
                     height: "92%",
                     backgroundColor: colors.secondary,
-                    borderTopLeftRadius: "5vw",
-                    borderTopRightRadius: "5vw",
-                    paddingTop: "4vw",
+                    borderTopLeftRadius: isMobile ? "5vw" : "2vw",
+                    borderTopRightRadius: isMobile ? "5vw" : "2vw",
+                    paddingTop: isMobile ? "4vw" : "1vw",
                 }}
             >
                 <Box
                     style={{
-                        padding: "4vw",
+                        padding: isMobile ? "4vw" : "0 0 1vw",
                         width: "100%",
+                        height: "100%",
                         flex: 1,
                         backgroundColor: "#fff",
-                        borderTopLeftRadius: "7vw",
-                        borderTopRightRadius: "7vw",
+                        borderTopLeftRadius: isMobile ? "7vw" : "2vw",
+                        borderTopRightRadius: isMobile ? "7vw" : "2vw",
                         overflow: "hidden",
-                        gap: "3vw",
+                        gap: isMobile ? "3vw" : "1vw",
                     }}
                 >
                     {/* <SearchField
@@ -121,14 +115,28 @@ export const ListTillages: React.FC<ListTillagesProps> = ({}) => {
                         placeholder="fazendas do produtor"
                     /> */}
 
-                    <Box sx={{ gap: "2vw", height: "90%", overflow: "auto" }}>
+                    <Box
+                        sx={{
+                            gap: isMobile ? "2vw" : "1vw",
+                            height: "90%",
+                            overflowY: "auto",
+                            // paddingBottom: "400vh",
+                            paddingBottom: "40vh",
+                        }}
+                    >
                         {user?.producer !== null && tillages ? (
                             tillages.length !== 0 ? (
-                                tillages.map((item, index) => (
-                                    <CardTillage key={index} tillage={item} location={`/producer/tillage/${item.id}`} />
-                                ))
+                                tillages.map((item, index) => <CardTillage key={index} tillage={item} location={`/producer/tillage/${item.id}`} />)
                             ) : (
-                                tillages.length === 0 && <p>Nenhuma fazenda encontrada.</p>
+                                tillages.length === 0 && (
+                                    <Box
+                                        sx={{
+                                            padding: "1vw",
+                                        }}
+                                    >
+                                        <p>Nenhuma fazenda encontrada.</p>
+                                    </Box>
+                                )
                             )
                         ) : tillagesProducer.length !== 0 ? (
                             tillagesProducer?.map((tillage, index) => (
@@ -143,10 +151,14 @@ export const ListTillages: React.FC<ListTillagesProps> = ({}) => {
                                 />
                             ))
                         ) : (
-                            <p>Nenhuma fazenda encontrada.</p>
+                            <Box
+                                sx={{
+                                    padding: "1vw",
+                                }}
+                            >
+                                <p>Nenhuma fazenda encontrada.</p>
+                            </Box>
                         )}
-
-                        <Box style={{ width: "100%", height: "80%", overflow: "auto" }}></Box>
                     </Box>
                 </Box>
             </Box>

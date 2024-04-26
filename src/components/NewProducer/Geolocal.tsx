@@ -79,7 +79,7 @@ export const Geolocal: React.FC<GeolocalProps> = ({ setCurrentStep, origin, coor
     }, [origin])
 
     return (
-        <Box sx={{ width: "100%", height: "100%", zIndex: 0 }}>
+        <Box sx={{ padding: isMobile ? 0 : "1vw 0", width: "100%", height: "100%", zIndex: 0 }}>
             <MapContainer
                 center={origin}
                 zoom={16}
@@ -96,11 +96,22 @@ export const Geolocal: React.FC<GeolocalProps> = ({ setCurrentStep, origin, coor
                 <MapClickHandler />
             </MapContainer>
 
-            <Box sx={{ padding: "2vw", position: "fixed", bottom: "12vh", alignItems: "center", zIndex: 2, width: 1 }}>
+            <Box
+                sx={{
+                    padding: isMobile ? "2vw" : 0,
+                    margin: "0 auto",
+                    position: "fixed",
+                    bottom: isMobile ? "12vh" : "15vh",
+                    alignItems: "center",
+                    zIndex: 2,
+                    width: 1,
+                }}
+            >
                 <ButtonAgritech
                     variant="contained"
                     sx={{
                         padding: "1vw",
+                        margin: "0 auto",
                         width: "50%",
                         height: "fit-content",
                         fontSize: isMobile ? 17 : "1.2rem   ",

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { Box, Avatar, Skeleton } from "@mui/material"
+import { Box, Avatar, Skeleton, useMediaQuery } from "@mui/material"
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos"
 import { useNavigate } from "react-router-dom"
 import { useIo } from "../hooks/useIo"
@@ -12,6 +12,7 @@ interface CardTillageProps {
 }
 
 export const CardTillage: React.FC<CardTillageProps> = ({ tillage, location }) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
     const navigate = useNavigate()
     const io = useIo()
     const dynamicImageRef = useVisibleCallback(() => io.emit("tillage:cover", tillage.id), {
@@ -34,11 +35,10 @@ export const CardTillage: React.FC<CardTillageProps> = ({ tillage, location }) =
         <Box
             ref={dynamicImageRef}
             sx={{
-                height: "22vw",
+                height: isMobile ? "22vw" : "fit-content",
                 flexDirection: "row",
-                gap: "3vw",
-
-                padding: "4vw 2vw",
+                gap: isMobile ? "3vw" : "1vw",
+                padding: isMobile ? "4vw 2vw" : "1vw",
                 alignItems: "center",
                 borderBottom: "1px solid #88A486",
                 justifyContent: "space-between",
@@ -48,22 +48,28 @@ export const CardTillage: React.FC<CardTillageProps> = ({ tillage, location }) =
                 navigate(location)
             }}
         >
-            <Box sx={{ flexDirection: "row", gap: "3vw", alignItems: "center" }}>
-                <Avatar variant="rounded" src={cover} sx={{ width: "18vw", height: "18vw", borderRadius: "3vw" }} />
-                <Box sx={{ flexDirection: "column", gap: "0vw" }}>
-                    <p style={{ fontSize: "4vw", fontWeight: "bold" }}>{tillage.name}</p>
-                    <p style={{ fontSize: "3.8vw" }}> {tillage.area} ha</p>
+            <Box sx={{ flexDirection: "row", gap: isMobile ? "3vw" : "2vw", alignItems: "center" }}>
+                <Avatar
+                    variant="rounded"
+                    src={cover}
+                    sx={{
+                        width: isMobile ? "18vw" : "10vw",
+                        height: isMobile ? "18vw" : "10vw",
+                        borderRadius: isMobile ? "3vw" : "2vw",
+                    }}
+                />
+                <Box sx={{ flexDirection: "column", gap: 0 }}>
+                    <p style={{ fontSize: isMobile ? "4vw" : "1.2rem", fontWeight: "bold" }}>{tillage.name}</p>
+                    <p style={{ fontSize: isMobile ? "3.8vw" : "1rem" }}> {tillage.area} ha</p>
                 </Box>
             </Box>
-            <Box sx={{ alignItems: "center", flexDirection: "row" }}>
-                <p
-                    style={{ fontSize: "3.0vw" }}
-                    onClick={() => {
-                        navigate(location)
-                    }}
-                >
-                    Ver
-                </p>
+            <Box
+                sx={{ alignItems: "center", flexDirection: "row", cursor: "pointer" }}
+                onClick={() => {
+                    navigate(location)
+                }}
+            >
+                <p style={{ fontSize: isMobile ? "3.0vw" : "1rem" }}>Ver</p>
                 <ArrowForwardIosIcon sx={{ width: "3vw", padding: 0 }} />
             </Box>
         </Box>
@@ -71,28 +77,37 @@ export const CardTillage: React.FC<CardTillageProps> = ({ tillage, location }) =
         <Box
             ref={dynamicImageRef}
             sx={{
-                height: "22vw",
+                height: isMobile ? "22vw" : "fit-content",
                 flexDirection: "row",
-                gap: "3vw",
-
-                padding: "4vw 2vw",
+                gap: isMobile ? "3vw" : "1vw",
+                padding: isMobile ? "4vw 2vw" : "1vw",
                 alignItems: "center",
                 borderBottom: "1px solid #88A486",
                 justifyContent: "space-between",
             }}
             key={tillage.id}
         >
-            <Box sx={{ flexDirection: "row", gap: "3vw", alignItems: "center" }}>
-                <Skeleton animation="wave" variant="rounded" sx={{ width: "18vw", height: "18vw" }} />
-                <Box sx={{ flexDirection: "column", gap: "1vw" }}>
-                    <Skeleton animation="wave" variant="rounded" sx={{ width: "30vw", height: "4vw" }} />
-                    <Skeleton animation="wave" variant="rounded" sx={{ width: "22vw", height: "3vw" }} />
-                </Box>
+            <Box sx={{ flexDirection: "row", gap: isMobile ? "3vw" : "1vw", alignItems: "center" }}>
+                <Skeleton
+                    animation="wave"
+                    variant="rounded"
+                    sx={{
+                        width: isMobile ? "18vw" : "10vw",
+                        height: isMobile ? "18vw" : "10vw",
+                        borderRadius: isMobile ? "3vw" : "2vw",
+                    }}
+                />
+                {isMobile && (
+                    <Box sx={{ flexDirection: "column", gap: "1vw" }}>
+                        <Skeleton animation="wave" variant="rounded" sx={{ width: "30vw", height: "4vw" }} />
+                        <Skeleton animation="wave" variant="rounded" sx={{ width: "22vw", height: "3vw" }} />
+                    </Box>
+                )}
             </Box>
             {cover && (
                 <Box sx={{ alignItems: "center", flexDirection: "row" }}>
                     <p
-                        style={{ fontSize: "3.0vw" }}
+                        style={{ fontSize: isMobile ? "3.0vw" : "1rem" }}
                         onClick={() => {
                             navigate(location)
                         }}

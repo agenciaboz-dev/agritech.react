@@ -57,7 +57,7 @@ export const ModalGallery: React.FC<ModalGalleryProps> = ({ opened, close, image
     }, [images])
     return (
         <Modal
-            size={"sm"}
+            size={isMobile ? "sm" : "lg"}
             opened={opened}
             onClose={close}
             withCloseButton
@@ -66,8 +66,8 @@ export const ModalGallery: React.FC<ModalGalleryProps> = ({ opened, close, image
             title={"Criar Galeria"}
             styles={{
                 body: { display: "flex", flexDirection: "column", gap: isMobile ? "6vw" : "1vw", borderRadius: isMobile ? "10vw" : "2vw" },
-                root: { maxHeight: isMobile ? "75%" : "100%", minHeight: "fit-content" },
-                content: { borderRadius: isMobile ? "6vw" : "2vw" },
+                root: { minHeight: "fit-content" },
+                content: { maxHeight: "75%", borderRadius: isMobile ? "6vw" : "2vw" },
             }}
         >
             <Box sx={{ gap: "0.5vw", height: "100%" }}>
@@ -77,7 +77,7 @@ export const ModalGallery: React.FC<ModalGalleryProps> = ({ opened, close, image
                         <AiOutlineDelete color={colors.delete} />
                     </IconButton> */}
                 </Box>
-                <Box sx={{ flexDirection: "column", gap: "1vw", height: isMobile ? "50%" : "fit-content", overflowY: "auto" }}>
+                <Box sx={{ flexDirection: "column", gap: "1vw", height: isMobile ? "50%" : "100%", overflowY: "auto" }}>
                     <Dropzone
                         openRef={openRef}
                         onDrop={handleUpload}
@@ -96,22 +96,23 @@ export const ModalGallery: React.FC<ModalGalleryProps> = ({ opened, close, image
                             borderColor: "gray",
                             borderRadius: isMobile ? "4vw" : "2vw",
                             flexDirection: "row",
-                            gap: "1.5vw",
+                            gap: isMobile ? "1.5vw" : "1vw",
                             overflowY: "scroll",
                         }}
                     >
                         {images.length !== 0 ? (
                             <Grid container spacing={2}>
                                 {images.map((image) => (
-                                    <Grid item xs={2.9} md={7} sx={{ position: "relative", display: "inline-block" }}>
+                                    <Grid item xs={isMobile ? 2.9 : 3} md={isMobile ? 7 : 3} sx={{ position: "relative", display: "inline-block" }}>
                                         <Avatar
                                             variant="rounded"
                                             key={image.id}
                                             src={image.url}
                                             sx={{
-                                                width: "18vw",
-                                                height: "18vw",
+                                                width: isMobile ? "18vw" : "9vw",
+                                                height: isMobile ? "18vw" : "9vw",
                                                 opacity: selectedForDeletion === image.id ? 0.5 : 1,
+                                                // margin: "0 auto",
                                             }}
                                             onClick={() => image.id && toggleSelectionForDeletion(image.id)}
                                         />
@@ -121,12 +122,12 @@ export const ModalGallery: React.FC<ModalGalleryProps> = ({ opened, close, image
                                                 style={{
                                                     borderRadius: 0,
                                                     position: "absolute",
-                                                    top: "4vw",
-                                                    left: "4vw",
+                                                    top: isMobile ? "4vw" : "",
+                                                    left: isMobile ? "4vw" : "16px",
                                                     right: 0,
                                                     bottom: 0,
-                                                    width: "18vw",
-                                                    height: "18vw",
+                                                    width: isMobile ? "18vw" : "9vw",
+                                                    height: isMobile ? "18vw" : "9vw",
                                                     opacity: 0.5,
                                                     backgroundColor: "rgba(0,0,0,0.6)",
                                                     color: "white",
@@ -150,18 +151,18 @@ export const ModalGallery: React.FC<ModalGalleryProps> = ({ opened, close, image
                     </Box>
                 </Box>
             </Box>
-            <Box sx={{ width: "100%", flexDirection: "row", gap: "2vw", justifyContent: "space-between" }}>
+            <Box sx={{ width: "100%", height: "fit-content", flexDirection: "row", gap: isMobile ? "2vw" : "1vw", justifyContent: "space-between" }}>
                 <ButtonAgritech
                     sx={{
-                        width: "60%",
-                        padding: "3vw",
+                        width: isMobile ? "60%" : "50%",
+                        padding: isMobile ? "3vw" : "1vw",
                         color: colors.text.white,
                         fontWeight: "600",
                         fontSize: "0.9rem",
                         textTransform: "none",
-                        borderRadius: "10vw",
-                        height: "10vw",
-                        gap: "2vw",
+                        borderRadius: "5vw",
+                        height: isMobile ? "10vw" : "fit-content",
+                        gap: isMobile ? "2vw" : "1vw",
                         bgcolor: colors.secondary,
                     }}
                     onClick={() => openRef.current?.()}
@@ -171,10 +172,10 @@ export const ModalGallery: React.FC<ModalGalleryProps> = ({ opened, close, image
                 <ButtonAgritech
                     variant="contained"
                     sx={{
-                        width: "40%",
+                        width: isMobile ? "40%" : "50%",
                         alignSelf: "end",
-                        fontSize: "3.6vw",
-                        p: "2vw",
+                        fontSize: isMobile ? "3.6vw" : "1rem",
+                        p: isMobile ? "2vw" : "1vw",
                         bgcolor: colors.button,
                         color: colors.text.white,
                     }}

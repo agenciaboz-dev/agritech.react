@@ -328,7 +328,7 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
                 )}
                 <Box
                     sx={{
-                        padding: isMobile ? "4vw" : "1vw",
+                        padding: isMobile ? "4vw" : "0 0 1vw",
                         width: "100%",
                         height: "100%",
                         flex: 1,
@@ -344,7 +344,7 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
                             height: "100%",
                             gap: isMobile ? "5vw" : "1vw",
                             flexDirection: "column",
-                            padding: "1vw",
+                            padding: isMobile ? "1vw" : "0 1vw 1vw",
                             overflow: "auto",
                         }}
                     >
@@ -482,7 +482,7 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
                                                     variant="outlined"
                                                     sx={{
                                                         width: "100%",
-                                                        padding: isMobile ? "3vw" : "1vw",
+                                                        padding: isMobile ? "3vw" : "0.5vw",
                                                         color: colors.text.black,
                                                         fontWeight: "600",
                                                         fontSize: isMobile ? "4vw" : "1.2rem",
@@ -500,7 +500,7 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
                                                     type="submit"
                                                     variant="contained"
                                                     sx={{
-                                                        padding: "1vw",
+                                                        padding: isMobile ? "3vw" : "0.5vw",
                                                         width: "100%",
                                                         fontSize: isMobile ? 17 : "1.2rem",
                                                         color: colors.text.white,

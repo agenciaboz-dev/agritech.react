@@ -182,7 +182,7 @@ export const StepFive: React.FC<StepFiveProps> = ({
                 Permissões
             </p>
             <Box sx={{ flexDirection: "column", gap: isMobile ? "2vw" : "1vw", justifyContent: "space-between", marginLeft: "2vw" }}>
-                <FormGroup sx={{ width: "90%" }}>
+                <FormGroup sx={{ width: isMobile ? "90%" : "fit-content" }}>
                     <FormControlLabel
                         checked={adminStatus}
                         control={<Android12Switch />}
@@ -205,7 +205,7 @@ export const StepFive: React.FC<StepFiveProps> = ({
                         }
                     />
                 </FormGroup>
-                <FormGroup sx={{ width: "90%" }}>
+                <FormGroup sx={{ width: isMobile ? "90%" : "fit-content" }}>
                     <FormControlLabel
                         checked={managerStatus}
                         control={<Android12Switch />}

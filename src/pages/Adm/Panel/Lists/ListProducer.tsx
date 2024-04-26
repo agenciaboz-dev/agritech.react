@@ -1,4 +1,4 @@
-import { Box, Button } from "@mui/material"
+import { Box, Button, useMediaQuery } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { Header } from "../../../../components/Header"
 import { colors } from "../../../../style/colors"
@@ -12,6 +12,7 @@ import { SearchField } from "../../../../components/SearchField"
 interface ListProducerProps {}
 
 export const ListProducer: React.FC<ListProducerProps> = ({}) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
     const navigate = useNavigate()
     const bottomMenu = useNavigationList()
     const header = useHeader()
@@ -24,9 +25,7 @@ export const ListProducer: React.FC<ListProducerProps> = ({}) => {
         setListProducer(listUsers?.filter((users) => users.producer !== null))
     }, [listUsers])
     useEffect(() => {
-        const filteredList = listUsers?.filter(
-            (user) => user.producer !== null && user.name.toLowerCase().includes(searchText.toLowerCase())
-        )
+        const filteredList = listUsers?.filter((user) => user.producer !== null && user.name.toLowerCase().includes(searchText.toLowerCase()))
         setListProducer(filteredList || [])
     }, [listUsers, searchText])
 
@@ -41,16 +40,17 @@ export const ListProducer: React.FC<ListProducerProps> = ({}) => {
                 height: "100%",
                 backgroundColor: colors.button,
                 flexDirection: "column",
+                overflow: "hidden",
             }}
         >
             <Box
                 sx={{
                     width: "100%",
-                    height: "10%",
+                    height: isMobile ? "10%" : "fit-content",
                     justifyContent: "center",
                     alignItems: "center",
                     gap: "1vw",
-                    padding: "4vw",
+                    padding: isMobile ? "4vw" : "2.5vw",
                     flexDirection: "row",
                 }}
             >
@@ -61,28 +61,36 @@ export const ListProducer: React.FC<ListProducerProps> = ({}) => {
                     justifyContent: "center",
                     height: "92%",
                     backgroundColor: colors.secondary,
-                    borderTopLeftRadius: "5vw",
-                    borderTopRightRadius: "5vw",
-                    paddingTop: 10,
+                    borderTopLeftRadius: isMobile ? "5vw" : "2vw",
+                    borderTopRightRadius: isMobile ? "5vw" : "2vw",
+                    paddingTop: isMobile ? "10" : "1vw",
                 }}
             >
                 <Box
                     style={{
-                        padding: "4vw",
+                        padding: isMobile ? "4vw" : "1vw",
                         width: "100%",
+                        height: "80vw",
                         flex: 1,
                         maxHeight: "100%",
-                        height: "80vw",
                         backgroundColor: "#fff",
-                        borderTopLeftRadius: "7vw",
-                        borderTopRightRadius: "7vw",
+                        borderTopLeftRadius: isMobile ? "7vw" : "2vw",
+                        borderTopRightRadius: isMobile ? "7vw" : "2vw",
                         overflow: "hidden",
-                        gap: "3vw",
+                        gap: isMobile ? "3vw" : "1vw",
                     }}
                 >
                     <SearchField searchText={searchText} setSearchText={setSearchText} placeholder="produtor" />
 
-                    <Box sx={{ gap: "2vw", height: "100%", overflow: "auto", pb: "12vh" }}>
+                    <Box
+                        sx={{
+                            gap: isMobile ? "2vw" : "1vw",
+                            height: "100%",
+                            overflowY: "auto",
+                            // paddingBottom: "400vh",
+                            paddingBottom: "40vh",
+                        }}
+                    >
                         {listProducer?.length !== 0
                             ? listProducer?.map((user) => (
                                   <CardUser
@@ -92,8 +100,6 @@ export const ListProducer: React.FC<ListProducerProps> = ({}) => {
                                   />
                               ))
                             : "Nenhum cliente encontrado"}
-
-                        <Box style={{ width: "100%", height: "80%", overflow: "auto" }}></Box>
                     </Box>
                 </Box>
             </Box>

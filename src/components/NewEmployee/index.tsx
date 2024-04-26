@@ -197,7 +197,7 @@ export const NewEmployee: React.FC<NewEmployeeProps> = ({}) => {
             >
                 <Box
                     sx={{
-                        padding: isMobile ? "4vw" : "1vw",
+                        padding: isMobile ? "4vw" : "0 0 1vw",
                         width: "100%",
                         height: "100%",
                         flex: 1,

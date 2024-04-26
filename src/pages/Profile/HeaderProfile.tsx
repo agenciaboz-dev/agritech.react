@@ -161,9 +161,7 @@ export const HeaderProfile: React.FC<HeaderProfileProps> = ({
                                 onChange={handleChangeAdmin}
                                 label={
                                     <Box sx={{ width: "100%" }}>
-                                        <p style={{ fontSize: isMobile ? "3.5vw" : "1rem", width: isMobile ? "100%" : "fit-content" }}>
-                                            Administrador
-                                        </p>
+                                        <p style={{ fontSize: isMobile ? "3.5vw" : "1rem", width: "100%" }}>Administrador</p>
                                     </Box>
                                 }
                             />
@@ -175,7 +173,7 @@ export const HeaderProfile: React.FC<HeaderProfileProps> = ({
                                 onChange={handleChangeManager}
                                 label={
                                     <Box sx={{ width: "100%" }}>
-                                        <p style={{ fontSize: isMobile ? "3.5vw" : "1rem", width: isMobile ? "100%" : "fit-content" }}>Gerente</p>
+                                        <p style={{ fontSize: isMobile ? "3.5vw" : "1rem", width: "100%" }}>Gerente</p>
                                     </Box>
                                 }
                             />

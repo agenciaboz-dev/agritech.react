@@ -71,7 +71,7 @@ export const FormTillage: React.FC<FormTillageProps> = ({
                 height: isMobile ? "100vh" : "fit-content",
                 gap: "0vw",
                 flexDirection: "column",
-                padding: isMobile ? "4vw" : "1vw",
+                padding: isMobile ? "4vw" : "1vw 0",
             }}
         >
             <p>Informações da Fazenda</p>

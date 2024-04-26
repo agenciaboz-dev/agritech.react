@@ -119,7 +119,7 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
             <Box
                 sx={{
                     width: "100%",
-                    height: "10%",
+                    height: isMobile ? "10%" : "fit-content",
                     justifyContent: "center",
                     alignItems: "center",
                     gap: "1vw",

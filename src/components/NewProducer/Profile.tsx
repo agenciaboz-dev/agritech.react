@@ -17,7 +17,7 @@ export const Profile: React.FC<ProfileProps> = ({ values, handleChange, image, s
     const isMobile = useMediaQuery("(orientation: portrait)")
     const textField = useResponsiveStyles()
     return (
-        <Box sx={{ padding: isMobile ? "4vw" : "1vw", gap: isMobile ? "4vw" : "1vw", height: "100%", overflowY: "auto" }}>
+        <Box sx={{ padding: isMobile ? "4vw" : "1vw 0", gap: isMobile ? "4vw" : "1vw", height: "100%", overflowY: "auto" }}>
             <p
                 style={{
                     fontSize: isMobile ? "4.5vw" : "1.2rem",
