@@ -17,6 +17,7 @@ export const Contact: React.FC<ContactProps> = ({ values, handleChange }) => {
             sx={{
                 flexDirection: "column",
                 gap: isMobile ? "3vw" : "1vw",
+                width: "100%",
                 padding: isMobile ? "2vw 0" : "1vw 0",
                 overflowY: "auto",
                 // paddingBottom: "400vh",

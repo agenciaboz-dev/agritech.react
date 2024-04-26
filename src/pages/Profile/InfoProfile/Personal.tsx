@@ -30,6 +30,7 @@ export const Personal: React.FC<PersonalProps> = ({ values, handleChange, birthP
             sx={{
                 flexDirection: "column",
                 gap: isMobile ? "2.5vw" : "1vw",
+                width: "100%",
                 overflowY: "auto",
                 // paddingBottom: "400vh",
                 paddingBottom: "40vh",
@@ -102,7 +103,7 @@ export const Personal: React.FC<PersonalProps> = ({ values, handleChange, birthP
                             variant="outlined"
                             value={values.employee?.gender}
                             InputProps={{
-                                sx: { ...textField, height: isMobile ? "12vw" : "2vw" },
+                                sx: { ...textField, height: isMobile ? "12vw" : "fit-content" },
                             }}
                             SelectProps={{
                                 MenuProps: {
@@ -142,7 +143,7 @@ export const Personal: React.FC<PersonalProps> = ({ values, handleChange, birthP
                             variant="outlined"
                             value={values.employee?.relationship}
                             InputProps={{
-                                sx: { ...textField, height: isMobile ? "12vw" : "2vw" },
+                                sx: { ...textField, height: isMobile ? "12vw" : "fit-content" },
                             }}
                             SelectProps={{
                                 MenuProps: {

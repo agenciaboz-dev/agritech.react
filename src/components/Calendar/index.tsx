@@ -123,7 +123,7 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
                     justifyContent: "center",
                     alignItems: "center",
                     gap: "1vw",
-                    padding: isMobile ? "4vw" : "3vw",
+                    padding: isMobile ? "4vw" : "2.5vw",
                     flexDirection: "row",
                 }}
             >
@@ -192,12 +192,7 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
                     getDayProps={(day) => ({
                         style: {
                             border: day.getDate() == dayCurrent ? `1px solid ${colors.secondary}` : "",
-                            color:
-                                day.getDate() == dayCurrent
-                                    ? colors.secondary
-                                    : day.getDate() == value?.getDate()
-                                    ? "white"
-                                    : "",
+                            color: day.getDate() == dayCurrent ? colors.secondary : day.getDate() == value?.getDate() ? "white" : "",
                         },
                     })}
                     value={value}

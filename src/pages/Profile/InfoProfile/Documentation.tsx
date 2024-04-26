@@ -1,8 +1,8 @@
-import { Box, TextField, Button } from "@mui/material"
+import { Box, TextField, Button, useMediaQuery } from "@mui/material"
 import React, { ChangeEventHandler } from "react"
-import { textField } from "../../../style/input"
 import MaskedInput from "../../../components/MaskedInput"
 import { colors } from "../../../style/colors"
+import { useResponsiveStyles } from "../../../hooks/useResponsiveStyles"
 
 interface DocumentationProps {
     values: Partial<Omit<User, "producer"> & { producer: Partial<Producer> }>
@@ -10,13 +10,25 @@ interface DocumentationProps {
 }
 
 export const Documentation: React.FC<DocumentationProps> = ({ values, handleChange }) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
+    const textField = useResponsiveStyles()
     return (
-        <Box sx={{ flexDirection: "column", gap: "3vw" }}>
-            <Box sx={{ flexDirection: "row", gap: "2.5vw" }}>
+        <Box
+            sx={{
+                flexDirection: "column",
+                gap: isMobile ? "3vw" : "1vw",
+                width: "100%",
+                padding: isMobile ? "2vw 0" : "1vw 0",
+                overflowY: "auto",
+                // paddingBottom: "400vh",
+                paddingBottom: "40vh",
+            }}
+        >
+            <Box sx={{ flexDirection: "row", gap: isMobile ? "2.5vw" : "1vw", width: "100%" }}>
                 <TextField
                     label={"CPF"}
                     name={"cpf"}
-                    sx={textField}
+                    sx={{ ...textField, width: 0.5 }}
                     value={values.cpf}
                     onChange={handleChange}
                     InputProps={{
@@ -28,7 +40,7 @@ export const Documentation: React.FC<DocumentationProps> = ({ values, handleChan
                 <TextField
                     label={"RG"}
                     name={"employee.rg"}
-                    sx={textField}
+                    sx={{ ...textField, width: 0.5 }}
                     value={values.employee?.rg}
                     onChange={handleChange}
                     InputProps={{ readOnly: true }}

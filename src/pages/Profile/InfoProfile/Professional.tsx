@@ -1,12 +1,12 @@
-import { Box, TextField, ThemeProvider, createTheme } from "@mui/material"
+import { Box, TextField, ThemeProvider, createTheme, useMediaQuery } from "@mui/material"
 import React, { ChangeEventHandler } from "react"
-import { textField } from "../../../style/input"
 import MaskedInputNando from "../../../components/MaskedNando"
 import { useCurrencyMask } from "burgos-masks"
 import { MobileDatePicker, ptBR } from "@mui/x-date-pickers"
 import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo"
 import { Dayjs } from "dayjs"
 import { colors } from "../../../style/colors"
+import { useResponsiveStyles } from "../../../hooks/useResponsiveStyles"
 
 interface ProfessionalProps {
     values: Partial<Omit<User, "producer"> & { producer: Partial<Producer> }>
@@ -17,9 +17,21 @@ interface ProfessionalProps {
 }
 
 export const Professional: React.FC<ProfessionalProps> = ({ userLog, values, handleChange, pickDate, setPickDate }) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
+    const textField = useResponsiveStyles()
     return (
         values.employee?.professional !== null && (
-            <Box sx={{ flexDirection: "column", gap: "3vw" }}>
+            <Box
+                sx={{
+                    flexDirection: "column",
+                    gap: isMobile ? "3vw" : "1vw",
+                    width: "100%",
+                    padding: isMobile ? "2vw 0" : "1vw 0",
+                    overflowY: "auto",
+                    // paddingBottom: "400vh",
+                    paddingBottom: "40vh",
+                }}
+            >
                 <TextField
                     label={"Cargo"}
                     name={"office"}

@@ -1,8 +1,8 @@
 import React, { ChangeEventHandler } from "react"
-import { Box, TextField, MenuItem } from "@mui/material"
-import { textField } from "../../../style/input"
+import { Box, TextField, MenuItem, useMediaQuery } from "@mui/material"
 import { useBankAccount } from "../../../hooks/useBankAccount"
 import MaskedInput from "../../../components/MaskedInput"
+import { useResponsiveStyles } from "../../../hooks/useResponsiveStyles"
 
 interface BankProps {
     values: Partial<Omit<User, "producer"> & { producer: Partial<Producer> }>
@@ -10,16 +10,22 @@ interface BankProps {
 }
 
 export const Bank: React.FC<BankProps> = ({ values, handleChange }) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
+    const textField = useResponsiveStyles()
     const bankAccount = useBankAccount()
     return (
-        <Box sx={{ flexDirection: "column", gap: "3vw" }}>
-            <TextField
-                label={"Banco"}
-                name={"employee.bank.name"}
-                sx={textField}
-                value={values.employee?.bank?.name}
-                onChange={handleChange}
-            />
+        <Box
+            sx={{
+                flexDirection: "column",
+                gap: isMobile ? "3vw" : "1vw",
+                width: "100%",
+                padding: isMobile ? "2vw 0" : "1vw 0",
+                overflowY: "auto",
+                // paddingBottom: "400vh",
+                paddingBottom: "40vh",
+            }}
+        >
+            <TextField label={"Banco"} name={"employee.bank.name"} sx={textField} value={values.employee?.bank?.name} onChange={handleChange} />
             <TextField
                 select
                 onChange={handleChange}
@@ -56,7 +62,7 @@ export const Bank: React.FC<BankProps> = ({ values, handleChange }) => {
                     </MenuItem>
                 ))}
             </TextField>
-            <Box sx={{ flexDirection: "row", gap: "2vw" }}>
+            <Box sx={{ flexDirection: "row", gap: isMobile ? "2vw" : "1vw" }}>
                 <TextField
                     label={"Agência"}
                     name={"employee.bank.agency"}
