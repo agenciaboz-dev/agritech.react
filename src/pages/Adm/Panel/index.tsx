@@ -199,7 +199,12 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                                       ?.slice(0, 3)
                                       .map((user) => <CardUser user={user} key={user.id} location={`/adm/calendar/${user.id}`} />)
                                 : skeletons.map((_, index) => (
-                                      <Skeleton animation="wave" key={index} variant="rounded" sx={{ width: 1, height: "13.5vw" }} />
+                                      <Skeleton
+                                          animation="wave"
+                                          key={index}
+                                          variant="rounded"
+                                          sx={{ width: 1, height: isMobile ? "13.5vw" : "5vw" }}
+                                      />
                                   ))}
                         </Box>
                         <Box
@@ -271,7 +276,12 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                             {listProducer?.length !== 0
                                 ? listProducer?.slice(0, 3).map((user) => <CardUser user={user} key={user.id} location={`/adm/profile/${user.id}`} />)
                                 : skeletons.map((_, index) => (
-                                      <Skeleton animation="wave" key={index} variant="rounded" sx={{ width: 1, height: "13.5vw" }} />
+                                      <Skeleton
+                                          animation="wave"
+                                          key={index}
+                                          variant="rounded"
+                                          sx={{ width: 1, height: isMobile ? "13.5vw" : "5vw" }}
+                                      />
                                   ))}
                         </Box>
                         <Box
