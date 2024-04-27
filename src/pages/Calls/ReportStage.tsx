@@ -170,117 +170,123 @@ export const ReportStage: React.FC<ReportStageProps> = ({ user }) => {
     }, [])
 
     return (
-        <Box
-            sx={{
-                width: "100%",
-                height: "100%",
-                backgroundColor: colors.button,
-                flexDirection: "column",
-            }}
-        >
+        report && (
             <Box
                 sx={{
                     width: "100%",
-                    height: "10%",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    gap: "1vw",
-                    padding: "4vw",
-                    flexDirection: "row",
-                }}
-            >
-                <Header back location={user?.isAdmin ? `/adm/call/${callid}/laudos` : `/employee/call/${callid}/laudos`} />
-            </Box>
-
-            <Box
-                style={{
-                    padding: "5vw",
-                    width: "100%",
                     height: "100%",
-                    backgroundColor: "#fff",
-                    borderTopLeftRadius: "7vw",
-                    borderTopRightRadius: "7vw",
-                    gap: "5vw",
-                    overflow: "hidden",
+                    backgroundColor: colors.button,
                     flexDirection: "column",
                 }}
             >
-                <TitleComponents
-                    title="Chamado"
-                    style={{ fontSize: "5vw" }}
-                    button={user?.employee ? true : false}
-                    textButton="Acessar Cliente"
-                    click={() =>
-                        navigate(
-                            user.isAdmin ? `/adm/profile/${producerSelect?.id}` : `/employee/profilw/${producerSelect?.id}`
-                        )
-                    }
-                    variant
-                />
+                <Box
+                    sx={{
+                        width: "100%",
+                        height: "10%",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        gap: "1vw",
+                        padding: "4vw",
+                        flexDirection: "row",
+                    }}
+                >
+                    <Header
+                        back
+                        location={user?.isAdmin ? `/adm/call/${callid}/laudos` : `/employee/call/${callid}/laudos`}
+                    />
+                </Box>
 
-                <Box sx={{ gap: "1vw", height: "85%", overflowY: "auto", p: "2vw 0" }}>
-                    <Box sx={{ gap: "7vw", height: "100%" }}>
-                        <Box sx={{ gap: "2vw" }}>
-                            <TextField
-                                label="Aberto em"
-                                name="init"
-                                type="text"
-                                value={new Date(Number(call?.init)).toLocaleDateString("pt-br")}
-                                sx={{ ...textField }}
-                                inputProps={{ "aria-readonly": true }}
-                                disabled
-                            />
-                            <TextField
-                                label="Cliente"
-                                name="producer"
-                                value={producerSelect ? producerSelect?.name : ""}
-                                sx={{ ...textField }}
-                                disabled
-                            />
-                            <TextField
-                                label="Fazenda"
-                                name="tillage"
-                                value={report ? report.call?.talhao?.tillage?.name : " "}
-                                sx={{ ...textField }}
-                                disabled
-                            />
-                        </Box>
+                <Box
+                    style={{
+                        padding: "5vw",
+                        width: "100%",
+                        height: "100%",
+                        backgroundColor: "#fff",
+                        borderTopLeftRadius: "7vw",
+                        borderTopRightRadius: "7vw",
+                        gap: "5vw",
+                        overflow: "hidden",
+                        flexDirection: "column",
+                    }}
+                >
+                    <TitleComponents
+                        title="Chamado"
+                        style={{ fontSize: "5vw" }}
+                        button={user?.employee ? true : false}
+                        textButton="Acessar Cliente"
+                        click={() =>
+                            navigate(
+                                user.isAdmin
+                                    ? `/adm/profile/${producerSelect?.id}`
+                                    : `/employee/profilw/${producerSelect?.id}`
+                            )
+                        }
+                        variant
+                    />
 
-                        {stage === 1 && (
-                            <form onSubmit={chegadaFormik.handleSubmit}>
-                                <StageDescription
-                                    title={"Chegada na localização"}
-                                    values={chegadaFormik.values}
-                                    change={chegadaFormik.handleChange}
-                                    data={dates}
+                    <Box sx={{ gap: "1vw", height: "85%", overflowY: "auto", p: "2vw 0" }}>
+                        <Box sx={{ gap: "7vw", height: "100%" }}>
+                            <Box sx={{ gap: "2vw" }}>
+                                <TextField
+                                    label="Aberto em"
+                                    name="init"
+                                    type="text"
+                                    value={new Date(Number(call?.init)).toLocaleDateString("pt-br")}
+                                    sx={{ ...textField }}
+                                    inputProps={{ "aria-readonly": true }}
+                                    disabled
                                 />
-                                <ButtonAgritech type="submit" variant="contained" sx={{ bgcolor: colors.button }}>
-                                    {loading ? (
-                                        <CircularProgress size="7vw" sx={{ color: colors.text.white }} />
-                                    ) : (
-                                        "Chegou na Localização"
-                                    )}
-                                </ButtonAgritech>
-                            </form>
-                        )}
-                        {stage === 2 && (
-                            <form onSubmit={pulverizacaoFormik.handleSubmit}>
-                                <StageDescription
-                                    title={"Pulverização"}
-                                    values={pulverizacaoFormik.values}
-                                    change={pulverizacaoFormik.handleChange}
-                                    data={dates}
+                                <TextField
+                                    label="Cliente"
+                                    name="producer"
+                                    value={producerSelect ? producerSelect?.name : ""}
+                                    sx={{ ...textField }}
+                                    disabled
                                 />
-                                <ButtonAgritech type="submit" variant="contained" sx={{ bgcolor: colors.button }}>
-                                    {loading ? (
-                                        <CircularProgress size="7vw" sx={{ color: colors.text.white }} />
-                                    ) : (
-                                        "Finalizar Pulverização"
-                                    )}
-                                </ButtonAgritech>
-                            </form>
-                        )}
-                        {/* {stage === 2 && (
+                                <TextField
+                                    label="Fazenda"
+                                    name="tillage"
+                                    value={call?.talhao?.tillage?.name}
+                                    sx={{ ...textField }}
+                                    disabled
+                                />
+                            </Box>
+
+                            {stage === 1 && (
+                                <form onSubmit={chegadaFormik.handleSubmit}>
+                                    <StageDescription
+                                        title={"Chegada na localização"}
+                                        values={chegadaFormik.values}
+                                        change={chegadaFormik.handleChange}
+                                        data={dates}
+                                    />
+                                    <ButtonAgritech type="submit" variant="contained" sx={{ bgcolor: colors.button }}>
+                                        {loading ? (
+                                            <CircularProgress size="7vw" sx={{ color: colors.text.white }} />
+                                        ) : (
+                                            "Chegou na Localização"
+                                        )}
+                                    </ButtonAgritech>
+                                </form>
+                            )}
+                            {stage === 2 && (
+                                <form onSubmit={pulverizacaoFormik.handleSubmit}>
+                                    <StageDescription
+                                        title={"Pulverização"}
+                                        values={pulverizacaoFormik.values}
+                                        change={pulverizacaoFormik.handleChange}
+                                        data={dates}
+                                    />
+                                    <ButtonAgritech type="submit" variant="contained" sx={{ bgcolor: colors.button }}>
+                                        {loading ? (
+                                            <CircularProgress size="7vw" sx={{ color: colors.text.white }} />
+                                        ) : (
+                                            "Finalizar Pulverização"
+                                        )}
+                                    </ButtonAgritech>
+                                </form>
+                            )}
+                            {/* {stage === 2 && (
                             <form onSubmit={backFormik.handleSubmit}>
                                 <StageDescription
                                     title={"Volta da Localização"}
@@ -298,10 +304,11 @@ export const ReportStage: React.FC<ReportStageProps> = ({ user }) => {
                                 </ButtonAgritech>
                             </form>
                         )} */}
-                        {/* {!user?.producer && <ButtonComponent title="Reportar" location="" />} */}
+                            {/* {!user?.producer && <ButtonComponent title="Reportar" location="" />} */}
+                        </Box>
                     </Box>
                 </Box>
             </Box>
-        </Box>
+        )
     )
 }

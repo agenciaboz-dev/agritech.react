@@ -60,10 +60,10 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
         if (listKits.length == 0) {
             io.emit("kit:list")
         }
-        if (listCalls.length == 0) {
-            io.emit("call:listApproved", user)
-            setCall(listCalls.find((item) => item.id === notification.target_id))
-        }
+        // if (listCalls.length == 0) {
+        //     io.emit("call:listApproved", user)
+        //     setCall(listCalls.find((item) => item.id === notification.target_id))
+        // }
         if (listReports.length == 0) io.emit("report:list")
         if (listTalhao?.length == 0) io.emit("talhao:list", user)
     }, [listUsers, listKits, listCalls, listReports, listTalhao])
@@ -237,7 +237,12 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
             sx={{
                 width: "100%",
                 height: isMobile ? "13vw" : "4vw",
-                bgcolor: !drawer && findBy ? "transparent" : !drawer && findBy === undefined ? "#F0F9F2" : drawer && "transparent",
+                bgcolor:
+                    !drawer && findBy
+                        ? "transparent"
+                        : !drawer && findBy === undefined
+                        ? "#F0F9F2"
+                        : drawer && "transparent",
                 padding: "1vw",
                 borderRadius: isMobile ? "4vw" : "2vw",
                 flexDirection: "row",
@@ -262,7 +267,10 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                     }}
                 >
                     {notification.target_key === "employee" ? (
-                        <Avatar src={employee?.image} sx={{ width: isMobile ? "8vw" : "2vw", height: isMobile ? "8vw" : "2vw" }} />
+                        <Avatar
+                            src={employee?.image}
+                            sx={{ width: isMobile ? "8vw" : "2vw", height: isMobile ? "8vw" : "2vw" }}
+                        />
                     ) : notification.target_key === "report" && notification.action === "close" ? (
                         <HiOutlineClipboardDocument
                             style={{
