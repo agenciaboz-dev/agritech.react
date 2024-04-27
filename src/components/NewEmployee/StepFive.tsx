@@ -181,7 +181,14 @@ export const StepFive: React.FC<StepFiveProps> = ({
             >
                 Permissões
             </p>
-            <Box sx={{ flexDirection: "column", gap: isMobile ? "2vw" : "1vw", justifyContent: "space-between", marginLeft: "2vw" }}>
+            <Box
+                sx={{
+                    flexDirection: "column",
+                    gap: isMobile ? "0vw" : "1vw",
+                    justifyContent: "space-between",
+                    marginLeft: "2vw",
+                }}
+            >
                 <FormGroup sx={{ width: isMobile ? "90%" : "fit-content" }}>
                     <FormControlLabel
                         checked={adminStatus}
@@ -190,7 +197,7 @@ export const StepFive: React.FC<StepFiveProps> = ({
                         label={
                             <Box sx={{ width: "100%" }}>
                                 <p style={{ fontSize: isMobile ? "4vw" : "1.2rem", width: "100%" }}>Administrador</p>
-                                <p
+                                {/* <p
                                     style={{
                                         fontSize: isMobile ? "3vw" : "1rem",
                                         whiteSpace: "nowrap",
@@ -200,7 +207,7 @@ export const StepFive: React.FC<StepFiveProps> = ({
                                     }}
                                 >
                                     Acesso ilimitado ao sistema
-                                </p>
+                                </p> */}
                             </Box>
                         }
                     />
@@ -213,7 +220,7 @@ export const StepFive: React.FC<StepFiveProps> = ({
                         label={
                             <Box sx={{ width: "100%" }}>
                                 <p style={{ fontSize: isMobile ? "4vw" : "1.2rem", width: "100%" }}>Gerente</p>
-                                <p
+                                {/* <p
                                     style={{
                                         fontSize: isMobile ? "3vw" : "1rem",
                                         whiteSpace: "nowrap",
@@ -223,7 +230,7 @@ export const StepFive: React.FC<StepFiveProps> = ({
                                     }}
                                 >
                                     Acesso limitado ao sistema
-                                </p>
+                                </p> */}
                             </Box>
                         }
                     />

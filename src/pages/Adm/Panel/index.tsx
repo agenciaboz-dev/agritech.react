@@ -145,6 +145,7 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                         justifyContent: "space-between",
                         padding: isMobile ? "1vw 4vw 3vw" : "1vw 1vw 1.5vw",
                     }}
+                    onClick={() => navigate("/adm/settings-kit")}
                 >
                     <p
                         style={{
@@ -197,7 +198,9 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                             {listEmployee?.length !== 0
                                 ? listEmployee
                                       ?.slice(0, 3)
-                                      .map((user) => <CardUser user={user} key={user.id} location={`/adm/calendar/${user.id}`} />)
+                                      .map((user) => (
+                                          <CardUser user={user} key={user.id} location={`/adm/calendar/${user.id}`} />
+                                      ))
                                 : skeletons.map((_, index) => (
                                       <Skeleton
                                           animation="wave"
@@ -274,7 +277,11 @@ export const Panel: React.FC<PanelProps> = ({ user }) => {
                         </p>
                         <Box style={{ width: "100%", gap: isMobile ? "1vw" : "0.5vw" }}>
                             {listProducer?.length !== 0
-                                ? listProducer?.slice(0, 3).map((user) => <CardUser user={user} key={user.id} location={`/adm/profile/${user.id}`} />)
+                                ? listProducer
+                                      ?.slice(0, 3)
+                                      .map((user) => (
+                                          <CardUser user={user} key={user.id} location={`/adm/profile/${user.id}`} />
+                                      ))
                                 : skeletons.map((_, index) => (
                                       <Skeleton
                                           animation="wave"

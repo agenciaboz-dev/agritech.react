@@ -27,6 +27,9 @@ export const CardUser: React.FC<CardUserProps> = ({ review, user, location }) =>
                 justifyContent: "space-between",
             }}
             key={user.id}
+            onClick={() => {
+                navigate(location)
+            }}
         >
             <Box sx={{ flexDirection: "row", gap: isMobile ? "3vw" : "1vw", alignItems: "center" }}>
                 <Avatar src={user.image} sx={{ width: isMobile ? "9.5vw" : "3vw", height: isMobile ? "9.5vw" : "3vw" }} />
