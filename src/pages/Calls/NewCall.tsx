@@ -109,7 +109,10 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
 
         console.log(dataAdmin)
         console.log(dataAdmin)
-        io.emit(user.employee !== null ? "admin:call:create" : "call:create", user.employee !== null ? dataAdmin : dataProducer)
+        io.emit(
+            user.employee !== null ? "admin:call:create" : "call:create",
+            user.employee !== null ? dataAdmin : dataProducer
+        )
         setLoading(true)
     }
 
@@ -140,11 +143,17 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
 
         const callsForDay = selectedKit?.calls?.filter((call: Call) => {
             const callDate = new Date(Number(call.forecast))
-            return callDate.getDate() === day.date() && callDate.getMonth() === day.month() && callDate.getFullYear() === day.year()
+            return (
+                callDate.getDate() === day.date() &&
+                callDate.getMonth() === day.month() &&
+                callDate.getFullYear() === day.year()
+            )
         })
 
         const areaDayCalls =
-            callsForDay?.map((item: any) => Number(item.talhao?.area)).reduce((prev: number, current: number) => prev + current, 0) || 0
+            callsForDay
+                ?.map((item: any) => Number(item.talhao?.area))
+                .reduce((prev: number, current: number) => prev + current, 0) || 0
 
         const totalArea = areaDayCalls + Number(selectedTalhao?.area)
 
@@ -156,7 +165,11 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
             (totalArea <= selectedKit.hectareDay ? "#88A486" : totalArea > selectedKit.hectareDay && colors.delete)
 
         return (
-            <Badge key={day.toString()} overlap="circular" badgeContent={<Indicator color={indicatorColor || "#88A486"} size={7} offset={5} />}>
+            <Badge
+                key={day.toString()}
+                overlap="circular"
+                badgeContent={<Indicator color={indicatorColor || "#88A486"} size={7} offset={5} />}
+            >
                 <PickersDay {...other} outsideCurrentMonth={outsideCurrentMonth} day={day} />
             </Badge>
         )
@@ -165,11 +178,17 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
     const shouldDisableDate = (day: dayjs.Dayjs): boolean => {
         const callsForDay = selectedKit?.calls?.filter((call: Call) => {
             const callDate = new Date(Number(call.forecast))
-            return callDate.getDate() === day.date() && callDate.getMonth() === day.month() && callDate.getFullYear() === day.year()
+            return (
+                callDate.getDate() === day.date() &&
+                callDate.getMonth() === day.month() &&
+                callDate.getFullYear() === day.year()
+            )
         })
 
         const areaDayCalls =
-            callsForDay?.map((item: any) => Number(item.talhao?.area)).reduce((prev: number, current: number) => prev + current, 0) || 0
+            callsForDay
+                ?.map((item: any) => Number(item.talhao?.area))
+                .reduce((prev: number, current: number) => prev + current, 0) || 0
 
         const totalArea = areaDayCalls + Number(selectedTalhao?.area)
 
@@ -279,7 +298,7 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
             </Box>
 
             <Box
-                style={{
+                sx={{
                     padding: isMobile ? "5vw" : "1vw",
                     width: "100%",
                     height: "100%",
@@ -288,6 +307,8 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                     borderTopRightRadius: isMobile ? "7vw" : "2vw",
                     gap: isMobile ? "5vw" : "1vw",
                     flexDirection: "column",
+                    mt: isMobile ? "0.5vw" : 0,
+                    overflow: "hidden",
                 }}
             >
                 <TitleComponents
@@ -296,7 +317,11 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                     button={user?.employee && selectedProducer?.id ? true : false}
                     click={() =>
                         selectedProducer?.id &&
-                        navigate(user.isAdmin ? `/adm/producer/${selectedProducer?.id}` : `/employee/producer/${selectedProducer?.id}`)
+                        navigate(
+                            user.isAdmin
+                                ? `/adm/producer/${selectedProducer?.id}`
+                                : `/employee/producer/${selectedProducer?.id}`
+                        )
                     }
                     textButton="Acessar Cliente"
                     variant
@@ -307,7 +332,7 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                             gap: isMobile ? "2vw" : "1vw",
                             overflowY: "auto",
                             // paddingBottom: isMobile ? "" : "400vh",
-                            paddingBottom: isMobile ? "" : "40vh",
+                            paddingBottom: isMobile ? "10vh" : "40vh",
                         }}
                     >
                         {!user.isAdmin && (
@@ -336,7 +361,9 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                                     // inputValue={inputValue}
                                     onChange={(event, selected) => setSelectedProducer(selected)}
                                     isOptionEqualToValue={(option, value) => option.id == value.id}
-                                    renderInput={(params) => <TextField {...params} sx={{ ...textField }} label="Cliente" required />}
+                                    renderInput={(params) => (
+                                        <TextField {...params} sx={{ ...textField }} label="Cliente" required />
+                                    )}
                                 />
                                 <Autocomplete
                                     value={tillages.find((item) => item.id === tillageId) || null}
@@ -348,7 +375,9 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                                             setTillageId(selected.id)
                                         }
                                     }}
-                                    renderInput={(params) => <TextField {...params} sx={{ ...textField }} label="Fazenda" required />}
+                                    renderInput={(params) => (
+                                        <TextField {...params} sx={{ ...textField }} label="Fazenda" required />
+                                    )}
                                     disabled={selectedProducer ? false : true}
                                 />
                                 <Autocomplete
@@ -356,10 +385,16 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                                     options={talhoes || []}
                                     getOptionLabel={(option) => option.name}
                                     onChange={(event, selected) => setSelectedTalhao(selected)}
-                                    renderInput={(params) => <TextField {...params} sx={{ ...textField }} label="Talhao" required />}
+                                    renderInput={(params) => (
+                                        <TextField {...params} sx={{ ...textField }} label="Talhao" required />
+                                    )}
                                     disabled={tillageId ? false : true}
                                 />
-                                <Test handleChange={formik.handleChange} values={formik.values} disabled={tillageId ? false : true} />
+                                <Test
+                                    handleChange={formik.handleChange}
+                                    values={formik.values}
+                                    disabled={tillageId ? false : true}
+                                />
                             </>
                         )}
                         {user.isAdmin && (
@@ -375,7 +410,9 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                                         // inputValue={inputValue}
                                         onChange={(event, selected) => setSelectedKit(selected)}
                                         isOptionEqualToValue={(option, value) => option.id == value.id}
-                                        renderInput={(params) => <TextField {...params} sx={{ ...textField }} label="kit" required />}
+                                        renderInput={(params) => (
+                                            <TextField {...params} sx={{ ...textField }} label="kit" required />
+                                        )}
                                         disabled={selectedTalhao ? false : true}
                                     />
                                 </Box>
@@ -412,14 +449,18 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                                             setTillageId(selected.id)
                                         }
                                     }}
-                                    renderInput={(params) => <TextField {...params} sx={{ ...textField }} label="Fazenda" required />}
+                                    renderInput={(params) => (
+                                        <TextField {...params} sx={{ ...textField }} label="Fazenda" required />
+                                    )}
                                 />
                                 <Autocomplete
                                     value={selectedTalhao}
                                     options={talhoesProducer || []}
                                     getOptionLabel={(option) => option.name}
                                     onChange={(event, selected) => setSelectedTalhao(selected)}
-                                    renderInput={(params) => <TextField {...params} sx={{ ...textField }} label="Talhao" required />}
+                                    renderInput={(params) => (
+                                        <TextField {...params} sx={{ ...textField }} label="Talhao" required />
+                                    )}
                                     disabled={tillageId ? false : true}
                                 />
                             </>
