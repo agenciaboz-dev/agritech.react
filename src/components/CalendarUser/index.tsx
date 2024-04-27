@@ -13,9 +13,9 @@ import { useDisclosure } from "@mantine/hooks"
 import { ModalLegend } from "./ModalLegend"
 import { ModalCalls } from "./ModalCalls"
 
-interface CalendarProps {}
+interface CalendarUserProps {}
 
-export const Calendar: React.FC<CalendarProps> = ({}) => {
+export const CalendarUser: React.FC<CalendarUserProps> = ({}) => {
     const isMobile = useMediaQuery("(orientation: portrait)")
     const header = useHeader()
     const navigate = useNavigate()
@@ -75,7 +75,9 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
                 callsForDay.length > 0 &&
                 findUser?.employee?.kits &&
                 findUser?.employee?.kits[0].hectareDay &&
-                (areaDayCalls >= findUser?.employee.kits[0].hectareDay / 2 && areaDayCalls > 0
+                (areaDayCalls >= findUser?.employee.kits[0].hectareDay / 2 &&
+                areaDayCalls < findUser?.employee.kits[0].hectareDay &&
+                areaDayCalls > 0
                     ? "#FFD700"
                     : areaDayCalls >= findUser?.employee.kits[0].hectareDay
                     ? colors.delete
@@ -192,7 +194,12 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
                     getDayProps={(day) => ({
                         style: {
                             border: day.getDate() == dayCurrent ? `1px solid ${colors.secondary}` : "",
-                            color: day.getDate() == dayCurrent ? colors.secondary : day.getDate() == value?.getDate() ? "white" : "",
+                            color:
+                                day.getDate() == dayCurrent
+                                    ? colors.secondary
+                                    : day.getDate() == value?.getDate()
+                                    ? "white"
+                                    : "",
                         },
                     })}
                     value={value}

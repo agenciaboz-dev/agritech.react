@@ -14,7 +14,7 @@ import { textField } from "../../../style/input"
 import { useIo } from "../../../hooks/useIo"
 import { BsFillInfoCircleFill } from "react-icons/bs"
 import { useDisclosure } from "@mantine/hooks"
-import { ModalLegend } from "../../Calendar/ModalLegend"
+import { ModalLegend } from "../../CalendarUser/ModalLegend"
 import { ModalCalls } from "./ModalCalls"
 import { useUser } from "../../../hooks/useUser"
 
@@ -79,7 +79,7 @@ export const CalendarKit: React.FC<CalendarKitProps> = ({}) => {
                 callsForDay.length > 0 &&
                 selectedKit.calls &&
                 selectedKit.hectareDay &&
-                (areaDayCalls >= selectedKit.hectareDay / 2 && areaDayCalls > 0
+                (areaDayCalls >= selectedKit.hectareDay / 2 && areaDayCalls < selectedKit.hectareDay && areaDayCalls > 0
                     ? "#FFD700"
                     : areaDayCalls >= selectedKit.hectareDay
                     ? colors.delete

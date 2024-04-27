@@ -39,7 +39,9 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
         console.log(selectedKit?.calls)
         if (value && selectedKit?.calls?.length !== 0) {
             const callsPerDay =
-                (selectedKit?.calls && selectedKit?.calls.filter((item) => item.forecast === new Date(value).getTime().toString())) || []
+                (selectedKit?.calls &&
+                    selectedKit?.calls.filter((item) => item.forecast === new Date(value).getTime().toString())) ||
+                []
             setCallsDay(callsPerDay)
             // console.log(callsPerDay)
             return callsPerDay
@@ -56,23 +58,26 @@ export const Calendar: React.FC<CalendarProps> = ({}) => {
                 selectedKit.calls &&
                 selectedKit.calls?.filter((call) => {
                     const callDate = new Date(Number(call.forecast))
-                    return callDate.getDate() === day && callDate.getMonth() === date.getMonth() && callDate.getFullYear() === date.getFullYear()
+                    return (
+                        callDate.getDate() === day &&
+                        callDate.getMonth() === date.getMonth() &&
+                        callDate.getFullYear() === date.getFullYear()
+                    )
                 })
 
-            const areaDayCalls = callsForDay?.map((item) => Number(item.talhao?.area)).reduce((prev, current) => prev + current, 0) || 0
+            const areaDayCalls =
+                callsForDay?.map((item) => Number(item.talhao?.area)).reduce((prev, current) => prev + current, 0) || 0
 
             const indicatorColor =
                 callsForDay &&
                 callsForDay.length > 0 &&
                 selectedKit.calls &&
                 selectedKit.hectareDay &&
-                (areaDayCalls < selectedKit.hectareDay && areaDayCalls !== 0
+                (areaDayCalls >= selectedKit.hectareDay / 2 && areaDayCalls < selectedKit.hectareDay && areaDayCalls > 0
                     ? "#FFD700"
-                    : areaDayCalls === selectedKit.hectareDay
+                    : areaDayCalls >= selectedKit.hectareDay
                     ? colors.delete
-                    : selectedKit.hectareDay - areaDayCalls <= 100
-                    ? "orange"
-                    : "#88A486")
+                    : "orange")
 
             return (
                 <Indicator size={7} color={indicatorColor || "#88A486"} offset={-3}>
