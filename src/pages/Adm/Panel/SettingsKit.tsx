@@ -109,12 +109,15 @@ export const SettingsKit: React.FC<SettingsKitProps> = ({}) => {
                                 backgroundColor: "#fff",
                                 textTransform: "none",
                                 borderRadius: "5vw",
-                                width: "40%",
+                                width: "fit-content",
                                 color: colors.text.black,
+                                "&:hover": {
+                                    backgroundColor: colors.button,
+                                    color: colors.text.white,
+                                },
                             }}
                             onClick={() => navigate("/adm/settings-kit/addkit")}
                         >
-                            <img src={addIcon} style={{ width: isMobile ? "5vw" : "2vw" }} />
                             <p style={{ fontSize: isMobile ? "3.5vw" : "1.2rem" }}>Adicionar kit</p>
                         </Button>
                     )}
@@ -153,7 +156,9 @@ export const SettingsKit: React.FC<SettingsKitProps> = ({}) => {
                                     ? kits.length !== 0
                                         ? kits.map((kit, index) => <CardKit key={index} kit={kit} />)
                                         : kits === undefined
-                                        ? skeletons.map((_, index) => <Skeleton variant="rounded" key={index} animation="wave" />)
+                                        ? skeletons.map((_, index) => (
+                                              <Skeleton variant="rounded" key={index} animation="wave" />
+                                          ))
                                         : "Nenhum kit encontrado"
                                     : kitsEmployee.length !== 0
                                     ? kitsEmployee.map((kit, index) => <CardKit key={index} kit={kit} />)
