@@ -1,4 +1,4 @@
-import { Box, Button, CircularProgress } from "@mui/material"
+import { Box, Button, CircularProgress, useMediaQuery } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { colors } from "../../style/colors"
 import { useHeader } from "../../hooks/useHeader"
@@ -17,6 +17,7 @@ interface ProfileProps {
 }
 
 export const Profile: React.FC<ProfileProps> = ({ user }) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
     const header = useHeader()
     const io = useIo()
 
@@ -114,9 +115,7 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
                     ? {
                           ...values.producer,
                           cnpj: values.producer.cnpj ? unmask(values.producer.cnpj) : undefined,
-                          inscricaoEstadual: values.producer.inscricaoEstadual
-                              ? unmask(values.producer.inscricaoEstadual)
-                              : undefined,
+                          inscricaoEstadual: values.producer.inscricaoEstadual ? unmask(values.producer.inscricaoEstadual) : undefined,
                       }
                     : undefined,
             }
@@ -155,7 +154,7 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
         <Box
             sx={{
                 width: "100%",
-                height: "85%",
+                height: isMobile ? "85%" : "100%",
                 backgroundColor: colors.button,
                 flexDirection: "column",
                 overflowY: "hidden",
@@ -164,14 +163,14 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
             <Box
                 sx={{
                     width: "100%",
-                    height: "10%",
+                    height: isMobile ? "10%" : "fit-content",
                     justifyContent: "center",
                     alignItems: "center",
                     gap: "1vw",
-                    padding: "4vw",
+                    padding: isMobile ? "4vw" : "1vw",
                     flexDirection: "row",
                     overflow: "hidden",
-                    marginTop: "5vh",
+                    marginTop: isMobile ? "5vh" : "6vh",
                     maxHeight: "100vh",
                 }}
             >
@@ -181,30 +180,28 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
                 sx={{
                     width: "100%",
                     height: "100%",
-
-                    padding: "4vw",
+                    padding: isMobile ? "4vw" : "1vw",
                     backgroundColor: "#fff",
-                    borderTopLeftRadius: "5vw",
-                    borderTopRightRadius: "5vw",
+                    borderTopLeftRadius: isMobile ? "5vw" : "2vw",
+                    borderTopRightRadius: isMobile ? "5vw" : "2vw",
                     flexDirection: "column",
-                    paddingBottom: "20vw",
-                    gap: "4vw",
+                    gap: isMobile ? "4vw" : "1vw",
                 }}
             >
-                <p style={{ fontSize: "4.5vw", fontFamily: "MalgunGothic2", textAlign: "left", fontWeight: "800" }}>
+                <p style={{ fontSize: isMobile ? "4.5vw" : "1.2rem", fontFamily: "MalgunGothic2", textAlign: "left", fontWeight: "800" }}>
                     Informações Pessoais
                 </p>
                 <Box sx={{ height: "100%" }}>
                     <Formik initialValues={initialValues} onSubmit={handleSubmit} enableReinitialize={true}>
                         {({ values, handleChange }) => (
                             <Form>
-                                <Box sx={{ gap: "2vw" }}>
+                                <Box sx={{ gap: isMobile ? "2vw" : "1vw" }}>
                                     <HeaderProfile
                                         values={values}
                                         handleChange={handleChange}
                                         style={{
                                             flexDirection: "row",
-                                            gap: "5vw",
+                                            gap: isMobile ? "5vw" : "1vw",
                                             width: "100%",
                                             height: "100%",
                                             alignItems: "center",
@@ -228,7 +225,7 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
                                             variant="contained"
                                             type="submit"
                                             sx={{
-                                                fontSize: "4vw",
+                                                fontSize: isMobile ? "4vw" : "1.2rem",
                                                 color: colors.text.white,
                                                 width: "100%",
                                                 backgroundColor: colors.button,
@@ -237,10 +234,7 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
                                             }}
                                         >
                                             {loading ? (
-                                                <CircularProgress
-                                                    size={"9vw"}
-                                                    sx={{ color: colors.text.white, width: "0.5vw" }}
-                                                />
+                                                <CircularProgress size={isMobile ? "9vw" : "2vw"} sx={{ color: colors.text.white, width: "0.5vw" }} />
                                             ) : (
                                                 "Salvar"
                                             )}
