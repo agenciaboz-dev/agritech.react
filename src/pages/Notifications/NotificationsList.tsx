@@ -85,12 +85,20 @@ export const NotificationsList: React.FC<NotificationsListProps> = ({ user }) =>
                         borderTopLeftRadius: isMobile ? "7vw" : "2vw",
                         borderTopRightRadius: isMobile ? "7vw" : "2vw",
                         height: "100%",
-                        mt: "1vw",
+                        mt: isMobile ? "1vw" : 0,
                         overflowY: "auto",
-                        pb: "10vh",
                     }}
                 >
-                    <Box sx={{ height: "90%", width: 1, gap: isMobile ? "3vw" : "1vw" }}>
+                    <Box
+                        sx={{
+                            height: "90%",
+                            width: 1,
+                            gap: isMobile ? "3vw" : "1vw",
+                            overflowY: "auto",
+                            // paddingBottom: "400vh",
+                            paddingBottom: "40vh",
+                        }}
+                    >
                         {sortedList?.map((item) => (
                             <Box key={item.id}>
                                 <LogNotification drawer={false} notification={item} key={item.id} />
