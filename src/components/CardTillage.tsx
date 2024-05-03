@@ -42,6 +42,7 @@ export const CardTillage: React.FC<CardTillageProps> = ({ tillage, location }) =
                 alignItems: "center",
                 borderBottom: "1px solid #88A486",
                 justifyContent: "space-between",
+                cursor: "pointer",
             }}
             key={tillage.id}
             onClick={() => {
