@@ -41,7 +41,7 @@ export const LogsCard: React.FC<LogsCardProps> = ({ review, call, variant, talha
     }, [])
     return (
         <Box
-            sx={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}
+            sx={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", cursor: "pointer" }}
             onClick={() => {
                 if (user?.isAdmin) {
                     if (!call?.approved) {
