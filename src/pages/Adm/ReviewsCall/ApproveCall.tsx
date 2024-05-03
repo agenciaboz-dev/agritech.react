@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { Accordion, Autocomplete, Avatar, Badge, Box, Button, Radio, Skeleton, TextField } from "@mui/material"
+import { Accordion, Autocomplete, Avatar, Badge, Box, Button, Radio, Skeleton, TextField, useMediaQuery } from "@mui/material"
 import GeoImage from "../../../assets/geo.svg"
 import { Header } from "../../../components/Header"
 import { colors } from "../../../style/colors"
@@ -18,7 +18,6 @@ import { NewObject } from "../../../definitions/object"
 import { useIo } from "../../../hooks/useIo"
 import { useSnackbar } from "burgos-snackbar"
 import { useUsers } from "../../../hooks/useUsers"
-import { textField } from "../../../style/input"
 import { MobileDatePicker, PickersDay, ptBR } from "@mui/x-date-pickers"
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo"
@@ -27,6 +26,7 @@ import MaskedInputNando from "../../../components/MaskedNando"
 import { useCurrencyMask } from "burgos-masks"
 import { unmaskCurrency } from "../../../hooks/unmaskNumber"
 import { Indicator } from "@mantine/core"
+import { useResponsiveStyles } from "../../../hooks/useResponsiveStyles"
 
 interface ApproveCallProps {}
 
@@ -41,6 +41,8 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 }))
 
 export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
+    const textField = useResponsiveStyles()
     const header = useHeader()
     const io = useIo()
     const navigate = useNavigate()
@@ -139,17 +141,11 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
 
         const callsForDay = selectedKit?.calls?.filter((call: Call) => {
             const callDate = new Date(Number(call.forecast))
-            return (
-                callDate.getDate() === day.date() &&
-                callDate.getMonth() === day.month() &&
-                callDate.getFullYear() === day.year()
-            )
+            return callDate.getDate() === day.date() && callDate.getMonth() === day.month() && callDate.getFullYear() === day.year()
         })
 
         const areaDayCalls =
-            callsForDay
-                ?.map((item: any) => Number(item.talhao?.area))
-                .reduce((prev: number, current: number) => prev + current, 0) || 0
+            callsForDay?.map((item: any) => Number(item.talhao?.area)).reduce((prev: number, current: number) => prev + current, 0) || 0
 
         const totalArea = areaDayCalls + Number(findCall?.talhao?.area)
 
@@ -161,11 +157,7 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
             (totalArea <= selectedKit.hectareDay ? "#88A486" : totalArea > selectedKit.hectareDay && colors.delete)
 
         return (
-            <Badge
-                key={day.toString()}
-                overlap="circular"
-                badgeContent={<Indicator color={indicatorColor || "#88A486"} size={7} offset={5} />}
-            >
+            <Badge key={day.toString()} overlap="circular" badgeContent={<Indicator color={indicatorColor || "#88A486"} size={7} offset={5} />}>
                 <PickersDay {...other} outsideCurrentMonth={outsideCurrentMonth} day={day} />
             </Badge>
         )
@@ -188,16 +180,17 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
                 height: "100%",
                 backgroundColor: colors.button,
                 flexDirection: "column",
+                overflow: "hidden",
             }}
         >
             <Box
                 sx={{
                     width: "100%",
-                    height: "10%",
+                    height: isMobile ? "10%" : "fit-content",
                     justifyContent: "center",
                     alignItems: "center",
                     gap: "1vw",
-                    padding: "4vw",
+                    padding: isMobile ? "4vw" : "2.5vw",
                     flexDirection: "row",
                 }}
             >
@@ -207,19 +200,30 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
                 style={{
                     height: "92%",
                     backgroundColor: "#fff",
-                    borderTopLeftRadius: "5vw",
-                    borderTopRightRadius: "5vw",
+                    borderTopLeftRadius: isMobile ? "5vw" : "2vw",
+                    borderTopRightRadius: isMobile ? "5vw" : "2vw",
                 }}
             >
-                <Box sx={{ width: "100%", height: "90%", gap: "9vw", flexDirection: "column", p: "4vw" }}>
-                    <p style={{ fontSize: "4.5vw" }}>Abertura do Chamado</p>
+                <Box
+                    sx={{
+                        width: "100%",
+                        height: "90%",
+                        gap: isMobile ? "9vw" : "1vw",
+                        flexDirection: "column",
+                        p: isMobile ? "4vw" : "1vw",
+                        overflowY: "auto",
+                        // paddingBottom: "400vh",
+                        paddingBottom: "40vh",
+                    }}
+                >
+                    <p style={{ fontSize: isMobile ? "4.5vw" : "1.2rem" }}>Abertura do Chamado</p>
 
                     <Box
                         sx={{
                             flexDirection: "row",
-                            gap: "5vw",
+                            gap: isMobile ? "5vw" : "1vw",
                             width: "100%",
-                            height: "23%",
+                            height: isMobile ? "45%" : "fit-content",
                             alignItems: "center",
                         }}
                     >
@@ -231,17 +235,17 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
                                 variant="rounded"
                                 style={{
                                     flex: 1,
-                                    height: "38vw",
-                                    fontSize: "4vw",
+                                    height: isMobile ? "38vw" : "20vw",
+                                    fontSize: isMobile ? "4vw" : "1.2rem",
                                     fontFamily: "MalgunGothic2",
                                 }}
                             />
                         ) : (
-                            <Skeleton animation="wave" variant="rounded" sx={{ flex: 1, height: "38vw" }} />
+                            <Skeleton animation="wave" variant="rounded" sx={{ flex: 1, height: isMobile ? "38vw" : "20vw" }} />
                         )}
-                        <Box sx={{ flexDirection: "column", gap: "2vw", flex: 1 }}>
+                        <Box sx={{ flexDirection: "column", gap: isMobile ? "2vw" : "1vw", flex: 1 }}>
                             <Box sx={{ width: 1 }}>
-                                <p style={{ ...p_style }}>Nome da Fazenda</p>
+                                <p style={{ fontSize: isMobile ? "3vw" : "1rem", fontWeight: "600" }}>Nome da Fazenda</p>
                                 <p
                                     style={{
                                         width: "40vw",
@@ -255,33 +259,27 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
                                 </p>
                             </Box>
                             <Box>
-                                <p style={p_style}>Endereço </p>
+                                <p style={{ fontSize: isMobile ? "3vw" : "1rem", fontWeight: "600" }}>Endereço </p>
                                 <p>
-                                    {findCall?.talhao?.tillage?.address?.street},{" "}
-                                    {findCall?.talhao?.tillage?.address.district} -{" "}
+                                    {findCall?.talhao?.tillage?.address?.street}, {findCall?.talhao?.tillage?.address.district} -{" "}
                                     {findCall?.talhao?.tillage?.address?.city}, {findCall?.talhao?.tillage?.address?.uf} -{" "}
                                     {findCall?.talhao?.tillage?.address?.cep}
                                 </p>
                             </Box>
                             <Box>
-                                <p style={p_style}>Área: {findCall?.talhao?.area} ha</p>
+                                <p style={{ fontSize: isMobile ? "3vw" : "1rem", fontWeight: "600" }}>Área: {findCall?.talhao?.area} ha</p>
                             </Box>
                         </Box>
                     </Box>
 
-                    <Box sx={{ height: "63%" }}>
+                    <Box sx={{ height: isMobile ? "63%" : "fit-content" }}>
                         <Formik initialValues={initialValues} onSubmit={approveCall}>
                             {({ values, handleChange, setFieldValue }) => (
                                 <Form>
-                                    <TitleComponents
-                                        title="Escolha o kit responsável"
-                                        button
-                                        textButton="Salvar Kit"
-                                        submit
-                                    />
-                                    <Box sx={{ gap: "5vw" }}>
-                                        <Box sx={{ gap: "3vw" }}>
-                                            <p style={{ color: colors.primary, fontSize: "3.3vw" }}>
+                                    <TitleComponents title="Escolha o kit responsável" button textButton="Salvar Kit" submit />
+                                    <Box sx={{ gap: isMobile ? "5vw" : "1vw" }}>
+                                        <Box sx={{ gap: isMobile ? "3vw" : "1vw", padding: "1vw 0" }}>
+                                            <p style={{ color: colors.primary, fontSize: isMobile ? "3.3vw" : "1rem" }}>
                                                 Selecione um kit para marcar a data de visita.
                                             </p>
                                             <Autocomplete
@@ -291,9 +289,7 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
                                                 // inputValue={inputValue}
                                                 onChange={(event, selected) => setSelectedKit(selected)}
                                                 isOptionEqualToValue={(option, value) => option.id == value.id}
-                                                renderInput={(params) => (
-                                                    <TextField {...params} sx={{ ...textField }} label="kit" required />
-                                                )}
+                                                renderInput={(params) => <TextField {...params} sx={{ ...textField }} label="kit" required />}
                                             />
                                             <DemoItem label={"Previsão da visita"}>
                                                 <MobileDatePicker
