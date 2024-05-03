@@ -1,4 +1,4 @@
-import { Box, Tab, Tabs, Avatar, Button } from "@mui/material"
+import { Box, Tab, Tabs, Avatar, Button, useMediaQuery } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { colors } from "../../../style/colors"
 import { Header } from "../../../components/Header"
@@ -7,12 +7,15 @@ import { tabStyle } from "../../../style/tabStyle"
 import { useIo } from "../../../hooks/useIo"
 import { CardUser } from "../../../components/CardUser"
 import { useUsers } from "../../../hooks/useUsers"
+import { useResponsiveStyles } from "../../../hooks/useResponsiveStyles"
 
 interface ReviewsEmployeeProps {
     user: User
 }
 
 export const ReviewsEmployee: React.FC<ReviewsEmployeeProps> = ({ user }) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
+    const tabStyle = useResponsiveStyles()
     const header = useHeader()
     const io = useIo()
 
@@ -25,9 +28,7 @@ export const ReviewsEmployee: React.FC<ReviewsEmployeeProps> = ({ user }) => {
     const [requests, setRequests] = useState<User[]>()
 
     useEffect(() => {
-        setListEmployee(
-            pendingUsers.filter((user) => user.employee !== null && user.isAdmin === false && user.rejected === null)
-        )
+        setListEmployee(pendingUsers.filter((user) => user.employee !== null && user.isAdmin === false && user.rejected === null))
         setRequests(pendingUsers.filter((user) => user.isAdmin === false))
     }, [pendingUsers])
 
@@ -51,11 +52,11 @@ export const ReviewsEmployee: React.FC<ReviewsEmployeeProps> = ({ user }) => {
             <Box
                 sx={{
                     width: "100%",
-                    height: "10%",
+                    height: isMobile ? "10%" : "12%",
                     justifyContent: "center",
                     alignItems: "center",
                     gap: "1vw",
-                    padding: "4vw",
+                    padding: isMobile ? "4vw" : "2.5vw",
                     flexDirection: "row",
                 }}
             >
@@ -64,19 +65,19 @@ export const ReviewsEmployee: React.FC<ReviewsEmployeeProps> = ({ user }) => {
 
             <Box
                 style={{
-                    padding: "5vw",
+                    padding: isMobile ? "5vw" : "1vw",
                     width: "100%",
                     height: "100%",
                     backgroundColor: "#fff",
-                    borderTopLeftRadius: "7vw",
-                    borderTopRightRadius: "7vw",
-                    gap: "2vw",
+                    borderTopLeftRadius: isMobile ? "7vw" : "2vw",
+                    borderTopRightRadius: isMobile ? "7vw" : "2vw",
+                    gap: isMobile ? "2vw" : "1vw",
                     overflowY: "auto",
                     flexDirection: "column",
                 }}
             >
                 {/* <Box sx={{ alignItems: "center", width: "100%", justifyContent: "space-between", flexDirection: "row" }}>
-                    <p style={{ padding: "0 2vw", fontSize: "4.55vw" }}>Pendentes</p>
+                    <p style={{ padding: isMobile ? "0 2vw" : "0 1vw", fontSize: isMobile ? "4.55vw" : "1.2rem" }}>Pendentes</p>
                     <Button
                         size="small"
                         variant="contained"
@@ -86,9 +87,9 @@ export const ReviewsEmployee: React.FC<ReviewsEmployeeProps> = ({ user }) => {
                             backgroundColor: colors.button,
                             color: colors.text.white,
                             textTransform: "none",
-                            borderRadius: "5vw",
-                            fontSize: "3.0vw",
-                            p: "1vw 3vw",
+                            borderRadius: isMobile ? "5vw" : "2vw",
+                            fontSize: isMobile ? "3vw" : "1rem",
+                            p: isMobile ? "1vw 3vw" : "1vw",
                             width: "fit-content",
                         }}
                         onClick={() => {}}
@@ -108,11 +109,9 @@ export const ReviewsEmployee: React.FC<ReviewsEmployeeProps> = ({ user }) => {
                 >
                     <Tab sx={tabStyle} value="requestsEmployee" label="Cadastro de Colaboradores" />
                 </Tabs>
-                <Box sx={{ width: "100%", height: "82%", overflow: "auto", gap: "1vw" }}>
+                <Box sx={{ width: "100%", height: isMobile ? "82%" : "fit-content", overflow: "auto", gap: "1vw" }}>
                     {tab === "requestsEmployee" && listEmployee?.length !== 0
-                        ? listEmployee?.map((user) => (
-                              <CardUser review user={user} key={user.id} location={`/adm/review/profile/${user.id}`} />
-                          ))
+                        ? listEmployee?.map((user) => <CardUser review user={user} key={user.id} location={`/adm/review/profile/${user.id}`} />)
                         : tab === "requestsEmployee" && "Nenhum cadastro de colaborador"}
                 </Box>
             </Box>
