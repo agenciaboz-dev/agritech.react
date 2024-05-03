@@ -1,4 +1,4 @@
-import { Box } from "@mui/material"
+import { Box, useMediaQuery } from "@mui/material"
 import React from "react"
 import { TitleComponents } from "../../../../components/TitleComponents"
 import { Treatment } from "../../../../definitions/report"
@@ -8,9 +8,10 @@ interface TreatmentComponentProps {
 }
 
 export const TreatmentComponent: React.FC<TreatmentComponentProps> = ({ treatment }) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
     return (
-        <Box sx={{ gap: "3vw" }}>
-            <Box sx={{ gap: "3vw", p: "2vw" }}>
+        <Box sx={{ gap: isMobile ? "3vw" : "1vw" }}>
+            <Box sx={{ gap: isMobile ? "3vw" : "1vw", p: isMobile ? "2vw" : "1vw" }}>
                 <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
                     <p style={{ fontWeight: "bold" }}>Produtos</p>
                     <p style={{ fontWeight: "bold" }}>Dose/HA</p>

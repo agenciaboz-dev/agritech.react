@@ -1,10 +1,9 @@
-import { Accordion, AccordionSummary, Box, CircularProgress, Skeleton, Tab, Tabs, Typography, styled } from "@mui/material"
+import { Accordion, AccordionSummary, Box, CircularProgress, Skeleton, Tab, Tabs, Typography, styled, useMediaQuery } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { colors } from "../../../../style/colors"
 import { Header } from "../../../../components/Header"
 import { useNavigate, useParams } from "react-router-dom"
 import { useCall } from "../../../../hooks/useCall"
-import { tabStyle } from "../../../../style/tabStyle"
 import { OperationComponent } from "./OperationComponent"
 import { TreatmentComponent } from "./TreatmentComponent"
 import { TechReportComponent } from "./TechReportComponent"
@@ -25,6 +24,7 @@ import { useDisclosure } from "@mantine/hooks"
 import { api } from "../../../../api/index.ts"
 import { useReports } from "../../../../hooks/useReports.ts"
 import { Call } from "../../../../definitions/call"
+import { useResponsiveStyles } from "../../../../hooks/useResponsiveStyles.ts"
 
 interface ReportDetailsProps {}
 
@@ -44,6 +44,8 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 }))
 
 export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
+    const tabStyle = useResponsiveStyles()
     const io = useIo()
     const { callid, reportid } = useParams()
     const { listCalls } = useCall()
@@ -158,7 +160,7 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                     body: {
                         display: "flex",
                         flexDirection: "column",
-                        gap: "6vw",
+                        gap: isMobile ? "6vw" : "1vw",
                         width: "100%",
                         height: "100%",
                         alignItems: "center",
@@ -178,41 +180,35 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                     },
                 }}
             >
-                <CircularProgress sx={{ color: colors.text.white, width: "15vw", height: "15vw" }} />
+                <CircularProgress sx={{ color: colors.text.white, width: isMobile ? "15vw" : "2vw", height: isMobile ? "15vw" : "2vw" }} />
             </Modal>
             <Box
                 sx={{
                     width: "100%",
-                    height: "10%",
+                    height: isMobile ? "10%" : "fit-content",
                     justifyContent: "center",
                     alignItems: "center",
                     gap: "1vw",
-                    padding: "4vw",
+                    padding: isMobile ? "4vw" : "2.5vw",
                     flexDirection: "row",
                     overflow: "hidden",
                 }}
             >
-                <Header
-                    back
-                    location={
-                        user?.isAdmin
-                            ? `/adm/producer/${call?.producerId}/${call?.talhao?.tillageId}`
-                            : `/call/${call?.id}/laudos`
-                    }
-                />
+                <Header back location={user?.isAdmin ? `/adm/producer/${call?.producerId}/${call?.talhao?.tillageId}` : `/call/${call?.id}/laudos`} />
             </Box>
 
             <Box
                 sx={{
-                    padding: "5vw",
+                    padding: isMobile ? "5vw" : "1vw",
                     width: "100%",
                     backgroundColor: "#fff",
-                    borderTopLeftRadius: "7vw",
-                    borderTopRightRadius: "7vw",
-                    overflow: "auto",
-                    gap: "4vw",
+                    borderTopLeftRadius: isMobile ? "7vw" : "2vw",
+                    borderTopRightRadius: isMobile ? "7vw" : "2vw",
+                    gap: isMobile ? "4vw" : "1vw",
                     height: "100%",
-                    pb: "15vh",
+                    overflow: "auto",
+                    // paddingBottom: "400vh",
+                    paddingBottom: "40vh",
                 }}
             >
                 <Box sx={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
@@ -228,7 +224,7 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                         >
                             <Menu.Target>
                                 <ActionIcon variant="subtle" color="gray">
-                                    <IconDots style={{ width: "7vw", height: "7vw" }} stroke={2} />
+                                    <IconDots style={{ width: isMobile ? "7vw" : "2vw", height: isMobile ? "7vw" : "2vw" }} stroke={2} />
                                 </ActionIcon>
                             </Menu.Target>
                             <Menu.Dropdown>
@@ -239,23 +235,20 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                 </Box>
                 {selectedReport ? (
                     <>
-                        <Box sx={{ gap: "4vw" }}>
+                        <Box sx={{ gap: isMobile ? "4vw" : "1vw" }}>
                             <Box>
                                 <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
                                     <p>
                                         <span style={{ fontWeight: "bold" }}>Data:</span>{" "}
-                                        {selectedReport &&
-                                            new Date(Number(selectedReport["date"])).toLocaleDateString("pt-br")}{" "}
+                                        {selectedReport && new Date(Number(selectedReport["date"])).toLocaleDateString("pt-br")}{" "}
                                     </p>
                                     <p>
                                         <span style={{ fontWeight: "bold" }}>Hora:</span>{" "}
-                                        {selectedReport &&
-                                            new Date(Number(selectedReport["date"])).toLocaleTimeString("pt-br")}{" "}
+                                        {selectedReport && new Date(Number(selectedReport["date"])).toLocaleTimeString("pt-br")}{" "}
                                     </p>
                                 </Box>
                                 <p>
-                                    <span style={{ fontWeight: "bold" }}>Contratante:</span>{" "}
-                                    {call?.producer?.user && call.producer?.user.name}
+                                    <span style={{ fontWeight: "bold" }}>Contratante:</span> {call?.producer?.user && call.producer?.user.name}
                                 </p>
                                 <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
                                     <p>
@@ -268,8 +261,7 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                                     </p>
                                 </Box>
                                 <p>
-                                    <span style={{ fontWeight: "bold" }}>Propriedade:</span>{" "}
-                                    {call?.talhao?.tillage && call.talhao.tillage.name}{" "}
+                                    <span style={{ fontWeight: "bold" }}>Propriedade:</span> {call?.talhao?.tillage && call.talhao.tillage.name}{" "}
                                 </p>
                                 <p>
                                     <span style={{ fontWeight: "bold" }}>Talhão:</span> {call?.talhao && call.talhao.name}
@@ -278,14 +270,13 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                             <hr />
                             {/* {tab === "operation" && <hr />} */}
                         </Box>
-                        <Box sx={{ gap: "2vw" }}>
+                        <Box sx={{ gap: isMobile ? "2vw" : "1vw" }}>
                             <Box sx={{ justifyContent: "space-between", width: "100%", flexDirection: "row" }}>
                                 <p style={{ fontWeight: "bold" }}>Custo por hectare: </p>
                                 {call?.talhao?.tillage && <CurrencyText value={Number(call?.talhao.tillage.hectarePrice)} />}
                             </Box>
                             <Box sx={{ justifyContent: "space-between", width: "100%", flexDirection: "row" }}>
-                                <p style={{ fontWeight: "bold" }}>Área Trabalhada no dia:</p>{" "}
-                                {selectedReport?.areaTrabalhada} ha{" "}
+                                <p style={{ fontWeight: "bold" }}>Área Trabalhada no dia:</p> {selectedReport?.areaTrabalhada} ha{" "}
                             </Box>
                             <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
                                 <p style={{ fontWeight: "bold" }}>Custo total: </p>
@@ -297,10 +288,10 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                         </Box>
 
                         <Box sx={{ gap: "0vw" }}>
-                            <Box sx={{ gap: "3vw", height: "100%" }}>
+                            <Box sx={{ gap: isMobile ? "3vw" : "1vw", height: "100%" }}>
                                 {tab === "operation" && (
                                     <>
-                                        <Box sx={{ gap: "2vw" }}>
+                                        <Box sx={{ gap: isMobile ? "2vw" : "1vw" }}>
                                             {selectedReport?.techReport?.flight &&
                                                 selectedReport?.techReport.flight.map((item, index) => (
                                                     <Box
@@ -309,7 +300,7 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                                                             width: "100%",
                                                             flexDirection: "row",
                                                             justifyContent: "space-between",
-                                                            gap: "3vw",
+                                                            gap: isMobile ? "3vw" : "1vw",
                                                         }}
                                                     >
                                                         Voo {index + 1} <p>{item.performance} ha</p>
@@ -319,7 +310,7 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                                         <hr />
                                     </>
                                 )}
-                                <Box sx={{ gap: "4vw", height: "90%" }}>
+                                <Box sx={{ gap: isMobile ? "4vw" : "1vw", height: isMobile ? "90%" : "100%" }}>
                                     <Tabs
                                         value={tab}
                                         onChange={changeTab}
@@ -331,18 +322,18 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                                         allowScrollButtonsMobile
                                     >
                                         <Tab
-                                            sx={{ ...tabStyle, width: "40%" }}
+                                            sx={{ ...tabStyle, width: isMobile ? "40%" : "fit-content" }}
                                             value="operation"
                                             label="Dados de Operação"
                                         />
-                                        <Tab sx={{ ...tabStyle, width: "38%" }} value="treatment" label="Tratamento" />
-                                        <Tab sx={{ ...tabStyle, width: "30%" }} value="techReport" label="Laudo Técnico" />
-                                        <Tab sx={{ ...tabStyle, width: "35%" }} value="material" label="Insumos" />
+                                        <Tab sx={{ ...tabStyle, width: isMobile ? "38%" : "fit-content" }} value="treatment" label="Tratamento" />
+                                        <Tab sx={{ ...tabStyle, width: isMobile ? "30%" : "fit-content" }} value="techReport" label="Laudo Técnico" />
+                                        <Tab sx={{ ...tabStyle, width: isMobile ? "35%" : "fit-content" }} value="material" label="Insumos" />
                                     </Tabs>
                                     <Box sx={{ height: "max-content", maxHeight: "100%", overflowY: "auto" }}>
                                         {tab === "operation" && selectedReport?.operation && call && (
-                                            <Box sx={{ gap: "4vw" }}>
-                                                <Box sx={{ gap: "2vw" }}>
+                                            <Box sx={{ gap: isMobile ? "4vw" : "1vw" }}>
+                                                <Box sx={{ gap: isMobile ? "2vw" : "1vw" }}>
                                                     <OperationComponent call={call} operation={selectedReport.operation} />
                                                     {/* <hr /> */}
                                                 </Box>
@@ -354,13 +345,11 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                                         {tab === "techReport" && selectedReport?.techReport && (
                                             <TechReportComponent tech={selectedReport?.techReport} />
                                         )}
-                                        {tab === "material" && selectedReport?.material && (
-                                            <MaterialComponent material={selectedReport?.material} />
-                                        )}
+                                        {tab === "material" && selectedReport?.material && <MaterialComponent material={selectedReport?.material} />}
                                     </Box>
                                 </Box>
                             </Box>
-                            <Box sx={{ gap: "3vw", pt: "4vh" }}>
+                            <Box sx={{ gap: isMobile ? "3vw" : "1vw", pt: isMobile ? "4vh" : "1vw" }}>
                                 {tab !== "material" && !user?.isAdmin && (
                                     <ButtonAgritech
                                         variant="contained"

@@ -1,4 +1,4 @@
-import { Box } from "@mui/material"
+import { Box, useMediaQuery } from "@mui/material"
 import React, { useEffect } from "react"
 import { Call } from "../../../../definitions/call"
 import { CurrencyText } from "../../../../components/CurrencyText"
@@ -10,8 +10,9 @@ interface OperationComponentProps {
 }
 
 export const OperationComponent: React.FC<OperationComponentProps> = ({ operation, call }) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
     return (
-        <Box sx={{ gap: "2vw" }}>
+        <Box sx={{ gap: isMobile ? "2vw" : "1vw" }}>
             <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
                 <p style={{ fontWeight: "bold" }}>Tipo de Serviço:</p>
                 <p style={{ justifyContent: "space-between" }}>{operation.service} </p>

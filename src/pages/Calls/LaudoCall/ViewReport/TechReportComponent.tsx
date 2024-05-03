@@ -1,4 +1,4 @@
-import { Accordion, AccordionSummary, Box, Typography, styled } from "@mui/material"
+import { Accordion, AccordionSummary, Box, Typography, styled, useMediaQuery } from "@mui/material"
 import React from "react"
 import { TitleComponents } from "../../../../components/TitleComponents"
 import MuiAccordionDetails from "@mui/material/AccordionDetails"
@@ -12,22 +12,17 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
     borderTop: "1px solid rgba(0, 0, 0, .125)",
 }))
 export const TechReportComponent: React.FC<TechReportComponentProps> = ({ tech }) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
     const [expanded, setExpanded] = React.useState<string | false>("")
-
     const expandendChange = (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
         setExpanded(newExpanded ? panel : false)
     }
     return (
-        <Box sx={{ gap: "3vw" }}>
-            <Box sx={{ gap: "3vw", p: "2vw" }}>
+        <Box sx={{ gap: isMobile ? "3vw" : "1vw" }}>
+            <Box sx={{ gap: isMobile ? "3vw" : "1vw", p: isMobile ? "2vw" : "1vw" }}>
                 <Box sx={{ maxheight: "90%", height: "100%", overflowY: "auto" }}>
                     {tech?.flight?.map((item, index) => (
-                        <Accordion
-                            elevation={0}
-                            key={index}
-                            expanded={expanded === String(index)}
-                            onChange={expandendChange(String(index))}
-                        >
+                        <Accordion elevation={0} key={index} expanded={expanded === String(index)} onChange={expandendChange(String(index))}>
                             <AccordionSummary aria-controls="panel1-content" id="panel1-header">
                                 <Typography>Voo {index + 1}</Typography>
                             </AccordionSummary>
