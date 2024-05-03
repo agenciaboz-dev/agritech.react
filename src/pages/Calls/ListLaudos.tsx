@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { colors } from "../../style/colors"
-import { Box, Skeleton } from "@mui/material"
+import { Box, Skeleton, useMediaQuery } from "@mui/material"
 import { Header } from "../../components/Header"
 import { TitleComponents } from "../../components/TitleComponents"
 import { useNavigate, useParams } from "react-router-dom"
@@ -16,6 +16,7 @@ interface ListLaudosProps {
 }
 
 export const ListLaudos: React.FC<ListLaudosProps> = ({ user }) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
     const io = useIo()
     const navigate = useNavigate()
     const { callid } = useParams()
@@ -35,10 +36,7 @@ export const ListLaudos: React.FC<ListLaudosProps> = ({ user }) => {
     const [sortedReports, setSortedReports] = useState<Report[]>([])
 
     useEffect(() => {
-        listReports &&
-            setSortedReports(
-                listReports?.filter((item) => item.callId === Number(callid)).sort((a, b) => Number(a.date) - Number(b.date))
-            )
+        listReports && setSortedReports(listReports?.filter((item) => item.callId === Number(callid)).sort((a, b) => Number(a.date) - Number(b.date)))
     }, [listReports])
     useEffect(() => {
         console.log(listCalls)
@@ -51,16 +49,17 @@ export const ListLaudos: React.FC<ListLaudosProps> = ({ user }) => {
                 height: "100%",
                 backgroundColor: colors.button,
                 flexDirection: "column",
+                overflow: "hidden",
             }}
         >
             <Box
                 sx={{
                     width: "100%",
-                    height: "10%",
+                    height: isMobile ? "10%" : "fit-content",
                     justifyContent: "center",
                     alignItems: "center",
                     gap: "1vw",
-                    padding: "4vw",
+                    padding: isMobile ? "4vw" : "2.5vw",
                     flexDirection: "row",
                 }}
             >
@@ -77,20 +76,20 @@ export const ListLaudos: React.FC<ListLaudosProps> = ({ user }) => {
 
             <Box
                 style={{
-                    padding: "5vw",
+                    padding: isMobile ? "5vw" : "1vw",
                     width: "100%",
                     height: "100%",
                     backgroundColor: "#fff",
-                    borderTopLeftRadius: "7vw",
-                    borderTopRightRadius: "7vw",
-                    gap: "5vw",
+                    borderTopLeftRadius: isMobile ? "7vw" : "2vw",
+                    borderTopRightRadius: isMobile ? "7vw" : "2vw",
+                    gap: isMobile ? "5vw" : "1vw",
                     overflow: "hidden",
                     flexDirection: "column",
                 }}
             >
                 <TitleComponents
                     title="Relatórios"
-                    style={{ fontSize: "5vw" }}
+                    style={{ fontSize: isMobile ? "5vw" : "1.5rem" }}
                     button={user?.employee ? true : false}
                     textButton="Acessar Cliente"
                     click={() =>
@@ -102,15 +101,20 @@ export const ListLaudos: React.FC<ListLaudosProps> = ({ user }) => {
                     }
                     variant
                 />
-                <Box sx={{ gap: "4vw", overflowY: "auto", pb: "20vw" }}>
+                <Box
+                    sx={{
+                        gap: isMobile ? "4vw" : "1vw",
+                        overflowY: "auto",
+                        // paddingBottom: "400vh",
+                        paddingBottom: "40vh",
+                    }}
+                >
                     {sortedReports.length != 0
-                        ? sortedReports?.map((item, index) => (
-                              <LogsLaudo key={index} id={index + 1} report={item} talhao={item.talhao} />
-                          ))
+                        ? sortedReports?.map((item, index) => <LogsLaudo key={index} id={index + 1} report={item} talhao={item.talhao} />)
                         : skeletons.map((_, index) => (
                               <Box sx={{ flexDirection: "column", justifyContent: "start", gap: "2vw" }} key={index}>
-                                  <Skeleton variant="rounded" animation="wave" sx={{ width: "28vw", height: "3vw" }} />
-                                  <Skeleton variant="rounded" animation="wave" sx={{ width: "40vw", height: "5vw" }} />
+                                  <Skeleton variant="rounded" animation="wave" sx={{ width: isMobile ? "28vw" : "56vw", height: "3vw" }} />
+                                  <Skeleton variant="rounded" animation="wave" sx={{ width: isMobile ? "40vw" : "80vw", height: "5vw" }} />
                               </Box>
                           ))}
                 </Box>

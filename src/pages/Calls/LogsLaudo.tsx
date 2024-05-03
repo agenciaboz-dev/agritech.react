@@ -1,4 +1,4 @@
-import { Box, IconButton, Skeleton } from "@mui/material"
+import { Box, IconButton, Skeleton, useMediaQuery } from "@mui/material"
 import React, { useEffect } from "react"
 import { ActionIcon, Group, Menu } from "@mantine/core"
 import { IconDots } from "@tabler/icons-react"
@@ -19,6 +19,7 @@ interface LogsLaudoProps {
 }
 
 export const LogsLaudo: React.FC<LogsLaudoProps> = ({ report, talhao, id, tillage, setSelectedCall }) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
     const navigate = useNavigate()
     const { user } = useUser()
     useEffect(() => {
@@ -27,14 +28,13 @@ export const LogsLaudo: React.FC<LogsLaudoProps> = ({ report, talhao, id, tillag
     return (
         <Box sx={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
             <Box sx={{ flexDirection: "column" }}>
-                <Box sx={{ flexDirection: "row", alignItems: "center", gap: "2vw" }}>
-                    <p style={{ fontSize: "3vw", color: "gray" }}>
-                        {new Date(Number(report.date)).toLocaleDateString("pt-br")} -{" "}
-                        {new Date(Number(report.hour)).toLocaleTimeString("pt-br")}
+                <Box sx={{ flexDirection: "row", alignItems: "center", gap: isMobile ? "2vw" : "1vw" }}>
+                    <p style={{ fontSize: isMobile ? "3vw" : "1rem", color: "gray" }}>
+                        {new Date(Number(report.date)).toLocaleDateString("pt-br")} - {new Date(Number(report.hour)).toLocaleTimeString("pt-br")}
                     </p>
                 </Box>
-                <p style={{ fontSize: "3.5vw", fontWeight: "600" }}>{`Laudo ${id}`}</p>
-                {/* <p style={{ fontSize: "3vw", color: "gray", flexDirection: "column" }}>{talhao.name}</p> */}
+                <p style={{ fontSize: isMobile ? "3.5vw" : "1.2rem", fontWeight: "600" }}>{`Laudo ${id}`}</p>
+                {/* <p style={{ fontSize: isMobile ? "3vw" : "1rem", color: "gray", flexDirection: "column" }}>{talhao.name}</p> */}
             </Box>
 
             <IconButton
@@ -66,7 +66,7 @@ export const LogsLaudo: React.FC<LogsLaudoProps> = ({ report, talhao, id, tillag
                     }
                 }}
             >
-                <IoIosArrowForward style={{ width: "5vw", height: "5vw" }} />
+                <IoIosArrowForward style={{ width: isMobile ? "5vw" : "2vw", height: isMobile ? "5vw" : "2vw" }} />
             </IconButton>
         </Box>
     )
