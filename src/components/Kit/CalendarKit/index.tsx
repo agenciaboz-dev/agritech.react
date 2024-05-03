@@ -1,4 +1,4 @@
-import { Autocomplete, Box, IconButton, Skeleton, TextField } from "@mui/material"
+import { Autocomplete, Box, IconButton, Skeleton, TextField, useMediaQuery } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { colors } from "../../../style/colors"
 import { Header } from "../../Header"
@@ -17,10 +17,13 @@ import { useDisclosure } from "@mantine/hooks"
 import { ModalLegend } from "../../CalendarUser/ModalLegend"
 import { ModalCalls } from "./ModalCalls"
 import { useUser } from "../../../hooks/useUser"
+import { useResponsiveStyles } from "../../../hooks/useResponsiveStyles"
 
 interface CalendarKitProps {}
 
 export const CalendarKit: React.FC<CalendarKitProps> = ({}) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
+    const textField = useResponsiveStyles()
     const io = useIo()
     const header = useHeader()
     const { user } = useUser()
@@ -46,9 +49,7 @@ export const CalendarKit: React.FC<CalendarKitProps> = ({}) => {
         console.log(selectedKit?.calls)
         if (value && selectedKit?.calls?.length !== 0) {
             const callsPerDay =
-                (selectedKit?.calls &&
-                    selectedKit?.calls.filter((item) => item.forecast === new Date(value).getTime().toString())) ||
-                []
+                (selectedKit?.calls && selectedKit?.calls.filter((item) => item.forecast === new Date(value).getTime().toString())) || []
             setCallsDay(callsPerDay)
             // console.log(callsPerDay)
             return callsPerDay
@@ -64,15 +65,10 @@ export const CalendarKit: React.FC<CalendarKitProps> = ({}) => {
                 selectedKit.calls &&
                 selectedKit.calls?.filter((call) => {
                     const callDate = new Date(Number(call.forecast))
-                    return (
-                        callDate.getDate() === day &&
-                        callDate.getMonth() === date.getMonth() &&
-                        callDate.getFullYear() === date.getFullYear()
-                    )
+                    return callDate.getDate() === day && callDate.getMonth() === date.getMonth() && callDate.getFullYear() === date.getFullYear()
                 })
 
-            const areaDayCalls =
-                callsForDay?.map((item) => Number(item.talhao?.area)).reduce((prev, current) => prev + current, 0) || 0
+            const areaDayCalls = callsForDay?.map((item) => Number(item.talhao?.area)).reduce((prev, current) => prev + current, 0) || 0
 
             const indicatorColor =
                 callsForDay &&
@@ -124,6 +120,7 @@ export const CalendarKit: React.FC<CalendarKitProps> = ({}) => {
                 height: "100%",
                 backgroundColor: colors.button,
                 flexDirection: "column",
+                overflow: "hidden",
             }}
         >
             <ModalCalls close={closeCalls} opened={openedCalls} callsDay={callsDay} kit={selectedKit} />
@@ -131,11 +128,11 @@ export const CalendarKit: React.FC<CalendarKitProps> = ({}) => {
             <Box
                 sx={{
                     width: "100%",
-                    height: "10%",
+                    height: isMobile ? "10%" : "fit-content",
                     justifyContent: "center",
                     alignItems: "center",
                     gap: "1vw",
-                    padding: "4vw",
+                    padding: isMobile ? "4vw" : "2.5vw",
                     flexDirection: "row",
                 }}
             >
@@ -144,15 +141,15 @@ export const CalendarKit: React.FC<CalendarKitProps> = ({}) => {
 
             <Box
                 style={{
-                    padding: "4vw",
+                    padding: isMobile ? "4vw" : "1vw",
                     width: "100%",
                     flex: 1,
                     backgroundColor: "#fff",
-                    borderTopLeftRadius: "7vw",
-                    borderTopRightRadius: "7vw",
+                    borderTopLeftRadius: isMobile ? "7vw" : "2vw",
+                    borderTopRightRadius: isMobile ? "7vw" : "2vw",
                     overflow: "hidden",
                     alignItems: "center",
-                    gap: "4vw",
+                    gap: isMobile ? "4vw" : "1vw",
                 }}
             >
                 <Box sx={{ width: "99%", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
@@ -164,18 +161,19 @@ export const CalendarKit: React.FC<CalendarKitProps> = ({}) => {
                                 getOptionLabel={(option) => option.name || ""}
                                 onChange={(event, selected) => setSelectedKit(selected)}
                                 isOptionEqualToValue={(option, value) => option.id == value.id}
-                                renderInput={(params) => (
-                                    <TextField {...params} sx={{ ...textField }} label="kit" required />
-                                )}
-                                sx={{ width: "85%" }}
+                                renderInput={(params) => <TextField {...params} sx={{ ...textField }} label="kit" required />}
+                                sx={{ width: isMobile ? "85%" : "95%" }}
                             />
                         )
                     ) : (
-                        <Skeleton animation="wave" variant="rounded" sx={{ width: 0.85, height: "6vh" }} />
+                        <Skeleton animation="wave" variant="rounded" sx={{ width: isMobile ? "85%" : "95%", height: "6vh" }} />
                     )}
                     <Box>
                         <IconButton onClick={open}>
-                            <BsFillInfoCircleFill color={colors.button} style={{ width: "6vw", height: "6vw" }} />
+                            <BsFillInfoCircleFill
+                                color={colors.button}
+                                style={{ width: isMobile ? "6vw" : "2vw", height: isMobile ? "6vw" : "2vw" }}
+                            />
                         </IconButton>
                         <ModalLegend opened={opened} close={close} />
                     </Box>
