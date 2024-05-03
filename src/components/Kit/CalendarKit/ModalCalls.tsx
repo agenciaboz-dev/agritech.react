@@ -40,10 +40,10 @@ export const ModalCalls: React.FC<ModalCallsProps> = ({ opened, close, callsDay,
                     sx={{
                         flexDirection: "column",
                         width: "100%",
-                        height: "38%",
+                        height: isMobile ? "38%" : "fit-content",
                         overflowY: "auto",
-                        p: "2vw 4vw",
-                        gap: "3vw",
+                        p: isMobile ? "2vw 4vw" : "1vw 0",
+                        gap: isMobile ? "3vw" : "1vw",
                     }}
                 >
                     {kit ? (
