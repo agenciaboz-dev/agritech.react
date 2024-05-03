@@ -220,13 +220,18 @@ export const ReportStage: React.FC<ReportStageProps> = ({ user }) => {
                         sx={{
                             gap: "1vw",
                             height: "85%",
-                            overflowY: "auto",
-                            p: isMobile ? "2vw 0" : "1vw 0",
-                            // paddingBottom: "400vh",
-                            paddingBottom: "100vh",
                         }}
                     >
-                        <Box sx={{ gap: isMobile ? "7vw" : "1vw", height: "100%" }}>
+                        <Box
+                            sx={{
+                                p: isMobile ? "2vw 0" : "1vw 0",
+                                gap: isMobile ? "7vw" : "1vw",
+                                height: "100%",
+                                overflowY: "auto",
+                                // paddingBottom: "400vh",
+                                paddingBottom: "40vh",
+                            }}
+                        >
                             <Box sx={{ gap: isMobile ? "2vw" : "1vw" }}>
                                 <TextField
                                     label="Aberto em"
@@ -288,7 +293,7 @@ export const ReportStage: React.FC<ReportStageProps> = ({ user }) => {
 
                                 <ButtonAgritech type="submit" variant="contained" sx={{ bgcolor: colors.button }}>
                                     {loading ? (
-                                        <CircularProgress size="7vw" sx={{ color: colors.text.white }} />
+                                        <CircularProgress size={isMobile ? "7vw" : "2vw"} sx={{ color: colors.text.white }} />
                                     ) : (
                                         "Voltou da localização"
                                     )}
