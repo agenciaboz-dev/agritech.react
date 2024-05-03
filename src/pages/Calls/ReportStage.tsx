@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react"
 import { useHeader } from "../../hooks/useHeader"
 import { Call } from "../../definitions/call"
-import { Box, CircularProgress, TextField } from "@mui/material"
+import { Box, CircularProgress, TextField, useMediaQuery } from "@mui/material"
 import { useFormik } from "formik"
 import { TitleComponents } from "../../components/TitleComponents"
 import { Header } from "../../components/Header"
 import { colors } from "../../style/colors"
-import { textField } from "../../style/input"
 import { StageDescription } from "../../components/StageDescription"
 import { Stepper } from "@mantine/core"
 import { useNavigate, useParams } from "react-router-dom"
@@ -18,12 +17,15 @@ import { useIo } from "../../hooks/useIo"
 import { useSnackbar } from "burgos-snackbar"
 import { Report, Stage } from "../../definitions/report"
 import { useReports } from "../../hooks/useReports"
+import { useResponsiveStyles } from "../../hooks/useResponsiveStyles"
 
 interface ReportStageProps {
     user: User
 }
 
 export const ReportStage: React.FC<ReportStageProps> = ({ user }) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
+    const textField = useResponsiveStyles()
     const header = useHeader()
     const navigate = useNavigate()
     const io = useIo()
@@ -93,9 +95,7 @@ export const ReportStage: React.FC<ReportStageProps> = ({ user }) => {
     })
 
     const chegadaSubmit = (values: Stage) => {
-        const durationTimestamp =
-            Number(new Date(Number(finishPick)).getTime().toString()) -
-            Number(new Date(Number(initPick)).getTime().toString())
+        const durationTimestamp = Number(new Date(Number(finishPick)).getTime().toString()) - Number(new Date(Number(initPick)).getTime().toString())
 
         // console.log(`Novo Timestamp: ${new Date(Number(durationTimestamp)).toLocaleDateString("pr-br")}`)
 
@@ -177,56 +177,57 @@ export const ReportStage: React.FC<ReportStageProps> = ({ user }) => {
                     height: "100%",
                     backgroundColor: colors.button,
                     flexDirection: "column",
+                    overflow: "hidden",
                 }}
             >
                 <Box
                     sx={{
                         width: "100%",
-                        height: "10%",
+                        height: isMobile ? "10%" : "fit-content",
                         justifyContent: "center",
                         alignItems: "center",
                         gap: "1vw",
-                        padding: "4vw",
+                        padding: isMobile ? "4vw" : "2.5vw",
                         flexDirection: "row",
                     }}
                 >
-                    <Header
-                        back
-                        location={user?.isAdmin ? `/adm/call/${callid}/laudos` : `/employee/call/${callid}/laudos`}
-                    />
+                    <Header back location={user?.isAdmin ? `/adm/call/${callid}/laudos` : `/employee/call/${callid}/laudos`} />
                 </Box>
 
                 <Box
                     style={{
-                        padding: "5vw",
+                        padding: isMobile ? "5vw" : "1vw",
                         width: "100%",
                         height: "100%",
                         backgroundColor: "#fff",
-                        borderTopLeftRadius: "7vw",
-                        borderTopRightRadius: "7vw",
-                        gap: "5vw",
+                        borderTopLeftRadius: isMobile ? "5vw" : "2vw",
+                        borderTopRightRadius: isMobile ? "5vw" : "2vw",
+                        gap: isMobile ? "5vw" : "1vw",
                         overflow: "hidden",
                         flexDirection: "column",
                     }}
                 >
                     <TitleComponents
                         title="Chamado"
-                        style={{ fontSize: "5vw" }}
+                        style={{ fontSize: isMobile ? "5vw" : "1.5rem" }}
                         button={user?.employee ? true : false}
                         textButton="Acessar Cliente"
-                        click={() =>
-                            navigate(
-                                user.isAdmin
-                                    ? `/adm/profile/${producerSelect?.id}`
-                                    : `/employee/profilw/${producerSelect?.id}`
-                            )
-                        }
+                        click={() => navigate(user.isAdmin ? `/adm/profile/${producerSelect?.id}` : `/employee/profilw/${producerSelect?.id}`)}
                         variant
                     />
 
-                    <Box sx={{ gap: "1vw", height: "85%", overflowY: "auto", p: "2vw 0" }}>
-                        <Box sx={{ gap: "7vw", height: "100%" }}>
-                            <Box sx={{ gap: "2vw" }}>
+                    <Box
+                        sx={{
+                            gap: "1vw",
+                            height: "85%",
+                            overflowY: "auto",
+                            p: isMobile ? "2vw 0" : "1vw 0",
+                            // paddingBottom: "400vh",
+                            paddingBottom: "100vh",
+                        }}
+                    >
+                        <Box sx={{ gap: isMobile ? "7vw" : "1vw", height: "100%" }}>
+                            <Box sx={{ gap: isMobile ? "2vw" : "1vw" }}>
                                 <TextField
                                     label="Aberto em"
                                     name="init"
@@ -243,13 +244,7 @@ export const ReportStage: React.FC<ReportStageProps> = ({ user }) => {
                                     sx={{ ...textField }}
                                     disabled
                                 />
-                                <TextField
-                                    label="Fazenda"
-                                    name="tillage"
-                                    value={call?.talhao?.tillage?.name}
-                                    sx={{ ...textField }}
-                                    disabled
-                                />
+                                <TextField label="Fazenda" name="tillage" value={call?.talhao?.tillage?.name} sx={{ ...textField }} disabled />
                             </Box>
 
                             {stage === 1 && (
@@ -261,11 +256,7 @@ export const ReportStage: React.FC<ReportStageProps> = ({ user }) => {
                                         data={dates}
                                     />
                                     <ButtonAgritech type="submit" variant="contained" sx={{ bgcolor: colors.button }}>
-                                        {loading ? (
-                                            <CircularProgress size="7vw" sx={{ color: colors.text.white }} />
-                                        ) : (
-                                            "Chegou na Localização"
-                                        )}
+                                        {loading ? <CircularProgress size="7vw" sx={{ color: colors.text.white }} /> : "Chegou na Localização"}
                                     </ButtonAgritech>
                                 </form>
                             )}
@@ -279,7 +270,7 @@ export const ReportStage: React.FC<ReportStageProps> = ({ user }) => {
                                     />
                                     <ButtonAgritech type="submit" variant="contained" sx={{ bgcolor: colors.button }}>
                                         {loading ? (
-                                            <CircularProgress size="7vw" sx={{ color: colors.text.white }} />
+                                            <CircularProgress size={isMobile ? "7vw" : "2vw"} sx={{ color: colors.text.white }} />
                                         ) : (
                                             "Finalizar Pulverização"
                                         )}

@@ -1,6 +1,5 @@
-import { Box, TextField } from "@mui/material"
+import { Box, TextField, useMediaQuery } from "@mui/material"
 import React, { ChangeEventHandler, useEffect, useState } from "react"
-import { textField } from "../style/input"
 import { colors } from "../style/colors"
 import { Call } from "../definitions/call"
 import { useUser } from "../hooks/useUser"
@@ -10,6 +9,7 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo"
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import { CiClock2 } from "react-icons/ci"
 import { Stage } from "../definitions/report"
+import { useResponsiveStyles } from "../hooks/useResponsiveStyles"
 
 interface StageDescriptionProps {
     title: string
@@ -26,15 +26,17 @@ interface StageDescriptionProps {
 }
 
 export const StageDescription: React.FC<StageDescriptionProps> = ({ title, values, change, data }) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
+    const textField = useResponsiveStyles()
     const { user } = useUser()
 
     useEffect(() => {
         console.log(data.initPick)
     }, [])
     return (
-        <Box sx={{ gap: "3vw" }}>
-            <Box sx={{ gap: "3vw" }}>
-                <p style={{ fontSize: "3.5vw", fontWeight: "bold" }}>{title}</p>
+        <Box sx={{ gap: isMobile ? "3vw" : "1vw" }}>
+            <Box sx={{ gap: isMobile ? "3vw" : "1vw" }}>
+                <p style={{ fontSize: isMobile ? "3.5vw" : "1.2rem", fontWeight: "bold" }}>{title}</p>
                 <TextField
                     label="Data"
                     value={new Date().toLocaleDateString("pt-br")}
@@ -42,36 +44,36 @@ export const StageDescription: React.FC<StageDescriptionProps> = ({ title, value
                     InputProps={{ readOnly: true }}
                     disabled={!user?.producer ? false : true}
                 />
-                        <Box sx={{ flexDirection: "row", gap: "2vw" }}>
-                            <TimeField
-                                label="Início"
-                                name="start"
-                                sx={{ ...textField }}
-                                value={data.initPick}
-                                onChange={(newValue) => data.setInitPick(newValue)}
-                                format="HH:mm"
-                                ampm={false}
-                                InputProps={{
-                                    inputMode: "numeric",
-                                    endAdornment: <CiClock2 style={{ color: "black", width: "6vw", height: "6vw" }} />,
-                                }}
-                            />
-                            <TimeField
-                                label="Final"
-                                name="finish"
-                                sx={{ ...textField }}
-                                value={data.finishPick}
-                                onChange={(newValue) => data.setFinishPick(newValue)}
-                                disabled={!user?.producer ? false : true}
-                                format="HH:mm"
-                                ampm={false}
-                                timezone="system"
-                                InputProps={{
-                                    inputMode: "numeric",
-                                    endAdornment: <CiClock2 style={{ color: "black", width: "6vw", height: "6vw" }} />,
-                                }}
-                            />
-                            {/* <TimeField
+                <Box sx={{ flexDirection: "row", gap: isMobile ? "2vw" : "1vw" }}>
+                    <TimeField
+                        label="Início"
+                        name="start"
+                        sx={{ ...textField, flex: 1 }}
+                        value={data.initPick}
+                        onChange={(newValue) => data.setInitPick(newValue)}
+                        format="HH:mm"
+                        ampm={false}
+                        InputProps={{
+                            inputMode: "numeric",
+                            endAdornment: <CiClock2 style={{ color: "black", width: isMobile ? "6vw" : "2vw", height: isMobile ? "6vw" : "2vw" }} />,
+                        }}
+                    />
+                    <TimeField
+                        label="Final"
+                        name="finish"
+                        sx={{ ...textField, flex: 1 }}
+                        value={data.finishPick}
+                        onChange={(newValue) => data.setFinishPick(newValue)}
+                        disabled={!user?.producer ? false : true}
+                        format="HH:mm"
+                        ampm={false}
+                        timezone="system"
+                        InputProps={{
+                            inputMode: "numeric",
+                            endAdornment: <CiClock2 style={{ color: "black", width: isMobile ? "6vw" : "2vw", height: isMobile ? "6vw" : "2vw" }} />,
+                        }}
+                    />
+                    {/* <TimeField
                                 label="Duração"
                                 name="duration"
                                 sx={{ ...textField }}
@@ -86,7 +88,7 @@ export const StageDescription: React.FC<StageDescriptionProps> = ({ title, value
                                     endAdornment: <CiClock2 style={{ color: "black", width: "6vw", height: "6vw" }} />,
                                 }}
                             /> */}
-                        </Box>
+                </Box>
             </Box>
             <TextField
                 multiline
