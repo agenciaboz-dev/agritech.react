@@ -47,8 +47,14 @@ export const ModalObject: React.FC<ModalObjectProps> = ({ opened, close, object,
             style={{}}
             title="Inserir objetos"
             styles={{
-                body: { display: "flex", flexDirection: "column", gap: "6vw", borderRadius: "10vw" },
-                root: { maxHeight: "75%", minHeight: "fit-content" },
+                body: {
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: isMobile ? "6vw" : "2vw",
+                    borderRadius: "10vw",
+                    maxHeight: isMobile ? "60vh" : "50vh",
+                    minHeight: "fit-content",
+                },
                 content: { borderRadius: isMobile ? "6vw" : "2vw" },
             }}
         >
@@ -106,7 +112,7 @@ export const ModalObject: React.FC<ModalObjectProps> = ({ opened, close, object,
                     />
                 </Box>
             ))}
-            <Box sx={{ width: "100%", flexDirection: "row", gap: "2vw" }}>
+            <Box sx={{ width: "100%", flexDirection: "row", gap: "2vw", paddingBottom: isMobile ? "6vw" : "2vw" }}>
                 <ButtonAgritech
                     variant="outlined"
                     sx={{
