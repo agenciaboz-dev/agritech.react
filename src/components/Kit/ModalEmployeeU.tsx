@@ -4,6 +4,7 @@ import { ButtonAgritech } from "../ButtonAgritech"
 import { colors } from "../../style/colors"
 import { useUser } from "../../hooks/useUser"
 import { TfiCrown } from "react-icons/tfi"
+import { useMediaQuery } from "@mui/material"
 
 interface ModalEmployeeUpdateProps {
     employees: User[]
@@ -14,13 +15,8 @@ interface ModalEmployeeUpdateProps {
     kit: Kit
 }
 
-export const ModalEmployeeUpdate: React.FC<ModalEmployeeUpdateProps> = ({
-    opened,
-    close,
-    setEmployees,
-    allEmployees,
-    kit,
-}) => {
+export const ModalEmployeeUpdate: React.FC<ModalEmployeeUpdateProps> = ({ opened, close, setEmployees, allEmployees, kit }) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
     const [selectedRows, setSelectedRows] = useState<number[]>([])
     const { user } = useUser()
 
@@ -42,10 +38,7 @@ export const ModalEmployeeUpdate: React.FC<ModalEmployeeUpdateProps> = ({
     )
 
     const rows = freeEmployees?.map((element) => (
-        <Table.Tr
-            key={element.name}
-            bg={selectedRows?.includes(element.employee?.id || 0) ? "var(--mantine-color-blue-light)" : undefined}
-        >
+        <Table.Tr key={element.name} bg={selectedRows?.includes(element.employee?.id || 0) ? "var(--mantine-color-blue-light)" : undefined}>
             <Table.Td>
                 <Checkbox
                     aria-label="Select row"
@@ -77,11 +70,7 @@ export const ModalEmployeeUpdate: React.FC<ModalEmployeeUpdateProps> = ({
                     <>
                         <span style={{ color: colors.primary }}>
                             {" "}
-                            {element.office === "agronomist"
-                                ? "Agronômo"
-                                : element.office === "technician"
-                                ? "Técnico"
-                                : "Piloto"}
+                            {element.office === "agronomist" ? "Agronômo" : element.office === "technician" ? "Técnico" : "Piloto"}
                         </span>
                     </>
                 ) : element.office === "agronomist" ? (
@@ -127,7 +116,7 @@ export const ModalEmployeeUpdate: React.FC<ModalEmployeeUpdateProps> = ({
             styles={{
                 body: { display: "flex", flexDirection: "column", gap: "6vw" },
                 root: { maxHeight: "75%", minHeight: "fit-content" },
-                content: { borderRadius: "6vw" },
+                content: { borderRadius: isMobile ? "6vw" : "2vw" },
             }}
         >
             <Table>
@@ -146,7 +135,7 @@ export const ModalEmployeeUpdate: React.FC<ModalEmployeeUpdateProps> = ({
                 sx={{
                     width: "50%",
                     alignSelf: "end",
-                    fontSize: "3.6vw",
+                    fontSize: isMobile ? "3.6vw" : "1rem",
                     p: "2vw",
                     bgcolor: colors.button,
                     color: colors.text.white,
