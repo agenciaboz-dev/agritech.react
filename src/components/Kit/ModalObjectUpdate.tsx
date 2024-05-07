@@ -5,7 +5,7 @@ import { ButtonAgritech } from "../ButtonAgritech"
 import { LiaObjectGroupSolid } from "react-icons/lia"
 import { MdNumbers, MdOutlineAdd } from "react-icons/md"
 import { TbFileDescription } from "react-icons/tb"
-import { Box, CircularProgress, IconButton } from "@mui/material"
+import { Box, CircularProgress, IconButton, useMediaQuery } from "@mui/material"
 import { colors } from "../../style/colors"
 import { AiOutlineDelete } from "react-icons/ai"
 import { NewObject } from "../../definitions/object"
@@ -18,6 +18,7 @@ interface ModalObjectUpdateProps {
 }
 
 export const ModalObjectUpdate: React.FC<ModalObjectUpdateProps> = ({ opened, close, object, setObject }) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
     const addObject = () => {
         setObject([...object, { name: "", quantity: 1, description: "" }])
     }
@@ -48,7 +49,7 @@ export const ModalObjectUpdate: React.FC<ModalObjectUpdateProps> = ({ opened, cl
             styles={{
                 body: { display: "flex", flexDirection: "column", gap: "6vw", borderRadius: "10vw" },
                 root: { maxHeight: "75%", minHeight: "fit-content" },
-                content: { borderRadius: "6vw" },
+                content: { borderRadius: isMobile ? "6vw" : "2vw" },
             }}
         >
             {object.map((objeto, index) => (
@@ -87,7 +88,7 @@ export const ModalObjectUpdate: React.FC<ModalObjectUpdateProps> = ({ opened, cl
                                     } as React.ChangeEvent<HTMLInputElement>)
                                 }
                             }}
-                            styles={{ root: { width: "25%" }, input: { border: "1px solid black" } }}
+                            styles={{ root: { width: "30%" }, input: { border: "1px solid black" } }}
                             leftSection={<MdNumbers style={{ width: "4.5vw", height: "4.5vw" }} />}
                         />
                     </Box>
@@ -109,7 +110,7 @@ export const ModalObjectUpdate: React.FC<ModalObjectUpdateProps> = ({ opened, cl
                     sx={{
                         width: "50%",
                         alignSelf: "end",
-                        fontSize: "3.6vw",
+                        fontSize: isMobile ? "3.6vw" : "0.8rem",
                         p: "2vw",
                         bgColor: "red",
                         color: colors.text.black,
@@ -124,7 +125,7 @@ export const ModalObjectUpdate: React.FC<ModalObjectUpdateProps> = ({ opened, cl
                     sx={{
                         width: "50%",
                         alignSelf: "end",
-                        fontSize: "3.6vw",
+                        fontSize: isMobile ? "3.6vw" : "0.8rem",
                         p: "2vw",
                         bgcolor: colors.button,
                         color: colors.text.white,
