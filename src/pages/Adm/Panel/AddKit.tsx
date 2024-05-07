@@ -241,7 +241,7 @@ export const AddKit: React.FC<AddKitProps> = ({}) => {
                                 <Box
                                     sx={{
                                         overflowX: "hidden",
-                                        height: isMobile ? "95%" : "100%",
+                                        height: "80vh",
                                         p: isMobile ? "0 2vw" : "0",
                                     }}
                                 >

@@ -47,7 +47,14 @@ export const ContentKit: React.FC<ContentKitProps> = ({ edit, values, handleChan
     }, [data.listObjects])
 
     return (
-        <Box sx={{ flexDirection: "column", gap: isMobile ? "12vw" : "1vw", width: "100%", height: "92%" }}>
+        <Box
+            sx={{
+                flexDirection: "column",
+                gap: isMobile ? "12vw" : "1vw",
+                width: "100%",
+                height: "92%",
+            }}
+        >
             <ModalObject opened={openedModalObjects} close={close} object={data.listObjects} setObject={data.setListObjects} />
             <ModalEmployee
                 opened={openedModalEmployees}
@@ -57,7 +64,15 @@ export const ContentKit: React.FC<ContentKitProps> = ({ edit, values, handleChan
                 allEmployees={data.list}
             />
 
-            <Box sx={{ gap: "3vw", height: "100%", overflowY: "auto", paddingBottom: "400vh" }}>
+            <Box
+                sx={{
+                    gap: "3vw",
+                    height: "100%",
+                    overflowY: "auto",
+                    // paddingBottom: "400vh",
+                    paddingBottom: "40vh",
+                }}
+            >
                 <TitleComponents title="Informações Básicas" />
                 <Box sx={{ flexDirection: "row", gap: isMobile ? "2vw" : "1vw", width: "100%" }}>
                     <Avatar
@@ -126,8 +141,8 @@ export const ContentKit: React.FC<ContentKitProps> = ({ edit, values, handleChan
                             required
                         />
                     </Box>
-                    <Box sx={{ overflowY: "auto", gap: isMobile ? "4vw" : "1vw", pt: isMobile ? "4vw" : "1vw" }}>
-                        <Box sx={{}}>
+                    <Box sx={{ gap: isMobile ? "4vw" : "1vw", pt: isMobile ? "4vw" : "1vw" }}>
+                        <Box sx={{ gap: "3vw" }}>
                             <TitleComponents title="Objetos" button click={open} />
                             {data.listObjects.map((item, index) => (
                                 <CardObject key={index} object={item} />
