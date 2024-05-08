@@ -1,4 +1,4 @@
-import { Box, IconButton } from "@mui/material"
+import { Box, IconButton, useMediaQuery } from "@mui/material"
 import React, { useEffect } from "react"
 import { ActionIcon, Group, Menu } from "@mantine/core"
 import { IconDots } from "@tabler/icons-react"
@@ -17,6 +17,7 @@ interface LogsReportProps {
 }
 
 export const LogsReport: React.FC<LogsReportProps> = ({ review, report, variant }) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
     const navigate = useNavigate()
     const account = useUser()
     const { listKits } = useKits()
@@ -26,20 +27,17 @@ export const LogsReport: React.FC<LogsReportProps> = ({ review, report, variant 
     return !variant ? (
         <Box sx={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
             <Box sx={{ flexDirection: "column" }}>
-                <Box sx={{ flexDirection: "row", alignItems: "center", gap: "2vw" }}>
-                    <p style={{ fontSize: "3vw", color: "gray" }}>
+                <Box sx={{ flexDirection: "row", alignItems: "center", gap: isMobile ? "2vw" : "1vw" }}>
+                    <p style={{ fontSize: isMobile ? "3vw" : "1rem", color: "gray" }}>
                         {new Date(Number(report?.techReport?.date)).toLocaleDateString("pt-br")} -{" "}
                         {new Date(Number(report?.techReport?.finish)).toLocaleTimeString("pt-br")}
                     </p>
                 </Box>
-                <p style={{ fontSize: "3.5vw", fontWeight: "600" }}>
-                    {report?.call?.approved
-                        ? `Relatório de ${producerSelected?.name}`
-                        : `Relatório de ${producerSelected?.name}`}
+                <p style={{ fontSize: isMobile ? "3.5vw" : "1rem", fontWeight: "600" }}>
+                    {report?.call?.approved ? `Relatório de ${producerSelected?.name}` : `Relatório de ${producerSelected?.name}`}
                 </p>
-                <p style={{ fontSize: "3vw", color: "gray", flexDirection: "column" }}>
-                    {report?.call?.talhao?.name} -{" "}
-                    {report?.call?.approved ? `Utilizado #Kit ${report?.call?.kit?.name}` : "Ver Relatório"}
+                <p style={{ fontSize: isMobile ? "3vw" : "1rem", color: "gray", flexDirection: "column" }}>
+                    {report?.call?.talhao?.name} - {report?.call?.approved ? `Utilizado #Kit ${report?.call?.kit?.name}` : "Ver Relatório"}
                 </p>
             </Box>
             {!review ? (
@@ -47,7 +45,7 @@ export const LogsReport: React.FC<LogsReportProps> = ({ review, report, variant 
                     <Menu transitionProps={{ transition: "pop" }} withArrow position="bottom-end" withinPortal>
                         <Menu.Target>
                             <ActionIcon variant="subtle" color="gray">
-                                <IconDots style={{ width: "8vw", height: "8vw" }} stroke={2} />
+                                <IconDots style={{ width: isMobile ? "8vw" : "2vw", height: isMobile ? "8vw" : "2vw" }} stroke={2} />
                             </ActionIcon>
                         </Menu.Target>
                         <Menu.Dropdown>
@@ -81,7 +79,7 @@ export const LogsReport: React.FC<LogsReportProps> = ({ review, report, variant 
                     }
                     // onClick={() => navigate(account.user?.isAdmin ? `/adm/call/${user?.id}/report` : `/call/1/report`)}
                 >
-                    <IoIosArrowForward style={{ width: "5vw", height: "5vw" }} />
+                    <IoIosArrowForward style={{ width: isMobile ? "5vw" : "2vw", height: isMobile ? "5vw" : "2vw" }} />
                 </IconButton>
             )}
         </Box>
@@ -91,11 +89,11 @@ export const LogsReport: React.FC<LogsReportProps> = ({ review, report, variant 
             // onClick={() => navigate(`/producer/tillage/${tillageSelected?.id}`)}
         >
             <Box sx={{ flexDirection: "column" }}>
-                <Box sx={{ flexDirection: "row", alignItems: "center", gap: "2vw" }}>
-                    <p style={{ fontSize: "3vw", color: "gray" }}>11:00 - 13:00</p>
+                <Box sx={{ flexDirection: "row", alignItems: "center", gap: isMobile ? "2vw" : "1vw" }}>
+                    <p style={{ fontSize: isMobile ? "3vw" : "1rem", color: "gray" }}>11:00 - 13:00</p>
                 </Box>
-                <p style={{ fontSize: "3.5vw", fontWeight: "600" }}>Chamado para {report?.call?.talhao?.tillage?.name}</p>
-                <p style={{ fontSize: "3vw", color: "gray" }}>
+                <p style={{ fontSize: isMobile ? "3.5vw" : "1rem", fontWeight: "600" }}>Chamado para {report?.call?.talhao?.tillage?.name}</p>
+                <p style={{ fontSize: isMobile ? "3.5vw" : "1rem", color: "gray" }}>
                     {report?.call?.approved ? `Finalizado` : "Aguardando aprovação"}
                 </p>
             </Box>
@@ -104,7 +102,7 @@ export const LogsReport: React.FC<LogsReportProps> = ({ review, report, variant 
                 onClick={() => navigate(`/producer/calls/${call?.id}`)}
                 // onClick={() => navigate(account.user?.isAdmin ? `/adm/call/${user?.id}/report` : `/call/1/report`)}
             >
-                <IoIosArrowForward style={{ width: "5vw", height: "5vw" }} />
+                <IoIosArrowForward style={{ width: isMobile ? "5vw" : "2vw ", height: isMobile ? "5vw" : "2vw " }} />
             </IconButton> */}
         </Box>
     )
