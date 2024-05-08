@@ -73,7 +73,17 @@ export const UpdateContentKit: React.FC<UpdateContentKitProps> = ({ edit, values
                     navigate(`/adm/kit/calendar/${kit.id}`)
                 }}
             />
-            <Box sx={{ width: 1, height: "100%", overflow: "auto", gap: isMobile ? "2vw" : "1vw", paddingBottom: isMobile ? "" : "400vh" }}>
+            <Box
+                sx={{
+                    width: 1,
+                    height: "80vh",
+                    overflow: "auto",
+                    gap: isMobile ? "2vw" : "1vw",
+                    paddingTop: "1vw",
+                    // paddingBottom: "400vh",
+                    paddingBottom: "40vh",
+                }}
+            >
                 <Box sx={{ flexDirection: "row", gap: "2vw", width: "100%", alignItems: "center" }}>
                     {edit ? (
                         <Avatar
@@ -151,7 +161,7 @@ export const UpdateContentKit: React.FC<UpdateContentKitProps> = ({ edit, values
                             onChange={handleChange}
                             required
                         />
-                        <Box sx={{ flexDirection: "row", justifyContent: "space-between", gap: "2vw" }}>
+                        <Box sx={{ flexDirection: "row", justifyContent: "space-between", gap: isMobile ? "2vw" : "1vw" }}>
                             <TextField
                                 label={"Equipamento"}
                                 name="equipment"
