@@ -142,13 +142,13 @@ export const ContentKit: React.FC<ContentKitProps> = ({ edit, values, handleChan
                         />
                     </Box>
                     <Box sx={{ gap: isMobile ? "4vw" : "1vw", pt: isMobile ? "4vw" : "1vw" }}>
-                        <Box sx={{ gap: "3vw" }}>
+                        <Box sx={{ gap: isMobile ? "3vw" : 0 }}>
                             <TitleComponents title="Objetos" button click={open} />
                             {data.listObjects.map((item, index) => (
                                 <CardObject key={index} object={item} />
                             ))}
                         </Box>
-                        <Box sx={{ gap: "3vw" }}>
+                        <Box sx={{ gap: isMobile ? "3vw" : 0 }}>
                             <TitleComponents title="Responsáveis" button click={openEmployees} />
                             {data.team.map((item, index) => (
                                 <CardTeam key={index} employee={item} />
