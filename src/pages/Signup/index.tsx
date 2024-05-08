@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react"
 import { useIo } from "../../hooks/useIo"
 import { colors } from "../../style/colors"
 import { useNavigate } from "react-router-dom"
-import { Box, Button, CircularProgress } from "@mui/material"
+import { Box, Button, CircularProgress, useMediaQuery } from "@mui/material"
 import { StepOne } from "./../Signup/StepOne"
 import { Form, Formik } from "formik"
 import { StepTwo } from "./../Signup/StepTwo"
@@ -19,6 +19,7 @@ import dayjs, { Dayjs } from "dayjs"
 interface SignupProps {}
 
 export const Signup: React.FC<SignupProps> = ({}) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
     const io = useIo()
     const navigate = useNavigate()
     const { unmask } = useDataHandler()
@@ -116,8 +117,7 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                 employee: {
                     rg: data.employee?.rg,
                     gender: gender.find((gender) => gender.id == String(data.employee?.gender))?.value || "",
-                    relationship:
-                        typeRelationship.find((relationship) => relationship.id == data.employee?.relationship)?.value || "",
+                    relationship: typeRelationship.find((relationship) => relationship.id == data.employee?.relationship)?.value || "",
                     nationality: data.employee?.nationality,
                     voter_card: data.employee?.voter_card,
                     work_card: data.employee?.work_card,
@@ -174,6 +174,7 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                 backgroundColor: "#fff",
                 backgroundImage: `linear-gradient(${colors.secondary} , ${colors.primary} 20%)`,
                 flexDirection: "column",
+                overflow: "hidden",
             }}
         >
             <Box
@@ -183,7 +184,7 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                     paddingHorizontal: 20,
                     justifyContent: "center",
                     alignItems: "flex-start",
-                    padding: "4vw",
+                    padding: isMobile ? "4vw" : "1vw",
                 }}
             >
                 <p
@@ -191,8 +192,8 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                         fontFamily: "MalgunGothic2",
                         fontWeight: "bold",
                         color: colors.text.white,
-                        fontSize: "5.5vw",
-                        paddingTop: "2vw",
+                        fontSize: isMobile ? "5.5vw" : "1.5rem",
+                        paddingTop: isMobile ? "2vw" : 0,
                         height: "100%",
                         textAlign: "start",
                         width: "100%",
@@ -206,13 +207,13 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                 sx={{
                     width: "100%",
                     height: "90%",
-                    padding: "4vw",
+                    padding: isMobile ? "4vw" : "1vw",
                     backgroundColor: "#fff",
-                    borderTopLeftRadius: "5vw",
-                    borderTopRightRadius: "5vw",
+                    borderTopLeftRadius: isMobile ? "5vw" : "2vw",
+                    borderTopRightRadius: isMobile ? "5vw" : "2vw",
                     gap: 10,
                     flexDirection: "column",
-                    paddingBottom: "10vw",
+                    paddingBottom: isMobile ? "10vw" : "1vw",
                     overflow: "auto",
                 }}
             >
@@ -222,7 +223,7 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                         height: "100%",
                         alignItems: "center",
                         justifyContent: "center",
-                        gap: "12vw",
+                        gap: isMobile ? "12vw" : "1vw",
                         flexDirection: "column",
                     }}
                 >
@@ -240,17 +241,17 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                                             setUser={setTypeUser}
                                             setOffice={setTypeOffice}
                                         />
-                                        <Box sx={{ flexDirection: "row", gap: "2vw" }}>
+                                        <Box sx={{ flexDirection: "row", gap: isMobile ? "2vw" : "1vw" }}>
                                             <Button
                                                 variant="outlined"
                                                 sx={{
-                                                    padding: "3vw",
+                                                    padding: isMobile ? "3vw" : "0.5vw 2vw",
                                                     color: colors.text.black,
                                                     fontWeight: "600",
-                                                    fontSize: "4vw",
+                                                    fontSize: isMobile ? "4vw" : "1.2rem",
                                                     textTransform: "none",
                                                     borderRadius: "10vw",
-                                                    height: "10vw",
+                                                    height: isMobile ? "10vw" : "fit-content",
                                                 }}
                                                 onClick={() => navigate("/../home")}
                                             >
@@ -259,13 +260,13 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                                             <Button
                                                 variant="contained"
                                                 sx={{
-                                                    padding: "3vw",
+                                                    padding: isMobile ? "3vw" : "0.5vw 2vw",
                                                     color: colors.text.white,
                                                     fontWeight: "600",
-                                                    fontSize: "4vw",
+                                                    fontSize: isMobile ? "4vw" : "1.2rem",
                                                     textTransform: "none",
                                                     borderRadius: "10vw",
-                                                    height: "10vw",
+                                                    height: isMobile ? "10vw" : "fit-content",
                                                     bgcolor: colors.button,
                                                 }}
                                                 onClick={() => setCurrentStep(1)}
@@ -277,7 +278,11 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                                 )}
 
                                 {currentStep === 1 && (
-                                    <Box>
+                                    <Box
+                                        sx={{
+                                            padding: isMobile ? 0 : "2vw 0",
+                                        }}
+                                    >
                                         <StepOne
                                             data={values}
                                             handleChange={handleChange}
@@ -288,11 +293,11 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                                             pickDate={pickDate}
                                             setPickDate={setPickDate}
                                         />
-                                        <Box sx={{ width: "100%", gap: "2vw" }}>
+                                        <Box sx={{ width: "100%", gap: isMobile ? "2vw" : "1vw" }}>
                                             <Button
                                                 variant="contained"
                                                 sx={{
-                                                    fontSize: "4vw",
+                                                    fontSize: isMobile ? "4vw" : "1.2rem",
                                                     color: colors.text.white,
                                                     width: "100%",
                                                     backgroundColor: colors.button,
@@ -308,13 +313,13 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                                             <Button
                                                 variant="outlined"
                                                 sx={{
-                                                    padding: "3vw",
+                                                    padding: isMobile ? "3vw" : "0.5vw",
                                                     color: colors.text.black,
                                                     fontWeight: "600",
-                                                    fontSize: "4vw",
+                                                    fontSize: isMobile ? "4vw" : "1.2rem",
                                                     textTransform: "none",
                                                     borderRadius: "10vw",
-                                                    height: "10vw",
+                                                    height: isMobile ? "10vw" : "fit-content",
                                                     width: "100%",
                                                 }}
                                                 onClick={() => {
@@ -327,19 +332,14 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                                     </Box>
                                 )}
                                 {currentStep === 2 && (
-                                    <Box sx={{ gap: "4vw" }}>
-                                        <StepTwo
-                                            data={values}
-                                            handleChange={handleChange}
-                                            typeUser={typeUser}
-                                            setCurrentStep={setCurrentStep}
-                                        />
+                                    <Box sx={{ gap: isMobile ? "4vw" : "1vw" }}>
+                                        <StepTwo data={values} handleChange={handleChange} typeUser={typeUser} setCurrentStep={setCurrentStep} />
                                         {typeUser === "employee" && (
-                                            <Box sx={{ width: "100%", gap: "2vw" }}>
+                                            <Box sx={{ width: "100%", gap: isMobile ? "2vw" : "1vw" }}>
                                                 <Button
                                                     variant="contained"
                                                     sx={{
-                                                        fontSize: "4vw",
+                                                        fontSize: isMobile ? "4vw" : "1.2rem",
                                                         color: colors.text.white,
                                                         width: "100%",
                                                         backgroundColor: colors.button,
@@ -356,13 +356,13 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                                                 <Button
                                                     variant="outlined"
                                                     sx={{
-                                                        padding: "3vw",
+                                                        padding: isMobile ? "3vw" : "0.5vw",
                                                         color: colors.text.black,
                                                         fontWeight: "600",
-                                                        fontSize: "4vw",
+                                                        fontSize: isMobile ? "4vw" : "1.2rem",
                                                         textTransform: "none",
                                                         borderRadius: "10vw",
-                                                        height: "10vw",
+                                                        height: isMobile ? "10vw" : "fit-content",
                                                         width: "100%",
                                                     }}
                                                     onClick={() => {
@@ -380,13 +380,13 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                                 )}
 
                                 {typeUser == "producer" && currentStep == 2 && (
-                                    <Box sx={{ width: "100%", gap: "2vw" }}>
+                                    <Box sx={{ width: "100%", gap: isMobile ? "2vw" : "1vw" }}>
                                         <Button
                                             type="submit"
                                             variant="contained"
                                             sx={{
                                                 ...buttonStyle,
-                                                fontSize: 17,
+                                                fontSize: isMobile ? 17 : "1.2rem",
                                                 color: colors.text.white,
                                                 width: "100%",
                                                 backgroundColor: colors.button,
@@ -394,18 +394,18 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                                                 textTransform: "none",
                                             }}
                                         >
-                                            {loading ? <CircularProgress size={30} sx={{ color: "#fff" }} /> : "Cadastrar"}
+                                            {loading ? <CircularProgress size={isMobile ? 30 : "2vw"} sx={{ color: "#fff" }} /> : "Cadastrar"}
                                         </Button>
                                         <Button
                                             variant="outlined"
                                             sx={{
-                                                padding: "3vw",
+                                                padding: isMobile ? "3vw" : "0.5rem",
                                                 color: colors.text.black,
                                                 fontWeight: "600",
-                                                fontSize: "4vw",
+                                                fontSize: isMobile ? "4vw" : "1.2rem",
                                                 textTransform: "none",
                                                 borderRadius: "10vw",
-                                                height: "10vw",
+                                                height: isMobile ? "10vw" : "fit-content",
                                                 width: "100%",
                                             }}
                                             onClick={() => {
@@ -417,13 +417,13 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                                     </Box>
                                 )}
                                 {typeUser == "employee" && currentStep == 3 && (
-                                    <Box sx={{ width: "100%", gap: "2vw" }}>
+                                    <Box sx={{ width: "100%", gap: isMobile ? "2vw" : "1vw" }}>
                                         <Button
                                             type="submit"
                                             variant="contained"
                                             sx={{
                                                 ...buttonStyle,
-                                                fontSize: 17,
+                                                fontSize: isMobile ? 17 : "1.2rem",
                                                 color: colors.text.white,
                                                 width: "100%",
                                                 backgroundColor: colors.button,
@@ -431,19 +431,19 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                                                 textTransform: "none",
                                             }}
                                         >
-                                            {loading ? <CircularProgress size={30} sx={{ color: "#fff" }} /> : "Cadastrar"}
+                                            {loading ? <CircularProgress size={isMobile ? 30 : "2vw"} sx={{ color: "#fff" }} /> : "Cadastrar"}
                                         </Button>
                                         <Button
                                             variant="outlined"
                                             sx={{
                                                 width: "100%",
-                                                padding: "3vw",
+                                                padding: isMobile ? "3vw" : "0.5vw",
                                                 color: colors.text.black,
                                                 fontWeight: "600",
-                                                fontSize: "4vw",
+                                                fontSize: isMobile ? "4vw" : "1.2rem",
                                                 textTransform: "none",
                                                 borderRadius: "10vw",
-                                                height: "10vw",
+                                                height: isMobile ? "10vw" : "fit-content",
                                             }}
                                             onClick={() => {
                                                 setCurrentStep(2)

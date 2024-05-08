@@ -1,5 +1,5 @@
 import React, { ChangeEventHandler, useState } from "react"
-import { Box, FormControl, FormControlLabel, Radio, RadioGroup } from "@mui/material"
+import { Box, FormControl, FormControlLabel, Radio, RadioGroup, useMediaQuery } from "@mui/material"
 
 interface SelectAccountProps {
     values: SignupValues
@@ -11,15 +11,9 @@ interface SelectAccountProps {
     setCurrentStep: React.Dispatch<React.SetStateAction<number>>
 }
 
-export const SelectAccount: React.FC<SelectAccountProps> = ({
-    values,
-    change,
-    typeUser,
-    setUser,
-    typeOffice,
-    setOffice,
-    setCurrentStep,
-}) => {
+export const SelectAccount: React.FC<SelectAccountProps> = ({ values, change, typeUser, setUser, typeOffice, setOffice, setCurrentStep }) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
+
     const handleTypeUser = (event: React.ChangeEvent<HTMLInputElement>) => {
         setUser((event.target as HTMLInputElement).value)
     }
@@ -28,17 +22,21 @@ export const SelectAccount: React.FC<SelectAccountProps> = ({
         setCurrentStep(1)
     }
     return (
-        <Box>
+        <Box
+            sx={{
+                gap: isMobile ? "5vw" : "1vw",
+            }}
+        >
             <Box
                 sx={{
                     width: "100%",
                     alignItems: "center",
                     justifyContent: "center",
-                    gap: "5vw",
+                    gap: isMobile ? "5vw" : "1vw",
                     flexDirection: "column",
                 }}
             >
-                <p style={{ fontSize: "5vw", fontFamily: "MalgunGothic2" }}>Selecione o tipo de conta</p>
+                <p style={{ fontSize: isMobile ? "5vw" : "1.5rem", fontFamily: "MalgunGothic2" }}>Selecione o tipo de conta</p>
                 <FormControl>
                     <RadioGroup
                         aria-labelledby="demo-radio-buttons-group-label"
@@ -51,7 +49,7 @@ export const SelectAccount: React.FC<SelectAccountProps> = ({
                             value="producer"
                             sx={{
                                 fontWeight: typeUser == "producer" ? "800" : "400",
-                                fontSize: "4vw",
+                                fontSize: isMobile ? "4vw" : "1rem",
                                 fontFamily: "MalgunGothic2",
                             }}
                             control={<Radio />}
@@ -61,7 +59,7 @@ export const SelectAccount: React.FC<SelectAccountProps> = ({
                             value="employee"
                             sx={{
                                 fontWeight: typeUser == "producer" ? "800" : "400",
-                                fontSize: "4vw",
+                                fontSize: isMobile ? "4vw" : "1rem",
                                 fontFamily: "MalgunGothic2",
                             }}
                             control={<Radio />}
@@ -76,11 +74,11 @@ export const SelectAccount: React.FC<SelectAccountProps> = ({
                         width: "100%",
                         alignItems: "center",
                         justifyContent: "center",
-                        gap: "5vw",
+                        gap: isMobile ? "5vw" : "1vw",
                         flexDirection: "column",
                     }}
                 >
-                    <p style={{ fontSize: "5vw", fontFamily: "MalgunGothic2" }}>Selecione o tipo de cargo</p>
+                    <p style={{ fontSize: isMobile ? "5vw" : "1.5rem", fontFamily: "MalgunGothic2" }}>Selecione o tipo de cargo</p>
                     <FormControl>
                         <RadioGroup
                             aria-labelledby="demo-radio-buttons-group-label"
@@ -90,12 +88,11 @@ export const SelectAccount: React.FC<SelectAccountProps> = ({
                             onChange={change}
                             sx={{ width: "100%" }}
                         >
-                            
                             <FormControlLabel
                                 value="agronomist"
                                 sx={{
                                     fontWeight: typeOffice == "agronomist" ? "800" : "400",
-                                    fontSize: "4vw",
+                                    fontSize: isMobile ? "4vw" : "1.2rem",
                                     fontFamily: "MalgunGothic2",
                                 }}
                                 control={<Radio />}
@@ -105,7 +102,7 @@ export const SelectAccount: React.FC<SelectAccountProps> = ({
                                 value="pilot"
                                 sx={{
                                     fontWeight: typeOffice == "pilot" ? "800" : "400",
-                                    fontSize: "4vw",
+                                    fontSize: isMobile ? "4vw" : "1.2rem",
                                     fontFamily: "MalgunGothic2",
                                 }}
                                 control={<Radio />}
@@ -115,7 +112,7 @@ export const SelectAccount: React.FC<SelectAccountProps> = ({
                                 value="copilot"
                                 sx={{
                                     fontWeight: typeOffice == "copilot" ? "800" : "400",
-                                    fontSize: "4vw",
+                                    fontSize: isMobile ? "4vw" : "1.2rem",
                                     fontFamily: "MalgunGothic2",
                                 }}
                                 control={<Radio />}
@@ -125,7 +122,7 @@ export const SelectAccount: React.FC<SelectAccountProps> = ({
                                 value="technician"
                                 sx={{
                                     fontWeight: typeOffice == "technician" ? "800" : "400",
-                                    fontSize: "4vw",
+                                    fontSize: isMobile ? "4vw" : "1.2rem",
                                     fontFamily: "MalgunGothic2",
                                 }}
                                 control={<Radio />}
@@ -135,7 +132,7 @@ export const SelectAccount: React.FC<SelectAccountProps> = ({
                                 value="seller"
                                 sx={{
                                     fontWeight: typeOffice == "seller" ? "800" : "400",
-                                    fontSize: "4vw",
+                                    fontSize: isMobile ? "4vw" : "1.2rem",
                                     fontFamily: "MalgunGothic2",
                                 }}
                                 control={<Radio />}

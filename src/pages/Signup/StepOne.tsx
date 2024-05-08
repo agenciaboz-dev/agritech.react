@@ -1,5 +1,5 @@
 import { Avatar, ExtFile } from "@files-ui/react"
-import { Box, Button, TextField, MenuItem } from "@mui/material"
+import { Box, Button, TextField, MenuItem, useMediaQuery } from "@mui/material"
 import React, { ChangeEventHandler, useEffect, useState } from "react"
 import { colors } from "../../style/colors"
 import MaskedInput from "../../components/MaskedInput"
@@ -11,6 +11,7 @@ import { useCnpjMask, useCpfMask } from "burgos-masks"
 import dayjs, { Dayjs } from "dayjs"
 import { DemoItem } from "@mui/x-date-pickers/internals/demo"
 import { MobileDatePicker, ptBR } from "@mui/x-date-pickers"
+import { useResponsiveStyles } from "../../hooks/useResponsiveStyles"
 
 interface StepOneProps {
     data: SignupValues
@@ -24,36 +25,48 @@ interface StepOneProps {
 }
 
 export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, image, setImage, pickDate, setPickDate }) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
+    const textField = useResponsiveStyles()
     const gender = useGender()
     const typeRelationship = useRelationship()
 
     return (
-        <Box sx={{ width: "100%", height: "100%", gap: "4vw", flexDirection: "column",  }}>
-            <p style={{ fontSize: "4.5vw", fontFamily: "MalgunGothic2", textAlign: "left", fontWeight: "800" }}>
+        <Box sx={{ width: "100%", height: "100%", gap: isMobile ? "4vw" : "1vw", flexDirection: "column", paddingTop: isMobile ? 0 : "10vw" }}>
+            <p style={{ fontSize: isMobile ? "4.5vw" : "1.2rem", fontFamily: "MalgunGothic2", textAlign: "left", fontWeight: "800" }}>
                 Informações Pessoais
             </p>
-            <Box sx={{ flexDirection: "row", gap: "5vw", width: "100%", height: "23%", alignItems: "center" }}>
+            <Box
+                sx={{
+                    flexDirection: "row",
+                    gap: isMobile ? "5vw" : "1vw",
+                    width: "100%",
+                    height: isMobile ? "23%" : "fit-content",
+                    alignItems: "center",
+                }}
+            >
                 <Avatar
                     src={image || undefined}
                     onChange={(file) => setImage(file)}
                     changeLabel="Trocar foto"
                     emptyLabel="Adicionar foto"
                     variant="circle"
-                    style={{ width: "30vw", height: "30vw", fontSize: "4vw", fontFamily: "MalgunGothic2" }}
+                    style={{
+                        width: isMobile ? "30vw" : "10vw",
+                        height: isMobile ? "30vw" : "10vw",
+                        fontSize: isMobile ? "4vw" : "1.2rem",
+                        fontFamily: "MalgunGothic2",
+                    }}
                 />
-                <Box sx={{ flexDirection: "column", gap: "2vw", width: "65%" }}>
-                    <p style={{ fontWeight: "500", fontFamily: "MalgunGothic2", textAlign: "start", fontSize: "4vw" }}>
-                        Foto
-                    </p>
-                    <p style={{ fontSize: "3vw", fontFamily: "MalgunGothic2", textAlign: "start" }}>
-                        Clique na imagem ao lado para adicionar uma foto sua. A foto deve estar plenamente visível e sem
-                        adereços.
+                <Box sx={{ flexDirection: "column", gap: isMobile ? "2vw" : "1vw", width: isMobile ? "65%" : "fit-content" }}>
+                    <p style={{ fontWeight: "500", fontFamily: "MalgunGothic2", textAlign: "start", fontSize: isMobile ? "4vw" : "1.2rem" }}>Foto</p>
+                    <p style={{ fontSize: isMobile ? "3vw" : "1rem", fontFamily: "MalgunGothic2", textAlign: "start" }}>
+                        Clique na imagem ao lado para adicionar uma foto sua. A foto deve estar plenamente visível e sem adereços.
                     </p>
                 </Box>
             </Box>
-            <Box sx={{ gap: "3vw", width: "100%", height: "100%" }}>
+            <Box sx={{ gap: isMobile ? "3vw" : "1vw", width: "100%", height: "100%" }}>
                 <TextField label={"Nome"} name="name" value={data.name} sx={textField} onChange={handleChange} required />
-                <Box sx={{ flexDirection: "row", gap: "2vw", width: "100%" }}>
+                <Box sx={{ flexDirection: "row", gap: isMobile ? "2vw" : "1vw", width: "100%" }}>
                     <TextField
                         label={"CPF"}
                         name="cpf"
@@ -128,18 +141,10 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, image, set
                         localeText={ptBR.components.MuiLocalizationProvider.defaultProps.localeText}
                     />
                 </DemoItem>
-                <TextField
-                    label={"E-mail"}
-                    name="email"
-                    value={data.email}
-                    type="email"
-                    sx={textField}
-                    onChange={handleChange}
-                    required
-                />
-                <Box sx={{ alignItems: "center", justifyContent: "center", gap: "5vw" }}>
+                <TextField label={"E-mail"} name="email" value={data.email} type="email" sx={textField} onChange={handleChange} required />
+                <Box sx={{ alignItems: "center", justifyContent: "center", gap: isMobile ? "5vw" : "1vw" }}>
                     {data.employee && (
-                        <Box sx={{ flexDirection: "row", width: "100%", gap: "2vw" }}>
+                        <Box sx={{ flexDirection: "row", width: "100%", gap: isMobile ? "2vw" : "1vw" }}>
                             <TextField
                                 select
                                 onChange={handleChange}
@@ -147,13 +152,13 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, image, set
                                 name="employee.gender"
                                 sx={{
                                     ...textField,
-                                    width: "48%",
+                                    width: isMobile ? "48%" : "fit-content",
                                 }}
                                 value={data.employee.gender}
                                 InputProps={{
                                     sx: {
                                         ...textField,
-                                        height: "12vw",
+                                        height: isMobile ? "12vw" : "fit-content",
                                     },
                                 }}
                                 SelectProps={{
@@ -188,13 +193,13 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, image, set
                                 name="employee.relationship"
                                 sx={{
                                     ...textField,
-                                    width: "50%",
+                                    width: isMobile ? "50%" : "fit-content",
                                 }}
                                 required
                                 variant="outlined"
                                 value={data.employee.relationship}
                                 InputProps={{
-                                    sx: { ...textField, height: "12vw" },
+                                    sx: { ...textField, height: isMobile ? "12vw" : "fit-content" },
                                 }}
                                 SelectProps={{
                                     MenuProps: {
