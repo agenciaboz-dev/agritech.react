@@ -43,7 +43,7 @@ export const Adm: React.FC<AdmProps> = ({ user }) => {
             <Route path="/calendar/:userid" element={<CalendarUser />} />
             <Route path="/calls" element={<ReviewsCall user={user} />} />
             <Route path="/calls/:callid" element={<ApproveCall />} />
-            <Route path="/calls/talhao/:talhaoid/:callid" element={<CallApproved />} />
+            <Route path="/calls/talhao/:talhaoid/:callid" element={<CallApproved />} /> {/* Aparentemente sem uso */}
             <Route path="/call/*" element={<Calls user={user} />} />
             <Route path="/producer/:producerid" element={<ListTillages />} />
             <Route path="/producer/:producerid/:tillageid" element={<TillageDetails />} />

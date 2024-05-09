@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { Accordion, Box, Button, Radio, TextField } from "@mui/material"
+import { Accordion, Box, Button, Radio, TextField, useMediaQuery } from "@mui/material"
 import { Avatar } from "@files-ui/react"
 import GeoImage from "../../../assets/geo.svg"
 import { Header } from "../../../components/Header"
@@ -19,17 +19,12 @@ import { NewObject } from "../../../definitions/object"
 import { useIo } from "../../../hooks/useIo"
 import { useSnackbar } from "burgos-snackbar"
 import { useUsers } from "../../../hooks/useUsers"
-import { textField } from "../../../style/input"
 import { unmaskCurrency } from "../../../hooks/unmaskNumber"
 import MaskedInputNando from "../../../components/MaskedNando"
 import { useCurrencyMask } from "burgos-masks"
+import { useResponsiveStyles } from "../../../hooks/useResponsiveStyles"
 
 interface CallApprovedProps {}
-
-const p_style = {
-    fontSize: "3vw",
-    fontWeight: "600",
-}
 
 const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
     // padding: theme.spacing(2),
@@ -37,6 +32,8 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 }))
 
 export const CallApproved: React.FC<CallApprovedProps> = ({}) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
+    const textField = useResponsiveStyles()
     const header = useHeader()
     const io = useIo()
     const navigate = useNavigate()
@@ -111,16 +108,17 @@ export const CallApproved: React.FC<CallApprovedProps> = ({}) => {
                 height: "100%",
                 backgroundColor: colors.button,
                 flexDirection: "column",
+                overflow: "hidden",
             }}
         >
             <Box
                 sx={{
                     width: "100%",
-                    height: "10%",
+                    height: isMobile ? "10%" : "fit-content",
                     justifyContent: "center",
                     alignItems: "center",
                     gap: "1vw",
-                    padding: "4vw",
+                    padding: isMobile ? "4vw" : "2.5vw",
                     flexDirection: "row",
                 }}
             >
@@ -130,19 +128,19 @@ export const CallApproved: React.FC<CallApprovedProps> = ({}) => {
                 style={{
                     height: "92%",
                     backgroundColor: "#fff",
-                    borderTopLeftRadius: "5vw",
-                    borderTopRightRadius: "5vw",
+                    borderTopLeftRadius: isMobile ? "5vw" : "2vw",
+                    borderTopRightRadius: isMobile ? "5vw" : "2vw",
                 }}
             >
-                <Box sx={{ width: "100%", height: "90%", gap: "7vw", flexDirection: "column", p: "4vw" }}>
-                    <p style={{ fontSize: "4.5vw" }}>Abertura do Chamado</p>
+                <Box sx={{ width: "100%", height: "90%", gap: isMobile ? "7vw" : "1vw", flexDirection: "column", p: isMobile ? "4vw" : "1vw" }}>
+                    <p style={{ fontSize: isMobile ? "4.5vw" : "1.2rem" }}>Abertura do Chamado</p>
 
                     <Box
                         sx={{
                             flexDirection: "row",
-                            gap: "5vw",
+                            gap: isMobile ? "5vw" : "1vw",
                             width: "100%",
-                            height: "23%",
+                            height: isMobile ? "23%" : "fit-content",
                             alignItems: "center",
                         }}
                     >
@@ -153,47 +151,42 @@ export const CallApproved: React.FC<CallApprovedProps> = ({}) => {
                             emptyLabel="Adicionar foto"
                             variant="square"
                             style={{
-                                width: "40vw",
-                                height: "40vw",
-                                fontSize: "4vw",
+                                width: isMobile ? "40vw" : "10vw",
+                                height: isMobile ? "40vw" : "10vw",
+                                fontSize: isMobile ? "4vw" : "1.2rem",
                                 fontFamily: "MalgunGothic2",
                             }}
                         />
-                        <Box sx={{ flexDirection: "column", gap: "2vw", width: "65%" }}>
+                        <Box sx={{ flexDirection: "column", gap: isMobile ? "2vw" : "1vw", width: isMobile ? "65%" : "100%" }}>
                             <Box>
-                                <p style={p_style}>Nome da Fazenda</p>
+                                <p style={{ fontSize: isMobile ? "3vw" : "1rem", fontWeight: "600" }}>Nome da Fazenda</p>
                                 <p>
                                     {" "}
                                     {findCall?.talhao?.tillage?.name} - {findCall?.talhao?.name}
                                 </p>
                             </Box>
                             <Box>
-                                <p style={p_style}>Endereço </p>
+                                <p style={{ fontSize: isMobile ? "3vw" : "1rem", fontWeight: "600" }}>Endereço </p>
                                 <p>
-                                    {findCall?.talhao?.tillage?.address?.street},{" "}
-                                    {findCall?.talhao?.tillage?.address.district} -{" "}
+                                    {findCall?.talhao?.tillage?.address?.street}, {findCall?.talhao?.tillage?.address.district} -{" "}
                                     {findCall?.talhao?.tillage?.address?.city}, {findCall?.talhao?.tillage?.address?.uf} -{" "}
                                     {findCall?.talhao?.tillage?.address?.cep}
                                 </p>
                             </Box>
                             <Box>
-                                <p style={p_style}>Área</p>
+                                <p style={{ fontSize: isMobile ? "3vw" : "1rem", fontWeight: "600" }}>Área</p>
                                 <p>{findCall?.talhao?.area} ha</p>
                             </Box>
                         </Box>
                     </Box>
 
-                    <Box sx={{ height: "63%" }}>
+                    <Box sx={{ height: isMobile ? "63%" : "fit-content" }}>
                         <Formik initialValues={initialValues} onSubmit={approveCall}>
                             {({ values, handleChange, setFieldValue }) => (
                                 <Form>
-                                    <Box sx={{ gap: "5vw" }}>
-                                        <Box sx={{ gap: "3vw" }}>
-                                            <TextField
-                                                label="Previsão da visita"
-                                                sx={{ ...textField }}
-                                                value={dateForecast}
-                                            />
+                                    <Box sx={{ gap: isMobile ? "5vw" : "1vw" }}>
+                                        <Box sx={{ gap: isMobile ? "3vw" : "1rem" }}>
+                                            <TextField label="Previsão da visita" sx={{ ...textField }} value={dateForecast} />
                                             <TextField
                                                 label={"Custo por hectare"}
                                                 name="hectarePrice"
