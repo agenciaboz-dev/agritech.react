@@ -1,4 +1,4 @@
-import { Box, Button, CircularProgress, IconButton } from "@mui/material"
+import { Box, Button, CircularProgress, IconButton, useMediaQuery } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { useHeader } from "../../hooks/useHeader"
 import { colors } from "../../style/colors"
@@ -29,11 +29,9 @@ const modal = {
     submitTitle: "Sim, cancelar",
     cancelTitle: "Não",
 }
-const p_style = {
-    fontSize: "3.5vw",
-}
 
 export const CallDetails: React.FC<CallDetailsProps> = ({}) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
     const io = useIo()
     const header = useHeader()
     const navigate = useNavigate()
@@ -105,6 +103,7 @@ export const CallDetails: React.FC<CallDetailsProps> = ({}) => {
                 height: "100%",
                 backgroundColor: colors.button,
                 flexDirection: "column",
+                overflow: "hidden",
             }}
         >
             <Modal
@@ -119,7 +118,7 @@ export const CallDetails: React.FC<CallDetailsProps> = ({}) => {
                     body: {
                         display: "flex",
                         flexDirection: "column",
-                        gap: "6vw",
+                        gap: isMobile ? "6vw" : "1vw",
                         width: "100%",
                         height: "100%",
                         alignItems: "center",
@@ -139,7 +138,7 @@ export const CallDetails: React.FC<CallDetailsProps> = ({}) => {
                     },
                 }}
             >
-                <CircularProgress sx={{ color: colors.text.white, width: "15vw", height: "15vw" }} />
+                <CircularProgress sx={{ color: colors.text.white, width: isMobile ? "15vw" : "2vw", height: isMobile ? "15vw" : "2vw" }} />
             </Modal>
             <Box
                 sx={{
@@ -148,7 +147,7 @@ export const CallDetails: React.FC<CallDetailsProps> = ({}) => {
                     justifyContent: "center",
                     alignItems: "center",
                     gap: "1vw",
-                    padding: "4vw",
+                    padding: isMobile ? "4vw" : "2.5vw",
                     flexDirection: "row",
                 }}
             >
@@ -169,21 +168,21 @@ export const CallDetails: React.FC<CallDetailsProps> = ({}) => {
                     justifyContent: "center",
                     height: "100%",
                     backgroundColor: "#353535",
-                    borderTopLeftRadius: "5vw",
-                    borderTopRightRadius: "5vw",
+                    borderTopLeftRadius: isMobile ? "5vw" : "2vw",
+                    borderTopRightRadius: isMobile ? "5vw" : "2vw",
                 }}
             >
                 <Box
                     style={{
-                        padding: "5vw",
+                        padding: isMobile ? "5vw" : "1vw",
                         width: "100%",
-                        flex: 1,
-                        backgroundColor: "#fff",
-                        borderTopLeftRadius: "7vw",
-                        borderTopRightRadius: "7vw",
-                        overflow: "hidden",
-                        gap: "4vw",
                         height: "100%",
+                        backgroundColor: "#fff",
+                        borderTopLeftRadius: isMobile ? "7vw" : "2vw",
+                        borderTopRightRadius: isMobile ? "7vw" : "2vw",
+                        gap: isMobile ? "4vw" : "1vw",
+                        flex: 1,
+                        overflow: "hidden",
                     }}
                 >
                     <Box
@@ -196,9 +195,9 @@ export const CallDetails: React.FC<CallDetailsProps> = ({}) => {
                         }}
                     >
                         <p>1/4</p>
-                        <Box sx={{ gap: "vw" }}>
-                            <p style={{ fontSize: "4.1vw" }}>Chamado em andamento</p>
-                            <p style={{ fontSize: "2.9vw" }}>Aberto em: {dateFrontend(callSelect?.open || "")}</p>
+                        <Box sx={{ gap: "1vw" }}>
+                            <p style={{ fontSize: isMobile ? "4.1vw" : "1.2rem" }}>Chamado em andamento</p>
+                            <p style={{ fontSize: isMobile ? "2.9vw" : "1rem" }}>Aberto em: {dateFrontend(callSelect?.open || "")}</p>
                         </Box>
                         {!callSelect?.init && (
                             <Button
@@ -216,22 +215,22 @@ export const CallDetails: React.FC<CallDetailsProps> = ({}) => {
                             </Button>
                         )}
                     </Box>
-                    <p style={{ fontSize: "3vw", textAlign: "justify" }}>
+                    <p style={{ fontSize: isMobile ? "3vw" : "1rem", textAlign: "justify" }}>
                         {user?.producer && tillageSelectProd?.comments
                             ? tillageSelectProd?.comments
                             : tillageSelected?.comments
                             ? tillageSelected?.comments
                             : "Nenhuma observação"}
                     </p>
-                    <p style={{ fontSize: "11vw" }}>15:00</p>
-                    <Box sx={{ width: "100%", gap: "2vw" }}>
-                        <p style={{ fontSize: "3.8vw" }}>
+                    <p style={{ fontSize: isMobile ? "11vw" : "3rem" }}>15:00</p>
+                    <Box sx={{ width: "100%", gap: isMobile ? "2vw" : "1vw" }}>
+                        <p style={{ fontSize: isMobile ? "3.8vw" : "1.2rem" }}>
                             Kit: <span style={{ fontWeight: "bold" }}>{kitSelected?.name}</span>
                         </p>
                         <p
                             style={{
                                 display: "flex",
-                                fontSize: "3vw",
+                                fontSize: isMobile ? "3vw" : "1rem",
                                 width: "100%",
                                 flexWrap: "nowrap",
                                 textOverflow: "ellipsis",
@@ -241,17 +240,17 @@ export const CallDetails: React.FC<CallDetailsProps> = ({}) => {
                             {kitSelected?.description}
                         </p>
                         <Box sx={{}}>
-                            <p style={p_style}>Objetos</p>
+                            <p style={{ fontSize: isMobile ? "3.5vw" : "1rem" }}>Objetos</p>
                             {kitSelected?.objects?.map((item, index) => (
                                 <Box key={index}>
-                                    <p style={p_style}>
+                                    <p style={{ fontSize: isMobile ? "3.5vw" : "1rem" }}>
                                         {item.quantity}x {item.name}
                                     </p>
                                 </Box>
                             ))}
                         </Box>
                     </Box>
-                    <Box sx={{ gap: "2vw" }}>
+                    <Box sx={{ gap: isMobile ? "2vw" : "1vw" }}>
                         <TitleComponents title="Responsáveis" />
                         {team?.map((item, index) => (
                             <CardTeam key={index} employee={item} />
