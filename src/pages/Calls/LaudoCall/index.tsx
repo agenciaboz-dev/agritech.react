@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from "react"
 import { useHeader } from "../../../hooks/useHeader"
-import { Box, CircularProgress, TextField } from "@mui/material"
+import { Box, CircularProgress, TextField, useMediaQuery } from "@mui/material"
 import { Form, Formik, useFormik } from "formik"
 import { TitleComponents } from "../../../components/TitleComponents"
 import { Header } from "../../../components/Header"
 import { colors } from "../../../style/colors"
-import { textField } from "../../../style/input"
 import { Modal, Stepper } from "@mantine/core"
 import { useNavigate, useParams } from "react-router-dom"
 import { ButtonAgritech } from "../../../components/ButtonAgritech"
 import { OperationComponent } from "./Operation"
-
 import { useDisclosure } from "@mantine/hooks"
 import { ModalProduct } from "./ModalProduct"
 import { TechReportComponent } from "./TechReportComponent"
@@ -23,25 +21,18 @@ import { TreatmentComponent } from "./Treatment"
 import { useSnackbar } from "burgos-snackbar"
 import { useCall } from "../../../hooks/useCall"
 import { unmaskNumber } from "../../../hooks/unmaskNumber"
-import {
-    Flight,
-    Material,
-    NewReport,
-    Operation,
-    Product,
-    Report,
-    Stage,
-    TechReport,
-    Treatment,
-} from "../../../definitions/report"
+import { Flight, Material, NewReport, Operation, Product, Report, Stage, TechReport, Treatment } from "../../../definitions/report"
 import { ModalStage } from "./ModalStage"
 import { useReports } from "../../../hooks/useReports"
+import { useResponsiveStyles } from "../../../hooks/useResponsiveStyles"
 
 interface LaudoCallProps {
     user: User
 }
 
 export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
+    const textField = useResponsiveStyles()
     const io = useIo()
     const header = useHeader()
     const { snackbar } = useSnackbar()
@@ -398,7 +389,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                     body: {
                         display: "flex",
                         flexDirection: "column",
-                        gap: "6vw",
+                        gap: isMobile ? "6vw" : "1vw",
                         width: "100%",
                         height: "100%",
                         alignItems: "center",
@@ -418,22 +409,12 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                     },
                 }}
             >
-                <CircularProgress sx={{ color: colors.text.white, width: "15vw", height: "15vw" }} />
+                <CircularProgress sx={{ color: colors.text.white, width: isMobile ? "15vw" : "2vw", height: isMobile ? "15vw" : "2vw" }} />
             </Modal>
-            <ModalProduct
-                opened={openedProducts}
-                close={closeProducts}
-                product={listProducts}
-                setproduct={setListProducts}
-            />
+            <ModalProduct opened={openedProducts} close={closeProducts} product={listProducts} setproduct={setListProducts} />
             {report && <ModalStage opened={openedStageFinish} close={closeStage} report={report} />}
             <ModalFlight opened={openedFlight} close={closeFlight} flight={listFlights} setFlight={setListFlights} />
-            <ModalMaterial
-                opened={openedMaterials}
-                close={closeMaterials}
-                material={listMaterials}
-                setMaterial={setListMaterials}
-            />
+            <ModalMaterial opened={openedMaterials} close={closeMaterials} material={listMaterials} setMaterial={setListMaterials} />
             <Box
                 sx={{
                     width: "100%",
@@ -441,7 +422,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                     justifyContent: "center",
                     alignItems: "center",
                     gap: "1vw",
-                    padding: "4vw",
+                    padding: isMobile ? "4vw" : "2.5vw",
                     flexDirection: "row",
                 }}
             >
@@ -457,20 +438,20 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
 
             <Box
                 style={{
-                    padding: "5vw",
+                    padding: isMobile ? "5vw" : "1vw",
                     width: "100%",
                     height: "100%",
                     backgroundColor: "#fff",
-                    borderTopLeftRadius: "7vw",
-                    borderTopRightRadius: "7vw",
-                    gap: "3vw",
+                    borderTopLeftRadius: isMobile ? "7vw" : "2vw",
+                    borderTopRightRadius: isMobile ? "7vw" : "2vw",
+                    gap: isMobile ? "3vw" : "1vw",
                     overflow: "hidden",
                     flexDirection: "column",
                 }}
             >
                 <TitleComponents
                     title="Preencher dados"
-                    style={{ fontSize: "5vw" }}
+                    style={{ fontSize: isMobile ? "5vw" : "1.5rem" }}
                     button={user?.employee ? true : false}
                     styleButton
                     textButton="Fechar Relatório"
@@ -479,12 +460,12 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                 />
                 <Formik initialValues={initialValues} onSubmit={handleSubmit} enableReinitialize>
                     {({ values, handleChange }) => (
-                        <Box sx={{ gap: "4vw", height: "80%", overflowY: "auto", p: "2vw 0", pb: "10vw" }}>
+                        <Box sx={{ gap: isMobile ? "4vw" : "1vw", height: "80%", overflowY: "auto", p: isMobile ? "2vw 0" : "1vw 0", pb: "10vw" }}>
                             <Form>
                                 <Box sx={{ height: "100%", pb: "7vw" }}>
-                                    <Box sx={{ gap: "3vw" }}>
-                                        <Box gap={"2vw"}>
-                                            <Box sx={{ flexDirection: "row", gap: "2vw" }}>
+                                    <Box sx={{ gap: isMobile ? "3vw" : "1vw" }}>
+                                        <Box gap={isMobile ? "2vw" : "1vw"}>
+                                            <Box sx={{ flexDirection: "row", gap: isMobile ? "2vw" : "1vw" }}>
                                                 <TextField
                                                     label="Propriedade"
                                                     name="tillage"
@@ -535,17 +516,12 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                                         <Box
                                             sx={{
                                                 height: "100%",
-                                                pt: "5vw",
-                                                gap: "5vw",
-                                                pb: "5vw",
+                                                pt: isMobile ? "5vw" : "1vw",
+                                                gap: isMobile ? "5vw" : "1vw",
+                                                pb: isMobile ? "5vw" : "1vw",
                                             }}
                                         >
-                                            <OperationComponent
-                                                user={user}
-                                                values={values}
-                                                change={handleChange}
-                                                call={selectedCall}
-                                            />
+                                            <OperationComponent user={user} values={values} change={handleChange} call={selectedCall} />
                                             <ButtonAgritech
                                                 variant="contained"
                                                 // type="submit"
@@ -560,7 +536,14 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                                         </Box>
                                     )}
                                     {stage === 1 && (
-                                        <Box sx={{ height: "100%", pt: "5vw", pb: "4vw", gap: "5vw" }}>
+                                        <Box
+                                            sx={{
+                                                height: "100%",
+                                                pt: isMobile ? "5vw" : "1vw",
+                                                pb: isMobile ? "4vw" : "1vw",
+                                                gap: isMobile ? "5vw" : "1vw",
+                                            }}
+                                        >
                                             <TreatmentComponent
                                                 listProducts={listProducts}
                                                 user={user}
@@ -582,7 +565,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                                         </Box>
                                     )}
                                     {stage === 2 && (
-                                        <Box sx={{ height: "100%", pb: "10vw", pt: "5vw", gap: "2vw" }}>
+                                        <Box sx={{ height: "100%", pb: "10vw", pt: isMobile ? "5vw" : "1vw", gap: isMobile ? "2vw" : "1vw" }}>
                                             <TechReportComponent
                                                 listFlights={listFlights}
                                                 user={user}
@@ -608,7 +591,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                                         </Box>
                                     )}
                                     {stage === 3 && (
-                                        <Box sx={{ height: "100%", justifyContent: "space-between", pt: "5vw" }}>
+                                        <Box sx={{ height: "100%", justifyContent: "space-between", pt: isMobile ? "5vw" : "1vw" }}>
                                             <MaterialComponent
                                                 values={values}
                                                 change={handleChange}

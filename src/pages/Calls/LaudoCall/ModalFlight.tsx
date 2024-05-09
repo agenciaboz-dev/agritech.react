@@ -5,7 +5,7 @@ import { ButtonAgritech } from "../../../components/ButtonAgritech"
 import { LiaObjectGroupSolid } from "react-icons/lia"
 import { MdHeight, MdNumbers, MdOutlineAdd } from "react-icons/md"
 import { TbFileDescription } from "react-icons/tb"
-import { Accordion, Box, IconButton, TextField, Typography } from "@mui/material"
+import { Accordion, Box, IconButton, TextField, Typography, useMediaQuery } from "@mui/material"
 import { AiOutlineDelete } from "react-icons/ai"
 import { colors } from "../../../style/colors"
 import { LiaTemperatureLowSolid } from "react-icons/lia"
@@ -15,9 +15,9 @@ import MuiAccordionDetails from "@mui/material/AccordionDetails"
 import { styled } from "@mui/material/styles"
 import { AccordionSummary } from "../../../components/Accordion"
 import { useNumberMask } from "burgos-masks"
-import { textField } from "../../../style/input"
 import MaskedInputNando from "../../../components/MaskedNando"
 import { Flight } from "../../../definitions/report"
+import { useResponsiveStyles } from "../../../hooks/useResponsiveStyles"
 
 interface ModalFlightProps {
     flight: Flight[]
@@ -32,6 +32,8 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 }))
 
 export const ModalFlight: React.FC<ModalFlightProps> = ({ opened, close, flight, setFlight }) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
+    const textField = useResponsiveStyles()
     const [expanded, setExpanded] = React.useState<string | false>("")
     const floatMask = useNumberMask({ allowDecimal: true, allowLeadingZeroes: true })
 
@@ -81,23 +83,18 @@ export const ModalFlight: React.FC<ModalFlightProps> = ({ opened, close, flight,
             style={{}}
             title="Inserir Voos"
             styles={{
-                body: { display: "flex", flexDirection: "column", gap: "6vw", borderRadius: "10vw" },
+                body: { display: "flex", flexDirection: "column", gap: isMobile ? "6vw" : "1vw", borderRadius: isMobile ? "10vw" : "2vw" },
                 root: { maxHeight: "75%", minHeight: "fit-content" },
-                content: { borderRadius: "6vw" },
+                content: { borderRadius: isMobile ? "6vw" : "2vw" },
             }}
         >
             {flight.map((item, index) => (
-                <Accordion
-                    elevation={0}
-                    key={index}
-                    expanded={expanded === String(index)}
-                    onChange={expandendChange(String(index))}
-                >
+                <Accordion elevation={0} key={index} expanded={expanded === String(index)} onChange={expandendChange(String(index))}>
                     <AccordionSummary aria-controls="panel1-content" id="panel1-header">
                         <Typography>Voo {index + 1}</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
-                        <Box sx={{ gap: "2vw" }} key={index}>
+                        <Box sx={{ gap: isMobile ? "2vw" : "1vw" }} key={index}>
                             <Box sx={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
                                 <h4>Voo {index + 1}</h4>
                                 <IconButton onClick={() => deleteObject(index)}>
@@ -105,7 +102,7 @@ export const ModalFlight: React.FC<ModalFlightProps> = ({ opened, close, flight,
                                 </IconButton>
                             </Box>
 
-                            <Box sx={{ flexDirection: "row", gap: "2vw" }}>
+                            <Box sx={{ flexDirection: "row", gap: isMobile ? "2vw" : "1vw" }}>
                                 <TextField
                                     label="Temperatura "
                                     name="temperature"
@@ -136,7 +133,7 @@ export const ModalFlight: React.FC<ModalFlightProps> = ({ opened, close, flight,
                                     }}
                                 />
                             </Box>
-                            <Box sx={{ flexDirection: "row", gap: "2vw" }}>
+                            <Box sx={{ flexDirection: "row", gap: isMobile ? "2vw" : "1vw" }}>
                                 <TextField
                                     label="Veloc. Vento"
                                     name="wind_velocity"
@@ -168,7 +165,7 @@ export const ModalFlight: React.FC<ModalFlightProps> = ({ opened, close, flight,
                                 />
                             </Box>
 
-                            <Box sx={{ flexDirection: "row", gap: "2vw" }}>
+                            <Box sx={{ flexDirection: "row", gap: isMobile ? "2vw" : "1vw" }}>
                                 <TextField
                                     label="Faixa "
                                     name="faixa"
@@ -200,7 +197,7 @@ export const ModalFlight: React.FC<ModalFlightProps> = ({ opened, close, flight,
                                 />
                             </Box>
 
-                            <Box sx={{ flexDirection: "row", gap: "2vw" }}>
+                            <Box sx={{ flexDirection: "row", gap: isMobile ? "2vw" : "1vw" }}>
                                 <TextField
                                     label="Vol. de tanque"
                                     name="tank_volume"
@@ -231,7 +228,7 @@ export const ModalFlight: React.FC<ModalFlightProps> = ({ opened, close, flight,
                                     }}
                                 />
                             </Box>
-                            <Box sx={{ flexDirection: "row", gap: "2vw", width: "48%" }}>
+                            <Box sx={{ flexDirection: "row", gap: isMobile ? "2vw" : "1vw", width: "48%" }}>
                                 <TextField
                                     label="Área Sobrevoada"
                                     name="performance"
@@ -251,14 +248,14 @@ export const ModalFlight: React.FC<ModalFlightProps> = ({ opened, close, flight,
                     </AccordionDetails>
                 </Accordion>
             ))}
-            <Box sx={{ width: "100%", flexDirection: "row", gap: "2vw" }}>
+            <Box sx={{ width: "100%", flexDirection: "row", gap: isMobile ? "2vw" : "1vw" }}>
                 <ButtonAgritech
                     variant="outlined"
                     sx={{
                         width: "50%",
                         alignSelf: "end",
-                        fontSize: "3.6vw",
-                        p: "2vw",
+                        fontSize: isMobile ? "3.6vw" : "1rem",
+                        p: isMobile ? "2vw" : "1vw",
                         bgColor: "red",
                         color: colors.text.black,
                     }}
@@ -272,8 +269,8 @@ export const ModalFlight: React.FC<ModalFlightProps> = ({ opened, close, flight,
                     sx={{
                         width: "50%",
                         alignSelf: "end",
-                        fontSize: "3.6vw",
-                        p: "2vw",
+                        fontSize: isMobile ? "3.6vw" : "1rem",
+                        p: isMobile ? "2vw" : "1vw",
                         bgcolor: colors.button,
                         color: colors.text.white,
                     }}

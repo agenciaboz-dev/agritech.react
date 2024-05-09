@@ -1,9 +1,9 @@
-import { Box, TextField } from "@mui/material"
+import { Box, TextField, useMediaQuery } from "@mui/material"
 import React, { ChangeEventHandler, useEffect, useState } from "react"
-import { textField } from "../../../style/input"
 import { colors } from "../../../style/colors"
 import { Call } from "../../../definitions/call"
 import { NewReport } from "../../../definitions/report"
+import { useResponsiveStyles } from "../../../hooks/useResponsiveStyles"
 // import { NumericFormat } from "react-number-format"
 interface OperationComponentProps {
     user: User
@@ -13,13 +13,15 @@ interface OperationComponentProps {
 }
 
 export const OperationComponent: React.FC<OperationComponentProps> = ({ values, change, user, call }) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
+    const textField = useResponsiveStyles()
     useEffect(() => {
         console.log(call?.talhao)
     }, [call?.talhao?.tillage?.area])
     return (
-        <Box sx={{ gap: "3vw" }}>
-            <Box sx={{ gap: "3vw" }}>
-                <p style={{ fontSize: "3.5vw", fontWeight: "bold" }}>Dados de Operação</p>
+        <Box sx={{ gap: isMobile ? "3vw" : "1vw" }}>
+            <Box sx={{ gap: isMobile ? "3vw" : "1vw" }}>
+                <p style={{ fontSize: isMobile ? "3.5vw" : "1rem", fontWeight: "bold" }}>Dados de Operação</p>
                 <TextField
                     label="Tipo de serviço"
                     name="operation.service"
@@ -28,7 +30,7 @@ export const OperationComponent: React.FC<OperationComponentProps> = ({ values, 
                     onChange={change}
                     required
                 />
-                <Box sx={{ flexDirection: "row", gap: "2vw" }}>
+                <Box sx={{ flexDirection: "row", gap: isMobile ? "2vw" : "1vw" }}>
                     <TextField
                         label="Cultura"
                         name="operation.culture"
@@ -56,14 +58,7 @@ export const OperationComponent: React.FC<OperationComponentProps> = ({ values, 
                     required
                     onChange={change}
                 />
-                <TextField
-                    label="Modelo"
-                    name="operation.model"
-                    value={values.operation?.model}
-                    sx={{ ...textField }}
-                    onChange={change}
-                    required
-                />
+                <TextField label="Modelo" name="operation.model" value={values.operation?.model} sx={{ ...textField }} onChange={change} required />
             </Box>
             <TextField
                 label="Piloto/Copiloto"

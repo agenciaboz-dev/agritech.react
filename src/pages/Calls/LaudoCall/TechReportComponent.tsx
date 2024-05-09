@@ -1,4 +1,4 @@
-import { Accordion, Box, Typography } from "@mui/material"
+import { Accordion, Box, Typography, useMediaQuery } from "@mui/material"
 import { AccordionSummary } from "../../../components/Accordion"
 import React, { ChangeEventHandler } from "react"
 import { TitleComponents } from "../../../components/TitleComponents"
@@ -22,26 +22,22 @@ const AccordionDetails = styled(MuiAccordionDetails)(({}) => ({
     borderTop: "1px solid rgba(0, 0, 0, .125)",
 }))
 export const TechReportComponent: React.FC<TechReportComponentProps> = ({ listFlights, open }) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
     const [expanded, setExpanded] = React.useState<string | false>("")
 
     const expandendChange = (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
         setExpanded(newExpanded ? panel : false)
     }
     return (
-        <Box sx={{ gap: "3vw" }}>
-            <Box sx={{ gap: "3vw", p: "2vw" }}>
+        <Box sx={{ gap: isMobile ? "3vw" : "1vw" }}>
+            <Box sx={{ gap: isMobile ? "3vw" : "1vw", p: isMobile ? "2vw" : "1vw" }}>
                 <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
-                    <p style={{ fontWeight: "bold", fontSize: "3.5vw" }}>Laudo Técnico</p>
+                    <p style={{ fontWeight: "bold", fontSize: isMobile ? "3.5vw" : "1rem" }}>Laudo Técnico</p>
                 </Box>
-                <Box sx={{ height: "80%", gap: "4vw" }}>
+                <Box sx={{ height: "80%", gap: isMobile ? "4vw" : "1vw" }}>
                     <TitleComponents title="Voos" button click={open} />
                     {listFlights.map((item, index) => (
-                        <Accordion
-                            elevation={0}
-                            key={index}
-                            expanded={expanded === String(index)}
-                            onChange={expandendChange(String(index))}
-                        >
+                        <Accordion elevation={0} key={index} expanded={expanded === String(index)} onChange={expandendChange(String(index))}>
                             <AccordionSummary aria-controls="panel1-content" id="panel1-header">
                                 <Typography>Voo {index + 1}</Typography>
                             </AccordionSummary>

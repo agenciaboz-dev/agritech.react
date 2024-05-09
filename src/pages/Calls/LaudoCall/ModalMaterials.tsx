@@ -2,7 +2,7 @@ import { Modal, TextInput } from "@mantine/core"
 import React, { ChangeEvent, useState } from "react"
 import { ButtonAgritech } from "../../../components/ButtonAgritech"
 import { MdOutlineAdd } from "react-icons/md"
-import { Accordion, Box, IconButton, MenuItem, TextField, Typography } from "@mui/material"
+import { Accordion, Box, IconButton, MenuItem, TextField, Typography, useMediaQuery } from "@mui/material"
 import { AiOutlineDelete } from "react-icons/ai"
 import { colors } from "../../../style/colors"
 import MuiAccordionDetails from "@mui/material/AccordionDetails"
@@ -10,9 +10,9 @@ import { styled } from "@mui/material/styles"
 import { AccordionSummary } from "../../../components/Accordion"
 import MaskedInputNando from "../../../components/MaskedNando"
 import { useNumberMask } from "burgos-masks"
-import { textField } from "../../../style/input"
 import { Material } from "../../../definitions/report"
 import { unmaskNumber } from "../../../hooks/unmaskNumber"
+import { useResponsiveStyles } from "../../../hooks/useResponsiveStyles"
 
 interface ModalMaterialProps {
     material: Material[]
@@ -27,7 +27,8 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 }))
 
 export const ModalMaterial: React.FC<ModalMaterialProps> = ({ opened, close, material, setMaterial }) => {
-    const [expanded, setExpanded] = React.useState<string | false>("")
+    const isMobile = useMediaQuery("(orientation: portrait)")
+    const textField = useResponsiveStyles()
     const [unit, setUnit] = useState("")
     const [value, setValue] = useState("")
 
@@ -92,23 +93,18 @@ export const ModalMaterial: React.FC<ModalMaterialProps> = ({ opened, close, mat
             style={{}}
             title="Inserir Insumos"
             styles={{
-                body: { display: "flex", flexDirection: "column", gap: "6vw", borderRadius: "10vw" },
+                body: { display: "flex", flexDirection: "column", gap: isMobile ? "6vw" : "1vw", borderRadius: isMobile ? "10vw" : "2vw" },
                 root: { maxHeight: "75%", minHeight: "fit-content" },
-                content: { borderRadius: "6vw" },
+                content: { borderRadius: isMobile ? "6vw" : "2vw" },
             }}
         >
             {material.map((item, index) => (
-                <Accordion
-                    elevation={0}
-                    key={index}
-                    expanded={expanded === String(index)}
-                    onChange={expandendChange(String(index))}
-                >
+                <Accordion elevation={0} key={index} expanded={expanded === String(index)} onChange={expandendChange(String(index))}>
                     <AccordionSummary aria-controls="panel1-content" id="panel1-header">
                         <Typography>Insumo {index + 1}</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
-                        <Box sx={{ gap: "2vw" }} key={index}>
+                        <Box sx={{ gap: isMobile ? "2vw" : "1vw" }} key={index}>
                             <Box sx={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
                                 <h4>Insumo {index + 1}</h4>
                                 <IconButton onClick={() => deleteObject(index)}>
@@ -116,7 +112,7 @@ export const ModalMaterial: React.FC<ModalMaterialProps> = ({ opened, close, mat
                                 </IconButton>
                             </Box>
 
-                            <Box sx={{ flexDirection: "row", gap: "2vw" }}>
+                            <Box sx={{ flexDirection: "row", gap: isMobile ? "2vw" : "1vw" }}>
                                 <TextField
                                     label="Fazenda "
                                     name="talhao"
@@ -153,7 +149,7 @@ export const ModalMaterial: React.FC<ModalMaterialProps> = ({ opened, close, mat
                                 required
                             />
 
-                            <Box sx={{ flexDirection: "row", gap: "2vw", width: "100%", justifyContent: "space-between" }}>
+                            <Box sx={{ flexDirection: "row", gap: isMobile ? "2vw" : "1vw", width: "100%", justifyContent: "space-between" }}>
                                 <TextField
                                     label="Dose/ha"
                                     name="dosage"
@@ -180,7 +176,7 @@ export const ModalMaterial: React.FC<ModalMaterialProps> = ({ opened, close, mat
                                     variant="outlined"
                                     value={unit}
                                     InputProps={{
-                                        sx: { ...textField, height: "10.76vw" },
+                                        sx: { ...textField, height: isMobile ? "10.76vw" : "fit-content" },
                                     }}
                                     SelectProps={{
                                         MenuProps: {
@@ -211,7 +207,7 @@ export const ModalMaterial: React.FC<ModalMaterialProps> = ({ opened, close, mat
                                 onChange={(e) => handleChange(index, e as React.ChangeEvent<HTMLInputElement>)}
                             />
                             <p style={{ fontSize: "0.7rem" }}>Indique as unidades de medida dos respectivos campos. </p>
-                            <Box sx={{ flexDirection: "row", gap: "3vw" }}>
+                            <Box sx={{ flexDirection: "row", gap: isMobile ? "3vw" : "1vw" }}>
                                 <TextField
                                     label="Total"
                                     name="total"
@@ -235,7 +231,7 @@ export const ModalMaterial: React.FC<ModalMaterialProps> = ({ opened, close, mat
                                     onChange={(e) => handleChange(index, e as React.ChangeEvent<HTMLInputElement>)}
                                 />
                             </Box>
-                            <Box sx={{ flexDirection: "row", gap: "2vw" }}>
+                            <Box sx={{ flexDirection: "row", gap: isMobile ? "2vw" : "1vw" }}>
                                 <TextField
                                     label="Aplicado "
                                     name="applied"
@@ -264,14 +260,14 @@ export const ModalMaterial: React.FC<ModalMaterialProps> = ({ opened, close, mat
                     </AccordionDetails>
                 </Accordion>
             ))}
-            <Box sx={{ width: "100%", flexDirection: "row", gap: "2vw" }}>
+            <Box sx={{ width: "100%", flexDirection: "row", gap: isMobile ? "2vw" : "1vw" }}>
                 <ButtonAgritech
                     variant="outlined"
                     sx={{
                         width: "50%",
                         alignSelf: "end",
-                        fontSize: "3.6vw",
-                        p: "2vw",
+                        fontSize: isMobile ? "3.6vw" : "1rem",
+                        p: isMobile ? "2vw" : "1vw",
                         bgColor: "red",
                         color: colors.text.black,
                     }}
@@ -285,8 +281,8 @@ export const ModalMaterial: React.FC<ModalMaterialProps> = ({ opened, close, mat
                     sx={{
                         width: "50%",
                         alignSelf: "end",
-                        fontSize: "3.6vw",
-                        p: "2vw",
+                        fontSize: isMobile ? "3.6vw" : "1rem",
+                        p: isMobile ? "2vw" : "1vw",
                         bgcolor: colors.button,
                         color: colors.text.white,
                     }}

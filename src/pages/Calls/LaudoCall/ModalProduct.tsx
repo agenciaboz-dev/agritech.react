@@ -3,15 +3,15 @@ import React, { ChangeEvent, useState } from "react"
 import { ButtonAgritech } from "../../../components/ButtonAgritech"
 import { LiaObjectGroupSolid } from "react-icons/lia"
 import { MdNumbers, MdOutlineAdd } from "react-icons/md"
-import { Box, IconButton, MenuItem, Select, TextField } from "@mui/material"
+import { Box, IconButton, MenuItem, Select, TextField, useMediaQuery } from "@mui/material"
 import { AiOutlineDelete } from "react-icons/ai"
 import { colors } from "../../../style/colors"
-import { textField } from "../../../style/input"
 import { useNumberMask } from "burgos-masks"
 import MaskedInput from "../../../components/MaskedInput"
 import MaskedInputNando from "../../../components/MaskedNando"
 import { Product } from "../../../definitions/report"
 import { unmaskNumber } from "../../../hooks/unmaskNumber"
+import { useResponsiveStyles } from "../../../hooks/useResponsiveStyles"
 
 interface ModalProductProps {
     product: Product[]
@@ -21,6 +21,8 @@ interface ModalProductProps {
 }
 
 export const ModalProduct: React.FC<ModalProductProps> = ({ opened, close, product, setproduct }) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
+    const textField = useResponsiveStyles()
     const [value, setValue] = useState("")
     const [unit, setUnit] = useState("")
     const floatMask = useNumberMask({ allowDecimal: true, allowLeadingZeroes: true })
@@ -66,13 +68,13 @@ export const ModalProduct: React.FC<ModalProductProps> = ({ opened, close, produ
             style={{}}
             title="Inserir produtos"
             styles={{
-                body: { display: "flex", flexDirection: "column", gap: "6vw", borderRadius: "10vw" },
+                body: { display: "flex", flexDirection: "column", gap: isMobile ? "6vw" : "1vw", borderRadius: isMobile ? "10vw" : "2vw" },
                 root: { maxHeight: "75%", minHeight: "fit-content" },
-                content: { borderRadius: "6vw" },
+                content: { borderRadius: isMobile ? "6vw" : "2vw" },
             }}
         >
             {product.map((item, index) => (
-                <Box sx={{ gap: "3vw" }} key={index}>
+                <Box sx={{ gap: isMobile ? "3vw" : "1vw" }} key={index}>
                     <Box sx={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
                         <h4>Produto {index + 1}</h4>
                         <IconButton onClick={() => deleteObject(index)}>
@@ -90,7 +92,7 @@ export const ModalProduct: React.FC<ModalProductProps> = ({ opened, close, produ
                         onChange={(e) => handleChange(index, e as React.ChangeEvent<HTMLInputElement>)}
                     />
 
-                    <Box sx={{ flexDirection: "row", gap: "2vw" }}>
+                    <Box sx={{ flexDirection: "row", gap: isMobile ? "2vw" : "1vw" }}>
                         <TextField
                             label="Dose/HA"
                             name="dosage"
@@ -116,7 +118,7 @@ export const ModalProduct: React.FC<ModalProductProps> = ({ opened, close, produ
                             variant="outlined"
                             value={unit}
                             InputProps={{
-                                sx: { ...textField, height: "10.76vw" },
+                                sx: { ...textField, height: isMobile ? "10.76vw" : "fit-content" },
                             }}
                             SelectProps={{
                                 MenuProps: {
@@ -139,14 +141,14 @@ export const ModalProduct: React.FC<ModalProductProps> = ({ opened, close, produ
                     </Box>
                 </Box>
             ))}
-            <Box sx={{ width: "100%", flexDirection: "row", gap: "2vw" }}>
+            <Box sx={{ width: "100%", flexDirection: "row", gap: isMobile ? "2vw" : "1vw" }}>
                 <ButtonAgritech
                     variant="outlined"
                     sx={{
                         width: "50%",
                         alignSelf: "end",
-                        fontSize: "3.6vw",
-                        p: "2vw",
+                        fontSize: isMobile ? "3.6vw" : "1rem",
+                        p: isMobile ? "2vw" : "1vw",
                         bgColor: "red",
                         color: colors.text.black,
                     }}
@@ -160,8 +162,8 @@ export const ModalProduct: React.FC<ModalProductProps> = ({ opened, close, produ
                     sx={{
                         width: "50%",
                         alignSelf: "end",
-                        fontSize: "3.6vw",
-                        p: "2vw",
+                        fontSize: isMobile ? "3.6vw" : "1rem",
+                        p: isMobile ? "2vw" : "1vw",
                         bgcolor: colors.button,
                         color: colors.text.white,
                     }}

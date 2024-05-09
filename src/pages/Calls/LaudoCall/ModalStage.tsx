@@ -1,7 +1,7 @@
 import { Modal } from "@mantine/core"
 import React, { useEffect, useState } from "react"
 import { ButtonAgritech } from "../../../components/ButtonAgritech"
-import { Box, CircularProgress } from "@mui/material"
+import { Box, CircularProgress, useMediaQuery } from "@mui/material"
 import { colors } from "../../../style/colors"
 import { Report, Stage } from "../../../definitions/report"
 import { StageDescription } from "../../../components/StageDescription"
@@ -19,6 +19,7 @@ interface ModalStageProps {
 }
 
 export const ModalStage: React.FC<ModalStageProps> = ({ opened, close, report }) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
     const io = useIo()
     const { snackbar } = useSnackbar()
     const navigate = useNavigate()
@@ -87,11 +88,7 @@ export const ModalStage: React.FC<ModalStageProps> = ({ opened, close, report })
             if (updatedReport.pdf_path) {
                 window.open(updatedReport.pdf_path, "_blank")?.focus()
             }
-            navigate(
-                user?.isAdmin
-                    ? `/adm/call/${report?.callId}/report/${report?.id}`
-                    : `/employee/call/${report?.callId}/report/${report?.id}`
-            )
+            navigate(user?.isAdmin ? `/adm/call/${report?.callId}/report/${report?.id}` : `/employee/call/${report?.callId}/report/${report?.id}`)
         })
         io.on("report:closed:failed", (error) => {
             console.log(error)
@@ -112,22 +109,17 @@ export const ModalStage: React.FC<ModalStageProps> = ({ opened, close, report })
             centered
             style={{}}
             styles={{
-                body: { display: "flex", flexDirection: "column", gap: "1vw", borderRadius: "10vw" },
+                body: { display: "flex", flexDirection: "column", gap: "1vw", borderRadius: isMobile ? "10vw" : "2vw" },
                 root: { maxHeight: "75%", minHeight: "fit-content" },
-                content: { borderRadius: "6vw" },
+                content: { borderRadius: isMobile ? "6vw" : "2vw" },
             }}
         >
-            <Box sx={{ width: "100%", flexDirection: "column", gap: "2vw" }}>
+            <Box sx={{ width: "100%", flexDirection: "column", gap: isMobile ? "2vw" : "1vw" }}>
                 <form onSubmit={backFormik.handleSubmit}>
-                    <StageDescription
-                        title={"Volta da Localização"}
-                        values={backFormik.values}
-                        change={backFormik.handleChange}
-                        data={dates}
-                    />
+                    <StageDescription title={"Volta da Localização"} values={backFormik.values} change={backFormik.handleChange} data={dates} />
 
                     <ButtonAgritech type="submit" variant="contained" sx={{ bgcolor: colors.button }}>
-                        {loading ? <CircularProgress size="7vw" sx={{ color: colors.text.white }} /> : "Finalizar"}
+                        {loading ? <CircularProgress size={isMobile ? "7vw" : "2vw"} sx={{ color: colors.text.white }} /> : "Finalizar"}
                     </ButtonAgritech>
                 </form>
             </Box>
