@@ -1,8 +1,8 @@
-import { Box, TextField, Button, MenuItem } from "@mui/material"
+import { Box, TextField, Button, MenuItem, useMediaQuery } from "@mui/material"
 import React, { ChangeEventHandler } from "react"
 import { colors } from "../../style/colors"
-import { textField } from "../../style/input"
 import { useBankAccount } from "../../hooks/useBankAccount"
+import { useResponsiveStyles } from "../../hooks/useResponsiveStyles"
 
 interface StepFourProps {
     data: SignupValues
@@ -11,14 +11,17 @@ interface StepFourProps {
 }
 
 export const StepFour: React.FC<StepFourProps> = ({ data, handleChange, setCurrentStep }) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
+    const textField = useResponsiveStyles()
     const bankAccount = useBankAccount()
+
     return (
-        <Box sx={{ width: "100%", height: "100%", gap: "4vw" }}>
-            <p style={{ fontSize: "4.5vw", fontWeight: "800", fontFamily: "MalgunGothic2", textAlign: "left" }}>
+        <Box sx={{ width: "100%", height: "100%", gap: isMobile ? "4vw" : "1vw" }}>
+            <p style={{ fontSize: isMobile ? "4.5vw" : "1.2rem", fontWeight: "800", fontFamily: "MalgunGothic2", textAlign: "left" }}>
                 Informações Profissionais
             </p>
-            <Box sx={{ gap: "2vw" }}>
-                <Box sx={{ gap: "3vw" }}>
+            <Box sx={{ gap: isMobile ? "2vw" : "1vw" }}>
+                <Box sx={{ gap: isMobile ? "3vw" : "1vw" }}>
                     <TextField
                         variant="outlined"
                         label={"Departamento"}
