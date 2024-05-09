@@ -1,4 +1,4 @@
-import { Box, Button, IconButton } from "@mui/material"
+import { Box, Button, IconButton, useMediaQuery } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { useUser } from "../../hooks/useUser"
 import LogoutIcon from "@mui/icons-material/Logout"
@@ -15,6 +15,7 @@ interface AnalysisProps {
 }
 
 export const Analysis: React.FC<AnalysisProps> = ({ user }) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
     const { logout } = useUser()
     const header = useHeader()
 
@@ -26,16 +27,16 @@ export const Analysis: React.FC<AnalysisProps> = ({ user }) => {
     }, [])
 
     return (
-        <Box style={{ flex: 1, backgroundColor: colors.button, paddingTop: "5vw", height: "100%" }}>
-            <Box style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", padding: "0 4vw" }}>
+        <Box style={{ flex: 1, backgroundColor: colors.button, paddingTop: isMobile ? "5vw" : "1vw", height: "100%" }}>
+            <Box style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", padding: isMobile ? "0 4vw" : "0 1vw" }}>
                 <Box
                     sx={{
                         width: "100%",
                         flexDirection: "row",
                         paddingBottom: "2vw",
                         alignItems: "center",
-                        paddingLeft: "4vw",
-                        paddingRight: "4vw",
+                        paddingLeft: isMobile ? "4vw" : "1vw",
+                        paddingRight: isMobile ? "4vw" : "1vw",
                         gap: "1vw",
                     }}
                 >
@@ -47,7 +48,7 @@ export const Analysis: React.FC<AnalysisProps> = ({ user }) => {
                             <p
                                 style={{
                                     color: colors.text.white,
-                                    fontSize: "5vw",
+                                    fontSize: isMobile ? "5vw" : "1.5rem",
                                     fontFamily: "MalgunGothic2",
                                     fontWeight: "bold",
                                 }}
@@ -58,33 +59,33 @@ export const Analysis: React.FC<AnalysisProps> = ({ user }) => {
                     )}
                 </Box>
                 <IconButton onClick={logout}>
-                    <LogoutIcon sx={{ color: "#fff", width: "6vw" }} />
+                    <LogoutIcon sx={{ color: "#fff", width: isMobile ? "6vw" : "2vw" }} />
                 </IconButton>
             </Box>
             <Box
                 style={{
-                    padding: "10vw",
+                    padding: isMobile ? "10vw" : "1vw",
                     width: "100%",
                     backgroundColor: "#fff",
-                    borderTopLeftRadius: "7vw",
-                    borderTopRightRadius: "7vw",
+                    borderTopLeftRadius: isMobile ? "7vw" : "2vw",
+                    borderTopRightRadius: isMobile ? "7vw" : "2vw",
                     justifyContent: "center",
                     alignItems: "center",
                     flex: 1,
-                    gap: "8vw",
+                    gap: isMobile ? "8vw" : "1vw",
                     textAlign: "center",
                     height: "100%",
                 }}
             >
                 {user.rejected === null && !user.isAdmin ? (
                     <Box sx={{ width: "100%", height: "100%", alignItems: "center", justifyContent: "center" }}>
-                        <img src={textImage} style={{ width: "80%", height: "20vw" }} />
-                        <img src={logoColor} style={{ width: "100%", height: "50vw" }} />
-                        <Box sx={{ p: "1vw", gap: "3vw", alignItems: "center" }}>
-                            <p style={{ fontSize: "4.5vw", fontWeight: "400", textAlign: "center" }}>
+                        <img src={textImage} style={{ width: "80%", height: isMobile ? "20vw" : "10vw" }} />
+                        <img src={logoColor} style={{ width: "100%", height: isMobile ? "50vw" : "10vw" }} />
+                        <Box sx={{ p: "1vw", gap: isMobile ? "3vw" : "1vw", alignItems: "center" }}>
+                            <p style={{ fontSize: isMobile ? "4.5vw" : "1.2rem", fontWeight: "400", textAlign: "center" }}>
                                 Estamos analisando seu cadastro e entraremos em contato a respeito
                             </p>
-                            <p style={{ fontSize: "3.6vw" }}>Situação:</p>
+                            <p style={{ fontSize: isMobile ? "3.6vw" : "1rem" }}>Situação:</p>
                             <Button
                                 size="small"
                                 variant="contained"
@@ -100,20 +101,20 @@ export const Analysis: React.FC<AnalysisProps> = ({ user }) => {
                         </Box>
                     </Box>
                 ) : (
-                    <Box sx={{ justifyContent: "center", alignItems: "center", gap: "6vw" }}>
-                        <img src={logoColor} style={{ width: "100%", height: "40vw" }} />
-                        <Box sx={{ p: "1vw", gap: "3vw", alignItems: "center" }}>
-                            <p style={{ fontSize: "4.5vw", fontWeight: "400", textAlign: "center" }}>
+                    <Box sx={{ justifyContent: "center", alignItems: "center", gap: isMobile ? "6vw" : "1vw" }}>
+                        <img src={logoColor} style={{ width: "100%", height: isMobile ? "40vw" : "10vw" }} />
+                        <Box sx={{ p: "1vw", gap: isMobile ? "3vw" : "1vw", alignItems: "center" }}>
+                            <p style={{ fontSize: isMobile ? "4.5vw" : "1.2rem", fontWeight: "400", textAlign: "center" }}>
                                 Seu cadastro foi recusado,{" "}
                                 <a href="" style={{ color: colors.primary }}>
                                     clique aqui
                                 </a>{" "}
                                 para rever seu cadastro
                             </p>
-                            {/* <p style={{ fontSize: "4.5vw", fontWeight: "400", textAlign: "center" }}>
+                            {/* <p style={{ fontSize: isMobile ? "4.5vw" : "1.2rem", fontWeight: "400", textAlign: "center" }}>
                                 Motivo: Não completou o cadastro
                             </p> */}
-                            <p style={{ fontSize: "3.6vw" }}>Situação:</p>
+                            <p style={{ fontSize: isMobile ? "3.6vw" : "1rem" }}>Situação:</p>
                             <Button
                                 size="small"
                                 variant="contained"
