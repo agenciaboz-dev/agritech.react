@@ -1,7 +1,7 @@
-import { Box, TextField } from "@mui/material"
+import { Box, TextField, useMediaQuery } from "@mui/material"
 import React, { ChangeEventHandler } from "react"
-import { textField } from "../../style/input"
 import MaskedInput from "../../components/MaskedInput"
+import { useResponsiveStyles } from "../../hooks/useResponsiveStyles"
 
 interface StepThreeProps {
     data: SignupValues
@@ -10,13 +10,13 @@ interface StepThreeProps {
 }
 
 export const StepThree: React.FC<StepThreeProps> = ({ data, handleChange }) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
+    const textField = useResponsiveStyles()
     return (
-        <Box sx={{ width: "100%", height: "100%", gap: "4vw" }}>
-            <p style={{ fontSize: "4.5vw", fontWeight: "800", fontFamily: "MalgunGothic2", textAlign: "left" }}>
-                Documentação
-            </p>
-            <Box sx={{ gap: "2vw" }}>
-                <Box sx={{ gap: "3vw" }}>
+        <Box sx={{ width: "100%", height: "100%", gap: isMobile ? "4vw" : "1vw", padding: "1vw 0" }}>
+            <p style={{ fontSize: isMobile ? "4.5vw" : "1.2rem", fontWeight: "800", fontFamily: "MalgunGothic2", textAlign: "left" }}>Documentação</p>
+            <Box sx={{ gap: isMobile ? "2vw" : "1vw" }}>
+                <Box sx={{ gap: isMobile ? "3vw" : "1vw" }}>
                     <TextField
                         variant="outlined"
                         label={"Nacionalidade"}
@@ -53,8 +53,8 @@ export const StepThree: React.FC<StepThreeProps> = ({ data, handleChange }) => {
                         }}
                     />
                 </Box>
-                {/* <Box sx={{ gap: "2vw" }}>
-                    <p style={{ fontSize: "3.5vw", fontFamily: "MalgunGothic2", textAlign: "left" }}>
+                {/* <Box sx={{ gap: isMobile ? "2vw" : "1vw" }}>
+                    <p style={{ fontSize: isMobile ? "3.5vw" : "1rem", fontFamily: "MalgunGothic2", textAlign: "left" }}>
                         {" "}
                         Certificado de reservista
                     </p>
@@ -62,8 +62,8 @@ export const StepThree: React.FC<StepThreeProps> = ({ data, handleChange }) => {
                         variant="contained"
                         sx={{
                             width: "50%",
-                            height: "17%",
-                            fontSize: "3vw",
+                            height: isMobile ? "17%" : "fit-content",
+                            fontSize: isMobile ? "3vw" : "1rem",
                             color: colors.text.white,
                             backgroundColor: colors.button,
                             borderRadius: "5vw",
@@ -72,7 +72,7 @@ export const StepThree: React.FC<StepThreeProps> = ({ data, handleChange }) => {
                     >
                         Enviar documento
                     </Button>
-                    <p style={{ fontSize: "3.5vw", fontFamily: "MalgunGothic2", textAlign: "left" }}>
+                    <p style={{ fontSize: isMobile ? "3.5vw" : "1rem", fontFamily: "MalgunGothic2", textAlign: "left" }}>
                         {" "}
                         Comprovante de Residência
                     </p>
@@ -80,8 +80,8 @@ export const StepThree: React.FC<StepThreeProps> = ({ data, handleChange }) => {
                         variant="contained"
                         sx={{
                             width: "50%",
-                            height: "17%",
-                            fontSize: "3vw",
+                            height: isMobile ? "17%" : "fit-content",
+                            fontSize: isMobile ? "3vw" : "1rem",
                             color: colors.text.white,
                             backgroundColor: colors.button,
                             borderRadius: "5vw",

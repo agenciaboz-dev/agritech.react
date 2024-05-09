@@ -20,7 +20,7 @@ export const StepTwo: React.FC<StepTwoProps> = ({ data, handleChange, typeUser, 
     const estados = useEstadosBrasil()
 
     return (
-        <Box sx={{ width: "100%", height: 1, gap: isMobile ? "2vw" : "1vw" }}>
+        <Box sx={{ width: "100%", height: 1, gap: isMobile ? "2vw" : "1vw", padding: "1vw 0" }}>
             {/* <p style={{ fontSize: isMobile ? "4.5vw" : "1.2rem", fontFamily: "MalgunGothic2", textAlign: "left", fontWeight: "800" }}>Login</p> */}
 
             <Box sx={{ gap: isMobile ? "3vw" : "1vw" }}>
