@@ -31,7 +31,7 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, image, set
     const typeRelationship = useRelationship()
 
     return (
-        <Box sx={{ width: "100%", height: "100%", gap: isMobile ? "4vw" : "1vw", flexDirection: "column", paddingTop: isMobile ? 0 : "10vw" }}>
+        <Box sx={{ width: "100%", height: "100%", gap: isMobile ? "4vw" : "1vw", flexDirection: "column" }}>
             <p style={{ fontSize: isMobile ? "4.5vw" : "1.2rem", fontFamily: "MalgunGothic2", textAlign: "left", fontWeight: "800" }}>
                 Informações Pessoais
             </p>

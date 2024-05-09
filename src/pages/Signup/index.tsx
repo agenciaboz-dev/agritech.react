@@ -280,7 +280,9 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                                 {currentStep === 1 && (
                                     <Box
                                         sx={{
-                                            padding: isMobile ? 0 : "2vw 0",
+                                            paddingBottom: isMobile ? 0 : "2vw",
+                                            width: "100%",
+                                            overflowY: "auto",
                                         }}
                                     >
                                         <StepOne
@@ -332,7 +334,7 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                                     </Box>
                                 )}
                                 {currentStep === 2 && (
-                                    <Box sx={{ gap: isMobile ? "4vw" : "1vw" }}>
+                                    <Box sx={{ gap: isMobile ? "4vw" : "1vw", width: "100%", overflowY: "auto" }}>
                                         <StepTwo data={values} handleChange={handleChange} typeUser={typeUser} setCurrentStep={setCurrentStep} />
                                         {typeUser === "employee" && (
                                             <Box sx={{ width: "100%", gap: isMobile ? "2vw" : "1vw" }}>

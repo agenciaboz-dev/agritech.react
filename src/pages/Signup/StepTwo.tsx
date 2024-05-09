@@ -1,11 +1,11 @@
 import React, { ChangeEventHandler } from "react"
-import { Box, TextField, Button, MenuItem } from "@mui/material"
+import { Box, TextField, Button, MenuItem, useMediaQuery } from "@mui/material"
 import { colors } from "../../style/colors"
 import MaskedInput from "../../components/MaskedInput"
 import { useEstadosBrasil } from "../../hooks/useEstadosBrasil"
-import { textField } from "../../style/input"
 import MaskedInputNando from "../../components/MaskedNando"
 import { useCepMask, usePhoneMask } from "burgos-masks"
+import { useResponsiveStyles } from "../../hooks/useResponsiveStyles"
 
 interface StepTwoProps {
     data: SignupValues
@@ -15,38 +15,25 @@ interface StepTwoProps {
 }
 
 export const StepTwo: React.FC<StepTwoProps> = ({ data, handleChange, typeUser, setCurrentStep }) => {
+    const isMobile = useMediaQuery("(orientation: portrait)")
+    const textField = useResponsiveStyles()
     const estados = useEstadosBrasil()
 
     return (
-        <Box sx={{ width: "100%", height: 1, gap: "2vw", }}>
-            {/* <p style={{ fontSize: "4.5vw", fontFamily: "MalgunGothic2", textAlign: "left", fontWeight: "800" }}>Login</p> */}
+        <Box sx={{ width: "100%", height: 1, gap: isMobile ? "2vw" : "1vw" }}>
+            {/* <p style={{ fontSize: isMobile ? "4.5vw" : "1.2rem", fontFamily: "MalgunGothic2", textAlign: "left", fontWeight: "800" }}>Login</p> */}
 
-            <Box sx={{ gap: "3vw" }}>
-                <TextField
-                    name="username"
-                    label={"Username"}
-                    value={data.username}
-                    sx={textField}
-                    onChange={handleChange}
-                    required
-                />
-                <TextField
-                    name="password"
-                    type="password"
-                    label={"Senha"}
-                    value={data.password}
-                    sx={textField}
-                    onChange={handleChange}
-                    required
-                />
+            <Box sx={{ gap: isMobile ? "3vw" : "1vw" }}>
+                <TextField name="username" label={"Username"} value={data.username} sx={textField} onChange={handleChange} required />
+                <TextField name="password" type="password" label={"Senha"} value={data.password} sx={textField} onChange={handleChange} required />
             </Box>
 
-            <p style={{ fontSize: "4.5vw", fontFamily: "MalgunGothic2", textAlign: "left", fontWeight: "800" }}>
+            <p style={{ fontSize: isMobile ? "4.5vw" : "1.2rem", fontFamily: "MalgunGothic2", textAlign: "left", fontWeight: "800" }}>
                 Dados para contato
             </p>
 
-            <Box sx={{ gap: "5vw" }}>
-                <Box sx={{ gap: "3vw" }}>
+            <Box sx={{ gap: isMobile ? "5vw" : "1vw" }}>
+                <Box sx={{ gap: isMobile ? "3vw" : "1vw" }}>
                     <TextField
                         name="phone"
                         label={"Telefone"}
@@ -76,12 +63,12 @@ export const StepTwo: React.FC<StepTwoProps> = ({ data, handleChange, typeUser, 
                         onChange={handleChange}
                         required
                     />
-                    <Box sx={{ width: "100%", flexDirection: "row", gap: "2vw" }}>
+                    <Box sx={{ width: "100%", flexDirection: "row", gap: isMobile ? "2vw" : "1vw" }}>
                         <TextField
                             name="address.number"
                             label={"Número"}
                             value={data.address.number}
-                            sx={textField}
+                            sx={{ ...textField, flex: 0.4 }}
                             onChange={handleChange}
                             required
                         />
@@ -89,7 +76,7 @@ export const StepTwo: React.FC<StepTwoProps> = ({ data, handleChange, typeUser, 
                             name="address.cep"
                             label={"CEP"}
                             value={data.address.cep}
-                            sx={{ ...textField, width: "76%" }}
+                            sx={{ ...textField, flex: 0.6 }}
                             InputProps={{
                                 inputComponent: MaskedInputNando,
                                 inputProps: { mask: useCepMask, inputMode: "numeric" },
@@ -98,7 +85,7 @@ export const StepTwo: React.FC<StepTwoProps> = ({ data, handleChange, typeUser, 
                             required
                         />
                     </Box>
-                    <Box sx={{ width: "100%", flexDirection: "row", gap: "2vw" }}>
+                    <Box sx={{ width: "100%", flexDirection: "row", gap: isMobile ? "2vw" : "1vw" }}>
                         <TextField
                             name="address.city"
                             label={"Cidade"}
@@ -120,7 +107,6 @@ export const StepTwo: React.FC<StepTwoProps> = ({ data, handleChange, typeUser, 
                             InputProps={{
                                 sx: {
                                     ...textField,
-                                    height: "11vw",
                                 },
                             }}
                             SelectProps={{
