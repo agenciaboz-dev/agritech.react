@@ -4,6 +4,7 @@ import { useIo } from "../hooks/useIo"
 import { useUser } from "../hooks/useUser"
 import { Notification, NotificationClass } from "../types/server/class/Notification"
 import { useTalhao } from "../hooks/useTalhao"
+import axios from "axios"
 
 interface NotificationDrawerContextValue {
     open: boolean
@@ -50,6 +51,7 @@ export const NotificationDrawerProvider: React.FC<NotificationDrawerProviderProp
     useEffect(() => {
         io.on("notification:list", (list: NotificationClass[]) => {
             setListNotifications(list)
+            console.log(listNotifications)
         })
     }, [])
 

@@ -20,6 +20,10 @@ export const NotificationsList: React.FC<NotificationsListProps> = ({ user }) =>
         header.setTitle("Notificações")
     }, [])
 
+    useEffect(() => {
+        console.log(listNotifications)
+    }, [listNotifications])
+
     return (
         <Box
             sx={{
