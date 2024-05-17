@@ -27,7 +27,7 @@ interface StageDescriptionProps {
 
 export const StageDescription: React.FC<StageDescriptionProps> = ({ title, values, change, data }) => {
     const isMobile = useMediaQuery("(orientation: portrait)")
-    const textField = useResponsiveStyles()
+    const { textField } = useResponsiveStyles()
     const { user } = useUser()
 
     useEffect(() => {
@@ -55,7 +55,15 @@ export const StageDescription: React.FC<StageDescriptionProps> = ({ title, value
                         ampm={false}
                         InputProps={{
                             inputMode: "numeric",
-                            endAdornment: <CiClock2 style={{ color: "black", width: isMobile ? "6vw" : "2vw", height: isMobile ? "6vw" : "2vw" }} />,
+                            endAdornment: (
+                                <CiClock2
+                                    style={{
+                                        color: "black",
+                                        width: isMobile ? "6vw" : "2vw",
+                                        height: isMobile ? "6vw" : "2vw",
+                                    }}
+                                />
+                            ),
                         }}
                     />
                     <TimeField
@@ -70,7 +78,15 @@ export const StageDescription: React.FC<StageDescriptionProps> = ({ title, value
                         timezone="system"
                         InputProps={{
                             inputMode: "numeric",
-                            endAdornment: <CiClock2 style={{ color: "black", width: isMobile ? "6vw" : "2vw", height: isMobile ? "6vw" : "2vw" }} />,
+                            endAdornment: (
+                                <CiClock2
+                                    style={{
+                                        color: "black",
+                                        width: isMobile ? "6vw" : "2vw",
+                                        height: isMobile ? "6vw" : "2vw",
+                                    }}
+                                />
+                            ),
                         }}
                     />
                     {/* <TimeField

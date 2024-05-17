@@ -32,7 +32,7 @@ export const ContentKit: React.FC<ContentKitProps> = ({ edit, values, handleChan
     const isMobile = useMediaQuery("(orientation: portrait)")
     const header = useHeader()
     const floatMask = useNumberMask({ allowDecimal: true, allowLeadingZeroes: true })
-    const textField = useResponsiveStyles()
+    const { textField } = useResponsiveStyles()
 
     const [openedModalObjects, { open, close }] = useDisclosure(false)
     const [openedModalEmployees, { open: openEmployees, close: closeEmployees }] = useDisclosure(false)
@@ -55,7 +55,12 @@ export const ContentKit: React.FC<ContentKitProps> = ({ edit, values, handleChan
                 height: "92%",
             }}
         >
-            <ModalObject opened={openedModalObjects} close={close} object={data.listObjects} setObject={data.setListObjects} />
+            <ModalObject
+                opened={openedModalObjects}
+                close={close}
+                object={data.listObjects}
+                setObject={data.setListObjects}
+            />
             <ModalEmployee
                 opened={openedModalEmployees}
                 close={closeEmployees}

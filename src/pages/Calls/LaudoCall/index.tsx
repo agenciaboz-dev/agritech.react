@@ -21,7 +21,17 @@ import { TreatmentComponent } from "./Treatment"
 import { useSnackbar } from "burgos-snackbar"
 import { useCall } from "../../../hooks/useCall"
 import { unmaskNumber } from "../../../hooks/unmaskNumber"
-import { Flight, Material, NewReport, Operation, Product, Report, Stage, TechReport, Treatment } from "../../../definitions/report"
+import {
+    Flight,
+    Material,
+    NewReport,
+    Operation,
+    Product,
+    Report,
+    Stage,
+    TechReport,
+    Treatment,
+} from "../../../definitions/report"
 import { ModalStage } from "./ModalStage"
 import { useReports } from "../../../hooks/useReports"
 import { useResponsiveStyles } from "../../../hooks/useResponsiveStyles"
@@ -32,7 +42,7 @@ interface LaudoCallProps {
 
 export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
     const isMobile = useMediaQuery("(orientation: portrait)")
-    const textField = useResponsiveStyles()
+    const { textField } = useResponsiveStyles()
     const io = useIo()
     const header = useHeader()
     const { snackbar } = useSnackbar()
@@ -409,12 +419,24 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                     },
                 }}
             >
-                <CircularProgress sx={{ color: colors.text.white, width: isMobile ? "15vw" : "2vw", height: isMobile ? "15vw" : "2vw" }} />
+                <CircularProgress
+                    sx={{ color: colors.text.white, width: isMobile ? "15vw" : "2vw", height: isMobile ? "15vw" : "2vw" }}
+                />
             </Modal>
-            <ModalProduct opened={openedProducts} close={closeProducts} product={listProducts} setproduct={setListProducts} />
+            <ModalProduct
+                opened={openedProducts}
+                close={closeProducts}
+                product={listProducts}
+                setproduct={setListProducts}
+            />
             {report && <ModalStage opened={openedStageFinish} close={closeStage} report={report} />}
             <ModalFlight opened={openedFlight} close={closeFlight} flight={listFlights} setFlight={setListFlights} />
-            <ModalMaterial opened={openedMaterials} close={closeMaterials} material={listMaterials} setMaterial={setListMaterials} />
+            <ModalMaterial
+                opened={openedMaterials}
+                close={closeMaterials}
+                material={listMaterials}
+                setMaterial={setListMaterials}
+            />
             <Box
                 sx={{
                     width: "100%",
@@ -460,7 +482,15 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                 />
                 <Formik initialValues={initialValues} onSubmit={handleSubmit} enableReinitialize>
                     {({ values, handleChange }) => (
-                        <Box sx={{ gap: isMobile ? "4vw" : "1vw", height: "80%", overflowY: "auto", p: isMobile ? "2vw 0" : "1vw 0", pb: "10vw" }}>
+                        <Box
+                            sx={{
+                                gap: isMobile ? "4vw" : "1vw",
+                                height: "80%",
+                                overflowY: "auto",
+                                p: isMobile ? "2vw 0" : "1vw 0",
+                                pb: "10vw",
+                            }}
+                        >
                             <Form>
                                 <Box sx={{ height: "100%", pb: "7vw" }}>
                                     <Box sx={{ gap: isMobile ? "3vw" : "1vw" }}>
@@ -521,7 +551,12 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                                                 pb: isMobile ? "5vw" : "1vw",
                                             }}
                                         >
-                                            <OperationComponent user={user} values={values} change={handleChange} call={selectedCall} />
+                                            <OperationComponent
+                                                user={user}
+                                                values={values}
+                                                change={handleChange}
+                                                call={selectedCall}
+                                            />
                                             <ButtonAgritech
                                                 variant="contained"
                                                 // type="submit"
@@ -565,7 +600,14 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                                         </Box>
                                     )}
                                     {stage === 2 && (
-                                        <Box sx={{ height: "100%", pb: "10vw", pt: isMobile ? "5vw" : "1vw", gap: isMobile ? "2vw" : "1vw" }}>
+                                        <Box
+                                            sx={{
+                                                height: "100%",
+                                                pb: "10vw",
+                                                pt: isMobile ? "5vw" : "1vw",
+                                                gap: isMobile ? "2vw" : "1vw",
+                                            }}
+                                        >
                                             <TechReportComponent
                                                 listFlights={listFlights}
                                                 user={user}
@@ -591,7 +633,13 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                                         </Box>
                                     )}
                                     {stage === 3 && (
-                                        <Box sx={{ height: "100%", justifyContent: "space-between", pt: isMobile ? "5vw" : "1vw" }}>
+                                        <Box
+                                            sx={{
+                                                height: "100%",
+                                                justifyContent: "space-between",
+                                                pt: isMobile ? "5vw" : "1vw",
+                                            }}
+                                        >
                                             <MaterialComponent
                                                 values={values}
                                                 change={handleChange}

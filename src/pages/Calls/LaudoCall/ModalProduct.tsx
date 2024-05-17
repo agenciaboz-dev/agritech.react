@@ -22,7 +22,7 @@ interface ModalProductProps {
 
 export const ModalProduct: React.FC<ModalProductProps> = ({ opened, close, product, setproduct }) => {
     const isMobile = useMediaQuery("(orientation: portrait)")
-    const textField = useResponsiveStyles()
+    const { textField } = useResponsiveStyles()
     const [value, setValue] = useState("")
     const [unit, setUnit] = useState("")
     const floatMask = useNumberMask({ allowDecimal: true, allowLeadingZeroes: true })
@@ -68,7 +68,12 @@ export const ModalProduct: React.FC<ModalProductProps> = ({ opened, close, produ
             style={{}}
             title="Inserir produtos"
             styles={{
-                body: { display: "flex", flexDirection: "column", gap: isMobile ? "6vw" : "1vw", borderRadius: isMobile ? "10vw" : "2vw" },
+                body: {
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: isMobile ? "6vw" : "1vw",
+                    borderRadius: isMobile ? "10vw" : "2vw",
+                },
                 root: { maxHeight: "75%", minHeight: "fit-content" },
                 content: { borderRadius: isMobile ? "6vw" : "2vw" },
             }}

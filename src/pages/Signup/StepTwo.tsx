@@ -16,7 +16,7 @@ interface StepTwoProps {
 
 export const StepTwo: React.FC<StepTwoProps> = ({ data, handleChange, typeUser, setCurrentStep }) => {
     const isMobile = useMediaQuery("(orientation: portrait)")
-    const textField = useResponsiveStyles()
+    const { textField } = useResponsiveStyles()
     const estados = useEstadosBrasil()
 
     return (
@@ -24,11 +24,33 @@ export const StepTwo: React.FC<StepTwoProps> = ({ data, handleChange, typeUser, 
             {/* <p style={{ fontSize: isMobile ? "4.5vw" : "1.2rem", fontFamily: "MalgunGothic2", textAlign: "left", fontWeight: "800" }}>Login</p> */}
 
             <Box sx={{ gap: isMobile ? "3vw" : "1vw" }}>
-                <TextField name="username" label={"Username"} value={data.username} sx={textField} onChange={handleChange} required />
-                <TextField name="password" type="password" label={"Senha"} value={data.password} sx={textField} onChange={handleChange} required />
+                <TextField
+                    name="username"
+                    label={"Username"}
+                    value={data.username}
+                    sx={textField}
+                    onChange={handleChange}
+                    required
+                />
+                <TextField
+                    name="password"
+                    type="password"
+                    label={"Senha"}
+                    value={data.password}
+                    sx={textField}
+                    onChange={handleChange}
+                    required
+                />
             </Box>
 
-            <p style={{ fontSize: isMobile ? "4.5vw" : "1.2rem", fontFamily: "MalgunGothic2", textAlign: "left", fontWeight: "800" }}>
+            <p
+                style={{
+                    fontSize: isMobile ? "4.5vw" : "1.2rem",
+                    fontFamily: "MalgunGothic2",
+                    textAlign: "left",
+                    fontWeight: "800",
+                }}
+            >
                 Dados para contato
             </p>
 

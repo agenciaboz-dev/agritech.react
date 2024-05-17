@@ -14,7 +14,7 @@ interface OperationComponentProps {
 
 export const OperationComponent: React.FC<OperationComponentProps> = ({ values, change, user, call }) => {
     const isMobile = useMediaQuery("(orientation: portrait)")
-    const textField = useResponsiveStyles()
+    const { textField } = useResponsiveStyles()
     useEffect(() => {
         console.log(call?.talhao)
     }, [call?.talhao?.tillage?.area])
@@ -58,7 +58,14 @@ export const OperationComponent: React.FC<OperationComponentProps> = ({ values, 
                     required
                     onChange={change}
                 />
-                <TextField label="Modelo" name="operation.model" value={values.operation?.model} sx={{ ...textField }} onChange={change} required />
+                <TextField
+                    label="Modelo"
+                    name="operation.model"
+                    value={values.operation?.model}
+                    sx={{ ...textField }}
+                    onChange={change}
+                    required
+                />
             </Box>
             <TextField
                 label="Piloto/Copiloto"

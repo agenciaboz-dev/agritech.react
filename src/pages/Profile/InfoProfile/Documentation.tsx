@@ -11,7 +11,7 @@ interface DocumentationProps {
 
 export const Documentation: React.FC<DocumentationProps> = ({ values, handleChange }) => {
     const isMobile = useMediaQuery("(orientation: portrait)")
-    const textField = useResponsiveStyles()
+    const { textField } = useResponsiveStyles()
     return (
         <Box
             sx={{

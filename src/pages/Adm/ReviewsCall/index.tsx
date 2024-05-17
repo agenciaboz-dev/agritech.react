@@ -16,15 +16,19 @@ interface ReviewsCallProps {
 
 export const ReviewsCall: React.FC<ReviewsCallProps> = ({ user }) => {
     const isMobile = useMediaQuery("(orientation: portrait)")
-    const tabStyle = useResponsiveStyles()
+    const { tabStyle } = useResponsiveStyles()
     const io = useIo()
     const header = useHeader()
     const skeletons = useArray().newArray(3)
     const { listCalls, listCallsPending } = useCall()
 
     const [tab, setTab] = useState("pending")
-    const sortedPendingCalls = listCallsPending.filter((item) => !item.approved).sort((a, b) => Number(a.forecast) - Number(b.forecast))
-    const sortedApprovedCalls = listCalls.filter((item) => item.status !== "CANCELED").sort((a, b) => Number(a.forecast) - Number(b.forecast))
+    const sortedPendingCalls = listCallsPending
+        .filter((item) => !item.approved)
+        .sort((a, b) => Number(a.forecast) - Number(b.forecast))
+    const sortedApprovedCalls = listCalls
+        .filter((item) => item.status !== "CANCELED")
+        .sort((a, b) => Number(a.forecast) - Number(b.forecast))
 
     const changeTab = (event: React.SyntheticEvent, newValue: string) => {
         setTab(newValue)
@@ -135,14 +139,24 @@ export const ReviewsCall: React.FC<ReviewsCallProps> = ({ user }) => {
                             : tab === "pending" &&
                               sortedPendingCalls.length === 0 &&
                               skeletons.map((_, index) => (
-                                  <Skeleton key={index} animation="wave" variant="rounded" sx={{ width: 1, height: isMobile ? "15vw" : "5vw" }} />
+                                  <Skeleton
+                                      key={index}
+                                      animation="wave"
+                                      variant="rounded"
+                                      sx={{ width: 1, height: isMobile ? "15vw" : "5vw" }}
+                                  />
                               ))}
                         {tab === "calls" && listCalls.length !== 0
                             ? sortedApprovedCalls?.map((call, index) => <LogsCard key={index} call={call} />)
                             : tab === "calls" &&
                               sortedApprovedCalls.length === 0 &&
                               skeletons.map((_, index) => (
-                                  <Skeleton key={index} animation="wave" variant="rounded" sx={{ width: 1, height: isMobile ? "15vw" : "5vw" }} />
+                                  <Skeleton
+                                      key={index}
+                                      animation="wave"
+                                      variant="rounded"
+                                      sx={{ width: 1, height: isMobile ? "15vw" : "5vw" }}
+                                  />
                               ))}
                     </Box>
                 </Box>

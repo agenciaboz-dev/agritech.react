@@ -15,7 +15,7 @@ interface ReviewsEmployeeProps {
 
 export const ReviewsEmployee: React.FC<ReviewsEmployeeProps> = ({ user }) => {
     const isMobile = useMediaQuery("(orientation: portrait)")
-    const tabStyle = useResponsiveStyles()
+    const { tabStyle } = useResponsiveStyles()
     const header = useHeader()
     const io = useIo()
 
@@ -28,7 +28,9 @@ export const ReviewsEmployee: React.FC<ReviewsEmployeeProps> = ({ user }) => {
     const [requests, setRequests] = useState<User[]>()
 
     useEffect(() => {
-        setListEmployee(pendingUsers.filter((user) => user.employee !== null && user.isAdmin === false && user.rejected === null))
+        setListEmployee(
+            pendingUsers.filter((user) => user.employee !== null && user.isAdmin === false && user.rejected === null)
+        )
         setRequests(pendingUsers.filter((user) => user.isAdmin === false))
     }, [pendingUsers])
 
@@ -111,7 +113,9 @@ export const ReviewsEmployee: React.FC<ReviewsEmployeeProps> = ({ user }) => {
                 </Tabs>
                 <Box sx={{ width: "100%", height: isMobile ? "82%" : "fit-content", overflow: "auto", gap: "1vw" }}>
                     {tab === "requestsEmployee" && listEmployee?.length !== 0
-                        ? listEmployee?.map((user) => <CardUser review user={user} key={user.id} location={`/adm/review/profile/${user.id}`} />)
+                        ? listEmployee?.map((user) => (
+                              <CardUser review user={user} key={user.id} location={`/adm/review/profile/${user.id}`} />
+                          ))
                         : tab === "requestsEmployee" && "Nenhum cadastro de colaborador"}
                 </Box>
             </Box>

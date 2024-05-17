@@ -11,7 +11,7 @@ interface AdditionalProps {
 
 export const Additional: React.FC<AdditionalProps> = ({ data, handleChange }) => {
     const isMobile = useMediaQuery("(orientation: portrait)")
-    const textField = useResponsiveStyles()
+    const { textField } = useResponsiveStyles()
     return (
         <Box sx={{ width: "100%", flexDirection: "column", gap: isMobile ? "3vw" : "1vw", pt: isMobile ? "4vw" : "2vw" }}>
             <TextField

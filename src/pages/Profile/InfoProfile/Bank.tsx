@@ -11,7 +11,7 @@ interface BankProps {
 
 export const Bank: React.FC<BankProps> = ({ values, handleChange }) => {
     const isMobile = useMediaQuery("(orientation: portrait)")
-    const textField = useResponsiveStyles()
+    const { textField } = useResponsiveStyles()
     const bankAccount = useBankAccount()
     return (
         <Box
@@ -25,7 +25,13 @@ export const Bank: React.FC<BankProps> = ({ values, handleChange }) => {
                 paddingBottom: "40vh",
             }}
         >
-            <TextField label={"Banco"} name={"employee.bank.name"} sx={textField} value={values.employee?.bank?.name} onChange={handleChange} />
+            <TextField
+                label={"Banco"}
+                name={"employee.bank.name"}
+                sx={textField}
+                value={values.employee?.bank?.name}
+                onChange={handleChange}
+            />
             <TextField
                 select
                 onChange={handleChange}

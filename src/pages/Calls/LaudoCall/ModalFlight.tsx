@@ -33,7 +33,7 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 
 export const ModalFlight: React.FC<ModalFlightProps> = ({ opened, close, flight, setFlight }) => {
     const isMobile = useMediaQuery("(orientation: portrait)")
-    const textField = useResponsiveStyles()
+    const { textField } = useResponsiveStyles()
     const [expanded, setExpanded] = React.useState<string | false>("")
     const floatMask = useNumberMask({ allowDecimal: true, allowLeadingZeroes: true })
 
@@ -83,13 +83,23 @@ export const ModalFlight: React.FC<ModalFlightProps> = ({ opened, close, flight,
             style={{}}
             title="Inserir Voos"
             styles={{
-                body: { display: "flex", flexDirection: "column", gap: isMobile ? "6vw" : "1vw", borderRadius: isMobile ? "10vw" : "2vw" },
+                body: {
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: isMobile ? "6vw" : "1vw",
+                    borderRadius: isMobile ? "10vw" : "2vw",
+                },
                 root: { maxHeight: "75%", minHeight: "fit-content" },
                 content: { borderRadius: isMobile ? "6vw" : "2vw" },
             }}
         >
             {flight.map((item, index) => (
-                <Accordion elevation={0} key={index} expanded={expanded === String(index)} onChange={expandendChange(String(index))}>
+                <Accordion
+                    elevation={0}
+                    key={index}
+                    expanded={expanded === String(index)}
+                    onChange={expandendChange(String(index))}
+                >
                     <AccordionSummary aria-controls="panel1-content" id="panel1-header">
                         <Typography>Voo {index + 1}</Typography>
                     </AccordionSummary>

@@ -19,7 +19,7 @@ interface ReviewsReportsProps {
 
 export const ReviewsReports: React.FC<ReviewsReportsProps> = ({ user }) => {
     const isMobile = useMediaQuery("(orientation: portrait)")
-    const tabStyle = useResponsiveStyles()
+    const { tabStyle } = useResponsiveStyles()
     const header = useHeader()
     const io = useIo()
 
@@ -35,8 +35,12 @@ export const ReviewsReports: React.FC<ReviewsReportsProps> = ({ user }) => {
 
     useEffect(() => {
         console.log("lista udou")
-        setReports(listReports.filter((item) => item.approved && item.stage === 4).sort((a, b) => Number(a.date) - Number(b.date)))
-        setReportsPending(listReports.filter((item) => !item.approved && item.stage! === 4).sort((a, b) => Number(a.date) - Number(b.date)))
+        setReports(
+            listReports.filter((item) => item.approved && item.stage === 4).sort((a, b) => Number(a.date) - Number(b.date))
+        )
+        setReportsPending(
+            listReports.filter((item) => !item.approved && item.stage! === 4).sort((a, b) => Number(a.date) - Number(b.date))
+        )
         console.log(listReports)
     }, [listReports])
 
@@ -137,7 +141,12 @@ export const ReviewsReports: React.FC<ReviewsReportsProps> = ({ user }) => {
                                 ? reportsPending?.map((item, index) => <LogsReport key={index} report={item} review />)
                                 : tab === "pending" &&
                                   skeletons.map((_, index) => (
-                                      <Skeleton key={index} animation="wave" variant="rounded" sx={{ width: 1, height: "15vw" }} />
+                                      <Skeleton
+                                          key={index}
+                                          animation="wave"
+                                          variant="rounded"
+                                          sx={{ width: 1, height: "15vw" }}
+                                      />
                                   ))
                             // "Nenhum relatório pendente"
                         }
@@ -146,7 +155,12 @@ export const ReviewsReports: React.FC<ReviewsReportsProps> = ({ user }) => {
                                 ? reports?.map((item, index) => <LogsReport key={index} report={item} />)
                                 : tab === "reports" &&
                                   skeletons.map((_, index) => (
-                                      <Skeleton key={index} animation="wave" variant="rounded" sx={{ width: 1, height: "15vw" }} />
+                                      <Skeleton
+                                          key={index}
+                                          animation="wave"
+                                          variant="rounded"
+                                          sx={{ width: 1, height: "15vw" }}
+                                      />
                                   ))
                             // "Nenhum relatório encontrado."
                         }

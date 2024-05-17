@@ -25,7 +25,7 @@ interface ReportStageProps {
 
 export const ReportStage: React.FC<ReportStageProps> = ({ user }) => {
     const isMobile = useMediaQuery("(orientation: portrait)")
-    const textField = useResponsiveStyles()
+    const { textField } = useResponsiveStyles()
     const header = useHeader()
     const navigate = useNavigate()
     const io = useIo()
@@ -95,7 +95,9 @@ export const ReportStage: React.FC<ReportStageProps> = ({ user }) => {
     })
 
     const chegadaSubmit = (values: Stage) => {
-        const durationTimestamp = Number(new Date(Number(finishPick)).getTime().toString()) - Number(new Date(Number(initPick)).getTime().toString())
+        const durationTimestamp =
+            Number(new Date(Number(finishPick)).getTime().toString()) -
+            Number(new Date(Number(initPick)).getTime().toString())
 
         // console.log(`Novo Timestamp: ${new Date(Number(durationTimestamp)).toLocaleDateString("pr-br")}`)
 
@@ -191,7 +193,10 @@ export const ReportStage: React.FC<ReportStageProps> = ({ user }) => {
                         flexDirection: "row",
                     }}
                 >
-                    <Header back location={user?.isAdmin ? `/adm/call/${callid}/laudos` : `/employee/call/${callid}/laudos`} />
+                    <Header
+                        back
+                        location={user?.isAdmin ? `/adm/call/${callid}/laudos` : `/employee/call/${callid}/laudos`}
+                    />
                 </Box>
 
                 <Box
@@ -212,7 +217,13 @@ export const ReportStage: React.FC<ReportStageProps> = ({ user }) => {
                         style={{ fontSize: isMobile ? "5vw" : "1.5rem" }}
                         button={user?.employee ? true : false}
                         textButton="Acessar Cliente"
-                        click={() => navigate(user.isAdmin ? `/adm/profile/${producerSelect?.id}` : `/employee/profilw/${producerSelect?.id}`)}
+                        click={() =>
+                            navigate(
+                                user.isAdmin
+                                    ? `/adm/profile/${producerSelect?.id}`
+                                    : `/employee/profilw/${producerSelect?.id}`
+                            )
+                        }
                         variant
                     />
 
@@ -249,7 +260,13 @@ export const ReportStage: React.FC<ReportStageProps> = ({ user }) => {
                                     sx={{ ...textField }}
                                     disabled
                                 />
-                                <TextField label="Fazenda" name="tillage" value={call?.talhao?.tillage?.name} sx={{ ...textField }} disabled />
+                                <TextField
+                                    label="Fazenda"
+                                    name="tillage"
+                                    value={call?.talhao?.tillage?.name}
+                                    sx={{ ...textField }}
+                                    disabled
+                                />
                             </Box>
 
                             {stage === 1 && (
@@ -261,7 +278,11 @@ export const ReportStage: React.FC<ReportStageProps> = ({ user }) => {
                                         data={dates}
                                     />
                                     <ButtonAgritech type="submit" variant="contained" sx={{ bgcolor: colors.button }}>
-                                        {loading ? <CircularProgress size="7vw" sx={{ color: colors.text.white }} /> : "Chegou na Localização"}
+                                        {loading ? (
+                                            <CircularProgress size="7vw" sx={{ color: colors.text.white }} />
+                                        ) : (
+                                            "Chegou na Localização"
+                                        )}
                                     </ButtonAgritech>
                                 </form>
                             )}
@@ -275,7 +296,10 @@ export const ReportStage: React.FC<ReportStageProps> = ({ user }) => {
                                     />
                                     <ButtonAgritech type="submit" variant="contained" sx={{ bgcolor: colors.button }}>
                                         {loading ? (
-                                            <CircularProgress size={isMobile ? "7vw" : "2vw"} sx={{ color: colors.text.white }} />
+                                            <CircularProgress
+                                                size={isMobile ? "7vw" : "2vw"}
+                                                sx={{ color: colors.text.white }}
+                                            />
                                         ) : (
                                             "Finalizar Pulverização"
                                         )}

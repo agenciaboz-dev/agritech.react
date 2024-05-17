@@ -28,7 +28,7 @@ interface NewCallProps {
 
 export const NewCall: React.FC<NewCallProps> = ({ user }) => {
     const isMobile = useMediaQuery("(orientation: portrait)")
-    const textField = useResponsiveStyles()
+    const { textField } = useResponsiveStyles()
     const io = useIo()
     const header = useHeader()
     const account = useUser()

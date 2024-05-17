@@ -10,7 +10,7 @@ interface ContactProps {
 
 export const Contact: React.FC<ContactProps> = ({ values, handleChange }) => {
     const isMobile = useMediaQuery("(orientation: portrait)")
-    const textField = useResponsiveStyles()
+    const { textField } = useResponsiveStyles()
     console.log({ Chegou: values })
     return (
         <Box
@@ -43,7 +43,14 @@ export const Contact: React.FC<ContactProps> = ({ values, handleChange }) => {
                     InputProps={{ readOnly: true }}
                 />
             </Box>
-            <TextField label={"E-mail"} name={"email"} sx={textField} value={values.email} onChange={handleChange} type="email" />
+            <TextField
+                label={"E-mail"}
+                name={"email"}
+                sx={textField}
+                value={values.email}
+                onChange={handleChange}
+                type="email"
+            />
             <TextField
                 label={"Telefone"}
                 name={"phone"}

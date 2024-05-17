@@ -37,7 +37,7 @@ const openCall = {
 
 export const NewProducer: React.FC<NewProducerProps> = ({}) => {
     const isMobile = useMediaQuery("(orientation: portrait)")
-    const textField = useResponsiveStyles()
+    const { textField } = useResponsiveStyles()
     const input = useResponsiveStyles()
     const io = useIo()
     const header = useHeader()
@@ -355,7 +355,12 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
                                 <Form>
                                     {currentStep === 0 && (
                                         <Box sx={{ flexDirection: "column", height: "90%" }}>
-                                            <Profile values={values} handleChange={handleChange} image={image} setImage={setImage} />
+                                            <Profile
+                                                values={values}
+                                                handleChange={handleChange}
+                                                image={image}
+                                                setImage={setImage}
+                                            />
                                             <Box
                                                 sx={{
                                                     flexDirection: "row",
@@ -395,7 +400,11 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
                                                         textTransform: "none",
                                                     }}
                                                 >
-                                                    {loadingProducer ? <CircularProgress sx={{ color: "#fff" }} /> : "Salvar"}
+                                                    {loadingProducer ? (
+                                                        <CircularProgress sx={{ color: "#fff" }} />
+                                                    ) : (
+                                                        "Salvar"
+                                                    )}
                                                 </Button>
                                             </Box>
                                         </Box>

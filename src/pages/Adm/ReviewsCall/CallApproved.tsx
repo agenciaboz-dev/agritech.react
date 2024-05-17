@@ -33,7 +33,7 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 
 export const CallApproved: React.FC<CallApprovedProps> = ({}) => {
     const isMobile = useMediaQuery("(orientation: portrait)")
-    const textField = useResponsiveStyles()
+    const { textField } = useResponsiveStyles()
     const header = useHeader()
     const io = useIo()
     const navigate = useNavigate()
@@ -132,7 +132,15 @@ export const CallApproved: React.FC<CallApprovedProps> = ({}) => {
                     borderTopRightRadius: isMobile ? "5vw" : "2vw",
                 }}
             >
-                <Box sx={{ width: "100%", height: "90%", gap: isMobile ? "7vw" : "1vw", flexDirection: "column", p: isMobile ? "4vw" : "1vw" }}>
+                <Box
+                    sx={{
+                        width: "100%",
+                        height: "90%",
+                        gap: isMobile ? "7vw" : "1vw",
+                        flexDirection: "column",
+                        p: isMobile ? "4vw" : "1vw",
+                    }}
+                >
                     <p style={{ fontSize: isMobile ? "4.5vw" : "1.2rem" }}>Abertura do Chamado</p>
 
                     <Box
@@ -157,7 +165,9 @@ export const CallApproved: React.FC<CallApprovedProps> = ({}) => {
                                 fontFamily: "MalgunGothic2",
                             }}
                         />
-                        <Box sx={{ flexDirection: "column", gap: isMobile ? "2vw" : "1vw", width: isMobile ? "65%" : "100%" }}>
+                        <Box
+                            sx={{ flexDirection: "column", gap: isMobile ? "2vw" : "1vw", width: isMobile ? "65%" : "100%" }}
+                        >
                             <Box>
                                 <p style={{ fontSize: isMobile ? "3vw" : "1rem", fontWeight: "600" }}>Nome da Fazenda</p>
                                 <p>
@@ -168,7 +178,8 @@ export const CallApproved: React.FC<CallApprovedProps> = ({}) => {
                             <Box>
                                 <p style={{ fontSize: isMobile ? "3vw" : "1rem", fontWeight: "600" }}>Endereço </p>
                                 <p>
-                                    {findCall?.talhao?.tillage?.address?.street}, {findCall?.talhao?.tillage?.address.district} -{" "}
+                                    {findCall?.talhao?.tillage?.address?.street},{" "}
+                                    {findCall?.talhao?.tillage?.address.district} -{" "}
                                     {findCall?.talhao?.tillage?.address?.city}, {findCall?.talhao?.tillage?.address?.uf} -{" "}
                                     {findCall?.talhao?.tillage?.address?.cep}
                                 </p>
@@ -186,7 +197,11 @@ export const CallApproved: React.FC<CallApprovedProps> = ({}) => {
                                 <Form>
                                     <Box sx={{ gap: isMobile ? "5vw" : "1vw" }}>
                                         <Box sx={{ gap: isMobile ? "3vw" : "1rem" }}>
-                                            <TextField label="Previsão da visita" sx={{ ...textField }} value={dateForecast} />
+                                            <TextField
+                                                label="Previsão da visita"
+                                                sx={{ ...textField }}
+                                                value={dateForecast}
+                                            />
                                             <TextField
                                                 label={"Custo por hectare"}
                                                 name="hectarePrice"

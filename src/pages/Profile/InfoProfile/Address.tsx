@@ -11,7 +11,7 @@ interface AddressProps {
 
 export const Address: React.FC<AddressProps> = ({ values, handleChange }) => {
     const isMobile = useMediaQuery("(orientation: portrait)")
-    const textField = useResponsiveStyles()
+    const { textField } = useResponsiveStyles()
     const estados = useEstadosBrasil()
     return (
         <Box
@@ -24,7 +24,14 @@ export const Address: React.FC<AddressProps> = ({ values, handleChange }) => {
                 paddingBottom: "40vh",
             }}
         >
-            <p style={{ fontSize: isMobile ? "4.0vw" : "1.2rem", fontFamily: "MalgunGothic2", textAlign: "left", fontWeight: "800" }}>
+            <p
+                style={{
+                    fontSize: isMobile ? "4.0vw" : "1.2rem",
+                    fontFamily: "MalgunGothic2",
+                    textAlign: "left",
+                    fontWeight: "800",
+                }}
+            >
                 Endereço Residencial
             </p>
             <Box sx={{ flexDirection: "row", gap: isMobile ? "2.5vw" : "1vw" }}>
@@ -78,8 +85,20 @@ export const Address: React.FC<AddressProps> = ({ values, handleChange }) => {
                 </TextField>
                 {/* <TextField label={"Estado"} name={"uf"} sx={textField} value={values.address?.uf} onChange={handleChange} /> */}
             </Box>
-            <TextField label={"Cidade"} name={"address.city"} sx={textField} value={values.address?.city} onChange={handleChange} />
-            <TextField label={"Bairro"} name={"address.district"} sx={textField} value={values.address?.district} onChange={handleChange} />
+            <TextField
+                label={"Cidade"}
+                name={"address.city"}
+                sx={textField}
+                value={values.address?.city}
+                onChange={handleChange}
+            />
+            <TextField
+                label={"Bairro"}
+                name={"address.district"}
+                sx={textField}
+                value={values.address?.district}
+                onChange={handleChange}
+            />
             <Box sx={{ flexDirection: "row", gap: isMobile ? "2.5vw" : "1vw" }}>
                 <TextField
                     label={"Logradouro, Rua, Avenida..."}
@@ -88,9 +107,21 @@ export const Address: React.FC<AddressProps> = ({ values, handleChange }) => {
                     value={values.address?.street}
                     onChange={handleChange}
                 />
-                <TextField label={"Nº"} name={"address.number"} sx={textField} value={values.address?.number} onChange={handleChange} />
+                <TextField
+                    label={"Nº"}
+                    name={"address.number"}
+                    sx={textField}
+                    value={values.address?.number}
+                    onChange={handleChange}
+                />
             </Box>
-            <TextField label={"Complemento"} name={"address.adjunct"} sx={textField} value={values.address?.adjunct} onChange={handleChange} />
+            <TextField
+                label={"Complemento"}
+                name={"address.adjunct"}
+                sx={textField}
+                value={values.address?.adjunct}
+                onChange={handleChange}
+            />
         </Box>
     )
 }

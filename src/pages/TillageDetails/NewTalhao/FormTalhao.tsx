@@ -30,8 +30,8 @@ interface FormTalhaoProps {
 
 export const FormTalhao: React.FC<FormTalhaoProps> = ({ data, change, images, open }) => {
     const isMobile = useMediaQuery("(orientation: portrait)")
-    const tabStyle = useResponsiveStyles()
-    const textField = useResponsiveStyles()
+    const { tabStyle } = useResponsiveStyles()
+    const { textField } = useResponsiveStyles()
     const header = useHeader()
     const { user } = useUser()
     const [image, setImage] = useState<File>()
@@ -84,7 +84,14 @@ export const FormTalhao: React.FC<FormTalhaoProps> = ({ data, change, images, op
                     }}
                 />
                 <Box sx={{ flexDirection: "column", gap: isMobile ? "2vw" : "1vw", width: isMobile ? "65%" : "100%" }}>
-                    <TextField label={"Nome do Talhão"} name="name" value={data.name} sx={textField} onChange={change} required />
+                    <TextField
+                        label={"Nome do Talhão"}
+                        name="name"
+                        value={data.name}
+                        sx={textField}
+                        onChange={change}
+                        required
+                    />
 
                     <TextField
                         label={"Area"}

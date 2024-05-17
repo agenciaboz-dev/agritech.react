@@ -20,7 +20,7 @@ interface PersonalProps {
 
 export const Personal: React.FC<PersonalProps> = ({ values, handleChange, birthPick, setBirthPick }) => {
     const isMobile = useMediaQuery("(orientation: portrait)")
-    const textField = useResponsiveStyles()
+    const { textField } = useResponsiveStyles()
     const gender = useGender()
     const typeRelationship = useRelationship()
     const { user } = useUser()

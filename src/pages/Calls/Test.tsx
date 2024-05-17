@@ -12,7 +12,7 @@ interface TestProps {
 }
 
 export const Test: React.FC<TestProps> = ({ values, handleChange, disabled }) => {
-    const textField = useResponsiveStyles()
+    const { textField } = useResponsiveStyles()
 
     useEffect(() => {
         console.log({ price: values.hectarePrice })

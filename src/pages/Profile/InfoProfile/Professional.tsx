@@ -18,7 +18,7 @@ interface ProfessionalProps {
 
 export const Professional: React.FC<ProfessionalProps> = ({ userLog, values, handleChange, pickDate, setPickDate }) => {
     const isMobile = useMediaQuery("(orientation: portrait)")
-    const textField = useResponsiveStyles()
+    const { textField } = useResponsiveStyles()
     return (
         values.employee?.professional !== null && (
             <Box

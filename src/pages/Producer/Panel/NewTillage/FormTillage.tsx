@@ -42,8 +42,8 @@ export const FormTillage: React.FC<FormTillageProps> = ({
     images,
 }) => {
     const isMobile = useMediaQuery("(orientation: portrait)")
-    const textField = useResponsiveStyles()
-    const tabStyle = useResponsiveStyles()
+    const { textField } = useResponsiveStyles()
+    const { tabStyle } = useResponsiveStyles()
     const header = useHeader()
     const { user } = useUser()
     const [image, setImage] = useState<File>()
@@ -110,7 +110,14 @@ export const FormTillage: React.FC<FormTillageProps> = ({
                         }}
                     />
                     <Box sx={{ flexDirection: "column", gap: isMobile ? "2vw" : "1vw", width: isMobile ? "65%" : "100%" }}>
-                        <TextField label={"Nome da fazenda"} name="name" value={data.name} sx={textField} onChange={change} required />
+                        <TextField
+                            label={"Nome da fazenda"}
+                            name="name"
+                            value={data.name}
+                            sx={textField}
+                            onChange={change}
+                            required
+                        />
 
                         <TextField
                             label={"Área"}
@@ -131,7 +138,14 @@ export const FormTillage: React.FC<FormTillageProps> = ({
                     <p>
                         {addressApi?.cidade.nome}, {addressApi?.estado.sigla} - {addressApi?.cep}
                     </p>
-                    <TextField label={"Complemento"} name="address.adjunct" value={data.address.adjunct} sx={textField} onChange={change} required />
+                    <TextField
+                        label={"Complemento"}
+                        name="address.adjunct"
+                        value={data.address.adjunct}
+                        sx={textField}
+                        onChange={change}
+                        required
+                    />
                 </Box>
             </Box>
             <Tabs
@@ -148,11 +162,20 @@ export const FormTillage: React.FC<FormTillageProps> = ({
                 <Tab sx={tabStyle} value="additional" label="Adicionais" />
                 <Tab sx={tabStyle} value="gallery" label="Imagens" />
             </Tabs>
-            {tab === "team" && <Team data={data} handleChange={change} producerName={user?.producer ? user.name : producerUser?.name} />}
+            {tab === "team" && (
+                <Team data={data} handleChange={change} producerName={user?.producer ? user.name : producerUser?.name} />
+            )}
             {tab === "additional" && <Additional data={data} handleChange={change} />}
             {tab === "gallery" && (
                 <Box sx={{ width: "100%", height: "52%", gap: "3vw" }}>
-                    <Box sx={{ width: "100%", height: isMobile ? "66%" : "100%", overflowY: "auto", gap: isMobile ? "2vw" : "1vw" }}>
+                    <Box
+                        sx={{
+                            width: "100%",
+                            height: isMobile ? "66%" : "100%",
+                            overflowY: "auto",
+                            gap: isMobile ? "2vw" : "1vw",
+                        }}
+                    >
                         {images.length === 0 ? (
                             <Box sx={{ pt: isMobile ? "4vw" : "1vw" }}>
                                 <TitleComponents title="Adicionar Galeria" button textButton="Adicionar" click={open} />

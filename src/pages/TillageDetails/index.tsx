@@ -26,7 +26,7 @@ interface TillageDetailsProps {}
 
 export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
     const isMobile = useMediaQuery("(orientation: portrait)")
-    const tabStyle = useResponsiveStyles()
+    const { tabStyle } = useResponsiveStyles()
     const io = useIo()
     const header = useHeader()
     const navigate = useNavigate()
@@ -227,7 +227,13 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                             alignItems: "center",
                         }}
                     >
-                        <Skeleton sx={{ width: isMobile ? 0.5 : 1, height: isMobile ? "8vw" : "5vw", marginLeft: isMobile ? "1vw" : 0 }} />
+                        <Skeleton
+                            sx={{
+                                width: isMobile ? 0.5 : 1,
+                                height: isMobile ? "8vw" : "5vw",
+                                marginLeft: isMobile ? "1vw" : 0,
+                            }}
+                        />
                     </Box>
                 ) : (
                     tillageSelect?.talhao?.length !== 0 && (
@@ -269,7 +275,10 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                                     )
                                 }
                             >
-                                <VscAdd color={"#fff"} style={{ width: isMobile ? "4vw" : "2vw", height: isMobile ? "4vw" : "2vw" }} />
+                                <VscAdd
+                                    color={"#fff"}
+                                    style={{ width: isMobile ? "4vw" : "2vw", height: isMobile ? "4vw" : "2vw" }}
+                                />
                                 Talhão
                             </ButtonAgritech>
                         </Box>
@@ -323,13 +332,19 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                                               borderRadius: isMobile ? "8vw" : "2vw",
                                           }}
                                       />
-                                      <Skeleton animation="wave" variant="rounded" sx={{ width: isMobile ? "23vw" : "9vw", height: "2vw" }} />
+                                      <Skeleton
+                                          animation="wave"
+                                          variant="rounded"
+                                          sx={{ width: isMobile ? "23vw" : "9vw", height: "2vw" }}
+                                      />
                                   </Box>
                               ))}
                     </Box>
                 ) : (
                     <Box sx={{ p: isMobile ? "8vw 4vw" : "1vw" }}>
-                        <p style={{ fontSize: isMobile ? "4vw" : "1vw", color: colors.text.white }}>Nenhum talhão cadastrado.</p>
+                        <p style={{ fontSize: isMobile ? "4vw" : "1vw", color: colors.text.white }}>
+                            Nenhum talhão cadastrado.
+                        </p>
                     </Box>
                 )}
                 <Box
@@ -365,7 +380,9 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                                 <Tab sx={{ ...tabStyle, width: "50%" }} value="calls" label="Chamados" />
                             </Tabs>
                             {tillageSelect?.talhao?.length === 0 && tab === "calls" && (
-                                <p style={{ marginTop: isMobile ? "4vw" : "1vw" }}>É necessário ter talhões cadastrados para abrir chamados.</p>
+                                <p style={{ marginTop: isMobile ? "4vw" : "1vw" }}>
+                                    É necessário ter talhões cadastrados para abrir chamados.
+                                </p>
                             )}
                             {tab === "calls" && selectedTalhao?.calls.length === 0 ? (
                                 <OpenCallBox
@@ -410,7 +427,9 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                                                       setSelectedCall={setSelectedCall}
                                                   />
                                               ))
-                                            : skeletons.map((_, index) => <Skeleton key={index} variant="rounded" animation="wave" />)}
+                                            : skeletons.map((_, index) => (
+                                                  <Skeleton key={index} variant="rounded" animation="wave" />
+                                              ))}
                                     </Box>
                                 )
                             )}
@@ -437,7 +456,10 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                                 )
                             }
                         >
-                            <PiPlant color={"#fff"} style={{ width: isMobile ? "6vw" : "100%", height: isMobile ? "6vw" : "100%" }} />
+                            <PiPlant
+                                color={"#fff"}
+                                style={{ width: isMobile ? "6vw" : "100%", height: isMobile ? "6vw" : "100%" }}
+                            />
                         </IconButton>
                     )}
                 </Box>

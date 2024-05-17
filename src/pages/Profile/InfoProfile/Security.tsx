@@ -18,7 +18,7 @@ interface SecurityProps {
 
 export const Security: React.FC<SecurityProps> = ({ values }) => {
     const isMobile = useMediaQuery("(orientation: portrait)")
-    const textField = useResponsiveStyles()
+    const { textField } = useResponsiveStyles()
     const [open, setOpen] = useState(false)
     const [loading, setLoading] = useState(false)
     const { user, setUser } = useUser()

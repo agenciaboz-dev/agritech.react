@@ -41,7 +41,7 @@ const style_p = {
 
 export const UpdateContentKit: React.FC<UpdateContentKitProps> = ({ edit, values, handleChange, data, kit }) => {
     const isMobile = useMediaQuery("(orientation: portrait)")
-    const textField = useResponsiveStyles()
+    const { textField } = useResponsiveStyles()
     const navigate = useNavigate()
     const { user } = useUser()
     const floatMask = useNumberMask({ allowDecimal: true, allowLeadingZeroes: true })
@@ -53,8 +53,15 @@ export const UpdateContentKit: React.FC<UpdateContentKitProps> = ({ edit, values
     }, [data.listObjects])
 
     return (
-        <Box sx={{ flexDirection: "column", gap: isMobile ? "4vw" : "1vw", width: "100%", height: "98%", overflow: "hidden" }}>
-            <ModalObjectUpdate opened={openedModalObjects} close={close} object={data.listObjects} setObject={data.setListObjects} />
+        <Box
+            sx={{ flexDirection: "column", gap: isMobile ? "4vw" : "1vw", width: "100%", height: "98%", overflow: "hidden" }}
+        >
+            <ModalObjectUpdate
+                opened={openedModalObjects}
+                close={close}
+                object={data.listObjects}
+                setObject={data.setListObjects}
+            />
             <ModalEmployeeUpdate
                 opened={openedModalEmployees}
                 close={closeEmployees}
@@ -113,7 +120,14 @@ export const UpdateContentKit: React.FC<UpdateContentKitProps> = ({ edit, values
                             }}
                         />
                     )}
-                    <Box sx={{ flexDirection: "column", gap: isMobile ? "2vw" : "1vw", width: isMobile ? "70%" : "100%", pt: isMobile ? "2vw" : 0 }}>
+                    <Box
+                        sx={{
+                            flexDirection: "column",
+                            gap: isMobile ? "2vw" : "1vw",
+                            width: isMobile ? "70%" : "100%",
+                            pt: isMobile ? "2vw" : 0,
+                        }}
+                    >
                         {edit ? (
                             <>
                                 <TextField

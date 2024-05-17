@@ -26,13 +26,20 @@ interface StepOneProps {
 
 export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, image, setImage, pickDate, setPickDate }) => {
     const isMobile = useMediaQuery("(orientation: portrait)")
-    const textField = useResponsiveStyles()
+    const { textField } = useResponsiveStyles()
     const gender = useGender()
     const typeRelationship = useRelationship()
 
     return (
         <Box sx={{ width: "100%", height: "100%", gap: isMobile ? "4vw" : "1vw", flexDirection: "column" }}>
-            <p style={{ fontSize: isMobile ? "4.5vw" : "1.2rem", fontFamily: "MalgunGothic2", textAlign: "left", fontWeight: "800" }}>
+            <p
+                style={{
+                    fontSize: isMobile ? "4.5vw" : "1.2rem",
+                    fontFamily: "MalgunGothic2",
+                    textAlign: "left",
+                    fontWeight: "800",
+                }}
+            >
                 Informações Pessoais
             </p>
             <Box
@@ -57,10 +64,22 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, image, set
                         fontFamily: "MalgunGothic2",
                     }}
                 />
-                <Box sx={{ flexDirection: "column", gap: isMobile ? "2vw" : "1vw", width: isMobile ? "65%" : "fit-content" }}>
-                    <p style={{ fontWeight: "500", fontFamily: "MalgunGothic2", textAlign: "start", fontSize: isMobile ? "4vw" : "1.2rem" }}>Foto</p>
+                <Box
+                    sx={{ flexDirection: "column", gap: isMobile ? "2vw" : "1vw", width: isMobile ? "65%" : "fit-content" }}
+                >
+                    <p
+                        style={{
+                            fontWeight: "500",
+                            fontFamily: "MalgunGothic2",
+                            textAlign: "start",
+                            fontSize: isMobile ? "4vw" : "1.2rem",
+                        }}
+                    >
+                        Foto
+                    </p>
                     <p style={{ fontSize: isMobile ? "3vw" : "1rem", fontFamily: "MalgunGothic2", textAlign: "start" }}>
-                        Clique na imagem ao lado para adicionar uma foto sua. A foto deve estar plenamente visível e sem adereços.
+                        Clique na imagem ao lado para adicionar uma foto sua. A foto deve estar plenamente visível e sem
+                        adereços.
                     </p>
                 </Box>
             </Box>
@@ -141,7 +160,15 @@ export const StepOne: React.FC<StepOneProps> = ({ data, handleChange, image, set
                         localeText={ptBR.components.MuiLocalizationProvider.defaultProps.localeText}
                     />
                 </DemoItem>
-                <TextField label={"E-mail"} name="email" value={data.email} type="email" sx={textField} onChange={handleChange} required />
+                <TextField
+                    label={"E-mail"}
+                    name="email"
+                    value={data.email}
+                    type="email"
+                    sx={textField}
+                    onChange={handleChange}
+                    required
+                />
                 <Box sx={{ alignItems: "center", justifyContent: "center", gap: isMobile ? "5vw" : "1vw" }}>
                     {data.employee && (
                         <Box sx={{ flexDirection: "row", width: "100%", gap: isMobile ? "2vw" : "1vw" }}>

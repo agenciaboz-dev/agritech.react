@@ -11,9 +11,17 @@ interface TeamProps {
 
 export const Team: React.FC<TeamProps> = ({ data, handleChange, producerName }) => {
     const isMobile = useMediaQuery("(orientation: portrait)")
-    const textField = useResponsiveStyles()
+    const { textField } = useResponsiveStyles()
     return (
-        <Box sx={{ width: "100%", height: "100%", flexDirection: "column", gap: isMobile ? "2vw" : "1vw", pt: isMobile ? "4vw" : "2vw" }}>
+        <Box
+            sx={{
+                width: "100%",
+                height: "100%",
+                flexDirection: "column",
+                gap: isMobile ? "2vw" : "1vw",
+                pt: isMobile ? "4vw" : "2vw",
+            }}
+        >
             <TextField
                 label={"Proprietário"}
                 name="owner"
@@ -23,7 +31,13 @@ export const Team: React.FC<TeamProps> = ({ data, handleChange, producerName }) 
                 onChange={handleChange}
             />
             <TextField label={"CEO"} name="ceo" value={data.ceo} sx={textField} onChange={handleChange} />
-            <TextField label={"Gerente"} name="manager" value={data.manager} sx={{ ...textField, width: "100%" }} onChange={handleChange} />
+            <TextField
+                label={"Gerente"}
+                name="manager"
+                value={data.manager}
+                sx={{ ...textField, width: "100%" }}
+                onChange={handleChange}
+            />
             <TextField
                 label={"Agronômo Responsável"}
                 name="agronomist"
@@ -38,7 +52,13 @@ export const Team: React.FC<TeamProps> = ({ data, handleChange, producerName }) 
                 sx={{ ...textField, width: "100%" }}
                 onChange={handleChange}
             />
-            <TextField label={"Outros"} name="others" value={data.others} sx={{ ...textField, width: "100%" }} onChange={handleChange} />
+            <TextField
+                label={"Outros"}
+                name="others"
+                value={data.others}
+                sx={{ ...textField, width: "100%" }}
+                onChange={handleChange}
+            />
         </Box>
     )
 }

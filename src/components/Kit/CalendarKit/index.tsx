@@ -23,7 +23,7 @@ interface CalendarKitProps {}
 
 export const CalendarKit: React.FC<CalendarKitProps> = ({}) => {
     const isMobile = useMediaQuery("(orientation: portrait)")
-    const textField = useResponsiveStyles()
+    const { textField } = useResponsiveStyles()
     const io = useIo()
     const header = useHeader()
     const { user } = useUser()
@@ -49,7 +49,9 @@ export const CalendarKit: React.FC<CalendarKitProps> = ({}) => {
         console.log(selectedKit?.calls)
         if (value && selectedKit?.calls?.length !== 0) {
             const callsPerDay =
-                (selectedKit?.calls && selectedKit?.calls.filter((item) => item.forecast === new Date(value).getTime().toString())) || []
+                (selectedKit?.calls &&
+                    selectedKit?.calls.filter((item) => item.forecast === new Date(value).getTime().toString())) ||
+                []
             setCallsDay(callsPerDay)
             // console.log(callsPerDay)
             return callsPerDay
@@ -65,10 +67,15 @@ export const CalendarKit: React.FC<CalendarKitProps> = ({}) => {
                 selectedKit.calls &&
                 selectedKit.calls?.filter((call) => {
                     const callDate = new Date(Number(call.forecast))
-                    return callDate.getDate() === day && callDate.getMonth() === date.getMonth() && callDate.getFullYear() === date.getFullYear()
+                    return (
+                        callDate.getDate() === day &&
+                        callDate.getMonth() === date.getMonth() &&
+                        callDate.getFullYear() === date.getFullYear()
+                    )
                 })
 
-            const areaDayCalls = callsForDay?.map((item) => Number(item.talhao?.area)).reduce((prev, current) => prev + current, 0) || 0
+            const areaDayCalls =
+                callsForDay?.map((item) => Number(item.talhao?.area)).reduce((prev, current) => prev + current, 0) || 0
 
             const indicatorColor =
                 callsForDay &&
@@ -161,12 +168,18 @@ export const CalendarKit: React.FC<CalendarKitProps> = ({}) => {
                                 getOptionLabel={(option) => option.name || ""}
                                 onChange={(event, selected) => setSelectedKit(selected)}
                                 isOptionEqualToValue={(option, value) => option.id == value.id}
-                                renderInput={(params) => <TextField {...params} sx={{ ...textField }} label="kit" required />}
+                                renderInput={(params) => (
+                                    <TextField {...params} sx={{ ...textField }} label="kit" required />
+                                )}
                                 sx={{ width: isMobile ? "85%" : "95%" }}
                             />
                         )
                     ) : (
-                        <Skeleton animation="wave" variant="rounded" sx={{ width: isMobile ? "85%" : "95%", height: "6vh" }} />
+                        <Skeleton
+                            animation="wave"
+                            variant="rounded"
+                            sx={{ width: isMobile ? "85%" : "95%", height: "6vh" }}
+                        />
                     )}
                     <Box>
                         <IconButton onClick={open}>

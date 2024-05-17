@@ -15,7 +15,7 @@ interface ProfileProps {
 
 export const Profile: React.FC<ProfileProps> = ({ values, handleChange, image, setImage }) => {
     const isMobile = useMediaQuery("(orientation: portrait)")
-    const textField = useResponsiveStyles()
+    const { textField } = useResponsiveStyles()
     return (
         <Box sx={{ padding: isMobile ? "4vw" : "1vw 0", gap: isMobile ? "4vw" : "1vw", height: "100%", overflowY: "auto" }}>
             <p
@@ -68,14 +68,30 @@ export const Profile: React.FC<ProfileProps> = ({ values, handleChange, image, s
                             textAlign: "start",
                         }}
                     >
-                        Clique na imagem ao lado para adicionar uma foto sua. A foto deve estar plenamente visível e sem adereços.
+                        Clique na imagem ao lado para adicionar uma foto sua. A foto deve estar plenamente visível e sem
+                        adereços.
                     </p>
                 </Box>
             </Box>
 
             <Box sx={{ width: "100%", flexDirection: "column", gap: isMobile ? "2vw" : "1vw" }}>
-                <TextField label={"Nome Completo"} name="name" value={values.name} sx={textField} onChange={handleChange} required />
-                <TextField label={"E-mail"} name="email" value={values.email} type="email" sx={textField} onChange={handleChange} required />
+                <TextField
+                    label={"Nome Completo"}
+                    name="name"
+                    value={values.name}
+                    sx={textField}
+                    onChange={handleChange}
+                    required
+                />
+                <TextField
+                    label={"E-mail"}
+                    name="email"
+                    value={values.email}
+                    type="email"
+                    sx={textField}
+                    onChange={handleChange}
+                    required
+                />
                 <TextField
                     label={"CPF"}
                     name="cpf"

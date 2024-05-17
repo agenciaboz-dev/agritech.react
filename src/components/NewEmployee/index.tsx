@@ -27,7 +27,7 @@ interface NewEmployeeProps {}
 
 export const NewEmployee: React.FC<NewEmployeeProps> = ({}) => {
     const isMobile = useMediaQuery("(orientation: portrait)")
-    const textField = useResponsiveStyles()
+    const { textField } = useResponsiveStyles()
 
     const navigate = useNavigate()
     const header = useHeader()
@@ -121,7 +121,8 @@ export const NewEmployee: React.FC<NewEmployeeProps> = ({}) => {
             employee: {
                 rg: values.employee?.rg,
                 gender: gender.find((gender) => gender.id == String(values.employee?.gender))?.value || "",
-                relationship: typeRelationship.find((relationship) => relationship.id == values.employee?.relationship)?.value || "",
+                relationship:
+                    typeRelationship.find((relationship) => relationship.id == values.employee?.relationship)?.value || "",
                 nationality: values.employee?.nationality,
                 voter_card: values.employee?.voter_card,
                 work_card: values.employee?.work_card,
@@ -313,7 +314,13 @@ export const NewEmployee: React.FC<NewEmployeeProps> = ({}) => {
                                     <Stepper.Step label="" />
                                     <Stepper.Step label="" />
                                 </Stepper>
-                                <Box sx={{ width: "100%", height: isMobile ? "50%" : "100%", overflowY: isMobile ? "" : "auto" }}>
+                                <Box
+                                    sx={{
+                                        width: "100%",
+                                        height: isMobile ? "50%" : "100%",
+                                        overflowY: isMobile ? "" : "auto",
+                                    }}
+                                >
                                     {currentStep === 0 && (
                                         <StepOne
                                             data={formik.values}
@@ -322,9 +329,15 @@ export const NewEmployee: React.FC<NewEmployeeProps> = ({}) => {
                                             setBirthPick={setBirthPick}
                                         />
                                     )}
-                                    {currentStep === 1 && <StepTwo data={formik.values} handleChange={formik.handleChange} />}
-                                    {currentStep === 2 && <StepThree data={formik.values} handleChange={formik.handleChange} />}
-                                    {currentStep === 3 && <StepFour data={formik.values} handleChange={formik.handleChange} />}
+                                    {currentStep === 1 && (
+                                        <StepTwo data={formik.values} handleChange={formik.handleChange} />
+                                    )}
+                                    {currentStep === 2 && (
+                                        <StepThree data={formik.values} handleChange={formik.handleChange} />
+                                    )}
+                                    {currentStep === 3 && (
+                                        <StepFour data={formik.values} handleChange={formik.handleChange} />
+                                    )}
                                     {currentStep === 4 && (
                                         <StepFive
                                             data={formik.values}
@@ -381,7 +394,13 @@ export const NewEmployee: React.FC<NewEmployeeProps> = ({}) => {
                                         currentStep !== 4 && setCurrentStep(currentStep + 1)
                                     }}
                                 >
-                                    {loading ? <CircularProgress sx={{ color: "#fff" }} /> : currentStep !== 4 ? "Próximo" : "Salvar"}
+                                    {loading ? (
+                                        <CircularProgress sx={{ color: "#fff" }} />
+                                    ) : currentStep !== 4 ? (
+                                        "Próximo"
+                                    ) : (
+                                        "Salvar"
+                                    )}
                                 </Button>
                             </Box>
                         </form>

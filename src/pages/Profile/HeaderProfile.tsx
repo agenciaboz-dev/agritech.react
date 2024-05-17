@@ -65,7 +65,7 @@ export const HeaderProfile: React.FC<HeaderProfileProps> = ({
     setProfile,
 }) => {
     const isMobile = useMediaQuery("(orientation: portrait)")
-    const textField = useResponsiveStyles()
+    const { textField } = useResponsiveStyles()
     const { snackbar } = useSnackbar()
     const { user } = useUser()
 
@@ -124,8 +124,10 @@ export const HeaderProfile: React.FC<HeaderProfileProps> = ({
                 <ProfileImage
                     src={values.image}
                     style={{
-                        width: values?.employee?.id !== undefined ? (isMobile ? "40vw" : "10vw") : isMobile ? "30vw" : "10vw",
-                        height: values?.employee?.id !== undefined ? (isMobile ? "40vw" : "10vw") : isMobile ? "30vw" : "10vw",
+                        width:
+                            values?.employee?.id !== undefined ? (isMobile ? "40vw" : "10vw") : isMobile ? "30vw" : "10vw",
+                        height:
+                            values?.employee?.id !== undefined ? (isMobile ? "40vw" : "10vw") : isMobile ? "30vw" : "10vw",
                     }}
                 />
             ) : (

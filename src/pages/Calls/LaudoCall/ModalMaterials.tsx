@@ -28,7 +28,7 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 
 export const ModalMaterial: React.FC<ModalMaterialProps> = ({ opened, close, material, setMaterial }) => {
     const isMobile = useMediaQuery("(orientation: portrait)")
-    const textField = useResponsiveStyles()
+    const { textField } = useResponsiveStyles()
     const [unit, setUnit] = useState("")
     const [value, setValue] = useState("")
 
@@ -93,13 +93,23 @@ export const ModalMaterial: React.FC<ModalMaterialProps> = ({ opened, close, mat
             style={{}}
             title="Inserir Insumos"
             styles={{
-                body: { display: "flex", flexDirection: "column", gap: isMobile ? "6vw" : "1vw", borderRadius: isMobile ? "10vw" : "2vw" },
+                body: {
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: isMobile ? "6vw" : "1vw",
+                    borderRadius: isMobile ? "10vw" : "2vw",
+                },
                 root: { maxHeight: "75%", minHeight: "fit-content" },
                 content: { borderRadius: isMobile ? "6vw" : "2vw" },
             }}
         >
             {material.map((item, index) => (
-                <Accordion elevation={0} key={index} expanded={expanded === String(index)} onChange={expandendChange(String(index))}>
+                <Accordion
+                    elevation={0}
+                    key={index}
+                    expanded={expanded === String(index)}
+                    onChange={expandendChange(String(index))}
+                >
                     <AccordionSummary aria-controls="panel1-content" id="panel1-header">
                         <Typography>Insumo {index + 1}</Typography>
                     </AccordionSummary>
@@ -149,7 +159,14 @@ export const ModalMaterial: React.FC<ModalMaterialProps> = ({ opened, close, mat
                                 required
                             />
 
-                            <Box sx={{ flexDirection: "row", gap: isMobile ? "2vw" : "1vw", width: "100%", justifyContent: "space-between" }}>
+                            <Box
+                                sx={{
+                                    flexDirection: "row",
+                                    gap: isMobile ? "2vw" : "1vw",
+                                    width: "100%",
+                                    justifyContent: "space-between",
+                                }}
+                            >
                                 <TextField
                                     label="Dose/ha"
                                     name="dosage"

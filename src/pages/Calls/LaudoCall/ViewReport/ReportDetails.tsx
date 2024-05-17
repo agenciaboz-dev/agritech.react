@@ -1,4 +1,15 @@
-import { Accordion, AccordionSummary, Box, CircularProgress, Skeleton, Tab, Tabs, Typography, styled, useMediaQuery } from "@mui/material"
+import {
+    Accordion,
+    AccordionSummary,
+    Box,
+    CircularProgress,
+    Skeleton,
+    Tab,
+    Tabs,
+    Typography,
+    styled,
+    useMediaQuery,
+} from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { colors } from "../../../../style/colors"
 import { Header } from "../../../../components/Header"
@@ -45,7 +56,7 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 
 export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
     const isMobile = useMediaQuery("(orientation: portrait)")
-    const tabStyle = useResponsiveStyles()
+    const { tabStyle } = useResponsiveStyles()
     const io = useIo()
     const { callid, reportid } = useParams()
     const { listCalls } = useCall()
@@ -180,7 +191,9 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                     },
                 }}
             >
-                <CircularProgress sx={{ color: colors.text.white, width: isMobile ? "15vw" : "2vw", height: isMobile ? "15vw" : "2vw" }} />
+                <CircularProgress
+                    sx={{ color: colors.text.white, width: isMobile ? "15vw" : "2vw", height: isMobile ? "15vw" : "2vw" }}
+                />
             </Modal>
             <Box
                 sx={{
@@ -194,7 +207,14 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                     overflow: "hidden",
                 }}
             >
-                <Header back location={user?.isAdmin ? `/adm/producer/${call?.producerId}/${call?.talhao?.tillageId}` : `/call/${call?.id}/laudos`} />
+                <Header
+                    back
+                    location={
+                        user?.isAdmin
+                            ? `/adm/producer/${call?.producerId}/${call?.talhao?.tillageId}`
+                            : `/call/${call?.id}/laudos`
+                    }
+                />
             </Box>
 
             <Box
@@ -224,7 +244,10 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                         >
                             <Menu.Target>
                                 <ActionIcon variant="subtle" color="gray">
-                                    <IconDots style={{ width: isMobile ? "7vw" : "2vw", height: isMobile ? "7vw" : "2vw" }} stroke={2} />
+                                    <IconDots
+                                        style={{ width: isMobile ? "7vw" : "2vw", height: isMobile ? "7vw" : "2vw" }}
+                                        stroke={2}
+                                    />
                                 </ActionIcon>
                             </Menu.Target>
                             <Menu.Dropdown>
@@ -240,15 +263,18 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                                 <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
                                     <p>
                                         <span style={{ fontWeight: "bold" }}>Data:</span>{" "}
-                                        {selectedReport && new Date(Number(selectedReport["date"])).toLocaleDateString("pt-br")}{" "}
+                                        {selectedReport &&
+                                            new Date(Number(selectedReport["date"])).toLocaleDateString("pt-br")}{" "}
                                     </p>
                                     <p>
                                         <span style={{ fontWeight: "bold" }}>Hora:</span>{" "}
-                                        {selectedReport && new Date(Number(selectedReport["date"])).toLocaleTimeString("pt-br")}{" "}
+                                        {selectedReport &&
+                                            new Date(Number(selectedReport["date"])).toLocaleTimeString("pt-br")}{" "}
                                     </p>
                                 </Box>
                                 <p>
-                                    <span style={{ fontWeight: "bold" }}>Contratante:</span> {call?.producer?.user && call.producer?.user.name}
+                                    <span style={{ fontWeight: "bold" }}>Contratante:</span>{" "}
+                                    {call?.producer?.user && call.producer?.user.name}
                                 </p>
                                 <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
                                     <p>
@@ -261,7 +287,8 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                                     </p>
                                 </Box>
                                 <p>
-                                    <span style={{ fontWeight: "bold" }}>Propriedade:</span> {call?.talhao?.tillage && call.talhao.tillage.name}{" "}
+                                    <span style={{ fontWeight: "bold" }}>Propriedade:</span>{" "}
+                                    {call?.talhao?.tillage && call.talhao.tillage.name}{" "}
                                 </p>
                                 <p>
                                     <span style={{ fontWeight: "bold" }}>Talhão:</span> {call?.talhao && call.talhao.name}
@@ -276,7 +303,8 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                                 {call?.talhao?.tillage && <CurrencyText value={Number(call?.talhao.tillage.hectarePrice)} />}
                             </Box>
                             <Box sx={{ justifyContent: "space-between", width: "100%", flexDirection: "row" }}>
-                                <p style={{ fontWeight: "bold" }}>Área Trabalhada no dia:</p> {selectedReport?.areaTrabalhada} ha{" "}
+                                <p style={{ fontWeight: "bold" }}>Área Trabalhada no dia:</p>{" "}
+                                {selectedReport?.areaTrabalhada} ha{" "}
                             </Box>
                             <Box sx={{ flexDirection: "row", justifyContent: "space-between" }}>
                                 <p style={{ fontWeight: "bold" }}>Custo total: </p>
@@ -326,9 +354,21 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                                             value="operation"
                                             label="Dados de Operação"
                                         />
-                                        <Tab sx={{ ...tabStyle, width: isMobile ? "38%" : "fit-content" }} value="treatment" label="Tratamento" />
-                                        <Tab sx={{ ...tabStyle, width: isMobile ? "30%" : "fit-content" }} value="techReport" label="Laudo Técnico" />
-                                        <Tab sx={{ ...tabStyle, width: isMobile ? "35%" : "fit-content" }} value="material" label="Insumos" />
+                                        <Tab
+                                            sx={{ ...tabStyle, width: isMobile ? "38%" : "fit-content" }}
+                                            value="treatment"
+                                            label="Tratamento"
+                                        />
+                                        <Tab
+                                            sx={{ ...tabStyle, width: isMobile ? "30%" : "fit-content" }}
+                                            value="techReport"
+                                            label="Laudo Técnico"
+                                        />
+                                        <Tab
+                                            sx={{ ...tabStyle, width: isMobile ? "35%" : "fit-content" }}
+                                            value="material"
+                                            label="Insumos"
+                                        />
                                     </Tabs>
                                     <Box sx={{ height: "max-content", maxHeight: "100%", overflowY: "auto" }}>
                                         {tab === "operation" && selectedReport?.operation && call && (
@@ -345,7 +385,9 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
                                         {tab === "techReport" && selectedReport?.techReport && (
                                             <TechReportComponent tech={selectedReport?.techReport} />
                                         )}
-                                        {tab === "material" && selectedReport?.material && <MaterialComponent material={selectedReport?.material} />}
+                                        {tab === "material" && selectedReport?.material && (
+                                            <MaterialComponent material={selectedReport?.material} />
+                                        )}
                                     </Box>
                                 </Box>
                             </Box>

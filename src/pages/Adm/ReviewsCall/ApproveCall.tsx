@@ -1,5 +1,16 @@
 import React, { useEffect, useState } from "react"
-import { Accordion, Autocomplete, Avatar, Badge, Box, Button, Radio, Skeleton, TextField, useMediaQuery } from "@mui/material"
+import {
+    Accordion,
+    Autocomplete,
+    Avatar,
+    Badge,
+    Box,
+    Button,
+    Radio,
+    Skeleton,
+    TextField,
+    useMediaQuery,
+} from "@mui/material"
 import GeoImage from "../../../assets/geo.svg"
 import { Header } from "../../../components/Header"
 import { colors } from "../../../style/colors"
@@ -37,7 +48,7 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 
 export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
     const isMobile = useMediaQuery("(orientation: portrait)")
-    const textField = useResponsiveStyles()
+    const { textField } = useResponsiveStyles()
     const header = useHeader()
     const io = useIo()
     const navigate = useNavigate()
@@ -136,11 +147,17 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
 
         const callsForDay = selectedKit?.calls?.filter((call: Call) => {
             const callDate = new Date(Number(call.forecast))
-            return callDate.getDate() === day.date() && callDate.getMonth() === day.month() && callDate.getFullYear() === day.year()
+            return (
+                callDate.getDate() === day.date() &&
+                callDate.getMonth() === day.month() &&
+                callDate.getFullYear() === day.year()
+            )
         })
 
         const areaDayCalls =
-            callsForDay?.map((item: any) => Number(item.talhao?.area)).reduce((prev: number, current: number) => prev + current, 0) || 0
+            callsForDay
+                ?.map((item: any) => Number(item.talhao?.area))
+                .reduce((prev: number, current: number) => prev + current, 0) || 0
 
         const totalArea = areaDayCalls + Number(findCall?.talhao?.area)
 
@@ -152,7 +169,11 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
             (totalArea <= selectedKit.hectareDay ? "#88A486" : totalArea > selectedKit.hectareDay && colors.delete)
 
         return (
-            <Badge key={day.toString()} overlap="circular" badgeContent={<Indicator color={indicatorColor || "#88A486"} size={7} offset={5} />}>
+            <Badge
+                key={day.toString()}
+                overlap="circular"
+                badgeContent={<Indicator color={indicatorColor || "#88A486"} size={7} offset={5} />}
+            >
                 <PickersDay {...other} outsideCurrentMonth={outsideCurrentMonth} day={day} />
             </Badge>
         )
@@ -236,7 +257,11 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
                                 }}
                             />
                         ) : (
-                            <Skeleton animation="wave" variant="rounded" sx={{ flex: 1, height: isMobile ? "38vw" : "20vw" }} />
+                            <Skeleton
+                                animation="wave"
+                                variant="rounded"
+                                sx={{ flex: 1, height: isMobile ? "38vw" : "20vw" }}
+                            />
                         )}
                         <Box sx={{ flexDirection: "column", gap: isMobile ? "2vw" : "1vw", flex: 1 }}>
                             <Box sx={{ width: 1 }}>
@@ -256,13 +281,16 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
                             <Box>
                                 <p style={{ fontSize: isMobile ? "3vw" : "1rem", fontWeight: "600" }}>Endereço </p>
                                 <p>
-                                    {findCall?.talhao?.tillage?.address?.street}, {findCall?.talhao?.tillage?.address.district} -{" "}
+                                    {findCall?.talhao?.tillage?.address?.street},{" "}
+                                    {findCall?.talhao?.tillage?.address.district} -{" "}
                                     {findCall?.talhao?.tillage?.address?.city}, {findCall?.talhao?.tillage?.address?.uf} -{" "}
                                     {findCall?.talhao?.tillage?.address?.cep}
                                 </p>
                             </Box>
                             <Box>
-                                <p style={{ fontSize: isMobile ? "3vw" : "1rem", fontWeight: "600" }}>Área: {findCall?.talhao?.area} ha</p>
+                                <p style={{ fontSize: isMobile ? "3vw" : "1rem", fontWeight: "600" }}>
+                                    Área: {findCall?.talhao?.area} ha
+                                </p>
                             </Box>
                         </Box>
                     </Box>
@@ -271,7 +299,12 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
                         <Formik initialValues={initialValues} onSubmit={approveCall}>
                             {({ values, handleChange, setFieldValue }) => (
                                 <Form>
-                                    <TitleComponents title="Escolha o kit responsável" button textButton="Salvar Kit" submit />
+                                    <TitleComponents
+                                        title="Escolha o kit responsável"
+                                        button
+                                        textButton="Salvar Kit"
+                                        submit
+                                    />
                                     <Box sx={{ gap: isMobile ? "5vw" : "1vw" }}>
                                         <Box sx={{ gap: isMobile ? "3vw" : "1vw", padding: "1vw 0" }}>
                                             <p style={{ color: colors.primary, fontSize: isMobile ? "3.3vw" : "1rem" }}>
@@ -284,7 +317,9 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
                                                 // inputValue={inputValue}
                                                 onChange={(event, selected) => setSelectedKit(selected)}
                                                 isOptionEqualToValue={(option, value) => option.id == value.id}
-                                                renderInput={(params) => <TextField {...params} sx={{ ...textField }} label="kit" required />}
+                                                renderInput={(params) => (
+                                                    <TextField {...params} sx={{ ...textField }} label="kit" required />
+                                                )}
                                             />
                                             <DemoItem label={"Previsão da visita"}>
                                                 <MobileDatePicker
