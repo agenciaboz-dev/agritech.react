@@ -25,7 +25,9 @@ export const ListProducer: React.FC<ListProducerProps> = ({}) => {
         setListProducer(listUsers?.filter((users) => users.producer !== null))
     }, [listUsers])
     useEffect(() => {
-        const filteredList = listUsers?.filter((user) => user.producer !== null && user.name.toLowerCase().includes(searchText.toLowerCase()))
+        const filteredList = listUsers?.filter(
+            (user) => user.producer !== null && user.name.toLowerCase().includes(searchText.toLowerCase())
+        )
         setListProducer(filteredList || [])
     }, [listUsers, searchText])
 
@@ -59,11 +61,11 @@ export const ListProducer: React.FC<ListProducerProps> = ({}) => {
             <Box
                 style={{
                     justifyContent: "center",
-                    height: "92%",
+                    height: "85%",
                     backgroundColor: colors.secondary,
                     borderTopLeftRadius: isMobile ? "5vw" : "2vw",
                     borderTopRightRadius: isMobile ? "5vw" : "2vw",
-                    paddingTop: isMobile ? "10" : "1vw",
+                    paddingTop: isMobile ? "2vw" : "1vw",
                 }}
             >
                 <Box

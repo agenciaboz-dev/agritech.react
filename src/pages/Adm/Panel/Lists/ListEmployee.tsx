@@ -60,7 +60,7 @@ export const ListEmployee: React.FC<ListEmployeeProps> = ({}) => {
             <Box
                 style={{
                     justifyContent: "center",
-                    height: "92%",
+                    height: "90%",
                     backgroundColor: colors.secondary,
                     borderTopLeftRadius: isMobile ? "5vw" : "2vw",
                     borderTopRightRadius: isMobile ? "5vw" : "2vw",
