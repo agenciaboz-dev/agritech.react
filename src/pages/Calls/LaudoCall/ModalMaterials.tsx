@@ -30,6 +30,8 @@ export const ModalMaterial: React.FC<ModalMaterialProps> = ({ opened, close, mat
     const isMobile = useMediaQuery("(orientation: portrait)")
     const { textField } = useResponsiveStyles()
     const [unit, setUnit] = useState("")
+    const [expanded, setExpanded] = React.useState<string | false>("")
+
     const [value, setValue] = useState("")
 
     const floatMask = useNumberMask({ allowDecimal: true, allowLeadingZeroes: true })
