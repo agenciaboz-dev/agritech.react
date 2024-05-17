@@ -77,7 +77,8 @@ export const CallApproved: React.FC<CallApprovedProps> = ({}) => {
     const approveCall = (values: ApprovedCall) => {
         console.log(values)
         const data = { ...values, hectarePrice: unmaskCurrency(values.hectarePrice || "") }
-        io.emit("call:approve", data)
+        console.log({ AQUI: data })
+        // io.emit("call:approve", data)
         setLoading(true)
     }
     const dateForecast = findCall?.forecast

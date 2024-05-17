@@ -35,10 +35,10 @@ export const ReviewsCall: React.FC<ReviewsCallProps> = ({ user }) => {
     }
 
     useEffect(() => {
-        console.log({ PENDING: sortedPendingCalls })
+        // console.log({ PENDING: sortedPendingCalls })
     }, [sortedPendingCalls])
     useEffect(() => {
-        console.log({ APPROVED: listCalls })
+        // console.log({ APPROVED: listCalls })
     }, [sortedApprovedCalls])
 
     useEffect(() => {

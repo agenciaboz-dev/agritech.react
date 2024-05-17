@@ -56,20 +56,20 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
     }, [notification])
 
     useEffect(() => {
-        if (listUsers.length == 0) io.emit("users:list")
-        if (listKits.length == 0) {
-            io.emit("kit:list")
-        }
+        // if (listUsers.length == 0) io.emit("users:list")
+        // if (listKits.length == 0) {
+        //     io.emit("kit:list")
+        // }
         // if (listCalls.length == 0) {
         //     io.emit("call:listApproved", user)
         //     setCall(listCalls.find((item) => item.id === notification.target_id))
         // }
-        if (listReports.length == 0) io.emit("report:list")
-        if (listTalhao?.length == 0) io.emit("talhao:list", user)
+        // if (listReports.length == 0) io.emit("report:list")
+        // if (listTalhao?.length == 0) io.emit("talhao:list", user)
     }, [listUsers, listKits, listCalls, listReports, listTalhao])
     useEffect(() => {
-        console.log({ CALLLLLLLL: listCalls })
-        console.log({ CALLLLLLLL: notification.target_id })
+        // console.log({ CALLLLLLLL: listCalls })
+        // console.log({ CALLLLLLLL: notification.target_id })
     }, [listCalls])
 
     // useEffect(() => {

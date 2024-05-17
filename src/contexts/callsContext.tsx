@@ -32,7 +32,7 @@ export const CallProvider: React.FC<CallProviderProps> = ({ children }) => {
         setCallsPending((calls) => [...calls, newCall])
     }
     const addCallApprove = (newCall: Call) => {
-        setCalls((calls) => [...calls, newCall])
+        setCalls((calls) => [...calls.filter((item) => item.id != newCall.id), newCall])
     }
     const replaceCall = (data: Call) => {
         setCalls((list) => [...list.filter((item) => item.id !== data.id), data])

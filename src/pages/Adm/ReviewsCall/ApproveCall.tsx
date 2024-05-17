@@ -1,17 +1,5 @@
 import React, { useEffect, useState } from "react"
-import {
-    Accordion,
-    Autocomplete,
-    Avatar,
-    Badge,
-    Box,
-    Button,
-    Radio,
-    Skeleton,
-    TextField,
-    useMediaQuery,
-} from "@mui/material"
-import GeoImage from "../../../assets/geo.svg"
+import { Autocomplete, Avatar, Badge, Box, Skeleton, TextField, useMediaQuery } from "@mui/material"
 import { Header } from "../../../components/Header"
 import { colors } from "../../../style/colors"
 import { useHeader } from "../../../hooks/useHeader"
@@ -19,19 +7,15 @@ import { useNavigate, useParams } from "react-router-dom"
 import { TitleComponents } from "../../../components/TitleComponents"
 import { styled } from "@mui/material/styles"
 import MuiAccordionDetails from "@mui/material/AccordionDetails"
-import Typography from "@mui/material/Typography"
-import { AccordionSummary } from "../../../components/Accordion"
 import { useCall } from "../../../hooks/useCall"
 import { useKits } from "../../../hooks/useKits"
 import { ApprovedCall, Call } from "../../../definitions/call"
 import { Form, Formik } from "formik"
-import { NewObject } from "../../../definitions/object"
 import { useIo } from "../../../hooks/useIo"
 import { useSnackbar } from "burgos-snackbar"
 import { useUsers } from "../../../hooks/useUsers"
-import { MobileDatePicker, PickersDay, ptBR } from "@mui/x-date-pickers"
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
-import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo"
+import { MobileDatePicker, PickersDay } from "@mui/x-date-pickers"
+import { DemoItem } from "@mui/x-date-pickers/internals/demo"
 import dayjs, { Dayjs } from "dayjs"
 import MaskedInputNando from "../../../components/MaskedNando"
 import { useCurrencyMask } from "burgos-masks"
@@ -41,33 +25,22 @@ import { useResponsiveStyles } from "../../../hooks/useResponsiveStyles"
 
 interface ApproveCallProps {}
 
-const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
-    // padding: theme.spacing(2),
-    borderTop: "1px solid rgba(0, 0, 0, .125)",
-}))
-
 export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
     const isMobile = useMediaQuery("(orientation: portrait)")
     const { textField } = useResponsiveStyles()
-    const header = useHeader()
     const io = useIo()
     const navigate = useNavigate()
     const { callid } = useParams()
-    const { listCallsPending, listCalls, removeCallApprove, addCallApprove } = useCall()
+    const { listCallsPending, removeCallApprove, addCallApprove } = useCall()
     const { listKits } = useKits()
     const { listUsers } = useUsers()
 
     const { snackbar } = useSnackbar()
 
     const [loading, setLoading] = useState(false)
-    const [expanded, setExpanded] = React.useState<string | false>("")
-
-    const expandendChange = (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
-        setExpanded(newExpanded ? panel : false)
-    }
 
     const findCall = listCallsPending?.find((call) => String(call.id) === callid)
-    console.log(findCall)
+    // console.log(findCall)
 
     const producerSelected = listUsers?.find((item) => item.producer?.id === findCall?.producerId)
     const tillageSelected = producerSelected?.producer?.tillage?.find((item) => item.id === findCall?.talhaoId)
@@ -75,10 +48,9 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
     const [kits, setKits] = useState(listKits.filter((item) => !!item && item.active))
     const [selectedKit, setSelectedKit] = useState<Kit | null>(null)
 
-    console.log(tillageSelected)
+    // console.log(tillageSelected)
     const [hectare, setHectare] = useState("")
     const [pickDate, setPickDate] = useState<Dayjs | null>(null)
-    const [kitId, setKitId] = useState<number>(0)
 
     const [cover, setCover] = useState("")
 
@@ -111,10 +83,6 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
         setLoading(true)
     }
 
-    const dateForecast = findCall?.forecast
-        ? new Date(Number(findCall?.forecast) || 0).toLocaleDateString("pt-Br")
-        : new Date().toLocaleDateString("pt-br")
-
     useEffect(() => {
         io.on("call:approve:success", (data: Call) => {
             console.log({ chamado_aprovado: data })
@@ -131,7 +99,7 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
     }, [])
 
     useEffect(() => {
-        if (kitsActived.length == 0) io.emit("kit:list")
+        if (listKits.length == 0) io.emit("kit:list")
     }, [listKits])
 
     const ServerDay = (props: any) => {
@@ -180,12 +148,12 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
     }
 
     useEffect(() => {
-        if (listKits.length === 0) io.emit("")
+        if (listKits.length === 0) io.emit("kit:list")
         if (findCall?.talhao) io.emit("tillage:cover", findCall?.talhao.tillageId)
 
         io.on("tillage:cover:success", (data: any) => {
             setCover(data.cover)
-            console.log(data.cover)
+            // console.log(data.cover)
         })
     }, [])
 
@@ -318,7 +286,13 @@ export const ApproveCall: React.FC<ApproveCallProps> = ({}) => {
                                                 onChange={(event, selected) => setSelectedKit(selected)}
                                                 isOptionEqualToValue={(option, value) => option.id == value.id}
                                                 renderInput={(params) => (
-                                                    <TextField {...params} sx={{ ...textField }} label="kit" required />
+                                                    <TextField
+                                                        {...params}
+                                                        sx={{ ...textField }}
+                                                        label="kit"
+                                                        required
+                                                        disabled={kits.length == 0 ? true : false}
+                                                    />
                                                 )}
                                             />
                                             <DemoItem label={"Previsão da visita"}>
