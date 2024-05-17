@@ -23,18 +23,20 @@ export const ListTillages: React.FC<ListTillagesProps> = ({}) => {
 
     const producerSelect = findProducer(producerid || "")
     const producerEncontrado = listUsers?.find((item) => String(item.producer?.id) === producerid)
-    const { listTillages, tillageUpdate, setProducerid } = useProducer()
+    const { setProducerid } = useProducer()
 
     const [tillages, setTillages] = useState<Tillage[] | undefined>(user?.producer?.tillage)
     const [tillagesProducer, setTillagesProducer] = useState<Tillage[]>(producerEncontrado?.producer?.tillage || [])
     const [searchText, setSearchText] = useState("")
-
+    console.log({ OIAEUUU: tillagesProducer })
     useEffect(() => {
         setTillagesProducer(producerEncontrado?.producer?.tillage || [])
     }, [producerEncontrado?.producer?.tillage])
 
     useEffect(() => {
-        const filteredList = tillagesProducer?.filter((item) => item !== null && item.name.toLowerCase().includes(searchText.toLowerCase()))
+        const filteredList = producerEncontrado?.producer?.tillage?.filter(
+            (item) => item !== null && item.name.toLowerCase().includes(searchText.toLowerCase())
+        )
 
         setTillagesProducer(filteredList || [])
     }, [producerEncontrado?.producer?.tillage, searchText])
@@ -49,7 +51,9 @@ export const ListTillages: React.FC<ListTillagesProps> = ({}) => {
     }, [tillages, user?.producer?.tillage])
 
     useEffect(() => {
-        const filteredList = tillages?.filter((item) => item !== null && item.name.toLowerCase().includes(searchText.toLowerCase()))
+        const filteredList = tillages?.filter(
+            (item) => item !== null && item.name.toLowerCase().includes(searchText.toLowerCase())
+        )
         setTillages(filteredList || [])
     }, [user?.producer?.tillage, searchText])
 
@@ -82,7 +86,11 @@ export const ListTillages: React.FC<ListTillagesProps> = ({}) => {
                 <Header
                     back
                     location={
-                        user?.producer ? "/producer/" : user?.isAdmin ? `/adm/profile/${producerSelect.id}` : `/employee/profile/${producerSelect.id}`
+                        user?.producer
+                            ? "/producer/"
+                            : user?.isAdmin
+                            ? `/adm/profile/${producerSelect.id}`
+                            : `/employee/profile/${producerSelect.id}`
                     }
                 />
             </Box>
@@ -126,7 +134,9 @@ export const ListTillages: React.FC<ListTillagesProps> = ({}) => {
                     >
                         {user?.producer !== null && tillages ? (
                             tillages.length !== 0 ? (
-                                tillages.map((item, index) => <CardTillage key={index} tillage={item} location={`/producer/tillage/${item.id}`} />)
+                                tillages.map((item, index) => (
+                                    <CardTillage key={index} tillage={item} location={`/producer/tillage/${item.id}`} />
+                                ))
                             ) : (
                                 tillages.length === 0 && (
                                     <Box

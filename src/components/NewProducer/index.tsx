@@ -176,7 +176,7 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
         name: "",
         area: "",
         ceo: "",
-        owner: producer?.name || " ", //corrigir para o nome do Cliente
+        owner: producer?.name || " ",
         manager: "",
         agronomist: "",
         technician: "",

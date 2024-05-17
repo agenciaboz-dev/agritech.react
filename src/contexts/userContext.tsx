@@ -40,9 +40,15 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         setUser(user)
     }
 
-    io.on("user:update:success", (data: User) => {
-        if (user?.id === data.id) setUser(data)
-    })
+    useEffect(() => {
+        io.on("user:update:success", (data: User) => {
+            if (user?.id === data.id) setUser(data)
+        })
+
+        return () => {
+            io.off("user:update:success")
+        }
+    }, [])
 
     return <UserContext.Provider value={{ user, setUser, updateUser, logout }}>{children}</UserContext.Provider>
 }
