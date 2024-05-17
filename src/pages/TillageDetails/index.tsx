@@ -217,16 +217,16 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                     overflow: "hidden",
                 }}
             >
-                {!selectedTalhao && tillageSelect?.talhao?.length !== 0 ? (
-                    <Box
-                        sx={{
-                            p: isMobile ? "2vw 4vw" : "0 1vw",
-                            flexDirection: "row",
-                            width: isMobile ? "90%" : "100%",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                        }}
-                    >
+                <Box
+                    sx={{
+                        p: isMobile ? "2vw 4vw" : "0 1vw",
+                        flexDirection: "row",
+                        width: isMobile ? "100%" : "100%",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                    }}
+                >
+                    {!selectedTalhao && tillageSelect?.talhao?.length !== 0 ? (
                         <Skeleton
                             sx={{
                                 width: isMobile ? 0.5 : 1,
@@ -234,18 +234,8 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                                 marginLeft: isMobile ? "1vw" : 0,
                             }}
                         />
-                    </Box>
-                ) : (
-                    tillageSelect?.talhao?.length !== 0 && (
-                        <Box
-                            sx={{
-                                p: isMobile ? "2vw 4vw" : "1vw",
-                                flexDirection: "row",
-                                width: "100%",
-                                justifyContent: "space-between",
-                                alignItems: "center",
-                            }}
-                        >
+                    ) : (
+                        tillageSelect?.talhao?.length !== 0 && (
                             <p
                                 style={{
                                     fontSize: "1.2rem",
@@ -256,34 +246,35 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                             >
                                 {!user?.producer ? selectedTalhao?.name : ""}
                             </p>
-                            <ButtonAgritech
-                                sx={{
-                                    width: "20%",
-                                    color: colors.text.white,
-                                    height: isMobile ? "12vw" : "3vw",
-                                    fontSize: isMobile ? "0.7rem" : "1rem",
-                                    gap: "1vw",
-                                    bgcolor: "gray",
-                                    p: 0,
-                                    textDecoration: isMobile ? "underline" : "unset",
-                                }}
-                                onClick={() =>
-                                    navigate(
-                                        user?.isAdmin
-                                            ? `/adm/producer/${tillageSelect?.producerId}/${tillageSelect?.id}/new_talhao`
-                                            : `/employee/producer/${tillageSelect?.producerId}/${tillageSelect?.id}/new_talhao`
-                                    )
-                                }
-                            >
-                                <VscAdd
-                                    color={"#fff"}
-                                    style={{ width: isMobile ? "4vw" : "2vw", height: isMobile ? "4vw" : "2vw" }}
-                                />
-                                Talhão
-                            </ButtonAgritech>
-                        </Box>
-                    )
-                )}
+                        )
+                    )}
+                    <ButtonAgritech
+                        sx={{
+                            width: "20%",
+                            color: colors.text.white,
+                            height: isMobile ? "12vw" : "3vw",
+                            fontSize: isMobile ? "0.7rem" : "1rem",
+                            gap: "1vw",
+                            bgcolor: "gray",
+                            p: 0,
+                            textDecoration: isMobile ? "underline" : "unset",
+                        }}
+                        onClick={() =>
+                            navigate(
+                                user?.isAdmin
+                                    ? `/adm/producer/${tillageSelect?.producerId}/${tillageSelect?.id}/new_talhao`
+                                    : `/employee/producer/${tillageSelect?.producerId}/${tillageSelect?.id}/new_talhao`
+                            )
+                        }
+                    >
+                        <VscAdd
+                            color={"#fff"}
+                            style={{ width: isMobile ? "4vw" : "2vw", height: isMobile ? "4vw" : "2vw" }}
+                        />
+                        Talhão
+                    </ButtonAgritech>
+                </Box>
+
                 {tillageSelect?.talhao?.length !== 0 ? (
                     <Box
                         sx={{

@@ -38,7 +38,7 @@ const openCall = {
 export const NewProducer: React.FC<NewProducerProps> = ({}) => {
     const isMobile = useMediaQuery("(orientation: portrait)")
     const { textField } = useResponsiveStyles()
-    const input = useResponsiveStyles()
+    const { input } = useResponsiveStyles()
     const io = useIo()
     const header = useHeader()
     const navigate = useNavigate()
@@ -328,7 +328,7 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
                 )}
                 <Box
                     sx={{
-                        padding: isMobile ? "4vw" : "0 0 1vw",
+                        padding: isMobile ? "0vw" : "0 0 1vw",
                         width: "100%",
                         height: "100%",
                         flex: 1,
@@ -344,7 +344,7 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
                             height: "100%",
                             gap: isMobile ? "5vw" : "1vw",
                             flexDirection: "column",
-                            padding: isMobile ? "1vw" : "0 1vw 1vw",
+                            padding: isMobile ? "0vw" : "0 1vw 1vw",
                             overflow: "auto",
                         }}
                     >
@@ -500,16 +500,16 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
                                                         height: isMobile ? "10vw" : "fit-content",
                                                     }}
                                                     onClick={() => {
-                                                        setCurrentStep(2)
+                                                        navigate("/adm/new_producer")
                                                     }}
                                                 >
-                                                    Voltar
+                                                    Cancelar
                                                 </Button>
                                                 <Button
                                                     type="submit"
                                                     variant="contained"
                                                     sx={{
-                                                        padding: isMobile ? "3vw" : "0.5vw",
+                                                        padding: isMobile ? "0vw" : "0.5vw",
                                                         width: "100%",
                                                         fontSize: isMobile ? 17 : "1.2rem",
                                                         color: colors.text.white,

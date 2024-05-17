@@ -89,14 +89,18 @@ export const GeolocalTalhao: React.FC<GeolocalTalhaoProps> = ({ setCurrentStep, 
                 center={origin}
                 zoom={16}
                 scrollWheelZoom={true}
-                style={{ height: "100%", zIndex: 1, borderRadius: isMobile ? "7vw" : "2vw" }}
+                style={{ height: "100%", zIndex: 1, borderRadius: isMobile ? "0" : "2vw" }}
                 ref={mapRef}
             >
-                <TileLayer url={`https://api.mapbox.com/styles/v1/${mapboxStyleId}/tiles/{z}/{x}/{y}?access_token=${mapboxToken}`} />
+                <TileLayer
+                    url={`https://api.mapbox.com/styles/v1/${mapboxStyleId}/tiles/{z}/{x}/{y}?access_token=${mapboxToken}`}
+                />
                 {coordinates.map((coord, index) => (
                     <Marker key={index} position={coord} />
                 ))}
-                {coordinates.length > 0 && <Polygon positions={coordinates} color="blue" fillColor="lightblue" fillOpacity={0.5} />}
+                {coordinates.length > 0 && (
+                    <Polygon positions={coordinates} color="blue" fillColor="lightblue" fillOpacity={0.5} />
+                )}
 
                 <MapClickHandler />
             </MapContainer>
@@ -115,9 +119,9 @@ export const GeolocalTalhao: React.FC<GeolocalTalhaoProps> = ({ setCurrentStep, 
                 <ButtonAgritech
                     variant="contained"
                     sx={{
-                        padding: "1vw",
+                        padding: "0vw",
                         margin: "0 auto",
-                        width: "50%",
+                        width: "70%",
                         height: "fit-content",
                         fontSize: isMobile ? 17 : "1.2rem   ",
                         color: colors.text.white,

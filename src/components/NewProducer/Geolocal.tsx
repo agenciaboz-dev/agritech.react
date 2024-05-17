@@ -87,18 +87,22 @@ export const Geolocal: React.FC<GeolocalProps> = ({ setCurrentStep, origin, coor
                 style={{ height: "100%", zIndex: 1, borderRadius: isMobile ? "7vw" : "2vw" }}
                 ref={mapRef}
             >
-                <TileLayer url={`https://api.mapbox.com/styles/v1/${mapboxStyleId}/tiles/{z}/{x}/{y}?access_token=${mapboxToken}`} />
+                <TileLayer
+                    url={`https://api.mapbox.com/styles/v1/${mapboxStyleId}/tiles/{z}/{x}/{y}?access_token=${mapboxToken}`}
+                />
                 {coordinates.map((coord, index) => (
                     <Marker key={index} position={coord} />
                 ))}
-                {coordinates.length > 0 && <Polygon positions={coordinates} color="blue" fillColor="lightblue" fillOpacity={0.5} />}
+                {coordinates.length > 0 && (
+                    <Polygon positions={coordinates} color="blue" fillColor="lightblue" fillOpacity={0.5} />
+                )}
 
                 <MapClickHandler />
             </MapContainer>
 
             <Box
                 sx={{
-                    padding: isMobile ? "2vw" : 0,
+                    padding: isMobile ? "vw" : 0,
                     margin: "0 auto",
                     position: "fixed",
                     bottom: isMobile ? "12vh" : "15vh",
@@ -110,9 +114,9 @@ export const Geolocal: React.FC<GeolocalProps> = ({ setCurrentStep, origin, coor
                 <ButtonAgritech
                     variant="contained"
                     sx={{
-                        padding: "1vw",
+                        padding: "0vw",
                         margin: "0 auto",
-                        width: "50%",
+                        width: "70%",
                         height: "fit-content",
                         fontSize: isMobile ? 17 : "1.2rem   ",
                         color: colors.text.white,

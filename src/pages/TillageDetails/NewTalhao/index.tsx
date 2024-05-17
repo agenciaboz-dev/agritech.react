@@ -96,7 +96,9 @@ export const NewTalhao: React.FC<NewTalhaoProps> = ({}) => {
             snackbar({ severity: "success", text: "Talhão adicionado!" })
             setLoadingTalhao(false)
             console.log({ Talhão: data.talhao })
-            navigate(user?.isAdmin ? `/adm/producer/${producerid}/${tillageid}` : `/employee/producer/${producerid}/${tillageid}`)
+            navigate(
+                user?.isAdmin ? `/adm/producer/${producerid}/${tillageid}` : `/employee/producer/${producerid}/${tillageid}`
+            )
         })
         io.on("talhao:create:failed", () => {
             snackbar({ severity: "error", text: "Algo deu errado!" })
@@ -219,7 +221,13 @@ export const NewTalhao: React.FC<NewTalhaoProps> = ({}) => {
                                                 flexDirection: "column",
                                             }}
                                         >
-                                            <FormTalhao data={values} change={handleChange} images={images} open={open} opened={opened} />
+                                            <FormTalhao
+                                                data={values}
+                                                change={handleChange}
+                                                images={images}
+                                                open={open}
+                                                opened={opened}
+                                            />
                                             <Box
                                                 sx={{
                                                     flexDirection: isMobile ? "column" : "row",
@@ -242,10 +250,10 @@ export const NewTalhao: React.FC<NewTalhaoProps> = ({}) => {
                                                         height: isMobile ? "10vw" : "fit-content",
                                                     }}
                                                     onClick={() => {
-                                                        setCurrentStep(0)
+                                                        navigate(`/adm/producer/${producerid}/${tillageid}`)
                                                     }}
                                                 >
-                                                    Voltar
+                                                    Cancelar
                                                 </Button>
                                                 <Button
                                                     type="submit"
