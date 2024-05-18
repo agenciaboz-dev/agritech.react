@@ -5,6 +5,7 @@ import { Header } from "../../components/Header"
 import { colors } from "../../style/colors"
 import { LogNotification } from "./LogNotification"
 import { useNotification } from "../../hooks/useNotifications"
+import { NotificationClass } from "../../types/Notification"
 
 interface NotificationsListProps {
     user: User
@@ -13,7 +14,7 @@ interface NotificationsListProps {
 export const NotificationsList: React.FC<NotificationsListProps> = ({ user }) => {
     const isMobile = useMediaQuery("(orientation: portrait)")
     const header = useHeader()
-    const { listNotifications } = useNotification()
+    const { listNotifications, setListNotifications } = useNotification()
     const sortedList = listNotifications?.sort((a, b) => Number(b.datetime) - Number(a.datetime))
 
     useEffect(() => {
@@ -21,7 +22,7 @@ export const NotificationsList: React.FC<NotificationsListProps> = ({ user }) =>
     }, [])
 
     useEffect(() => {
-        console.log(listNotifications)
+        console.log({ HOHO: listNotifications })
     }, [listNotifications])
 
     return (

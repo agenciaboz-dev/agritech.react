@@ -44,14 +44,15 @@ export const NotificationDrawerProvider: React.FC<NotificationDrawerProviderProp
     }
 
     useEffect(() => {
-        user?.id && io.emit("notification:list", user.id)
+        user && io.emit("notification:list", user.id)
+        console.log("FOI HEIN", user?.id)
         if (user) io.emit("talhao:list", user)
     }, [user])
 
     useEffect(() => {
         io.on("notification:list", (list: NotificationClass[]) => {
             setListNotifications(list)
-            console.log(listNotifications)
+            console.log({ UEBA: listNotifications })
         })
     }, [])
 
@@ -64,6 +65,7 @@ export const NotificationDrawerProvider: React.FC<NotificationDrawerProviderProp
 
         return () => {
             io.off("notification:new")
+            io.off("notification:list")
         }
     }, [])
 

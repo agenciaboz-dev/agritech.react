@@ -20,7 +20,6 @@ import { RiCustomerServiceLine } from "react-icons/ri"
 import { useIo } from "../../hooks/useIo"
 import { NotificationClass } from "../../types/server/class/Notification"
 import { useNotification } from "../../hooks/useNotifications"
-import { useMenuDrawer } from "../../hooks/useMenuDrawer"
 
 interface LogNotificationProps {
     notification: NotificationClass
@@ -35,9 +34,7 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
 
     const { removeNotification, open, setOpen } = useNotification()
 
-    const { listUsers, pendingUsers } = useUsers()
     const { listKits } = useKits()
-    const { listCalls } = useCall()
     const { listReports } = useReports()
     const { listTalhao } = useTalhao()
 
@@ -48,37 +45,13 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
     const [talhao, setTalhao] = useState<Talhao>()
 
     useEffect(() => {
-        setEmployee(listUsers.concat(pendingUsers).find((item) => item.id === notification.target_id))
-
-        setReport(listReports?.find((item) => item.id === notification.target_id))
-        setTalhao(listTalhao?.find((item) => item.id === notification.target_id))
-        setKit(listKits?.find((item) => item.id === notification.target_id))
+        if (notification.data as User) setEmployee(notification.data.user)
+        if (notification.data as Report) setReport(notification.data)
+        if (notification.data as Talhao) setReport(notification.data)
+        if (notification.data as Call) setReport(notification.data)
+        if (notification.data as Kit) setReport(notification.data)
+        console.log({ CALL: call })
     }, [notification])
-
-    useEffect(() => {
-        // if (listUsers.length == 0) io.emit("users:list")
-        // if (listKits.length == 0) {
-        //     io.emit("kit:list")
-        // }
-        // if (listCalls.length == 0) {
-        //     io.emit("call:listApproved", user)
-        //     setCall(listCalls.find((item) => item.id === notification.target_id))
-        // }
-        // if (listReports.length == 0) io.emit("report:list")
-        // if (listTalhao?.length == 0) io.emit("talhao:list", user)
-    }, [listUsers, listKits, listCalls, listReports, listTalhao])
-    useEffect(() => {
-        // console.log({ CALLLLLLLL: listCalls })
-        // console.log({ CALLLLLLLL: notification.target_id })
-    }, [listCalls])
-
-    // useEffect(() => {
-    //     console.log({ USERS: listUsers })
-    //     console.log({ KITS: listKits })
-    //     console.log({ CALLS: listCalls })
-    //     console.log({ TALHAO: listTalhao })
-    //     console.log({ REPORTS: listReports })
-    // }, [listUsers, listKits, listCalls, listReports, listTalhao])
 
     const messageTemplates: any = {
         new: {
@@ -677,7 +650,7 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                                         overflowX: "hidden",
                                     }}
                                 >
-                                    Chamado aberto para o talhão {call?.talhao?.name}
+                                    Chamado aberto para o talhão {notification.data?.talhao?.name}
                                 </p>
                             </Box>
                         )
