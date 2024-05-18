@@ -140,7 +140,7 @@ export const AddKit: React.FC<AddKitProps> = ({}) => {
                             },
                         }}
                     >
-                        <CircularProgress sx={{ color: colors.text.white, width: "15vw", height: "15vw" }} />
+                        <CircularProgress size={"1.6rem"} sx={{ color: colors.text.white, width: "15vw", height: "15vw" }} />
                     </Modal>
                     <Box
                         sx={{
@@ -183,7 +183,13 @@ export const AddKit: React.FC<AddKitProps> = ({}) => {
                                     padding: isMobile ? "2vw 3vw" : "1.5vw 1vw",
                                 }}
                             >
-                                <p style={{ color: colors.text.white, fontSize: isMobile ? "4vw" : "1.5rem", fontFamily: "MalgunGothic2" }}>
+                                <p
+                                    style={{
+                                        color: colors.text.white,
+                                        fontSize: isMobile ? "4vw" : "1.5rem",
+                                        fontFamily: "MalgunGothic2",
+                                    }}
+                                >
                                     Adicionar novo kit
                                 </p>
                                 <Box sx={{ width: "60%", gap: "1.5vw", flexDirection: "row" }}>

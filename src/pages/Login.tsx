@@ -148,7 +148,11 @@ export const Login: React.FC<LoginProps> = ({}) => {
                                     margin: "3vw auto 0",
                                 }}
                             >
-                                {loading ? <CircularProgress size={30} sx={{ color: "#fff", fontSize: "2vw" }} /> : "Entrar"}
+                                {loading ? (
+                                    <CircularProgress size={"1.6rem"} sx={{ color: "#fff", fontSize: "2vw" }} />
+                                ) : (
+                                    "Entrar"
+                                )}
                             </Button>
                         </Form>
                     )}

@@ -167,7 +167,7 @@ export const NewTalhao: React.FC<NewTalhaoProps> = ({}) => {
                                     {currentStep === 1 &&
                                         (!origin ? (
                                             <Box sx={{ height: "100%", alignItems: "center", justifyContent: "center" }}>
-                                                <CircularProgress sx={{ color: colors.button }} />
+                                                <CircularProgress size={"1.6rem"} sx={{ color: colors.button }} />
                                             </Box>
                                         ) : (
                                             <>
@@ -236,7 +236,11 @@ export const NewTalhao: React.FC<NewTalhaoProps> = ({}) => {
                                                         textTransform: "none",
                                                     }}
                                                 >
-                                                    {loadingTalhao ? <CircularProgress sx={{ color: "#fff" }} /> : "Salvar"}
+                                                    {loadingTalhao ? (
+                                                        <CircularProgress size={"1.6rem"} sx={{ color: "#fff" }} />
+                                                    ) : (
+                                                        "Salvar"
+                                                    )}
                                                 </Button>
                                             </Box>
                                         </Box>

@@ -503,7 +503,7 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                                     textTransform: "none",
                                 }}
                             >
-                                {loading ? <CircularProgress sx={{ color: "#fff" }} /> : "Abrir Chamado"}
+                                {loading ? <CircularProgress size={"1.6rem"} sx={{ color: "#fff" }} /> : "Abrir Chamado"}
                             </Button>
                         )}
                         {user.employee && tillages.length !== 0 && pickDate && (
@@ -519,7 +519,7 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                                     textTransform: "none",
                                 }}
                             >
-                                {loading ? <CircularProgress sx={{ color: "#fff" }} /> : "Abrir Chamado"}
+                                {loading ? <CircularProgress size={"1.6rem"} sx={{ color: "#fff" }} /> : "Abrir Chamado"}
                             </Button>
                         )}
                     </Box>

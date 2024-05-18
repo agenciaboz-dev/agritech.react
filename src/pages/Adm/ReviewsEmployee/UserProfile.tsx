@@ -214,12 +214,19 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
                 }}
             >
                 <Box sx={{ flexDirection: "row", justifyContent: "space-between", width: "100%", alignItems: "center" }}>
-                    <p style={{ fontSize: isMobile ? "4.5vw" : "1.5rem", fontFamily: "MalgunGothic2", textAlign: "left" }}>Informações Pessoais</p>
+                    <p style={{ fontSize: isMobile ? "4.5vw" : "1.5rem", fontFamily: "MalgunGothic2", textAlign: "left" }}>
+                        Informações Pessoais
+                    </p>
                     {view && selectedUser?.producer && (
                         <Button
                             variant="contained"
                             size="small"
-                            sx={{ bgcolor: colors.button, borderRadius: "5vw", textTransform: "none", fontSize: isMobile ? "3vw" : "1rem" }}
+                            sx={{
+                                bgcolor: colors.button,
+                                borderRadius: "5vw",
+                                textTransform: "none",
+                                fontSize: isMobile ? "3vw" : "1rem",
+                            }}
                             onClick={() => {
                                 if (userSelect !== null) {
                                     const path = user?.isAdmin
@@ -274,7 +281,10 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
                             onClick={() => handleReject(valuesUser)}
                         >
                             {loadingReject ? (
-                                <CircularProgress size={isMobile ? "9vw" : "3vw"} sx={{ color: colors.text.white, width: "0.5vw" }} />
+                                <CircularProgress
+                                    size={isMobile ? "1.6rem" : "3vw"}
+                                    sx={{ color: colors.text.white, width: "0.5vw" }}
+                                />
                             ) : (
                                 "Não Aprovar"
                             )}
@@ -293,7 +303,10 @@ export const Userprofile: React.FC<UserprofileProps> = ({ view }) => {
                             onClick={() => handleApprove(valuesUser)}
                         >
                             {loadingApprove ? (
-                                <CircularProgress size={isMobile ? "9vw" : "3vw"} sx={{ color: colors.text.white, width: "0.5vw" }} />
+                                <CircularProgress
+                                    size={isMobile ? "1.6rem" : "3vw"}
+                                    sx={{ color: colors.text.white, width: "0.5vw" }}
+                                />
                             ) : (
                                 "Aprovar"
                             )}

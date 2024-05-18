@@ -325,7 +325,11 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
                                                         textTransform: "none",
                                                     }}
                                                 >
-                                                    {loadingTillage ? <CircularProgress sx={{ color: "#fff" }} /> : "Salvar"}
+                                                    {loadingTillage ? (
+                                                        <CircularProgress size={"1.6rem"} sx={{ color: "#fff" }} />
+                                                    ) : (
+                                                        "Salvar"
+                                                    )}
                                                 </Button>
                                             </Box>
                                         </Box>

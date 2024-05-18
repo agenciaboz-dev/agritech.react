@@ -1,4 +1,13 @@
-import { Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, useMediaQuery } from "@mui/material"
+import {
+    Button,
+    CircularProgress,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    useMediaQuery,
+} from "@mui/material"
 import React from "react"
 import { colors } from "../style/colors"
 import { useNavigate } from "react-router-dom"
@@ -43,7 +52,10 @@ export const DialogConfirm: React.FC<DialogConfirmProps> = ({ user, open, setOpe
                 {data.title}
             </DialogTitle>
             <DialogContent sx={{ gap: isMobile ? "6vw" : "2vw", display: "flex", flexDirection: "column" }}>
-                <DialogContentText id="alert-dialog-description" sx={{ color: colors.text.white, fontSize: isMobile ? "3vw" : "1rem" }}>
+                <DialogContentText
+                    id="alert-dialog-description"
+                    sx={{ color: colors.text.white, fontSize: isMobile ? "3vw" : "1rem" }}
+                >
                     {data.content}
                 </DialogContentText>
                 {children}
@@ -53,7 +65,7 @@ export const DialogConfirm: React.FC<DialogConfirmProps> = ({ user, open, setOpe
                     {data.cancelTitle}
                 </Button>
                 <Button onClick={click} autoFocus sx={{ color: colors.text.white, textTransform: "none" }}>
-                    {loading ? <CircularProgress sx={{ color: "#fff" }} /> : data.submitTitle}
+                    {loading ? <CircularProgress size={"1.6rem"} sx={{ color: "#fff" }} /> : data.submitTitle}
                 </Button>
             </DialogActions>
         </Dialog>

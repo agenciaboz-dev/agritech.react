@@ -395,7 +395,7 @@ export const NewEmployee: React.FC<NewEmployeeProps> = ({}) => {
                                     }}
                                 >
                                     {loading ? (
-                                        <CircularProgress sx={{ color: "#fff" }} />
+                                        <CircularProgress size={"1.6rem"} sx={{ color: "#fff" }} />
                                     ) : currentStep !== 4 ? (
                                         "Próximo"
                                     ) : (

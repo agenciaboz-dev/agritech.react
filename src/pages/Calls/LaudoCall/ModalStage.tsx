@@ -88,7 +88,11 @@ export const ModalStage: React.FC<ModalStageProps> = ({ opened, close, report })
             if (updatedReport.pdf_path) {
                 window.open(updatedReport.pdf_path, "_blank")?.focus()
             }
-            navigate(user?.isAdmin ? `/adm/call/${report?.callId}/report/${report?.id}` : `/employee/call/${report?.callId}/report/${report?.id}`)
+            navigate(
+                user?.isAdmin
+                    ? `/adm/call/${report?.callId}/report/${report?.id}`
+                    : `/employee/call/${report?.callId}/report/${report?.id}`
+            )
         })
         io.on("report:closed:failed", (error) => {
             console.log(error)
@@ -116,10 +120,19 @@ export const ModalStage: React.FC<ModalStageProps> = ({ opened, close, report })
         >
             <Box sx={{ width: "100%", flexDirection: "column", gap: isMobile ? "2vw" : "1vw" }}>
                 <form onSubmit={backFormik.handleSubmit}>
-                    <StageDescription title={"Volta da Localização"} values={backFormik.values} change={backFormik.handleChange} data={dates} />
+                    <StageDescription
+                        title={"Volta da Localização"}
+                        values={backFormik.values}
+                        change={backFormik.handleChange}
+                        data={dates}
+                    />
 
                     <ButtonAgritech type="submit" variant="contained" sx={{ bgcolor: colors.button }}>
-                        {loading ? <CircularProgress size={isMobile ? "7vw" : "2vw"} sx={{ color: colors.text.white }} /> : "Finalizar"}
+                        {loading ? (
+                            <CircularProgress size={isMobile ? "1.6rem" : "2vw"} sx={{ color: colors.text.white }} />
+                        ) : (
+                            "Finalizar"
+                        )}
                     </ButtonAgritech>
                 </form>
             </Box>

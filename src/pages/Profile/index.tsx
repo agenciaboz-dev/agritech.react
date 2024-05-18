@@ -115,7 +115,9 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
                     ? {
                           ...values.producer,
                           cnpj: values.producer.cnpj ? unmask(values.producer.cnpj) : undefined,
-                          inscricaoEstadual: values.producer.inscricaoEstadual ? unmask(values.producer.inscricaoEstadual) : undefined,
+                          inscricaoEstadual: values.producer.inscricaoEstadual
+                              ? unmask(values.producer.inscricaoEstadual)
+                              : undefined,
                       }
                     : undefined,
             }
@@ -188,7 +190,14 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
                     gap: isMobile ? "4vw" : "1vw",
                 }}
             >
-                <p style={{ fontSize: isMobile ? "4.5vw" : "1.2rem", fontFamily: "MalgunGothic2", textAlign: "left", fontWeight: "800" }}>
+                <p
+                    style={{
+                        fontSize: isMobile ? "4.5vw" : "1.2rem",
+                        fontFamily: "MalgunGothic2",
+                        textAlign: "left",
+                        fontWeight: "800",
+                    }}
+                >
                     Informações Pessoais
                 </p>
                 <Box sx={{ height: "100%" }}>
@@ -234,7 +243,10 @@ export const Profile: React.FC<ProfileProps> = ({ user }) => {
                                             }}
                                         >
                                             {loading ? (
-                                                <CircularProgress size={isMobile ? "9vw" : "2vw"} sx={{ color: colors.text.white, width: "0.5vw" }} />
+                                                <CircularProgress
+                                                    size={isMobile ? "1.6rem" : "2vw"}
+                                                    sx={{ color: colors.text.white, width: "0.5vw" }}
+                                                />
                                             ) : (
                                                 "Salvar"
                                             )}

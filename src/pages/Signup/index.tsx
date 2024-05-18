@@ -117,7 +117,8 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                 employee: {
                     rg: data.employee?.rg,
                     gender: gender.find((gender) => gender.id == String(data.employee?.gender))?.value || "",
-                    relationship: typeRelationship.find((relationship) => relationship.id == data.employee?.relationship)?.value || "",
+                    relationship:
+                        typeRelationship.find((relationship) => relationship.id == data.employee?.relationship)?.value || "",
                     nationality: data.employee?.nationality,
                     voter_card: data.employee?.voter_card,
                     work_card: data.employee?.work_card,
@@ -336,7 +337,12 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                                 )}
                                 {currentStep === 2 && (
                                     <Box sx={{ gap: isMobile ? "4vw" : "1vw", width: "100%", overflowY: "auto" }}>
-                                        <StepTwo data={values} handleChange={handleChange} typeUser={typeUser} setCurrentStep={setCurrentStep} />
+                                        <StepTwo
+                                            data={values}
+                                            handleChange={handleChange}
+                                            typeUser={typeUser}
+                                            setCurrentStep={setCurrentStep}
+                                        />
                                         {typeUser === "employee" && (
                                             <Box sx={{ width: "100%", gap: isMobile ? "2vw" : "1vw" }}>
                                                 <Button
@@ -380,7 +386,11 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                                 )}
                                 {currentStep === 3 && typeUser === "employee" && (
                                     <Box sx={{ width: "100%", overflowY: "auto" }}>
-                                        <StepThree data={values} handleChange={handleChange} setCurrentStep={setCurrentStep} />
+                                        <StepThree
+                                            data={values}
+                                            handleChange={handleChange}
+                                            setCurrentStep={setCurrentStep}
+                                        />
                                     </Box>
                                 )}
 
@@ -399,7 +409,14 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                                                 textTransform: "none",
                                             }}
                                         >
-                                            {loading ? <CircularProgress size={isMobile ? 30 : "2vw"} sx={{ color: "#fff" }} /> : "Cadastrar"}
+                                            {loading ? (
+                                                <CircularProgress
+                                                    size={isMobile ? "1.6rem" : "2vw"}
+                                                    sx={{ color: "#fff" }}
+                                                />
+                                            ) : (
+                                                "Cadastrar"
+                                            )}
                                         </Button>
                                         <Button
                                             variant="outlined"
@@ -436,7 +453,14 @@ export const Signup: React.FC<SignupProps> = ({}) => {
                                                 textTransform: "none",
                                             }}
                                         >
-                                            {loading ? <CircularProgress size={isMobile ? 30 : "2vw"} sx={{ color: "#fff" }} /> : "Cadastrar"}
+                                            {loading ? (
+                                                <CircularProgress
+                                                    size={isMobile ? "1.6rem" : "2vw"}
+                                                    sx={{ color: "#fff" }}
+                                                />
+                                            ) : (
+                                                "Cadastrar"
+                                            )}
                                         </Button>
                                         <Button
                                             variant="outlined"

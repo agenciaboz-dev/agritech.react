@@ -401,7 +401,7 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
                                                     }}
                                                 >
                                                     {loadingProducer ? (
-                                                        <CircularProgress sx={{ color: "#fff" }} />
+                                                        <CircularProgress size={"1.6rem"} sx={{ color: "#fff" }} />
                                                     ) : (
                                                         "Salvar"
                                                     )}
@@ -519,7 +519,11 @@ export const NewProducer: React.FC<NewProducerProps> = ({}) => {
                                                     }}
                                                     onClick={() => setLoadingTillage(true)}
                                                 >
-                                                    {loadingTillage ? <CircularProgress sx={{ color: "#fff" }} /> : "Salvar"}
+                                                    {loadingTillage ? (
+                                                        <CircularProgress size={"1.6rem"} sx={{ color: "#fff" }} />
+                                                    ) : (
+                                                        "Salvar"
+                                                    )}
                                                 </Button>
                                             </Box>
                                         </Box>

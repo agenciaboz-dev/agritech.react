@@ -138,7 +138,10 @@ export const CallDetails: React.FC<CallDetailsProps> = ({}) => {
                     },
                 }}
             >
-                <CircularProgress sx={{ color: colors.text.white, width: isMobile ? "15vw" : "2vw", height: isMobile ? "15vw" : "2vw" }} />
+                <CircularProgress
+                    size={"1.6rem"}
+                    sx={{ color: colors.text.white, width: isMobile ? "15vw" : "2vw", height: isMobile ? "15vw" : "2vw" }}
+                />
             </Modal>
             <Box
                 sx={{
@@ -197,7 +200,9 @@ export const CallDetails: React.FC<CallDetailsProps> = ({}) => {
                         <p>1/4</p>
                         <Box sx={{ gap: "1vw" }}>
                             <p style={{ fontSize: isMobile ? "4.1vw" : "1.2rem" }}>Chamado em andamento</p>
-                            <p style={{ fontSize: isMobile ? "2.9vw" : "1rem" }}>Aberto em: {dateFrontend(callSelect?.open || "")}</p>
+                            <p style={{ fontSize: isMobile ? "2.9vw" : "1rem" }}>
+                                Aberto em: {dateFrontend(callSelect?.open || "")}
+                            </p>
                         </Box>
                         {!callSelect?.init && (
                             <Button

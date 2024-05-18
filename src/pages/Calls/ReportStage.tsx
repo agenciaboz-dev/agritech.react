@@ -279,7 +279,7 @@ export const ReportStage: React.FC<ReportStageProps> = ({ user }) => {
                                     />
                                     <ButtonAgritech type="submit" variant="contained" sx={{ bgcolor: colors.button }}>
                                         {loading ? (
-                                            <CircularProgress size="7vw" sx={{ color: colors.text.white }} />
+                                            <CircularProgress size={"1.6rem"} sx={{ color: colors.text.white }} />
                                         ) : (
                                             "Chegou na Localização"
                                         )}
@@ -297,7 +297,7 @@ export const ReportStage: React.FC<ReportStageProps> = ({ user }) => {
                                     <ButtonAgritech type="submit" variant="contained" sx={{ bgcolor: colors.button }}>
                                         {loading ? (
                                             <CircularProgress
-                                                size={isMobile ? "7vw" : "2vw"}
+                                                size={isMobile ? "1.6rem" : "2vw"}
                                                 sx={{ color: colors.text.white }}
                                             />
                                         ) : (

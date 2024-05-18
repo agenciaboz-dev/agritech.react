@@ -420,6 +420,7 @@ export const LaudoCall: React.FC<LaudoCallProps> = ({ user }) => {
                 }}
             >
                 <CircularProgress
+                    size={"1.6rem"}
                     sx={{ color: colors.text.white, width: isMobile ? "15vw" : "2vw", height: isMobile ? "15vw" : "2vw" }}
                 />
             </Modal>
