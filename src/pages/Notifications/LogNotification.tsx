@@ -50,7 +50,7 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
         if (notification.data as Talhao) setReport(notification.data)
         if (notification.data as Call) setReport(notification.data)
         if (notification.data as Kit) setReport(notification.data)
-        console.log({ CALL: call })
+        // console.log({ CALL: call })
     }, [notification])
 
     const messageTemplates: any = {
@@ -71,7 +71,7 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                 message: "Um novo talhão foi adicionado para você.",
                 onClick: () => {
                     user && io.emit("notification:viewed", notification.id, user.id)
-                    navigate(`/producer/tillage/${talhao?.tillageId}`)
+                    navigate(`/producer/tillage/${notification.data.tillageId}`)
                     removeNotification(notification.id)
                 },
             },
@@ -88,10 +88,10 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                     user && io.emit("notification:viewed", notification.id, user.id)
                     navigate(
                         user?.isAdmin
-                            ? `/adm/call/${notification.target_id}/laudos`
-                            : user?.producer
-                            ? `/employee/call/${notification.target_id}/laudos`
-                            : `/employee/call/${notification.target_id}/laudos`
+                            ? `/adm/call/${notification.target_id}`
+                            : user?.producer !== null
+                            ? `/producer/call/${notification.target_id}`
+                            : `/employee/call/${notification.target_id}`
                     )
                     removeNotification(notification.id)
                 },
@@ -165,7 +165,27 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                 message: `O relatório do talhão ${report?.call?.talhao?.name} foi aprovado.`,
                 onClick: () => {
                     user && io.emit("notification:viewed", notification.id, user.id)
-                    navigate(`/adm/call/${report?.callId}/report/${notification.target_id}`)
+                    navigate(
+                        user?.isAdmin
+                            ? `/adm/call/${report?.callId}/report/${notification.target_id}`
+                            : user?.producer !== null
+                            ? `/producer/call/${report?.callId}/report/${notification.target_id}`
+                            : `/employee/call/${report?.callId}/report/${notification.target_id}`
+                    )
+                    removeNotification(notification.id)
+                },
+            },
+            call: {
+                message: ``,
+                onClick: () => {
+                    user && io.emit("notification:viewed", notification.id, user.id)
+                    navigate(
+                        user?.isAdmin
+                            ? `/adm/call/${notification.target_id}`
+                            : user?.producer !== null
+                            ? `/producer/call/${notification.target_id}`
+                            : `/employee/call/${notification.target_id}`
+                    )
                     removeNotification(notification.id)
                 },
             },
@@ -177,7 +197,27 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                     user && io.emit("notification:viewed", notification.id, user.id)
 
                     removeNotification(notification.id)
-                    navigate(`/adm/call/${report?.callId}/report/${notification.target_id}`)
+                    navigate(
+                        user?.isAdmin
+                            ? `/adm/call/${report?.callId}/report/${notification.target_id}`
+                            : user?.producer !== null
+                            ? `/producer/call/${report?.callId}/report/${notification.target_id}`
+                            : `/employee/call/${report?.callId}/report/${notification.target_id}`
+                    )
+                },
+            },
+        },
+        cancel: {
+            call: {
+                message: ``,
+                onClick: () => {
+                    navigate(
+                        user?.isAdmin
+                            ? `/adm/call/${notification.target_id}`
+                            : user?.producer !== null
+                            ? `/producer/call/${notification.target_id}`
+                            : `/employee/call/${notification.target_id}`
+                    )
                 },
             },
         },
@@ -229,7 +269,7 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                 sx={{
                     flexDirection: "row",
                     gap: drawer ? "2vw" : "0vw",
-                    width: "90%",
+                    width: "100%",
                     alignItems: "center",
                     justifyContent: "space-between",
                 }}
@@ -239,6 +279,7 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                         width: isMobile ? "13%" : "fit-content",
                     }}
                 >
+                    {/* <p>{notification.id}</p> */}
                     {notification.target_key === "employee" ? (
                         <Avatar
                             src={employee?.image}
@@ -388,7 +429,7 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                             <p
                                 style={{
                                     color: drawer ? colors.text.white : colors.text.black,
-                                    fontSize: "0.9rem",
+                                    fontSize: "0.8rem",
                                     textOverflow: "ellipsis",
                                     whiteSpace: "nowrap",
                                     overflowX: "hidden",
@@ -410,7 +451,9 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                                 {employee?.name} acabou de ser cadastrado
                             </p>
                         </Box>
-                    ) : notification.action === "close" && notification.target_key === "report" ? (
+                    ) : notification.action === "close" &&
+                      notification.target_key === "report" &&
+                      user?.producer === null ? (
                         <Box
                             sx={{
                                 width: "100%",
@@ -419,7 +462,7 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                             <p
                                 style={{
                                     color: drawer ? colors.text.white : colors.text.black,
-                                    fontSize: "0.9rem",
+                                    fontSize: "0.8rem",
                                     textOverflow: "ellipsis",
                                     whiteSpace: "nowrap",
                                     overflowX: "hidden",
@@ -438,7 +481,40 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                                     fontWeight: findBy === undefined ? "800" : "0",
                                 }}
                             >
-                                Relatório fechado para {report?.call?.talhao?.tillage?.name}
+                                Relatório finalizado para {report?.call?.talhao?.tillage?.name}
+                            </p>
+                        </Box>
+                    ) : notification.action === "approve" && notification.target_key === "report" ? (
+                        <Box
+                            sx={{
+                                width: "100%",
+                            }}
+                        >
+                            <p
+                                style={{
+                                    color: drawer ? colors.text.white : colors.text.black,
+                                    fontSize: "0.8rem",
+                                    textOverflow: "ellipsis",
+                                    whiteSpace: "nowrap",
+                                    overflowX: "hidden",
+                                    fontWeight: "800",
+                                }}
+                            >
+                                {user?.producer === null
+                                    ? report?.call?.talhao?.tillage?.owner
+                                    : report?.call?.talhao?.tillage?.name}
+                            </p>
+                            <p
+                                style={{
+                                    color: drawer ? colors.text.white : colors.text.black,
+                                    fontSize: "0.7rem",
+                                    textOverflow: "ellipsis",
+                                    whiteSpace: "nowrap",
+                                    overflowX: "hidden",
+                                    fontWeight: findBy === undefined ? "800" : "0",
+                                }}
+                            >
+                                Relatório fechado para {report?.call?.talhao?.name}
                             </p>
                         </Box>
                     ) : notification.action === "active" && notification.target_key === "admin" ? (
@@ -450,7 +526,7 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                             <p
                                 style={{
                                     color: drawer ? colors.text.white : colors.text.black,
-                                    fontSize: "0.9rem",
+                                    fontSize: "0.8rem",
                                     textOverflow: "ellipsis",
                                     whiteSpace: "nowrap",
                                     overflowX: "hidden",
@@ -481,7 +557,7 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                             <p
                                 style={{
                                     color: drawer ? colors.text.white : colors.text.black,
-                                    fontSize: "0.9rem",
+                                    fontSize: "0.8rem",
                                     textOverflow: "ellipsis",
                                     whiteSpace: "nowrap",
                                     overflowX: "hidden",
@@ -500,7 +576,7 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                             <p
                                 style={{
                                     color: drawer ? colors.text.white : colors.text.black,
-                                    fontSize: "0.9rem",
+                                    fontSize: "0.8rem",
                                     textOverflow: "ellipsis",
                                     whiteSpace: "nowrap",
                                     overflowX: "hidden",
@@ -512,7 +588,7 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                             <p
                                 style={{
                                     color: drawer ? colors.text.white : colors.text.black,
-                                    fontSize: "0.7rem",
+                                    fontSize: "0.8rem",
                                     textOverflow: "ellipsis",
                                     whiteSpace: "nowrap",
                                     overflowX: "hidden",
@@ -531,7 +607,7 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                             <p
                                 style={{
                                     color: drawer ? colors.text.white : colors.text.black,
-                                    fontSize: "0.9rem",
+                                    fontSize: "0.8rem",
                                     textOverflow: "ellipsis",
                                     whiteSpace: "nowrap",
                                     overflowX: "hidden",
@@ -562,7 +638,7 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                             <p
                                 style={{
                                     color: drawer ? colors.text.white : colors.text.black,
-                                    fontSize: "0.9rem",
+                                    fontSize: "0.8rem",
                                     fontWeight: findBy === undefined ? "800" : "0",
                                     textOverflow: "ellipsis",
                                     whiteSpace: "nowrap",
@@ -580,7 +656,7 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                         >
                             <p
                                 style={{
-                                    fontSize: "0.9rem",
+                                    fontSize: "0.8rem",
                                     color: drawer ? colors.text.white : colors.text.black,
                                     fontWeight: findBy === undefined ? "800" : "0",
                                 }}
@@ -596,7 +672,7 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                         >
                             <p
                                 style={{
-                                    fontSize: "0.9rem",
+                                    fontSize: "0.8rem",
                                     fontWeight: findBy === undefined ? "800" : "0",
                                     color: drawer ? colors.text.white : colors.text.black,
                                 }}
@@ -612,7 +688,7 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                         >
                             <p
                                 style={{
-                                    fontSize: "0.9rem",
+                                    fontSize: "0.8rem",
                                     fontWeight: findBy === undefined ? "800" : "0",
                                     color: drawer ? colors.text.white : colors.text.black,
                                 }}
@@ -620,9 +696,47 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                                 Kit {kit?.name} foi atualizado
                             </p>
                         </Box>
+                    ) : notification.target_key === "call" ? (
+                        <Box
+                            sx={{
+                                width: "100%",
+                            }}
+                        >
+                            <p
+                                style={{
+                                    color: drawer ? colors.text.white : colors.text.black,
+                                    fontSize: "0.8rem",
+                                    textOverflow: "ellipsis",
+                                    whiteSpace: "nowrap",
+                                    overflowX: "hidden",
+                                    fontWeight: "800",
+                                }}
+                            >
+                                {user?.producer === null
+                                    ? `${notification.data.user.name} - ${notification.data?.talhao?.tillage.name} `
+                                    : notification.data?.talhao?.tillage.name}{" "}
+                            </p>
+                            <p
+                                style={{
+                                    fontSize: "0.7rem",
+                                    color: drawer ? colors.text.white : colors.text.black,
+                                    textOverflow: "ellipsis",
+                                    whiteSpace: "nowrap",
+                                    // fontWeight: findBy === undefined ? "800" : "0",
+                                    overflowX: "hidden",
+                                }}
+                            >
+                                {notification.action === "new"
+                                    ? `Novo chamado criado para o talhão ${notification.data?.talhao?.name}`
+                                    : notification.action === "approve"
+                                    ? `Chamado aprovado para o talhão ${notification.data?.talhao?.name}`
+                                    : notification.action === "cancel" &&
+                                      `Chamado cancelado para o talhão ${notification.data?.talhao?.name}`}
+                            </p>
+                        </Box>
                     ) : (
                         notification.action === "new" &&
-                        notification.target_key === "call" && (
+                        notification.target_key === "talhao" && (
                             <Box
                                 sx={{
                                     width: "100%",
@@ -631,14 +745,14 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                                 <p
                                     style={{
                                         color: drawer ? colors.text.white : colors.text.black,
-                                        fontSize: "0.9rem",
+                                        fontSize: "0.8rem",
                                         textOverflow: "ellipsis",
                                         whiteSpace: "nowrap",
                                         overflowX: "hidden",
                                         fontWeight: "800",
                                     }}
                                 >
-                                    {call?.producer?.user?.name}
+                                    {notification.data.tillage.name}
                                 </p>
                                 <p
                                     style={{
@@ -646,11 +760,11 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                                         color: drawer ? colors.text.white : colors.text.black,
                                         textOverflow: "ellipsis",
                                         whiteSpace: "nowrap",
-                                        fontWeight: findBy === undefined ? "800" : "0",
+                                        // fontWeight: findBy === undefined ? "800" : "0",
                                         overflowX: "hidden",
                                     }}
                                 >
-                                    Chamado aberto para o talhão {notification.data?.talhao?.name}
+                                    {notification.action === "new" && `Novo talhão criado - ${notification.data?.name}`}
                                 </p>
                             </Box>
                         )
@@ -684,7 +798,7 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                     </p>
                 </Box>
             </Box>
-            <Box sx={{ width: isMobile ? "10%" : "fit-content" }}>
+            {/* <Box sx={{ width: isMobile ? "10%" : "fit-content" }}>
                 {drawer && findBy === undefined && (
                     <IconButton onClick={onClick} sx={{ padding: 0 }}>
                         <ArrowForwardIos fontSize="small" sx={{ color: drawer ? colors.text.white : colors.text.black }} />
@@ -695,7 +809,7 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                         <ArrowForwardIos fontSize="small" sx={{ color: drawer ? colors.text.white : colors.text.black }} />
                     </IconButton>
                 )}
-            </Box>
+            </Box> */}
         </Box>
     )
 }

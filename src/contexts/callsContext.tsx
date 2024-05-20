@@ -12,6 +12,7 @@ interface CallContextValue {
     addCallPending: (newCall: Call) => void
     addCallApprove: (newCall: Call) => void
     removeCallApprove: (call: Call) => void
+    replaceCall: (call: Call) => void
 }
 
 interface CallProviderProps {
@@ -132,6 +133,7 @@ export const CallProvider: React.FC<CallProviderProps> = ({ children }) => {
                 addCallPending,
                 addCallApprove,
                 removeCallApprove,
+                replaceCall,
             }}
         >
             {children}

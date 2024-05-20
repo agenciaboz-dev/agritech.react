@@ -59,7 +59,7 @@ export const Tillage: React.FC<TillageProps> = ({}) => {
     }
 
     useEffect(() => {
-        console.log({ OIAAAA: user?.producer?.tillage })
+        console.log({ OIAAAA: findTillage })
     }, [user])
 
     useEffect(() => {

@@ -92,22 +92,23 @@ export const ReportDetails: React.FC<ReportDetailsProps> = ({}) => {
 
     useEffect(() => {
         listCalls && setCall(listCalls.find((item) => item.id === Number(callid)))
+        console.log({ CALL: call })
     }, [listCalls])
 
     useEffect(() => {
-        console.log({ encontrei: listReports.find((item) => item.id === Number(reportid)) })
+        console.log({ encontrei: call?.reports?.find((item) => item.id === Number(reportid)) })
     }, [listReports])
 
     useEffect(() => {
-        console.log({ encontrei: listReports.find((item) => item.id === Number(reportid)) })
-        const foundReport = listReports.find((item) => item.id === Number(reportid))
+        console.log({ encontrei: call?.reports?.find((item) => item.id === Number(reportid)) })
+        const foundReport = call?.reports?.find((item) => item.id === Number(reportid))
         console.log({ foundReport })
         if (foundReport) {
             setSelectedReport(foundReport)
             console.log("entrou")
         }
         console.log({ selectedReport })
-    }, [listReports, reportid])
+    }, [call, reportid])
 
     const handleApprove = async () => {
         io.emit("report:approve", selectedReport?.id)

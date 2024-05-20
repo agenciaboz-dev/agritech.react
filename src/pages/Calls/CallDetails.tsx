@@ -20,6 +20,10 @@ import { useIo } from "../../hooks/useIo"
 import { useSnackbar } from "burgos-snackbar"
 import { Modal } from "@mantine/core"
 import { useDisclosure } from "@mantine/hooks"
+import { PiPlantLight } from "react-icons/pi"
+import { GiPlainCircle } from "react-icons/gi"
+import { CurrencyText } from "../../components/CurrencyText"
+import { MdAttachMoney } from "react-icons/md"
 
 interface CallDetailsProps {}
 
@@ -40,7 +44,7 @@ export const CallDetails: React.FC<CallDetailsProps> = ({}) => {
     const { listKits } = useKits()
     const { listUsers } = useUsers()
     const { listTillages } = useProducer()
-    const { listCalls, setCalls } = useCall()
+    const { listCalls, setCalls, replaceCall } = useCall()
 
     const [open, setOpen] = useState(false)
     const [opened, { open: openCancelModal, close }] = useDisclosure(false)
@@ -61,7 +65,9 @@ export const CallDetails: React.FC<CallDetailsProps> = ({}) => {
     }
 
     useEffect(() => {
-        header.setTitle(user?.producer ? tillageSelectProd?.name || user.name : tillageSelected?.name || "")
+        header.setTitle(
+            user?.producer ? callSelect?.talhao?.tillage?.name || user.name : callSelect?.producer?.user?.name || ""
+        )
         console.log(kitSelected?.employees)
     }, [])
 
@@ -69,21 +75,25 @@ export const CallDetails: React.FC<CallDetailsProps> = ({}) => {
         setCalls(listCalls.filter((item) => item.id !== call.id))
     }
     const cancelCall = (values?: Call) => {
-        setOpen(false)
+        console.log({ AQUI: values })
+        setOpen(true)
         io.emit("call:cancel", values)
         openCancelModal()
     }
     useEffect(() => {
         io.on("call:cancel:success", (data: any) => {
-            removeCall(data)
+            // removeCall(data)
+            replaceCall(data)
             snackbar({ severity: "success", text: "Chamado cancelado com sucesso!" })
-            navigate(
-                user?.producer
-                    ? `/producer/tillage/${callSelect?.tillageId}`
-                    : user?.isAdmin
-                    ? `/adm/producer/${callSelect?.producerId}/${callSelect?.tillageId}`
-                    : `/employee/producer/${callSelect?.producerId}/${callSelect?.tillageId}`
-            )
+            if (data) {
+                navigate(
+                    user?.producer
+                        ? `/producer/tillage/${data.tillageId}`
+                        : user?.isAdmin
+                        ? `/adm/producer/${data?.producerId}/${data?.tillageId}`
+                        : `/employee/producer/${data?.producerId}/${data?.tillageId}`
+                )
+            }
             close()
         })
         io.on("call:cancel:failed", () => {
@@ -94,6 +104,12 @@ export const CallDetails: React.FC<CallDetailsProps> = ({}) => {
             io.off("call:cancel:success")
             io.off("call:cancel:failed")
         }
+    }, [])
+
+    useEffect(() => {
+        if (listCalls.length === 0) io.emit("call:list")
+        if (listTillages.length === 0) io.emit("tillage:list")
+        if (listKits.length === 0) io.emit("kit:list")
     }, [])
 
     return (
@@ -197,69 +213,136 @@ export const CallDetails: React.FC<CallDetailsProps> = ({}) => {
                             width: "100%",
                         }}
                     >
-                        <p>1/4</p>
-                        <Box sx={{ gap: "1vw" }}>
-                            <p style={{ fontSize: isMobile ? "4.1vw" : "1.2rem" }}>Chamado em andamento</p>
-                            <p style={{ fontSize: isMobile ? "2.9vw" : "1rem" }}>
-                                Aberto em: {dateFrontend(callSelect?.open || "")}
-                            </p>
-                        </Box>
-                        {!callSelect?.init && (
-                            <Button
-                                size="small"
-                                variant="contained"
-                                sx={{
-                                    bgcolor: colors.delete,
-                                    textTransform: "none",
-                                    borderRadius: "5vw",
-                                    width: "fit-content",
-                                }}
-                                onClick={handleClickOpen}
-                            >
-                                Cancelar Chamado
-                            </Button>
-                        )}
-                    </Box>
-                    <p style={{ fontSize: isMobile ? "3vw" : "1rem", textAlign: "justify" }}>
-                        {user?.producer && tillageSelectProd?.comments
-                            ? tillageSelectProd?.comments
-                            : tillageSelected?.comments
-                            ? tillageSelected?.comments
-                            : "Nenhuma observação"}
-                    </p>
-                    <p style={{ fontSize: isMobile ? "11vw" : "3rem" }}>15:00</p>
-                    <Box sx={{ width: "100%", gap: isMobile ? "2vw" : "1vw" }}>
-                        <p style={{ fontSize: isMobile ? "3.8vw" : "1.2rem" }}>
-                            Kit: <span style={{ fontWeight: "bold" }}>{kitSelected?.name}</span>
-                        </p>
-                        <p
-                            style={{
-                                display: "flex",
-                                fontSize: isMobile ? "3vw" : "1rem",
-                                width: "100%",
-                                flexWrap: "nowrap",
-                                textOverflow: "ellipsis",
-                                overflowX: "hidden",
+                        <Box
+                            sx={{
+                                flexDirection: "row",
+                                alignItems: "center",
+                                width: "60%",
+                                gap: "2vw",
                             }}
                         >
-                            {kitSelected?.description}
-                        </p>
-                        <Box sx={{}}>
-                            <p style={{ fontSize: isMobile ? "3.5vw" : "1rem" }}>Objetos</p>
-                            {kitSelected?.objects?.map((item, index) => (
-                                <Box key={index}>
-                                    <p style={{ fontSize: isMobile ? "3.5vw" : "1rem" }}>
-                                        {item.quantity}x {item.name}
-                                    </p>
-                                </Box>
-                            ))}
+                            <GiPlainCircle
+                                color={
+                                    callSelect?.status === "OPEN"
+                                        ? "orange"
+                                        : callSelect?.status === "INPROGRESS"
+                                        ? "green"
+                                        : callSelect?.status === "CLOSED"
+                                        ? "gray"
+                                        : callSelect?.status === "CANCELED"
+                                        ? colors.delete
+                                        : "black"
+                                }
+                            />
+                            <Box sx={{ gap: "1vw" }}>
+                                <p style={{ fontSize: isMobile ? "0.9rem" : "1.2rem" }}>
+                                    {callSelect?.status === "OPEN"
+                                        ? "Chamado Aberto"
+                                        : callSelect?.status === "INPROGRESS"
+                                        ? "Chamado em andamento"
+                                        : callSelect?.status === "CLOSED"
+                                        ? "Chamado finalizado"
+                                        : callSelect?.status === "CANCELED" && "Chamado cancelado"}
+                                </p>
+                                <p style={{ fontSize: isMobile ? "2.9vw" : "1rem" }}>
+                                    Aberto em: {new Date(Number(callSelect?.open || "")).toLocaleDateString("pt-br")}
+                                </p>
+                            </Box>
+                        </Box>
+                        {user?.producer === null &&
+                            callSelect?.init &&
+                            callSelect.status !== "CANCELED" &&
+                            callSelect.status !== "CLOSED" && (
+                                <Button
+                                    size="small"
+                                    variant="contained"
+                                    sx={{
+                                        bgcolor: colors.delete,
+                                        textTransform: "none",
+                                        borderRadius: "5vw",
+                                        width: "fit-content",
+                                        fontSize: "0.7rem",
+                                    }}
+                                    onClick={() => {
+                                        cancelCall(callSelect)
+                                    }}
+                                >
+                                    Cancelar Chamado
+                                </Button>
+                            )}
+                    </Box>
+                    <Box>
+                        <Box sx={{ fontSize: "0.8rem", alignItems: "center", flexDirection: "row", gap: "1.3vw" }}>
+                            <PiPlantLight size="1.2rem" />
+                            <p>
+                                {callSelect?.talhao?.tillage?.name} - Talhão: {callSelect?.talhao?.name}
+                            </p>
+                        </Box>
+                        <Box sx={{ flexDirection: "row", alignItems: "center", gap: "1.3vw" }}>
+                            <MdAttachMoney size="1.2rem" />
+                            <p style={{ fontSize: isMobile ? "0.8rem" : "3rem" }}>
+                                Custo por hectare:
+                                <span style={{ fontWeight: "bold" }}>
+                                    {" "}
+                                    <CurrencyText value={Number(callSelect?.talhao?.tillage?.hectarePrice)} />
+                                </span>
+                            </p>
                         </Box>
                     </Box>
-                    <Box sx={{ gap: isMobile ? "2vw" : "1vw" }}>
-                        <TitleComponents title="Responsáveis" />
-                        {team?.map((item, index) => (
-                            <CardTeam key={index} employee={item} />
-                        ))}
+                    <Box sx={{ width: 1, height: "80%", overflowY: "auto", gap: "2vw" }}>
+                        <p style={{ fontSize: isMobile ? "0.8rem" : "1rem", textAlign: "justify" }}>
+                            {user?.producer && tillageSelectProd?.comments
+                                ? tillageSelectProd?.comments
+                                : tillageSelected?.comments
+                                ? tillageSelected?.comments
+                                : "Nenhuma observação"}
+                        </p>
+                        <p style={{ fontSize: isMobile ? "2rem" : "3rem" }}>{new Date().toLocaleTimeString("pt-br")}</p>
+
+                        {user?.producer === null && (
+                            <>
+                                <Box sx={{ width: "100%", gap: isMobile ? "2vw" : "1vw" }}>
+                                    <p style={{ fontSize: isMobile ? "3.8vw" : "1.2rem" }}>
+                                        Kit: <span style={{}}>{kitSelected?.name}</span>
+                                    </p>
+                                    <p
+                                        style={{
+                                            display: "flex",
+                                            fontSize: isMobile ? "3vw" : "1rem",
+                                            width: "100%",
+                                            flexWrap: "nowrap",
+                                            textOverflow: "ellipsis",
+                                            overflowX: "hidden",
+                                        }}
+                                    >
+                                        {kitSelected?.description}
+                                    </p>
+                                    <Box sx={{}}>
+                                        <p style={{ fontSize: isMobile ? "3.5vw" : "1rem" }}>Objetos</p>
+                                        {kitSelected?.objects?.map((item, index) => (
+                                            <Box key={index}>
+                                                <p style={{ fontSize: isMobile ? "3.5vw" : "1rem" }}>
+                                                    {item.quantity}x {item.name}
+                                                </p>
+                                            </Box>
+                                        ))}
+                                    </Box>
+                                </Box>
+                                <Box sx={{ gap: isMobile ? "2vw" : "1vw" }}>
+                                    <TitleComponents title="Responsáveis" style={{ fontSize: "0.9rem" }} />
+                                    {team?.map((item, index) => (
+                                        <CardTeam key={index} employee={item} />
+                                    ))}
+                                </Box>
+                            </>
+                        )}
+                        <Box sx={{ gap: isMobile ? "2vw" : "1vw" }}>
+                            <TitleComponents title="Observações do chamado" style={{ fontSize: "0.9rem" }} />
+
+                            <p style={{ fontSize: isMobile ? "0.8rem" : "1rem", textAlign: "justify" }}>
+                                {callSelect?.comments ? callSelect?.comments : "Nenhuma observação"}
+                            </p>
+                        </Box>
                     </Box>
                     <DialogConfirm
                         data={modal}
