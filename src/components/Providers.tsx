@@ -39,9 +39,9 @@ export const Providers: React.FC<ProvidersProps> = ({ children }) => {
                                     <TalhaoProvider>
                                         <CallProvider>
                                             <ReportProvider>
-                                                <NotificationDrawerProvider>
-                                                    <MenuDrawerProvider>
-                                                        <HeaderProvider>
+                                                <MenuDrawerProvider>
+                                                    <HeaderProvider>
+                                                        <NotificationDrawerProvider>
                                                             <Snackbar />
                                                             <ConfirmDialog />
                                                             <NotificationDrawer />
@@ -58,9 +58,9 @@ export const Providers: React.FC<ProvidersProps> = ({ children }) => {
                                                                     {children}
                                                                 </LocalizationProvider>
                                                             </MantineProvider>
-                                                        </HeaderProvider>
-                                                    </MenuDrawerProvider>
-                                                </NotificationDrawerProvider>
+                                                        </NotificationDrawerProvider>
+                                                    </HeaderProvider>
+                                                </MenuDrawerProvider>
                                             </ReportProvider>
                                         </CallProvider>
                                     </TalhaoProvider>

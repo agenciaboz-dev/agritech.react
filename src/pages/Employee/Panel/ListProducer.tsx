@@ -14,12 +14,12 @@ interface ListProducerProps {
     user: User
 }
 
-export const ListProducer: React.FC<ListProducerProps> = ({ user }) => {
+export const ListProducer: React.FC<ListProducerProps> = ({}) => {
     const navigate = useNavigate()
     const header = useHeader()
     const profile = useUser()
 
-    const team = user.employee?.producers?.map((item) => {
+    const team = profile.user?.employee?.producers?.map((item: Producer) => {
         return findProducer(String(item.id))
     })
 
@@ -27,6 +27,9 @@ export const ListProducer: React.FC<ListProducerProps> = ({ user }) => {
         header.setTitle("Clientes")
     })
 
+    useEffect(() => {
+        console.log(team)
+    }, [team])
     return (
         <Box
             sx={{
@@ -79,9 +82,9 @@ export const ListProducer: React.FC<ListProducerProps> = ({ user }) => {
                                       location={
                                           profile.user?.isAdmin
                                               ? user.employee
-                                                  ? `/adm/calendar/${user.id}`
-                                                  : `/adm/profile/${user.id}`
-                                              : `/employee/profile/${user.id}`
+                                                  ? `/adm/calendar/${profile?.user?.id}`
+                                                  : `/adm/profile/${profile?.user?.id}`
+                                              : `/employee/profile/${profile?.user?.id}`
                                       }
                                   />
                               ))

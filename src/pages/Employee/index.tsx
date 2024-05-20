@@ -46,7 +46,6 @@ export const Employee: React.FC<EmployeeProps> = ({ user }) => {
                 <Route path="/call/:callid/report/:reportid" element={<ReportDetails />} />
                 <Route path="/kit/calendar/:kitid" element={<Calendar />} />
                 <Route path="/call/*" element={<Calls user={user} />} />
-                <Route path="/notification/list" element={<NotificationsList user={user} />} />
             </ReactRoutes>
         </>
     )

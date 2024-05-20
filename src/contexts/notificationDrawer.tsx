@@ -51,6 +51,7 @@ export const NotificationDrawerProvider: React.FC<NotificationDrawerProviderProp
 
     useEffect(() => {
         io.on("notification:list", (list: NotificationClass[]) => {
+            console.log("opaopao")
             setListNotifications(list)
             console.log({ UEBA: listNotifications })
         })
