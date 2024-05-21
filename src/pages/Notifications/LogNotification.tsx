@@ -88,8 +88,10 @@ export const LogNotification: React.FC<LogNotificationProps> = ({ notification, 
                     user && io.emit("notification:viewed", notification.id, user.id)
                     navigate(
                         user?.isAdmin
-                            ? `/adm/call/${notification.target_id}`
-                            : user?.producer !== null
+                            ? notification.data.approved
+                                ? `/adm/call/${notification.target_id}`
+                                : `/adm/call/${notification.target_id}`
+                            : user?.producer !== null && notification.data.approved
                             ? `/producer/call/${notification.target_id}`
                             : `/employee/call/${notification.target_id}`
                     )

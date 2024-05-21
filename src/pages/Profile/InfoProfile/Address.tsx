@@ -18,10 +18,10 @@ export const Address: React.FC<AddressProps> = ({ values, handleChange }) => {
             sx={{
                 flexDirection: "column",
                 gap: isMobile ? "3vw" : "1vw",
-                height: "75%",
+                height: "70%",
                 overflowY: "auto",
                 // paddingBottom: "400vh",
-                paddingBottom: "40vh",
+                paddingBottom: isMobile ? "1vh" : "40vh",
             }}
         >
             <p

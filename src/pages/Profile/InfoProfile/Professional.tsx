@@ -48,7 +48,7 @@ export const Professional: React.FC<ProfessionalProps> = ({ userLog, values, han
                             : values.office === "pilot" && "Piloto de drone"
                     }
                 />
-
+                {/* 
                 <TextField
                     label={"Salário"}
                     name={"employee.professional.salary"}
@@ -62,7 +62,7 @@ export const Professional: React.FC<ProfessionalProps> = ({ userLog, values, han
                             inputMode: "numeric",
                         },
                     }}
-                />
+                /> */}
 
                 <DemoItem label="Data de Admissão">
                     <MobileDatePicker
