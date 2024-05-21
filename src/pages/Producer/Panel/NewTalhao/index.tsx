@@ -140,6 +140,7 @@ export const NewTalhao: React.FC<NewTalhaoProps> = ({}) => {
                     borderTopLeftRadius: "5vw",
                     borderTopRightRadius: "5vw",
                     mt: "-4vw",
+                    overflow: "hidden",
                 }}
             >
                 {currentStep === 1 && (
@@ -156,10 +157,10 @@ export const NewTalhao: React.FC<NewTalhaoProps> = ({}) => {
                         backgroundColor: "#fff",
                         borderTopLeftRadius: "7vw",
                         borderTopRightRadius: "7vw",
-                        overflowY: "auto",
+                        // overflowY: "auto",
                     }}
                 >
-                    <Box sx={{ width: "100%", height: "90%", gap: "4vw", flexDirection: "column" }}>
+                    <Box sx={{ width: "100%", height: "70%", gap: "4vw", flexDirection: "column", overflow: "hidden" }}>
                         <Formik initialValues={initialValues} onSubmit={handleSubmit}>
                             {({ values, handleChange }) => (
                                 <Form>
@@ -186,7 +187,7 @@ export const NewTalhao: React.FC<NewTalhaoProps> = ({}) => {
                                         <Box
                                             sx={{
                                                 height: "100%",
-                                                maxHeight: "100%",
+                                                maxHeight: "80%",
                                                 // justifyContent: "space-between",
                                                 overflowY: "auto",
                                                 flexDirection: "column",

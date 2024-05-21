@@ -59,7 +59,9 @@ export const FormTillage: React.FC<FormTillageProps> = ({
     const handleSubmit = (values: NewLavoura) => {
         console.log(values)
     }
-
+    useEffect(() => {
+        console.log(user)
+    }, [user])
     useEffect(() => {
         header.setTitle(producerUser ? producerUser.name : "Nova Fazenda")
     }, [])
@@ -171,7 +173,7 @@ export const FormTillage: React.FC<FormTillageProps> = ({
                     <Box
                         sx={{
                             width: "100%",
-                            height: isMobile ? "66%" : "100%",
+                            height: isMobile ? "100%" : "100%",
                             overflowY: "auto",
                             gap: isMobile ? "2vw" : "1vw",
                         }}

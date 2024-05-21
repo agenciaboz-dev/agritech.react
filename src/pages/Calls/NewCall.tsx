@@ -329,6 +329,8 @@ export const NewCall: React.FC<NewCallProps> = ({ user }) => {
                 <form onSubmit={formik.handleSubmit}>
                     <Box
                         sx={{
+                            pt: "2vw",
+
                             gap: isMobile ? "2vw" : "1vw",
                             overflowY: "auto",
                             // paddingBottom: isMobile ? "" : "400vh",

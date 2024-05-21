@@ -39,14 +39,29 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     const updateUser = (user: User) => {
         setUser(user)
     }
+    useEffect(() => {
+        console.log({ CONTEXTO: user })
+    }, [user])
 
     useEffect(() => {
-        io.on("user:update:success", (data: User) => {
-            if (user?.id === data.id) setUser(data)
-        })
+        const handleUserUpdateSuccess = (data: User) => {
+            // console.log({ User_id: user?.name })
+            // console.log({ AQUIIII: data.id })
+            setUser((prevUser) => {
+                console.log("Comparando:", prevUser?.id, "com", data.id) // Adicionado log
+                if (prevUser?.id === data.id) {
+                    console.log("IDs são iguais, atualizando usuário.") // Log adicional para verificar a condição
+                    return data
+                }
+                console.log("IDs são diferentes, não atualizando usuário.") // Log para caso a condição não seja satisfeita
+                return prevUser
+            })
+        }
+
+        io.on("user:update:success", handleUserUpdateSuccess)
 
         return () => {
-            io.off("user:update:success")
+            io.off("user:update:success", handleUserUpdateSuccess)
         }
     }, [])
 

@@ -21,7 +21,7 @@ export const CardTillage: React.FC<CardTillageProps> = ({ tillage, location }) =
     const [cover, setCover] = useState("")
 
     useEffect(() => {
-        console.log(tillage)
+        // console.log(tillage)
         io.on("tillage:cover:success", (data: { tillageId: number; cover: string }) => {
             if (data.tillageId === tillage.id) {
                 setCover(data.cover)

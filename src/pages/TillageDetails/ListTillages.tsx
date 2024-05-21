@@ -28,7 +28,11 @@ export const ListTillages: React.FC<ListTillagesProps> = ({}) => {
     const [tillages, setTillages] = useState<Tillage[] | undefined>(user?.producer?.tillage)
     const [tillagesProducer, setTillagesProducer] = useState<Tillage[]>(producerEncontrado?.producer?.tillage || [])
     const [searchText, setSearchText] = useState("")
-    console.log({ OIAEUUU: tillagesProducer })
+
+    useEffect(() => {
+        console.log({ USER_ATUALIZDO: user })
+    }, [user])
+
     useEffect(() => {
         setTillagesProducer(producerEncontrado?.producer?.tillage || [])
     }, [producerEncontrado?.producer?.tillage])
@@ -42,13 +46,9 @@ export const ListTillages: React.FC<ListTillagesProps> = ({}) => {
     }, [producerEncontrado?.producer?.tillage, searchText])
 
     useEffect(() => {
-        if (user?.producer !== null && user?.producer?.tillage) setTillages(user?.producer?.tillage)
+        setTillages(user?.producer?.tillage)
         console.log({ opa: user?.producer?.tillage })
-    }, [user, user?.producer?.tillage])
-
-    useEffect(() => {
-        console.log(user?.producer?.tillage)
-    }, [tillages, user?.producer?.tillage])
+    }, [user?.producer?.tillage])
 
     useEffect(() => {
         const filteredList = tillages?.filter(
@@ -61,6 +61,10 @@ export const ListTillages: React.FC<ListTillagesProps> = ({}) => {
         header.setTitle(user?.producer !== null ? "Minhas Fazendas" : "Fazendas")
         user?.employee && setProducerid(Number(producerid))
     }, [])
+
+    useEffect(() => {
+        console.log({ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA: user })
+    }, [user?.producer?.tillage])
 
     return (
         <Box
@@ -81,6 +85,7 @@ export const ListTillages: React.FC<ListTillagesProps> = ({}) => {
                     gap: "1vw",
                     padding: isMobile ? "4vw" : "2.5vw",
                     flexDirection: "row",
+                    pb: isMobile ? "8vh" : "",
                 }}
             >
                 <Header
@@ -138,7 +143,7 @@ export const ListTillages: React.FC<ListTillagesProps> = ({}) => {
                                     <CardTillage key={index} tillage={item} location={`/producer/tillage/${item.id}`} />
                                 ))
                             ) : (
-                                tillages.length === 0 && (
+                                user?.producer?.tillage?.length === 0 && (
                                     <Box
                                         sx={{
                                             padding: "1vw",

@@ -133,7 +133,7 @@ export const PanelUser: React.FC<PanelUserProps> = ({ user }) => {
                         <Box style={{ width: "100%" }}>
                             {user.producer?.tillage?.length !== 0 &&
                                 user.producer?.tillage
-                                    ?.slice(0, 7)
+                                    ?.slice(0, 3)
                                     .map((tillage, index) => (
                                         <CardTillage
                                             key={index}

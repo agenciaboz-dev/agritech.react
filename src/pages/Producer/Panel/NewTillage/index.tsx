@@ -127,7 +127,7 @@ export const NewTillage: React.FC<NewTillageProps> = ({}) => {
             addTillageProd(data.tillage)
             setLoadingTillage(false)
             console.log({ Tillage: data.tillage })
-            navigate(`/producer/tillage/${data.tillage.id}`)
+            navigate(`/producer/tillages`)
         })
         io.on("tillage:creation:failed", () => {
             snackbar({ severity: "error", text: "Algo deu errado!" })

@@ -123,7 +123,7 @@ export const FormTalhao: React.FC<FormTalhaoProps> = ({ data, change, images, op
                 </Tabs>
                 {/* {tab === "additional" && <Additional data={data} handleChange={change} />} */}
                 {tab === "gallery" && (
-                    <Box sx={{ width: "100%", height: "80%", gap: isMobile ? "2vw" : "1vw", pt: isMobile ? "2vw" : 0 }}>
+                    <Box sx={{ width: "100%", height: "90%", gap: isMobile ? "2vw" : "1vw", pt: isMobile ? "2vw" : 0 }}>
                         {images.length === 0 ? (
                             <TitleComponents title="Adicionar Galeria" button textButton="Adicionar" click={open} />
                         ) : (
