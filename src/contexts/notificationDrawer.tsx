@@ -44,9 +44,11 @@ export const NotificationDrawerProvider: React.FC<NotificationDrawerProviderProp
     }
 
     useEffect(() => {
-        user && io.emit("notification:list", user.id)
-        console.log("FOI HEIN", user?.id)
-        if (user) io.emit("talhao:list", user)
+        if (user) {
+            io.emit("notification:list", user.id)
+            console.log("FOOOOOI")
+            // io.emit("talhao:list", user)
+        }
     }, [user])
 
     useEffect(() => {

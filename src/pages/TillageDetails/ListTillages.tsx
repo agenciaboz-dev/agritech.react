@@ -1,4 +1,4 @@
-import { Box, useMediaQuery } from "@mui/material"
+import { Box, Skeleton, useMediaQuery } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { Header } from "../../components/Header"
 import { colors } from "../../style/colors"
@@ -28,6 +28,7 @@ export const ListTillages: React.FC<ListTillagesProps> = ({}) => {
     const [tillages, setTillages] = useState<Tillage[] | undefined>(user?.producer?.tillage)
     const [tillagesProducer, setTillagesProducer] = useState<Tillage[]>(producerEncontrado?.producer?.tillage || [])
     const [searchText, setSearchText] = useState("")
+    const [loadingSkeletons, setloadingSkeletons] = useState(true)
 
     useEffect(() => {
         console.log({ USER_ATUALIZDO: user })
@@ -35,6 +36,7 @@ export const ListTillages: React.FC<ListTillagesProps> = ({}) => {
 
     useEffect(() => {
         setTillagesProducer(producerEncontrado?.producer?.tillage || [])
+        setloadingSkeletons(false)
     }, [producerEncontrado?.producer?.tillage])
 
     useEffect(() => {
@@ -43,10 +45,13 @@ export const ListTillages: React.FC<ListTillagesProps> = ({}) => {
         )
 
         setTillagesProducer(filteredList || [])
+        setloadingSkeletons(false)
     }, [producerEncontrado?.producer?.tillage, searchText])
 
     useEffect(() => {
         setTillages(user?.producer?.tillage)
+        setloadingSkeletons(false)
+
         console.log({ opa: user?.producer?.tillage })
     }, [user?.producer?.tillage])
 
@@ -61,10 +66,6 @@ export const ListTillages: React.FC<ListTillagesProps> = ({}) => {
         header.setTitle(user?.producer !== null ? "Minhas Fazendas" : "Fazendas")
         user?.employee && setProducerid(Number(producerid))
     }, [])
-
-    useEffect(() => {
-        console.log({ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA: user })
-    }, [user?.producer?.tillage])
 
     return (
         <Box
@@ -142,6 +143,16 @@ export const ListTillages: React.FC<ListTillagesProps> = ({}) => {
                                 tillages.map((item, index) => (
                                     <CardTillage key={index} tillage={item} location={`/producer/tillage/${item.id}`} />
                                 ))
+                            ) : loadingSkeletons ? (
+                                user?.producer?.tillage?.length === 0 && (
+                                    <Box
+                                        sx={{
+                                            padding: "1vw",
+                                        }}
+                                    >
+                                        <p>Nenhuma opinh encontrada.</p>
+                                    </Box>
+                                )
                             ) : (
                                 user?.producer?.tillage?.length === 0 && (
                                     <Box
@@ -165,14 +176,54 @@ export const ListTillages: React.FC<ListTillagesProps> = ({}) => {
                                     }
                                 />
                             ))
-                        ) : (
+                        ) : loadingSkeletons ? (
                             <Box
                                 sx={{
-                                    padding: "1vw",
+                                    height: isMobile ? "22vw" : "fit-content",
+                                    flexDirection: "row",
+                                    gap: isMobile ? "3vw" : "1vw",
+                                    padding: isMobile ? "4vw 2vw" : "1vw",
+                                    alignItems: "center",
+                                    borderBottom: "1px solid #88A486",
+                                    justifyContent: "space-between",
                                 }}
                             >
-                                <p>Nenhuma fazenda encontrada.</p>
+                                <Box sx={{ flexDirection: "row", gap: isMobile ? "3vw" : "1vw", alignItems: "center" }}>
+                                    <Skeleton
+                                        animation="wave"
+                                        variant="rounded"
+                                        sx={{
+                                            width: isMobile ? "18vw" : "10vw",
+                                            height: isMobile ? "18vw" : "10vw",
+                                            borderRadius: isMobile ? "3vw" : "2vw",
+                                        }}
+                                    />
+                                    {isMobile && (
+                                        <Box sx={{ flexDirection: "column", gap: "1vw" }}>
+                                            <Skeleton
+                                                animation="wave"
+                                                variant="rounded"
+                                                sx={{ width: "30vw", height: "4vw" }}
+                                            />
+                                            <Skeleton
+                                                animation="wave"
+                                                variant="rounded"
+                                                sx={{ width: "22vw", height: "3vw" }}
+                                            />
+                                        </Box>
+                                    )}
+                                </Box>
                             </Box>
+                        ) : (
+                            tillagesProducer.length === 0 && (
+                                <Box
+                                    sx={{
+                                        padding: "1vw",
+                                    }}
+                                >
+                                    <p>Nenhuma fazenda encontrada.</p>
+                                </Box>
+                            )
                         )}
                     </Box>
                 </Box>

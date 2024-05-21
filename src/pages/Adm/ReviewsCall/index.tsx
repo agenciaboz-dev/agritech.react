@@ -21,6 +21,8 @@ export const ReviewsCall: React.FC<ReviewsCallProps> = ({ user }) => {
     const header = useHeader()
     const skeletons = useArray().newArray(3)
     const { listCalls, listCallsPending } = useCall()
+    const [loadingSkeletons, setloadingSkeletons] = useState(true)
+    const [loadingSkeletonsPending, setloadingSkeletonsPending] = useState(false)
 
     const [tab, setTab] = useState("pending")
     const sortedPendingCalls = listCallsPending
@@ -44,8 +46,21 @@ export const ReviewsCall: React.FC<ReviewsCallProps> = ({ user }) => {
     useEffect(() => {
         header.setTitle("Chamados")
 
-        if (listCalls.length == 0) io.emit("call:listApproved")
-        if (listCallsPending.length == 0) io.emit("call:listPending")
+        if (listCalls.length == 0) {
+            io.emit("call:listApproved")
+            setloadingSkeletons(true)
+        }
+        if (listCallsPending.length == 0) {
+            io.emit("call:listPending")
+            setloadingSkeletonsPending(true)
+        }
+
+        io.on("call:listApproved:success", () => {
+            setloadingSkeletons(false)
+        })
+        io.on("call:listPending:success", () => {
+            setloadingSkeletonsPending(false)
+        })
         // if (listKits.length == 0) io.emit("kit:list")
     }, [])
 
@@ -134,30 +149,35 @@ export const ReviewsCall: React.FC<ReviewsCallProps> = ({ user }) => {
                             paddingBottom: "40vh",
                         }}
                     >
-                        {tab === "pending" && sortedPendingCalls.length !== 0
+                        {tab === "pending" && sortedPendingCalls.length !== 0 && !loadingSkeletonsPending
                             ? sortedPendingCalls.map((call, index) => <LogsCard key={index} call={call} review />)
+                            : tab === "pending" && loadingSkeletonsPending
+                            ? skeletons.map((_, index) => (
+                                  <Skeleton
+                                      key={index}
+                                      animation="wave"
+                                      variant="rounded"
+                                      sx={{ width: 1, height: isMobile ? "15vw" : "5vw" }}
+                                  />
+                              ))
                             : tab === "pending" &&
-                              sortedPendingCalls.length === 0 &&
-                              skeletons.map((_, index) => (
-                                  <Skeleton
-                                      key={index}
-                                      animation="wave"
-                                      variant="rounded"
-                                      sx={{ width: 1, height: isMobile ? "15vw" : "5vw" }}
-                                  />
-                              ))}
-                        {tab === "calls" && listCalls.length !== 0
+                              !loadingSkeletonsPending &&
+                              sortedPendingCalls.length === 0 && <p>Nenhum chamado</p>}
+
+                        {tab === "calls" && sortedApprovedCalls.length !== 0
                             ? sortedApprovedCalls?.map((call, index) => <LogsCard key={index} call={call} />)
-                            : tab === "calls" &&
-                              sortedApprovedCalls.length === 0 &&
-                              skeletons.map((_, index) => (
+                            : tab === "calls" && loadingSkeletons
+                            ? skeletons.map((_, index) => (
                                   <Skeleton
                                       key={index}
                                       animation="wave"
                                       variant="rounded"
                                       sx={{ width: 1, height: isMobile ? "15vw" : "5vw" }}
                                   />
-                              ))}
+                              ))
+                            : tab === "calls" &&
+                              !loadingSkeletons &&
+                              sortedApprovedCalls.length === 0 && <p>Nenhum chamado</p>}
                     </Box>
                 </Box>
             </Box>

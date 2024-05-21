@@ -36,6 +36,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
     const { user } = useUser()
     const { addCallApprove } = useCall()
     const skeletons = useArray().newArray(3)
+    const [loadingSkeletons, setloadingSkeletons] = useState(true)
 
     const [loading, setLoading] = useState(false)
 
@@ -49,6 +50,7 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
         io.emit("tillage:list")
 
         io.on("tillage:list:success", (data: Tillage[]) => {
+            setloadingSkeletons(false)
             if (user?.employee) {
                 if (producerid) {
                     const listTillagesId = data.filter((item) => item.producerId === Number(producerid)) //lista de lavoura do respectivo usuário employee ou adm
@@ -330,6 +332,35 @@ export const TillageDetails: React.FC<TillageDetailsProps> = ({}) => {
                                       />
                                   </Box>
                               ))}
+                    </Box>
+                ) : loadingSkeletons ? (
+                    <Box
+                        sx={{
+                            flexDirection: "row",
+                            gap: isMobile ? "2vw" : "1vw",
+                            width: "100%",
+                            overflow: "auto",
+                            p: isMobile ? "0vw 3vw 3vw" : "0 1vw 1vw",
+                        }}
+                    >
+                        {skeletons.map((_, index) => (
+                            <Box sx={{ alignItems: "center", gap: isMobile ? "2vw" : "2px" }} key={index}>
+                                <Skeleton
+                                    animation="wave"
+                                    variant="rounded"
+                                    sx={{
+                                        width: isMobile ? "24vw" : "5vw",
+                                        height: isMobile ? "34vw" : "5vw",
+                                        borderRadius: isMobile ? "8vw" : "2vw",
+                                    }}
+                                />
+                                <Skeleton
+                                    animation="wave"
+                                    variant="rounded"
+                                    sx={{ width: isMobile ? "23vw" : "9vw", height: "2vw" }}
+                                />
+                            </Box>
+                        ))}
                     </Box>
                 ) : (
                     <Box sx={{ p: isMobile ? "8vw 4vw" : "1vw" }}>

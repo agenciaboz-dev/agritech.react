@@ -52,6 +52,10 @@ export const PanelUser: React.FC<PanelUserProps> = ({ user }) => {
     }, [])
 
     useEffect(() => {
+        console.log(notificationDrawer.listNotifications)
+    }, [notificationDrawer.listNotifications])
+
+    useEffect(() => {
         if (listUsers.length === 0) io.emit("users:list")
         console.log(listUsers)
     }, [listUsers])

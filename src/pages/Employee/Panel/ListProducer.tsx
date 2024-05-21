@@ -9,6 +9,8 @@ import { useUsers } from "../../../hooks/useUsers"
 import { CardUser } from "../../../components/CardUser"
 import findProducer from "../../../hooks/filterProducer"
 import { useUser } from "../../../hooks/useUser"
+import { useIo } from "../../../hooks/useIo"
+import { SearchField } from "../../../components/SearchField"
 
 interface ListProducerProps {
     user: User
@@ -18,6 +20,27 @@ export const ListProducer: React.FC<ListProducerProps> = ({}) => {
     const navigate = useNavigate()
     const header = useHeader()
     const profile = useUser()
+    const io = useIo()
+    const { listUsers } = useUsers()
+    const [listProducer, setListProducer] = useState<User[]>(
+        listUsers?.filter((users) => users.producer?.employeeId === profile.user?.id)
+    )
+    const [searchText, setSearchText] = useState("") // Estado para controlar a entrada de pesquisa
+
+    useEffect(() => {
+        setListProducer(listUsers?.filter((users) => users.producer !== null))
+    }, [listUsers])
+
+    useEffect(() => {
+        const filteredList = listUsers?.filter(
+            (user) => user.producer !== null && user.name.toLowerCase().includes(searchText.toLowerCase())
+        )
+        setListProducer(filteredList || [])
+    }, [listUsers, searchText])
+
+    useEffect(() => {
+        header.setTitle("Clientes")
+    })
 
     const team = profile.user?.employee?.producers?.map((item: Producer) => {
         return findProducer(String(item.id))
@@ -28,8 +51,8 @@ export const ListProducer: React.FC<ListProducerProps> = ({}) => {
     })
 
     useEffect(() => {
-        console.log(team)
-    }, [team])
+        if (listUsers.length === 0) io.emit("user:list")
+    }, [])
     return (
         <Box
             sx={{
@@ -73,9 +96,11 @@ export const ListProducer: React.FC<ListProducerProps> = ({}) => {
                         overflow: "hidden",
                     }}
                 >
+                    <SearchField searchText={searchText} setSearchText={setSearchText} placeholder="produtor" />
+
                     <Box sx={{ gap: "2vw", height: "90%", overflow: "auto" }}>
-                        {team?.length !== 0
-                            ? team?.map((user) => (
+                        {listProducer?.length !== 0
+                            ? listProducer?.map((user) => (
                                   <CardUser
                                       user={user}
                                       key={user.id}
