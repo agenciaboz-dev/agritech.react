@@ -28,6 +28,8 @@ export const ReviewsReports: React.FC<ReviewsReportsProps> = ({ user }) => {
         setTab(newValue)
     }
     const skeletons = useArray().newArray(3)
+    const [loadingSkeletons, setloadingSkeletons] = useState(true)
+    const [loadingSkeletonsPending, setloadingSkeletonsPending] = useState(false)
 
     const { listReports } = useReports()
     const [reports, setReports] = useState<Report[]>([])
@@ -38,14 +40,21 @@ export const ReviewsReports: React.FC<ReviewsReportsProps> = ({ user }) => {
         setReports(
             listReports.filter((item) => item.approved && item.stage === 4).sort((a, b) => Number(a.date) - Number(b.date))
         )
+        setloadingSkeletons(false)
         setReportsPending(
             listReports.filter((item) => !item.approved && item.stage! === 4).sort((a, b) => Number(a.date) - Number(b.date))
         )
+        setloadingSkeletonsPending(false)
+
         console.log(listReports)
     }, [listReports])
 
     useEffect(() => {
-        if (listReports.length === 0) io.emit("report:list")
+        if (listReports.length === 0) {
+            io.emit("report:list")
+            setloadingSkeletons(true)
+            setloadingSkeletonsPending(true)
+        }
         console.log("emitindo")
         header.setTitle("Relatórios")
     }, [])
@@ -137,10 +146,10 @@ export const ReviewsReports: React.FC<ReviewsReportsProps> = ({ user }) => {
                     >
                         {/* <Skeleton animation="wave" variant="rounded" sx={{ width: 1, height: "15vw" }} /> */}
                         {
-                            tab === "pending" && reportsPending.length !== 0
+                            tab === "pending" && reportsPending.length !== 0 && !loadingSkeletons
                                 ? reportsPending?.map((item, index) => <LogsReport key={index} report={item} review />)
-                                : tab === "pending" &&
-                                  skeletons.map((_, index) => (
+                                : loadingSkeletons && tab === "pending"
+                                ? skeletons.map((_, index) => (
                                       <Skeleton
                                           key={index}
                                           animation="wave"
@@ -148,6 +157,7 @@ export const ReviewsReports: React.FC<ReviewsReportsProps> = ({ user }) => {
                                           sx={{ width: 1, height: "15vw" }}
                                       />
                                   ))
+                                : tab === "pending" && !loadingSkeletons && <p>Nenhum relatório pendente</p>
                             // "Nenhum relatório pendente"
                         }
                         {

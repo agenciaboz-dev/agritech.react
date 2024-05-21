@@ -29,15 +29,17 @@ export const LogsReport: React.FC<LogsReportProps> = ({ review, report, variant 
             <Box sx={{ flexDirection: "column" }}>
                 <Box sx={{ flexDirection: "row", alignItems: "center", gap: isMobile ? "2vw" : "1vw" }}>
                     <p style={{ fontSize: isMobile ? "3vw" : "1rem", color: "gray" }}>
-                        {new Date(Number(report?.techReport?.date)).toLocaleDateString("pt-br")} -{" "}
-                        {new Date(Number(report?.techReport?.finish)).toLocaleTimeString("pt-br")}
+                        {new Date(Number(report?.techReport?.date)).toLocaleDateString("pt-br")}
                     </p>
                 </Box>
                 <p style={{ fontSize: isMobile ? "3.5vw" : "1rem", fontWeight: "600" }}>
-                    {report?.call?.approved ? `Relatório de ${producerSelected?.name}` : `Relatório de ${producerSelected?.name}`}
+                    {report?.call?.approved
+                        ? `Relatório de ${producerSelected?.name}`
+                        : `Relatório de ${producerSelected?.name}`}
                 </p>
                 <p style={{ fontSize: isMobile ? "3vw" : "1rem", color: "gray", flexDirection: "column" }}>
-                    {report?.call?.talhao?.name} - {report?.call?.approved ? `Utilizado #Kit ${report?.call?.kit?.name}` : "Ver Relatório"}
+                    {report?.call?.talhao?.name} -{" "}
+                    {report?.call?.approved ? `Utilizado #Kit ${report?.call?.kit?.name}` : "Ver Relatório"}
                 </p>
             </Box>
             {!review ? (
@@ -45,7 +47,10 @@ export const LogsReport: React.FC<LogsReportProps> = ({ review, report, variant 
                     <Menu transitionProps={{ transition: "pop" }} withArrow position="bottom-end" withinPortal>
                         <Menu.Target>
                             <ActionIcon variant="subtle" color="gray">
-                                <IconDots style={{ width: isMobile ? "8vw" : "2vw", height: isMobile ? "8vw" : "2vw" }} stroke={2} />
+                                <IconDots
+                                    style={{ width: isMobile ? "8vw" : "2vw", height: isMobile ? "8vw" : "2vw" }}
+                                    stroke={2}
+                                />
                             </ActionIcon>
                         </Menu.Target>
                         <Menu.Dropdown>
@@ -92,7 +97,9 @@ export const LogsReport: React.FC<LogsReportProps> = ({ review, report, variant 
                 <Box sx={{ flexDirection: "row", alignItems: "center", gap: isMobile ? "2vw" : "1vw" }}>
                     <p style={{ fontSize: isMobile ? "3vw" : "1rem", color: "gray" }}>11:00 - 13:00</p>
                 </Box>
-                <p style={{ fontSize: isMobile ? "3.5vw" : "1rem", fontWeight: "600" }}>Chamado para {report?.call?.talhao?.tillage?.name}</p>
+                <p style={{ fontSize: isMobile ? "3.5vw" : "1rem", fontWeight: "600" }}>
+                    Chamado para {report?.call?.talhao?.tillage?.name}
+                </p>
                 <p style={{ fontSize: isMobile ? "3.5vw" : "1rem", color: "gray" }}>
                     {report?.call?.approved ? `Finalizado` : "Aguardando aprovação"}
                 </p>

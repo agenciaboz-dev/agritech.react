@@ -36,7 +36,10 @@ export const ListLaudos: React.FC<ListLaudosProps> = ({ user }) => {
     const [sortedReports, setSortedReports] = useState<Report[]>([])
 
     useEffect(() => {
-        listReports && setSortedReports(listReports?.filter((item) => item.callId === Number(callid)).sort((a, b) => Number(a.date) - Number(b.date)))
+        listReports &&
+            setSortedReports(
+                listReports?.filter((item) => item.callId === Number(callid)).sort((a, b) => Number(a.date) - Number(b.date))
+            )
     }, [listReports])
     useEffect(() => {
         console.log(listCalls)
@@ -110,11 +113,21 @@ export const ListLaudos: React.FC<ListLaudosProps> = ({ user }) => {
                     }}
                 >
                     {sortedReports.length != 0
-                        ? sortedReports?.map((item, index) => <LogsLaudo key={index} id={index + 1} report={item} talhao={item.talhao} />)
+                        ? sortedReports?.map((item, index) => (
+                              <LogsLaudo key={index} id={index + 1} report={item} talhao={item.talhao} />
+                          ))
                         : skeletons.map((_, index) => (
                               <Box sx={{ flexDirection: "column", justifyContent: "start", gap: "2vw" }} key={index}>
-                                  <Skeleton variant="rounded" animation="wave" sx={{ width: isMobile ? "28vw" : "56vw", height: "3vw" }} />
-                                  <Skeleton variant="rounded" animation="wave" sx={{ width: isMobile ? "40vw" : "80vw", height: "5vw" }} />
+                                  <Skeleton
+                                      variant="rounded"
+                                      animation="wave"
+                                      sx={{ width: isMobile ? "28vw" : "56vw", height: "3vw" }}
+                                  />
+                                  <Skeleton
+                                      variant="rounded"
+                                      animation="wave"
+                                      sx={{ width: isMobile ? "40vw" : "80vw", height: "5vw" }}
+                                  />
                               </Box>
                           ))}
                 </Box>

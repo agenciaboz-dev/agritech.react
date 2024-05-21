@@ -30,7 +30,8 @@ export const LogsLaudo: React.FC<LogsLaudoProps> = ({ report, talhao, id, tillag
             <Box sx={{ flexDirection: "column" }}>
                 <Box sx={{ flexDirection: "row", alignItems: "center", gap: isMobile ? "2vw" : "1vw" }}>
                     <p style={{ fontSize: isMobile ? "3vw" : "1rem", color: "gray" }}>
-                        {new Date(Number(report.date)).toLocaleDateString("pt-br")} - {new Date(Number(report.hour)).toLocaleTimeString("pt-br")}
+                        {new Date(Number(report.date)).toLocaleDateString("pt-br")} -{" "}
+                        {new Date(Number(report.hour)).toLocaleTimeString("pt-br")}
                     </p>
                 </Box>
                 <p style={{ fontSize: isMobile ? "3.5vw" : "1.2rem", fontWeight: "600" }}>{`Laudo ${id}`}</p>
