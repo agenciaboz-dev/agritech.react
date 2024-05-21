@@ -42,7 +42,7 @@ export const InfoProfile: React.FC<InfoProfileProps> = ({
     }
 
     return (
-        <Box sx={{ gap: isMobile ? "5vw" : "1vw", maxWidth: "100%", maxHeight: "100%", height: "85%", color: "black" }}>
+        <Box sx={{ gap: isMobile ? "5vw" : "1vw", maxWidth: "100%", maxHeight: "100%", height: "100vw", color: "black" }}>
             <Tabs
                 value={tab}
                 onChange={changeTab}

@@ -123,12 +123,14 @@ export const Requests: React.FC<RequestsProps> = ({}) => {
                         {tab === "pending" && sortedPendingCalls.length !== 0
                             ? sortedPendingCalls?.map((call, index) => <LogsCard key={index} call={call} variant />)
                             : tab === "pending" && (
-                                  <Skeleton animation="wave" variant="rounded" sx={{ width: 1, height: "13vw" }} />
+                                  //   <Skeleton animation="wave" variant="rounded" sx={{ width: 1, height: "13vw" }} />
+                                  <p>Nenhum chamado pendente</p>
                               )}
                         {tab === "calls" && listCalls.length !== 0
                             ? sortedApprovedCalls?.map((call, index) => <LogsCard key={index} call={call} variant />)
                             : tab === "calls" && (
-                                  <Skeleton animation="wave" variant="rounded" sx={{ width: 1, height: "13vw" }} />
+                                  //   <Skeleton animation="wave" variant="rounded" sx={{ width: 1, height: "13vw" }} />
+                                  <p>Nenhum chamado aberto</p>
                               )}
                     </Box>
                 </Box>
