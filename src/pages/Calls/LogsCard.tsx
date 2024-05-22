@@ -50,7 +50,12 @@ export const LogsCard: React.FC<LogsCardProps> = ({ review, call, variant }) => 
                         : `Chamado pendente para ${call?.producer?.user?.name}`}
                 </p>
                 <p style={{ fontSize: isMobile ? "3vw" : "1rem", color: "gray", flexDirection: "column" }}>
-                    {call?.talhao?.name} - {call?.approved ? `Utilizando #Kit ${call.kit?.name}` : "Selecione um kit"}
+                    {call?.talhao?.name} -{" "}
+                    {call?.approved
+                        ? `Utilizando #Kit ${call.kit?.name}`
+                        : account.user?.isAdmin
+                        ? "Selecione um kit"
+                        : "Aguardando aprovação"}
                 </p>
             </Box>
             {!review ? (
@@ -91,9 +96,7 @@ export const LogsCard: React.FC<LogsCardProps> = ({ review, call, variant }) => 
                     </Menu>
                 </Group>
             ) : (
-                <IconButton
-                    onClick={() => navigate(account.user?.isAdmin ? `/adm/calls/${call?.id}` : `/call/${call?.id}/laudos`)}
-                >
+                <IconButton onClick={() => navigate(account.user?.isAdmin ? `/adm/calls/${call?.id}` : `/call/${call?.id}`)}>
                     <IoIosArrowForward style={{ width: isMobile ? "5vw" : "2vw", height: isMobile ? "5vw" : "2vw" }} />
                 </IconButton>
             )}

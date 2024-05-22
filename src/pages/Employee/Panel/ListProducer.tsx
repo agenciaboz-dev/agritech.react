@@ -111,7 +111,7 @@ export const ListProducer: React.FC<ListProducerProps> = ({}) => {
                 >
                     <SearchField searchText={searchText} setSearchText={setSearchText} placeholder="produtor" />
 
-                    <Box sx={{ gap: "2vw", height: "180vw", pb: "12vh", overflow: "auto" }}>
+                    <Box sx={{ gap: "2vw", height: "180vw", overflowY: "auto", pb: "12vh", overflow: "auto" }}>
                         {listProducer?.length !== 0
                             ? listProducer?.map((user) => (
                                   <CardUser

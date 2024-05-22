@@ -11,6 +11,8 @@ interface KitContextValue {
     addKit: (newKit: Kit) => void
     updateKit: (kitUpdate: Kit) => void
     toggleKit: (id: number) => void
+    loadingSkeleton: boolean
+    setloadingSkeleton: (value: boolean) => void
 }
 
 interface KitProviderProps {
@@ -24,6 +26,7 @@ export default KitContext
 export const KitProvider: React.FC<KitProviderProps> = ({ children }) => {
     const io = useIo()
     const [listKits, setListKits] = useState<Kit[]>([])
+    const [loadingSkeleton, setloadingSkeleton] = useState(true)
     const { addNotification } = useNotification()
     const { snackbar } = useSnackbar()
     const { user } = useUser()
@@ -57,7 +60,10 @@ export const KitProvider: React.FC<KitProviderProps> = ({ children }) => {
     }
 
     useEffect(() => {
-        if (listKits.length === 0 && user) io.emit("kit:list")
+        if (listKits.length === 0 && user) {
+            io.emit("kit:list")
+            setloadingSkeleton(true)
+        }
     }, [])
 
     useEffect(() => {
@@ -94,6 +100,7 @@ export const KitProvider: React.FC<KitProviderProps> = ({ children }) => {
         })
         io.on("kit:list:success", (data: Kit[]) => {
             setListKits(data)
+            setloadingSkeleton(false)
         })
 
         return () => {
@@ -103,6 +110,10 @@ export const KitProvider: React.FC<KitProviderProps> = ({ children }) => {
     }, [listKits])
 
     return (
-        <KitContext.Provider value={{ listKits, setListKits, toggleKit, addKit, updateKit }}>{children}</KitContext.Provider>
+        <KitContext.Provider
+            value={{ listKits, setListKits, toggleKit, addKit, updateKit, loadingSkeleton, setloadingSkeleton }}
+        >
+            {children}
+        </KitContext.Provider>
     )
 }
