@@ -23,7 +23,7 @@ export const ListProducer: React.FC<ListProducerProps> = ({}) => {
     const io = useIo()
     const { listUsers } = useUsers()
     const [listProducer, setListProducer] = useState<User[]>(
-        listUsers?.filter((users) => users.producer?.employeeId === profile.user?.id)
+        listUsers?.filter((user) => user.producer?.employeeId === profile.user?.employee?.id)
     )
     const [searchText, setSearchText] = useState("") // Estado para controlar a entrada de pesquisa
 
@@ -32,11 +32,17 @@ export const ListProducer: React.FC<ListProducerProps> = ({}) => {
     }, [listUsers])
 
     useEffect(() => {
-        const filteredList = listUsers?.filter(
-            (user) => user.producer !== null && user.name.toLowerCase().includes(searchText.toLowerCase())
-        )
-        setListProducer(filteredList || [])
-    }, [listUsers, searchText])
+        if (searchText.trim() === "") {
+            // Se o campo de pesquisa estiver vazio, restaura a lista completa
+            setListProducer(listUsers?.filter((user) => user.producer?.employeeId === profile.user?.employee?.id))
+        } else {
+            // Aplica o filtro de acordo com o texto de pesquisa
+            const filteredList = listUsers
+                ?.filter((user) => user.producer?.employeeId === profile.user?.employee?.id)
+                .filter((user) => user.name.toLowerCase().includes(searchText.toLowerCase()))
+            setListProducer(filteredList || [])
+        }
+    }, [searchText, listUsers])
 
     useEffect(() => {
         header.setTitle("Clientes")
@@ -51,6 +57,10 @@ export const ListProducer: React.FC<ListProducerProps> = ({}) => {
     })
 
     useEffect(() => {
+        console.log({ LISTProducer: listProducer })
+    }, [listProducer])
+
+    useEffect(() => {
         if (listUsers.length === 0) io.emit("user:list")
     }, [])
     return (
@@ -60,6 +70,7 @@ export const ListProducer: React.FC<ListProducerProps> = ({}) => {
                 height: "100%",
                 backgroundColor: colors.button,
                 flexDirection: "column",
+                overflow: "hidden",
             }}
         >
             <Box
@@ -76,13 +87,14 @@ export const ListProducer: React.FC<ListProducerProps> = ({}) => {
                 <Header back location="../" />
             </Box>
             <Box
-                style={{
+                sx={{
                     justifyContent: "center",
                     height: "92%",
                     backgroundColor: colors.secondary,
                     borderTopLeftRadius: "5vw",
                     borderTopRightRadius: "5vw",
-                    paddingTop: 10,
+                    paddingTop: "2vw",
+                    mt: "10vw",
                 }}
             >
                 <Box
@@ -94,11 +106,12 @@ export const ListProducer: React.FC<ListProducerProps> = ({}) => {
                         borderTopLeftRadius: "7vw",
                         borderTopRightRadius: "7vw",
                         overflow: "hidden",
+                        gap: "4vw",
                     }}
                 >
                     <SearchField searchText={searchText} setSearchText={setSearchText} placeholder="produtor" />
 
-                    <Box sx={{ gap: "2vw", height: "90%", overflow: "auto" }}>
+                    <Box sx={{ gap: "2vw", height: "180vw", pb: "12vh", overflow: "auto" }}>
                         {listProducer?.length !== 0
                             ? listProducer?.map((user) => (
                                   <CardUser
@@ -107,15 +120,13 @@ export const ListProducer: React.FC<ListProducerProps> = ({}) => {
                                       location={
                                           profile.user?.isAdmin
                                               ? user.employee
-                                                  ? `/adm/calendar/${profile?.user?.id}`
-                                                  : `/adm/profile/${profile?.user?.id}`
-                                              : `/employee/profile/${profile?.user?.id}`
+                                                  ? `/adm/calendar/${user?.id}`
+                                                  : `/adm/profile/${user?.id}`
+                                              : `/employee/profile/${user?.id}`
                                       }
                                   />
                               ))
                             : "Nenhum cliente encontrado"}
-
-                        <Box style={{ width: "100%", height: "80%", overflow: "auto" }}></Box>
                     </Box>
                 </Box>
             </Box>
