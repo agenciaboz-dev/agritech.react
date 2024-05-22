@@ -24,7 +24,9 @@ export const OfficeDot: React.FC<OfficeDotProps> = ({ office }) => {
                         ? copilot
                         : office === "seller"
                         ? seller
-                        : office === "pilot" && blue
+                        : office === "pilot"
+                        ? blue
+                        : ""
                 }
             />
 
